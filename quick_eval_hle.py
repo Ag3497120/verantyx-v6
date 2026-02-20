@@ -130,3 +130,48 @@ with open('hle_2500_per_problem.json', 'w') as f:
 
 print(f"\nSaved to hle_2500_phase5h_final.json")
 print(f"Per-problem saved to hle_2500_per_problem.json")
+
+# ── Auto-commit if score improved ─────────────────────────────────────────────
+import subprocess
+
+BEST_SCORE_FILE = 'best_score.json'
+new_pct = correct / total * 100
+
+# Load previous best
+prev_best = 0.0
+if os.path.exists(BEST_SCORE_FILE):
+    try:
+        with open(BEST_SCORE_FILE) as f:
+            prev_best = json.load(f).get('accuracy', 0.0)
+    except Exception:
+        pass
+
+if new_pct > prev_best:
+    # Update best score record
+    with open(BEST_SCORE_FILE, 'w') as f:
+        json.dump({'accuracy': new_pct, 'correct': correct, 'total': total,
+                   'timestamp': time.strftime('%Y-%m-%dT%H:%M:%S+09:00')}, f, indent=2)
+
+    # Build commit message
+    top_m = method_stats.most_common(3)
+    method_summary = ', '.join(f"{m}×{c}" for m, c in top_m)
+    commit_msg = (
+        f"score: {new_pct:.2f}% bias-free ({correct}/{total}) "
+        f"[+{new_pct - prev_best:.2f}pp vs prev {prev_best:.2f}%] "
+        f"— {method_summary}"
+    )
+
+    print(f"\n🎉 スコア改善! {prev_best:.2f}% → {new_pct:.2f}% (+{new_pct-prev_best:.2f}pp)")
+    print(f"📦 コミット中: {commit_msg}")
+
+    repo_dir = os.path.dirname(os.path.abspath(__file__))
+    result = subprocess.run(
+        ['bash', 'commit_score.sh', f'{new_pct:.2f}', commit_msg],
+        cwd=repo_dir, capture_output=True, text=True
+    )
+    print(result.stdout)
+    if result.returncode != 0:
+        print(f"⚠️ push失敗: {result.stderr[:200]}")
+else:
+    print(f"\nスコア変化なし or 後退 ({prev_best:.2f}% → {new_pct:.2f}%)。コミットをスキップ。")
+# ─────────────────────────────────────────────────────────────────────────────
