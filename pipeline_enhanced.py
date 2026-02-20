@@ -56,6 +56,8 @@ class VerantyxV6Enhanced:
         use_simulation: bool = True,
         use_llm_decomposer: bool = True,          # ollama 利用可能なら自動使用
         llm_model: str = "qwen2.5:7b-instruct",   # 推奨モデル
+        use_claude_proposal: bool = False,        # Claude API proposal generator
+        claude_api_key: Optional[str] = None,     # ANTHROPIC_API_KEY or explicit
     ):
         # デフォルトパス
         base_dir = os.path.dirname(__file__)
@@ -114,6 +116,19 @@ class VerantyxV6Enhanced:
         # Guard 1: strict_spec_mode=True のとき、verify/worldgen 未補強ピースをブロックする
         # HLE 50問計測時は True にして missing_spec_count を正確に出す
         self.strict_spec_mode: bool = False
+
+        # Claude Proposal Generator（Path B: LLM透明化）
+        self._proposer = None
+        if use_claude_proposal:
+            try:
+                from proposal.claude_proposal import ClaudeProposalGenerator, ProposalConfig
+                self._proposer = ClaudeProposalGenerator(
+                    api_key=claude_api_key,
+                    cfg=ProposalConfig(),
+                )
+                print("[Pipeline] Claude Proposal Generator: enabled")
+            except Exception as _pe:
+                print(f"[Pipeline] Claude Proposal Generator init failed: {_pe}")
 
         # 統計
         self.stats = {
@@ -793,12 +808,15 @@ class VerantyxV6Enhanced:
             (answer_str | None, confidence, method_tag)
             answer_str が None の場合は既存パスにフォールバック。
         """
-        # TEMPORARY FIX: Disable CEGIS due to 11.3% accuracy (541/610 wrong)
-        # CEGIS is generating false positives and hurting score
-        return None, 0.0, "cegis_disabled"
-
+        # CEGIS re-enabled: trivial pass bugs fixed (2026-02-20)
+        # - HIGH_CONFIDENCE fallback removed
+        # - worldgen failure → INCONCLUSIVE (not PROVED)
+        # - answer sanity check added
         self.stats["cegis_ran"] += 1
         schema = ir_dict.get("answer_schema", "text")
+
+        # LaTeX answer schema hint (from decomposer)
+        latex_schema = ir_dict.get("metadata", {}).get("latex_answer_schema", "text")
 
         # ── 診断ログ + Guard 1: ピースの verify/worldgen 欠落チェック ────────
         missing_spec_pieces = []
@@ -870,6 +888,27 @@ class VerantyxV6Enhanced:
                 self.stats["cegis_fallback"] += 1
                 return None, 0.0, "mcq_gate_rejected"
 
+        # ── Step B3: LaTeX answer schema validation ──────────────────────────────
+        # If latex_schema='integer', reject float answers
+        # If latex_schema='yesno', expect True/False/Yes/No
+        if latex_schema == 'integer' and raw_value is not None:
+            try:
+                val_str = str(raw_value).strip()
+                if '.' in val_str or 'e' in val_str.lower():
+                    # Float detected when integer expected
+                    trace.append(f"cegis:B3_LATEX_SCHEMA_REJECT:expected_integer got_float value={raw_value}")
+                    self.stats["cegis_fallback"] += 1
+                    return None, 0.0, "latex_schema_type_mismatch"
+            except Exception:
+                pass
+
+        if latex_schema == 'yesno' and raw_value is not None:
+            val_str = str(raw_value).strip().lower()
+            if val_str not in ('yes', 'no', 'true', 'false', '1', '0'):
+                trace.append(f"cegis:B3_LATEX_SCHEMA_REJECT:expected_yesno got={raw_value}")
+                self.stats["cegis_fallback"] += 1
+                return None, 0.0, "latex_schema_yesno_mismatch"
+
         # ── Step C: 候補リスト構築（複数候補があれば全部渡す） ───────────────
         candidates: List[Candidate] = []
 
@@ -896,9 +935,38 @@ class VerantyxV6Enhanced:
                     candidates.extend(cands)
 
         if not candidates:
-            trace.append("cegis:no_candidates")
-            self.stats["cegis_fallback"] += 1
-            return None, 0.0, "no_candidates"
+            # ── Claude Proposal Generator（候補ゼロ時のフォールバック）────────
+            # LLM は候補設計図を出すだけ。計算・決定は禁止。
+            if self._proposer is not None:
+                try:
+                    from proposal.claude_proposal import make_candidates_from_ir
+                    prop_ir = self._proposer.propose_ir(
+                        problem_text=problem_text,
+                        executor_hint=f"domain={ir_dict.get('domain','unknown')} schema={schema}",
+                        choices=ir_dict.get("entities", {}).get("choices"),
+                    )
+                    if prop_ir:
+                        # IR 内の candidate_programs をパース → Candidate に変換
+                        for cinfo in make_candidates_from_ir(prop_ir):
+                            # value は slots から取るか placeholder
+                            slot_val = next(iter(cinfo.get("slots", {}).values()), None)
+                            if slot_val is not None:
+                                candidates.append(Candidate(
+                                    value=slot_val,
+                                    construction=cinfo.get("pipeline", []),
+                                    confidence=0.5,
+                                    constraints=[],
+                                    metadata={"from_llm": True, "program_id": cinfo.get("program_id")},
+                                ))
+                        trace.append(f"proposal:added {len(candidates)} candidates from Claude IR")
+                        self.stats["cegis_fallback"] = self.stats.get("cegis_fallback", 0)
+                except Exception as _prop_e:
+                    trace.append(f"proposal:error:{_prop_e}")
+            # 候補がまだなければ諦める
+            if not candidates:
+                trace.append("cegis:no_candidates")
+                self.stats["cegis_fallback"] += 1
+                return None, 0.0, "no_candidates"
 
         # ── Step D: WorldSpec の決定（ピースの worldgen があれば優先） ────────
         world_spec = None
