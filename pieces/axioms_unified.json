@@ -1,0 +1,3650 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "num_assets": 83
+  },
+  "assets": [
+    {
+      "asset_id": "axiom_600b:general:concept_L0_C0",
+      "requires": [],
+      "provides": [
+        "concept_definition"
+      ],
+      "converts": {
+        "input": "problem_statement",
+        "output": "formal_representation"
+      },
+      "verifies": [
+        "pattern_match",
+        "type_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "General Definition: syntax_low",
+        "semantic_cluster": "syntax_low",
+        "layer": 0,
+        "singular_value": 1.0,
+        "pattern_signature": "relation",
+        "applies_to": [],
+        "description": "Extracted from 600B Layer 0"
+      },
+      "vector": null,
+      "topology": {
+        "layer": 0,
+        "domain": "general",
+        "axiom_type": "definition",
+        "importance": 0.01
+      },
+      "confidence": 0.01,
+      "source": "600b_axiom_extraction",
+      "metadata": {
+        "extraction_method": "high_singular_value_concepts",
+        "layer_depth": 0,
+        "pattern_signature": "relation"
+      }
+    },
+    {
+      "asset_id": "axiom_600b:general:concept_L0_C1",
+      "requires": [],
+      "provides": [
+        "concept_definition"
+      ],
+      "converts": {
+        "input": "problem_statement",
+        "output": "formal_representation"
+      },
+      "verifies": [
+        "pattern_match",
+        "type_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "General Definition: syntax_low",
+        "semantic_cluster": "syntax_low",
+        "layer": 0,
+        "singular_value": 1.0,
+        "pattern_signature": "relation",
+        "applies_to": [],
+        "description": "Extracted from 600B Layer 0"
+      },
+      "vector": null,
+      "topology": {
+        "layer": 0,
+        "domain": "general",
+        "axiom_type": "definition",
+        "importance": 0.01
+      },
+      "confidence": 0.01,
+      "source": "600b_axiom_extraction",
+      "metadata": {
+        "extraction_method": "high_singular_value_concepts",
+        "layer_depth": 0,
+        "pattern_signature": "relation"
+      }
+    },
+    {
+      "asset_id": "axiom_600b:general:concept_L0_C2",
+      "requires": [],
+      "provides": [
+        "concept_definition"
+      ],
+      "converts": {
+        "input": "problem_statement",
+        "output": "formal_representation"
+      },
+      "verifies": [
+        "pattern_match",
+        "type_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "General Definition: syntax_low",
+        "semantic_cluster": "syntax_low",
+        "layer": 0,
+        "singular_value": 1.0,
+        "pattern_signature": "relation",
+        "applies_to": [],
+        "description": "Extracted from 600B Layer 0"
+      },
+      "vector": null,
+      "topology": {
+        "layer": 0,
+        "domain": "general",
+        "axiom_type": "definition",
+        "importance": 0.01
+      },
+      "confidence": 0.01,
+      "source": "600b_axiom_extraction",
+      "metadata": {
+        "extraction_method": "high_singular_value_concepts",
+        "layer_depth": 0,
+        "pattern_signature": "relation"
+      }
+    },
+    {
+      "asset_id": "axiom_600b:general:concept_L1_C0",
+      "requires": [],
+      "provides": [
+        "concept_definition"
+      ],
+      "converts": {
+        "input": "problem_statement",
+        "output": "formal_representation"
+      },
+      "verifies": [
+        "pattern_match",
+        "type_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "General Definition: syntax_low",
+        "semantic_cluster": "syntax_low",
+        "layer": 1,
+        "singular_value": 1.0,
+        "pattern_signature": "relation",
+        "applies_to": [],
+        "description": "Extracted from 600B Layer 1"
+      },
+      "vector": null,
+      "topology": {
+        "layer": 1,
+        "domain": "general",
+        "axiom_type": "definition",
+        "importance": 0.01
+      },
+      "confidence": 0.01,
+      "source": "600b_axiom_extraction",
+      "metadata": {
+        "extraction_method": "high_singular_value_concepts",
+        "layer_depth": 1,
+        "pattern_signature": "relation"
+      }
+    },
+    {
+      "asset_id": "axiom_600b:general:concept_L1_C1",
+      "requires": [],
+      "provides": [
+        "concept_definition"
+      ],
+      "converts": {
+        "input": "problem_statement",
+        "output": "formal_representation"
+      },
+      "verifies": [
+        "pattern_match",
+        "type_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "General Definition: syntax_low",
+        "semantic_cluster": "syntax_low",
+        "layer": 1,
+        "singular_value": 1.0,
+        "pattern_signature": "relation",
+        "applies_to": [],
+        "description": "Extracted from 600B Layer 1"
+      },
+      "vector": null,
+      "topology": {
+        "layer": 1,
+        "domain": "general",
+        "axiom_type": "definition",
+        "importance": 0.01
+      },
+      "confidence": 0.01,
+      "source": "600b_axiom_extraction",
+      "metadata": {
+        "extraction_method": "high_singular_value_concepts",
+        "layer_depth": 1,
+        "pattern_signature": "relation"
+      }
+    },
+    {
+      "asset_id": "axiom_600b:general:concept_L1_C2",
+      "requires": [],
+      "provides": [
+        "concept_definition"
+      ],
+      "converts": {
+        "input": "problem_statement",
+        "output": "formal_representation"
+      },
+      "verifies": [
+        "pattern_match",
+        "type_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "General Definition: syntax_low",
+        "semantic_cluster": "syntax_low",
+        "layer": 1,
+        "singular_value": 1.0,
+        "pattern_signature": "relation",
+        "applies_to": [],
+        "description": "Extracted from 600B Layer 1"
+      },
+      "vector": null,
+      "topology": {
+        "layer": 1,
+        "domain": "general",
+        "axiom_type": "definition",
+        "importance": 0.01
+      },
+      "confidence": 0.01,
+      "source": "600b_axiom_extraction",
+      "metadata": {
+        "extraction_method": "high_singular_value_concepts",
+        "layer_depth": 1,
+        "pattern_signature": "relation"
+      }
+    },
+    {
+      "asset_id": "axiom_600b:general:concept_L2_C0",
+      "requires": [],
+      "provides": [
+        "concept_definition"
+      ],
+      "converts": {
+        "input": "problem_statement",
+        "output": "formal_representation"
+      },
+      "verifies": [
+        "pattern_match",
+        "type_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "General Definition: syntax_low",
+        "semantic_cluster": "syntax_low",
+        "layer": 2,
+        "singular_value": 1.0,
+        "pattern_signature": "relation",
+        "applies_to": [],
+        "description": "Extracted from 600B Layer 2"
+      },
+      "vector": null,
+      "topology": {
+        "layer": 2,
+        "domain": "general",
+        "axiom_type": "definition",
+        "importance": 0.01
+      },
+      "confidence": 0.01,
+      "source": "600b_axiom_extraction",
+      "metadata": {
+        "extraction_method": "high_singular_value_concepts",
+        "layer_depth": 2,
+        "pattern_signature": "relation"
+      }
+    },
+    {
+      "asset_id": "axiom_600b:general:concept_L2_C1",
+      "requires": [],
+      "provides": [
+        "concept_definition"
+      ],
+      "converts": {
+        "input": "problem_statement",
+        "output": "formal_representation"
+      },
+      "verifies": [
+        "pattern_match",
+        "type_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "General Definition: syntax_low",
+        "semantic_cluster": "syntax_low",
+        "layer": 2,
+        "singular_value": 1.0,
+        "pattern_signature": "relation",
+        "applies_to": [],
+        "description": "Extracted from 600B Layer 2"
+      },
+      "vector": null,
+      "topology": {
+        "layer": 2,
+        "domain": "general",
+        "axiom_type": "definition",
+        "importance": 0.01
+      },
+      "confidence": 0.01,
+      "source": "600b_axiom_extraction",
+      "metadata": {
+        "extraction_method": "high_singular_value_concepts",
+        "layer_depth": 2,
+        "pattern_signature": "relation"
+      }
+    },
+    {
+      "asset_id": "axiom_600b:general:concept_L2_C2",
+      "requires": [],
+      "provides": [
+        "concept_definition"
+      ],
+      "converts": {
+        "input": "problem_statement",
+        "output": "formal_representation"
+      },
+      "verifies": [
+        "pattern_match",
+        "type_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "General Definition: syntax_low",
+        "semantic_cluster": "syntax_low",
+        "layer": 2,
+        "singular_value": 1.0,
+        "pattern_signature": "relation",
+        "applies_to": [],
+        "description": "Extracted from 600B Layer 2"
+      },
+      "vector": null,
+      "topology": {
+        "layer": 2,
+        "domain": "general",
+        "axiom_type": "definition",
+        "importance": 0.01
+      },
+      "confidence": 0.01,
+      "source": "600b_axiom_extraction",
+      "metadata": {
+        "extraction_method": "high_singular_value_concepts",
+        "layer_depth": 2,
+        "pattern_signature": "relation"
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0001",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "truth_values"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Truth Values Concept 1",
+        "statement": "The set of truth values is denoted as $\\mathcal{V} = \\{T, F\\}$ (or $\\{1, 0\\}$), representing the fundamental semantic units in classical logic.",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0001",
+          "prop.definition.0020",
+          "prop.definition.0039",
+          "prop.definition.0058",
+          "prop.definition.0077"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0001",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0002",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "connectives"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Connectives Concept 2",
+        "statement": "A logical connective of arity $n$ is a function $f: \\{T, F\\}^n \\to \\{T, F\\}$. Standard connectives include negation ($\\neg$), conjunction ($\\land$), disjunction ($\\lor$), and implication ($\\to$).",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0002",
+          "prop.definition.0021",
+          "prop.definition.0040",
+          "prop.definition.0059",
+          "prop.definition.0078"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0002",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0003",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "valuations"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Valuations Concept 3",
+        "statement": "A valuation $v$ is a function $v: \\text{Var} \\to \\{T, F\\}$ assigning a truth value to each propositional variable. It extends recursively to all formulas.",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0003",
+          "prop.definition.0022",
+          "prop.definition.0041",
+          "prop.definition.0060",
+          "prop.definition.0079"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0003",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0004",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "satisfiability"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Satisfiability Concept 4",
+        "statement": "A formula $\\phi$ is satisfiable if there exists a valuation $v$ such that $v(\\phi) = T$ (denoted $v \\models \\phi$).",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0004",
+          "prop.definition.0023",
+          "prop.definition.0042",
+          "prop.definition.0061",
+          "prop.definition.0080"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0004",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0005",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "validity"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Validity Concept 5",
+        "statement": "A formula $\\phi$ is valid (a tautology) if for every valuation $v$, $v(\\phi) = T$ (denoted $\\models \\phi$).",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0005",
+          "prop.definition.0024",
+          "prop.definition.0043",
+          "prop.definition.0062",
+          "prop.definition.0081"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0005",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0006",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "tautologies"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Tautologies Concept 6",
+        "statement": "A tautology is a formula that is true under every possible valuation. Examples include $P \\lor \\neg P$.",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0006",
+          "prop.definition.0025",
+          "prop.definition.0044",
+          "prop.definition.0063",
+          "prop.definition.0082"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0006",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0007",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "contradictions"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Contradictions Concept 7",
+        "statement": "A contradiction is a formula that is false under every possible valuation. Example: $P \\land \\neg P$.",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0007",
+          "prop.definition.0026",
+          "prop.definition.0045",
+          "prop.definition.0064",
+          "prop.definition.0083"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0007",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0008",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "normal_forms"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Normal Forms Concept 8",
+        "statement": "A normal form is a standard structure for formulas. Common forms include Conjunctive Normal Form (CNF) and Disjunctive Normal Form (DNF).",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0008",
+          "prop.definition.0027",
+          "prop.definition.0046",
+          "prop.definition.0065",
+          "prop.definition.0084"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0008",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0009",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "cnf"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "CNF Concept 9",
+        "statement": "A formula is in Conjunctive Normal Form (CNF) if it is a conjunction of clauses, where each clause is a disjunction of literals. $\\bigwedge_i \\bigvee_j l_{ij}$",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0009",
+          "prop.definition.0028",
+          "prop.definition.0047",
+          "prop.definition.0066",
+          "prop.definition.0085"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0009",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0010",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "dnf"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "DNF Concept 10",
+        "statement": "A formula is in Disjunctive Normal Form (DNF) if it is a disjunction of clauses, where each clause is a conjunction of literals. $\\bigvee_i \\bigwedge_j l_{ij}$",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0010",
+          "prop.definition.0029",
+          "prop.definition.0048",
+          "prop.definition.0067",
+          "prop.definition.0086"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0010",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0011",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "inference_rules"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Inference Rules Concept 11",
+        "statement": "An inference rule is a syntactic transformation rule of the form $\\frac{\\phi_1, \\dots, \\phi_n}{\\psi}$, allowing the derivation of conclusion $\\psi$ from premises $\\phi_i$.",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0011",
+          "prop.definition.0030",
+          "prop.definition.0049",
+          "prop.definition.0068",
+          "prop.definition.0087"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0011",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0012",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "soundness"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Soundness Concept 12",
+        "statement": "Soundness is the property that if a formula $\\phi$ is provable ($\\\\vdash \\\\phi$), then it is valid ($\\\\models \\\\phi$). $\\Gamma \\\\vdash \\\\phi \\\\implies \\\\Gamma \\\\models \\\\phi$.",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0016",
+          "prop.definition.0035",
+          "prop.definition.0054",
+          "prop.definition.0073",
+          "prop.definition.0092"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0012",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0013",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "completeness",
+        "functional_completeness"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Completeness Concept 13",
+        "statement": "Completeness is the property that if a formula $\\phi$ is valid ($\\\\models \\\\phi$), then it is provable ($\\\\vdash \\\\phi$). $\\Gamma \\\\models \\\\phi \\\\implies \\\\Gamma \\\\vdash \\\\phi$.",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0012",
+          "prop.definition.0013",
+          "prop.definition.0031",
+          "prop.definition.0032",
+          "prop.definition.0050"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0013",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0014",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "compactness"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Compactness Concept 14",
+        "statement": "The Compactness Theorem states that a set of formulas $\\Gamma$ is satisfiable if and only if every finite subset $\\Gamma_0 \\subseteq \\Gamma$ is satisfiable.",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0014",
+          "prop.definition.0033",
+          "prop.definition.0052",
+          "prop.definition.0071",
+          "prop.definition.0090"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0014",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0015",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "boolean_algebra"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Boolean Algebra Concept 15",
+        "statement": "A Boolean Algebra is a structure $(B, \\land, \\lor, \\neg, 0, 1)$ satisfying axioms of associativity, commutativity, distributivity, identity, and complementation.",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0015",
+          "prop.definition.0034",
+          "prop.definition.0053",
+          "prop.definition.0072",
+          "prop.definition.0091"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0015",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0017",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "resolution"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Resolution Concept 17",
+        "statement": "Resolution is an inference rule used for automated theorem proving in CNF, defined as: from $(A \\lor x)$ and $(B \\lor \\neg x)$, infer $(A \\lor B)$.",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0017",
+          "prop.definition.0036",
+          "prop.definition.0055",
+          "prop.definition.0074",
+          "prop.definition.0093"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0017",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0018",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "natural_deduction"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Natural Deduction Concept 18",
+        "statement": "Natural Deduction is a proof system relying on introduction and elimination rules for each connective, mirroring human reasoning patterns.",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0018",
+          "prop.definition.0037",
+          "prop.definition.0056",
+          "prop.definition.0075",
+          "prop.definition.0094"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0018",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.definition.0019",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "syntax"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Syntax Concept 19",
+        "statement": "Syntax defines the formal grammar of well-formed formulas (WFFs) using an alphabet of symbols and formation rules, independent of meaning.",
+        "kind": "definition",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [
+          "prop.definition.0019",
+          "prop.definition.0038",
+          "prop.definition.0057",
+          "prop.definition.0076",
+          "prop.definition.0095"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "definition",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.definition.0019",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0001",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "truth_values"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Truth Values Axiom 1",
+        "statement": "Axiom 1 for Truth Values. A foundational postulate in the propositional calculus concerning truth values.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0001",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0002",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "connectives"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Connectives Axiom 2",
+        "statement": "Axiom 2 for Connectives. A foundational postulate in the propositional calculus concerning connectives.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "connectives",
+          "axiom",
+          "prop_connectives"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0002",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0003",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "valuations"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Valuations Axiom 3",
+        "statement": "Axiom 3 for Valuations. A foundational postulate in the propositional calculus concerning valuations.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "valuations",
+          "axiom",
+          "prop_valuations"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0003",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0004",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "satisfiability"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Satisfiability Axiom 4",
+        "statement": "Axiom 4 for Satisfiability. A foundational postulate in the propositional calculus concerning satisfiability.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "satisfiability",
+          "axiom",
+          "prop_satisfiability"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0004",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0005",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "validity"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Validity Axiom 5",
+        "statement": "Axiom 5 for Validity. A foundational postulate in the propositional calculus concerning validity.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "validity",
+          "axiom",
+          "prop_validity"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0005",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0006",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "tautologies"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Tautologies Axiom 6",
+        "statement": "Axiom 6 for Tautologies. A foundational postulate in the propositional calculus concerning tautologies.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "tautologies",
+          "axiom",
+          "prop_tautologies"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0006",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0007",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "contradictions"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Contradictions Axiom 7",
+        "statement": "Axiom 7 for Contradictions. A foundational postulate in the propositional calculus concerning contradictions.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0007",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0008",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "normal_forms"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Normal Forms Axiom 8",
+        "statement": "Axiom 8 for Normal Forms. A foundational postulate in the propositional calculus concerning normal forms.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0008",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0009",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "cnf"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "CNF Axiom 9",
+        "statement": "Axiom 9 for CNF. A foundational postulate in the propositional calculus concerning cnf.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "cnf",
+          "axiom",
+          "prop_cnf"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0009",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0010",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "dnf"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "DNF Axiom 10",
+        "statement": "Axiom 10 for DNF. A foundational postulate in the propositional calculus concerning dnf.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "dnf",
+          "axiom",
+          "prop_dnf"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0010",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0011",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "inference_rules"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Inference Rules Axiom 11",
+        "statement": "Axiom 11 for Inference Rules. A foundational postulate in the propositional calculus concerning inference rules.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0011",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0012",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "soundness"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Soundness Axiom 12",
+        "statement": "Axiom 12 for Soundness. A foundational postulate in the propositional calculus concerning soundness.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0012",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0013",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "completeness"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Completeness Axiom 13",
+        "statement": "Axiom 13 for Completeness. A foundational postulate in the propositional calculus concerning completeness.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "completeness",
+          "axiom",
+          "prop_completeness"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0013",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0014",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "compactness"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Compactness Axiom 14",
+        "statement": "Axiom 14 for Compactness. A foundational postulate in the propositional calculus concerning compactness.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "compactness",
+          "axiom",
+          "prop_compactness"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0014",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0015",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "boolean_algebra"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Boolean Algebra Axiom 15",
+        "statement": "Axiom 15 for Boolean Algebra. A foundational postulate in the propositional calculus concerning boolean algebra.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0015",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0016",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "functional_completeness"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Functional Completeness Axiom 16",
+        "statement": "Axiom 16 for Functional Completeness. A foundational postulate in the propositional calculus concerning functional completeness.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "functional completeness",
+          "axiom",
+          "prop_functional completeness"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0016",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0017",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "resolution"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Resolution Axiom 17",
+        "statement": "Axiom 17 for Resolution. A foundational postulate in the propositional calculus concerning resolution.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "resolution",
+          "axiom",
+          "prop_resolution"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0017",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0018",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "natural_deduction"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Natural Deduction Axiom 18",
+        "statement": "Axiom 18 for Natural Deduction. A foundational postulate in the propositional calculus concerning natural deduction.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "natural deduction",
+          "axiom",
+          "prop_natural deduction"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0018",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0019",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "syntax"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Syntax Axiom 19",
+        "statement": "Axiom 19 for Syntax. A foundational postulate in the propositional calculus concerning syntax.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "syntax",
+          "axiom",
+          "prop_syntax"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0019",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0020",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "truth_values"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Truth Values Axiom 20",
+        "statement": "Axiom 20 for Truth Values. A foundational postulate in the propositional calculus concerning truth values.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0020",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0021",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "connectives"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Connectives Axiom 21",
+        "statement": "Axiom 21 for Connectives. A foundational postulate in the propositional calculus concerning connectives.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "connectives",
+          "axiom",
+          "prop_connectives"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0021",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0022",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "valuations"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Valuations Axiom 22",
+        "statement": "Axiom 22 for Valuations. A foundational postulate in the propositional calculus concerning valuations.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "valuations",
+          "axiom",
+          "prop_valuations"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0022",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0023",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "satisfiability"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Satisfiability Axiom 23",
+        "statement": "Axiom 23 for Satisfiability. A foundational postulate in the propositional calculus concerning satisfiability.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "satisfiability",
+          "axiom",
+          "prop_satisfiability"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0023",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0024",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "validity"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Validity Axiom 24",
+        "statement": "Axiom 24 for Validity. A foundational postulate in the propositional calculus concerning validity.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "validity",
+          "axiom",
+          "prop_validity"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0024",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0025",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "tautologies"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Tautologies Axiom 25",
+        "statement": "Axiom 25 for Tautologies. A foundational postulate in the propositional calculus concerning tautologies.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0025",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0026",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "contradictions"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Contradictions Axiom 26",
+        "statement": "Axiom 26 for Contradictions. A foundational postulate in the propositional calculus concerning contradictions.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "duplicate_of:prop.axiom.0007"
+        ],
+        "links": [
+          "prop.axiom.0007"
+        ],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0026",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0027",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "normal_forms"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Normal Forms Axiom 27",
+        "statement": "Axiom 27 for Normal Forms. A foundational postulate in the propositional calculus concerning normal forms.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "normal forms",
+          "axiom",
+          "prop_normal forms"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0027",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0028",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "cnf"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "CNF Axiom 28",
+        "statement": "Axiom 28 for CNF. A foundational postulate in the propositional calculus concerning cnf.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "cnf",
+          "axiom",
+          "prop_cnf"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0028",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0029",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "dnf"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "DNF Axiom 29",
+        "statement": "Axiom 29 for DNF. A foundational postulate in the propositional calculus concerning dnf.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0029",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0030",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "inference_rules"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Inference Rules Axiom 30",
+        "statement": "Axiom 30 for Inference Rules. A foundational postulate in the propositional calculus concerning inference rules.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "has_duplicates"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0030",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0031",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "soundness"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Soundness Axiom 31",
+        "statement": "Axiom 31 for Soundness. A foundational postulate in the propositional calculus concerning soundness.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "soundness",
+          "axiom",
+          "prop_soundness"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0031",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "kb:prop.axiom.0032",
+      "requires": [
+        "logic_system",
+        "propositional_logic"
+      ],
+      "provides": [
+        "completeness"
+      ],
+      "converts": {
+        "input": "formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "pattern_match"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Completeness Axiom 32",
+        "statement": "Axiom 32 for Completeness. A foundational postulate in the propositional calculus concerning completeness.",
+        "kind": "axiom",
+        "domain": "propositional_logic",
+        "patterns": [
+          "completeness",
+          "axiom",
+          "prop_completeness"
+        ],
+        "links": [],
+        "refutation": null
+      },
+      "vector": null,
+      "topology": {
+        "domain": "propositional_logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "foundation_kb",
+      "metadata": {
+        "original_id": "prop.axiom.0032",
+        "has_refutation": false
+      }
+    },
+    {
+      "asset_id": "axiom:physics:newtons_second_law",
+      "requires": [
+        "physical_system",
+        "force",
+        "mass"
+      ],
+      "provides": [
+        "acceleration"
+      ],
+      "converts": {
+        "input": "constraints",
+        "output": "numerical_result"
+      },
+      "verifies": [
+        "unit_check",
+        "dimension_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Newton's Second Law",
+        "formula": "F = m * a",
+        "statement": "The force acting on an object is equal to the mass of that object times its acceleration.",
+        "domain": "physics",
+        "kind": "law",
+        "applies_to": [
+          "mechanics",
+          "dynamics",
+          "kinematics"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "physics",
+        "kind": "law",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "manual_physics_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:physics:conservation_of_energy",
+      "requires": [
+        "physical_system",
+        "energy"
+      ],
+      "provides": [
+        "energy_conservation"
+      ],
+      "converts": {
+        "input": "system_state",
+        "output": "energy_balance"
+      },
+      "verifies": [
+        "energy_sum_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Conservation of Energy",
+        "formula": "E_total = E_kinetic + E_potential = constant",
+        "statement": "The total energy of an isolated system remains constant over time.",
+        "domain": "physics",
+        "kind": "law",
+        "applies_to": [
+          "mechanics",
+          "thermodynamics"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "physics",
+        "kind": "law",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "manual_physics_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:mathematics:pythagorean_theorem",
+      "requires": [
+        "geometry_system",
+        "right_triangle"
+      ],
+      "provides": [
+        "hypotenuse"
+      ],
+      "converts": {
+        "input": "triangle_sides",
+        "output": "length"
+      },
+      "verifies": [
+        "right_angle_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Pythagorean Theorem",
+        "formula": "a² + b² = c²",
+        "statement": "In a right triangle, the square of the hypotenuse equals the sum of squares of the other two sides.",
+        "domain": "mathematics",
+        "kind": "theorem",
+        "applies_to": [
+          "geometry",
+          "trigonometry"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "mathematics",
+        "kind": "theorem",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "manual_math_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:mathematics:fundamental_theorem_calculus",
+      "requires": [
+        "calculus_system",
+        "function",
+        "integral"
+      ],
+      "provides": [
+        "derivative",
+        "antiderivative_relation"
+      ],
+      "converts": {
+        "input": "integral_expression",
+        "output": "derivative"
+      },
+      "verifies": [
+        "function_continuity_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Fundamental Theorem of Calculus",
+        "formula": "d/dx ∫[a,x] f(t)dt = f(x)",
+        "statement": "Differentiation and integration are inverse operations.",
+        "domain": "mathematics",
+        "kind": "theorem",
+        "applies_to": [
+          "calculus",
+          "analysis"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "mathematics",
+        "kind": "theorem",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "manual_math_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:logic:modal_k",
+      "requires": [
+        "modal_logic_system",
+        "normal_modal_system"
+      ],
+      "provides": [
+        "necessitation",
+        "distribution"
+      ],
+      "converts": {
+        "input": "modal_formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "kripke_model_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Modal Logic K Axiom",
+        "formula": "□(A→B) → (□A→□B)",
+        "statement": "If necessarily A implies B, then if A is necessary, B is necessary.",
+        "domain": "logic",
+        "kind": "axiom",
+        "applies_to": [
+          "modal_logic",
+          "formal_systems"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "manual_logic_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:logic:modus_ponens",
+      "requires": [
+        "logic_system",
+        "implication",
+        "antecedent"
+      ],
+      "provides": [
+        "consequent"
+      ],
+      "converts": {
+        "input": "premises",
+        "output": "conclusion"
+      },
+      "verifies": [
+        "logical_validity_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Modus Ponens",
+        "formula": "A, A→B ⊢ B",
+        "statement": "If A is true and A implies B, then B is true.",
+        "domain": "logic",
+        "kind": "rule",
+        "applies_to": [
+          "propositional_logic",
+          "predicate_logic"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "logic",
+        "kind": "rule",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "manual_logic_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:mathematics:matrix_multiplication",
+      "requires": [
+        "linear_algebra_system",
+        "matrix"
+      ],
+      "provides": [
+        "matrix_product"
+      ],
+      "converts": {
+        "input": "matrices",
+        "output": "product_matrix"
+      },
+      "verifies": [
+        "dimension_compatibility_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Matrix Multiplication",
+        "formula": "(AB)_ij = Σ_k A_ik * B_kj",
+        "statement": "The product of two matrices is computed by summing products of corresponding elements.",
+        "domain": "mathematics",
+        "kind": "definition",
+        "applies_to": [
+          "linear_algebra",
+          "computation"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "mathematics",
+        "kind": "definition",
+        "importance": 0.9
+      },
+      "confidence": 1.0,
+      "source": "manual_math_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:arithmetic:addition",
+      "requires": [
+        "arithmetic_system"
+      ],
+      "provides": [
+        "sum"
+      ],
+      "converts": {
+        "input": "numbers",
+        "output": "sum"
+      },
+      "verifies": [
+        "value_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Addition",
+        "formula": "a + b = c",
+        "statement": "The sum of two numbers is their addition.",
+        "domain": "arithmetic",
+        "kind": "operation",
+        "applies_to": [
+          "basic_arithmetic",
+          "computation"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "arithmetic",
+        "kind": "operation",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "manual_arithmetic_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:arithmetic:subtraction",
+      "requires": [
+        "arithmetic_system"
+      ],
+      "provides": [
+        "difference"
+      ],
+      "converts": {
+        "input": "numbers",
+        "output": "difference"
+      },
+      "verifies": [
+        "value_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Subtraction",
+        "formula": "a - b = c",
+        "statement": "The difference between two numbers is their subtraction.",
+        "domain": "arithmetic",
+        "kind": "operation",
+        "applies_to": [
+          "basic_arithmetic",
+          "computation"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "arithmetic",
+        "kind": "operation",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "manual_arithmetic_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:arithmetic:multiplication",
+      "requires": [
+        "arithmetic_system"
+      ],
+      "provides": [
+        "product"
+      ],
+      "converts": {
+        "input": "numbers",
+        "output": "product"
+      },
+      "verifies": [
+        "value_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Multiplication",
+        "formula": "a × b = c",
+        "statement": "The product of two numbers is their multiplication.",
+        "domain": "arithmetic",
+        "kind": "operation",
+        "applies_to": [
+          "basic_arithmetic",
+          "computation"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "arithmetic",
+        "kind": "operation",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "manual_arithmetic_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:arithmetic:division",
+      "requires": [
+        "arithmetic_system"
+      ],
+      "provides": [
+        "quotient"
+      ],
+      "converts": {
+        "input": "numbers",
+        "output": "quotient"
+      },
+      "verifies": [
+        "value_check",
+        "division_by_zero_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Division",
+        "formula": "a ÷ b = c",
+        "statement": "The quotient of two numbers is their division.",
+        "domain": "arithmetic",
+        "kind": "operation",
+        "applies_to": [
+          "basic_arithmetic",
+          "computation"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "arithmetic",
+        "kind": "operation",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "manual_arithmetic_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:logic:modal_t",
+      "requires": [
+        "modal_logic_system",
+        "reflexive"
+      ],
+      "provides": [
+        "reflexivity_property"
+      ],
+      "converts": {
+        "input": "modal_formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "frame_property_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Modal T Axiom (Reflexivity)",
+        "formula": "□p → p",
+        "statement": "If p is necessary, then p is true. Valid in reflexive frames.",
+        "domain": "modal_logic",
+        "kind": "axiom",
+        "applies_to": [
+          "reflexive_frames",
+          "S4",
+          "S5"
+        ],
+        "frame_property": "reflexive"
+      },
+      "vector": null,
+      "topology": {
+        "domain": "logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "manual_modal_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:logic:modal_4",
+      "requires": [
+        "modal_logic_system",
+        "transitive"
+      ],
+      "provides": [
+        "transitivity_property"
+      ],
+      "converts": {
+        "input": "modal_formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "frame_property_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Modal 4 Axiom (Transitivity)",
+        "formula": "□p → □□p",
+        "statement": "If p is necessary, then it is necessarily necessary. Valid in transitive frames.",
+        "domain": "modal_logic",
+        "kind": "axiom",
+        "applies_to": [
+          "transitive_frames",
+          "S4",
+          "S5",
+          "K4"
+        ],
+        "frame_property": "transitive"
+      },
+      "vector": null,
+      "topology": {
+        "domain": "logic",
+        "kind": "axiom",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "manual_modal_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:logic:modal_d",
+      "requires": [
+        "modal_logic_system",
+        "serial"
+      ],
+      "provides": [
+        "seriality_property"
+      ],
+      "converts": {
+        "input": "modal_formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "frame_property_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Modal D Axiom (Serial)",
+        "formula": "□p → ◇p",
+        "statement": "If p is necessary, then p is possible. Valid in serial frames.",
+        "domain": "modal_logic",
+        "kind": "axiom",
+        "applies_to": [
+          "serial_frames",
+          "deontic_logic"
+        ],
+        "frame_property": "serial"
+      },
+      "vector": null,
+      "topology": {
+        "domain": "logic",
+        "kind": "axiom",
+        "importance": 0.9
+      },
+      "confidence": 1.0,
+      "source": "manual_modal_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:logic:modal_5",
+      "requires": [
+        "modal_logic_system",
+        "euclidean"
+      ],
+      "provides": [
+        "euclidean_property"
+      ],
+      "converts": {
+        "input": "modal_formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "frame_property_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Modal 5 Axiom (Euclidean)",
+        "formula": "◇p → □◇p",
+        "statement": "If p is possible, then it is necessarily possible. Valid in euclidean frames.",
+        "domain": "modal_logic",
+        "kind": "axiom",
+        "applies_to": [
+          "euclidean_frames",
+          "S5"
+        ],
+        "frame_property": "euclidean"
+      },
+      "vector": null,
+      "topology": {
+        "domain": "logic",
+        "kind": "axiom",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "manual_modal_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:logic:modal_b",
+      "requires": [
+        "modal_logic_system",
+        "symmetric"
+      ],
+      "provides": [
+        "symmetry_property"
+      ],
+      "converts": {
+        "input": "modal_formula",
+        "output": "validity"
+      },
+      "verifies": [
+        "frame_property_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Modal B Axiom (Symmetric)",
+        "formula": "p → □◇p",
+        "statement": "If p is true, then it is necessarily possible. Valid in symmetric frames.",
+        "domain": "modal_logic",
+        "kind": "axiom",
+        "applies_to": [
+          "symmetric_frames",
+          "B_logic"
+        ],
+        "frame_property": "symmetric"
+      },
+      "vector": null,
+      "topology": {
+        "domain": "logic",
+        "kind": "axiom",
+        "importance": 0.7
+      },
+      "confidence": 1.0,
+      "source": "manual_modal_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:logic:modal_duality",
+      "requires": [
+        "modal_logic_system"
+      ],
+      "provides": [
+        "modal_equivalence"
+      ],
+      "converts": {
+        "input": "modal_formula",
+        "output": "equivalent_formula"
+      },
+      "verifies": [
+        "equivalence_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Modal Duality",
+        "formula": "◇p ≡ ¬□¬p, □p ≡ ¬◇¬p",
+        "statement": "Possibility and necessity are dual operators.",
+        "domain": "modal_logic",
+        "kind": "equivalence",
+        "applies_to": [
+          "all_modal_logics"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "logic",
+        "kind": "equivalence",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "manual_modal_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:logic:tautology_checker",
+      "requires": [
+        "propositional_logic",
+        "logic_system"
+      ],
+      "provides": [
+        "tautology_verification"
+      ],
+      "converts": {
+        "input": "propositional_formula",
+        "output": "truth_value"
+      },
+      "verifies": [
+        "truth_table_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Tautology Checker",
+        "formula": "Truth table verification for all variable assignments",
+        "statement": "Determines if a propositional formula is always true (tautology).",
+        "domain": "propositional_logic",
+        "kind": "verifier",
+        "applies_to": [
+          "tautology_checking",
+          "validity_checking"
+        ],
+        "algorithm": "truth_table"
+      },
+      "vector": null,
+      "topology": {
+        "domain": "logic",
+        "kind": "verifier",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "manual_prop_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:logic:sat_solver",
+      "requires": [
+        "propositional_logic",
+        "logic_system"
+      ],
+      "provides": [
+        "satisfiability_verification"
+      ],
+      "converts": {
+        "input": "propositional_formula",
+        "output": "satisfiability"
+      },
+      "verifies": [
+        "sat_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "SAT Solver",
+        "formula": "DPLL / backtracking algorithm",
+        "statement": "Determines if a propositional formula is satisfiable.",
+        "domain": "propositional_logic",
+        "kind": "solver",
+        "applies_to": [
+          "satisfiability_checking",
+          "cnf_solving"
+        ],
+        "algorithm": "dpll"
+      },
+      "vector": null,
+      "topology": {
+        "domain": "logic",
+        "kind": "solver",
+        "importance": 1.0
+      },
+      "confidence": 1.0,
+      "source": "manual_prop_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:logic:de_morgan",
+      "requires": [
+        "propositional_logic",
+        "logic_system"
+      ],
+      "provides": [
+        "logical_equivalence"
+      ],
+      "converts": {
+        "input": "logical_formula",
+        "output": "equivalent_formula"
+      },
+      "verifies": [
+        "equivalence_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "De Morgan's Laws",
+        "formula": "¬(A∧B) ≡ ¬A∨¬B, ¬(A∨B) ≡ ¬A∧¬B",
+        "statement": "Laws for negation of conjunctions and disjunctions.",
+        "domain": "propositional_logic",
+        "kind": "equivalence",
+        "applies_to": [
+          "formula_simplification",
+          "cnf_conversion"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "logic",
+        "kind": "equivalence",
+        "importance": 0.9
+      },
+      "confidence": 1.0,
+      "source": "manual_prop_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:logic:distribution",
+      "requires": [
+        "propositional_logic",
+        "logic_system"
+      ],
+      "provides": [
+        "logical_equivalence"
+      ],
+      "converts": {
+        "input": "logical_formula",
+        "output": "equivalent_formula"
+      },
+      "verifies": [
+        "equivalence_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Distribution Laws",
+        "formula": "A∧(B∨C) ≡ (A∧B)∨(A∧C), A∨(B∧C) ≡ (A∨B)∧(A∨C)",
+        "statement": "Laws for distribution of conjunction and disjunction.",
+        "domain": "propositional_logic",
+        "kind": "equivalence",
+        "applies_to": [
+          "formula_simplification",
+          "cnf_conversion"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "logic",
+        "kind": "equivalence",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "manual_prop_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:logic:double_negation",
+      "requires": [
+        "propositional_logic",
+        "logic_system"
+      ],
+      "provides": [
+        "logical_equivalence"
+      ],
+      "converts": {
+        "input": "logical_formula",
+        "output": "equivalent_formula"
+      },
+      "verifies": [
+        "equivalence_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Double Negation",
+        "formula": "¬¬A ≡ A",
+        "statement": "Double negation elimination.",
+        "domain": "propositional_logic",
+        "kind": "equivalence",
+        "applies_to": [
+          "formula_simplification"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "logic",
+        "kind": "equivalence",
+        "importance": 0.9
+      },
+      "confidence": 1.0,
+      "source": "manual_prop_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:logic:implication_equivalence",
+      "requires": [
+        "propositional_logic",
+        "logic_system"
+      ],
+      "provides": [
+        "logical_equivalence"
+      ],
+      "converts": {
+        "input": "logical_formula",
+        "output": "equivalent_formula"
+      },
+      "verifies": [
+        "equivalence_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Implication Equivalence",
+        "formula": "(A→B) ≡ (¬A∨B)",
+        "statement": "Implication can be expressed as disjunction.",
+        "domain": "propositional_logic",
+        "kind": "equivalence",
+        "applies_to": [
+          "formula_simplification",
+          "cnf_conversion"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "logic",
+        "kind": "equivalence",
+        "importance": 0.9
+      },
+      "confidence": 1.0,
+      "source": "manual_prop_axioms",
+      "metadata": {}
+    },
+    {
+      "asset_id": "axiom:logic:contraposition",
+      "requires": [
+        "propositional_logic",
+        "logic_system"
+      ],
+      "provides": [
+        "logical_equivalence"
+      ],
+      "converts": {
+        "input": "logical_formula",
+        "output": "equivalent_formula"
+      },
+      "verifies": [
+        "equivalence_check"
+      ],
+      "axis_x": "+X",
+      "axis_y": "+Y",
+      "axis_z": "+Z",
+      "content": {
+        "title": "Contraposition",
+        "formula": "(A→B) ≡ (¬B→¬A)",
+        "statement": "An implication is equivalent to its contrapositive.",
+        "domain": "propositional_logic",
+        "kind": "equivalence",
+        "applies_to": [
+          "proof_transformation"
+        ]
+      },
+      "vector": null,
+      "topology": {
+        "domain": "logic",
+        "kind": "equivalence",
+        "importance": 0.8
+      },
+      "confidence": 1.0,
+      "source": "manual_prop_axioms",
+      "metadata": {}
+    }
+  ]
+}

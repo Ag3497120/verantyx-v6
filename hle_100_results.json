@@ -1,0 +1,2022 @@
+{
+  "stats": {
+    "total": 100,
+    "verified": 0,
+    "failed": 0,
+    "error": 100,
+    "by_type": {
+      "unknown": {
+        "total": 100,
+        "verified": 0
+      }
+    },
+    "by_domain": {
+      "unknown": {
+        "total": 100,
+        "verified": 0
+      }
+    }
+  },
+  "results": [
+    {
+      "index": 0,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 1,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 2,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 3,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 4,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 5,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 6,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 7,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 8,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 9,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 10,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 11,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 12,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 13,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 14,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 15,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 16,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 17,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 18,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 19,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 20,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 21,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 22,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 23,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 24,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 25,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 26,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 27,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 28,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 29,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 30,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 31,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 32,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 33,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 34,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 35,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 36,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 37,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 38,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 39,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 40,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 41,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 42,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 43,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 44,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 45,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 46,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 47,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 48,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 49,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 50,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 51,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 52,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 53,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 54,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 55,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 56,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 57,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 58,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 59,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 60,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 61,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 62,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 63,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 64,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 65,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 66,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 67,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 68,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 69,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 70,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 71,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 72,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 73,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 74,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 75,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 76,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 77,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 78,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 79,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 80,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 81,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 82,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 83,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 84,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 85,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 86,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 87,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 88,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 89,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 90,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 91,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 92,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 93,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 94,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 95,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 96,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 97,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 98,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    },
+    {
+      "index": 99,
+      "question": "",
+      "expected": null,
+      "answer": "None",
+      "status": "SOLVED",
+      "type": "unknown",
+      "trace": [
+        "piece_ids:['arithmetic_eval_integer']",
+        "step:cross_simulation",
+        "simulation_start:domain=unknown",
+        "step:execute",
+        "candidate:schema=integer,confidence=0.00",
+        "step:grammar_search",
+        "grammar_found:answer_integer",
+        "step:compose",
+        "answer:None",
+        "step:validate"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "total": 2500,
+  "columns": [
+    "id",
+    "question",
+    "image",
+    "image_preview",
+    "answer",
+    "answer_type",
+    "author_name",
+    "rationale",
+    "rationale_image",
+    "raw_subject",
+    "category",
+    "canary"
+  ],
+  "category_counts": {
+    "Math": 1021,
+    "Biology/Medicine": 280,
+    "Computer Science/AI": 241,
+    "Other": 233,
+    "Physics": 230,
+    "Humanities/Social Science": 219,
+    "Chemistry": 165,
+    "Engineering": 111
+  },
+  "answer_type_counts": {
+    "exactMatch": 1909,
+    "multipleChoice": 591
+  }
+}

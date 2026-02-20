@@ -1,0 +1,23 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+
+# Large binary / dataset files
+*.gguf
+*.parquet
+hle_2500_eval.jsonl
+
+# Temp chunked eval results
+hle_2500_results_temp_*.json
+hle_avh_results_temp_*.json
+hle_avh_results_2500_full.json
+hle_original_2500_full.json
+
+# Log files
+*.log
+batch_*.log
+
+# macOS
+.DS_Store

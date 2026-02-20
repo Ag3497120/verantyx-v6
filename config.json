@@ -1,0 +1,53 @@
+{
+  "model_type": "verantyx",
+  "architecture": "rule_based_symbolic_reasoning",
+  "version": "8.0",
+  "framework": "python",
+  "pipeline_tag": "text2text-generation",
+  "domains": [
+    "arithmetic",
+    "algebra",
+    "calculus",
+    "linear_algebra",
+    "number_theory",
+    "combinatorics",
+    "probability",
+    "statistics",
+    "geometry",
+    "graph_theory",
+    "logic",
+    "string_operations",
+    "multiple_choice",
+    "physics",
+    "chemistry",
+    "modular_arithmetic",
+    "advanced_combinatorics",
+    "advanced_number_theory",
+    "advanced_probability"
+  ],
+  "num_pieces": 108,
+  "num_executors": 24,
+  "knowledge_integration": {
+    "type": "600b_svd_concept_dirs",
+    "model_source": "DeepSeek-V3-671B-MoE",
+    "num_experts": 15104,
+    "svd_rank": 4,
+    "hidden_dim": 7168,
+    "extraction_method": "static_weight_svd_no_inference"
+  },
+  "inference": {
+    "gpu_required": false,
+    "api_required": false,
+    "deterministic": true,
+    "avg_latency_ms": 12
+  },
+  "benchmarks": {
+    "hle_2500": {
+      "accuracy": 8.56,
+      "correct": 214,
+      "total": 2500,
+      "date": "2026-02-18",
+      "note": "rule_based_symbolic_reasoning_no_llm"
+    }
+  }
+}

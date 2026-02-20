@@ -1,0 +1,47 @@
+{
+  "total": 2500,
+  "correct": 95,
+  "accuracy": 3.8,
+  "time": 53.877269983291626,
+  "category_stats": {
+    "Other": {
+      "total": 233,
+      "correct": 4
+    },
+    "Humanities/Social Science": {
+      "total": 219,
+      "correct": 11
+    },
+    "Math": {
+      "total": 1021,
+      "correct": 28
+    },
+    "Physics": {
+      "total": 230,
+      "correct": 8
+    },
+    "Computer Science/AI": {
+      "total": 241,
+      "correct": 11
+    },
+    "Biology/Medicine": {
+      "total": 280,
+      "correct": 24
+    },
+    "Chemistry": {
+      "total": 165,
+      "correct": 6
+    },
+    "Engineering": {
+      "total": 111,
+      "correct": 3
+    }
+  },
+  "method_stats": {
+    "unknown": 85,
+    "math_cross_sim": 7,
+    "puzzle_reasoning": 1,
+    "propositional_simulation": 1,
+    "hle_boost:detector:_detect_kb_known_value_mcq": 1
+  }
+}

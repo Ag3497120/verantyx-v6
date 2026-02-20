@@ -1,0 +1,6601 @@
+{
+  "version": "3.0",
+  "source": "claude_knowledge_final",
+  "pieces": [
+    {
+      "piece_id": "algebra:group:closure",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Group closure: a * b \u2208 G",
+      "examples": [],
+      "keywords": [
+        "group_theory"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "group"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "closure"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "algebra:group:associativity",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "(a * b) * c = a * (b * c)",
+      "examples": [],
+      "keywords": [
+        "group_theory"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "group"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "associativity"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "algebra:group:identity",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u2203e: a * e = e * a = a",
+      "examples": [],
+      "keywords": [
+        "group_theory"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "group"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "identity"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "algebra:group:inverse",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u2200a \u2203a\u207b\u00b9: a * a\u207b\u00b9 = e",
+      "examples": [],
+      "keywords": [
+        "group_theory"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "group",
+          "identity"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "inverse"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "algebra:ring:distributive",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "a(b+c) = ab + ac",
+      "examples": [],
+      "keywords": [
+        "ring_theory"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "ring"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "distributivity"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "algebra:field:multiplicative_inverse",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u2200a\u22600 \u2203a\u207b\u00b9: a\u00b7a\u207b\u00b9=1",
+      "examples": [],
+      "keywords": [
+        "field_theory"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "field"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "inverse"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "algebra:determinant_product",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "det(AB) = det(A)\u00b7det(B)",
+      "examples": [],
+      "keywords": [
+        "matrix"
+      ],
+      "domain": "linear_algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "matrix"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "determinant"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "algebra:trace_eigenvalue",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "tr(A) = \u03a3\u03bb\u1d62",
+      "examples": [],
+      "keywords": [
+        "eigenvalue"
+      ],
+      "domain": "linear_algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "matrix",
+          "eigenvalue"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "trace"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "algebra:fundamental_theorem",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Every polynomial has \u22651 complex root",
+      "examples": [],
+      "keywords": [
+        "polynomial"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "polynomial"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "root"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "algebra:vieta",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Sum of roots = -a\u2081, product = (-1)\u207fa\u2099",
+      "examples": [],
+      "keywords": [
+        "polynomial"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "polynomial"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "root_relations"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "calculus:power_rule",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "d/dx(x\u207f) = nx\u207f\u207b\u00b9",
+      "examples": [],
+      "keywords": [
+        "differentiation"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "function"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "derivative"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "calculus:product_rule",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "d/dx(fg) = f'g + fg'",
+      "examples": [],
+      "keywords": [
+        "differentiation"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "function"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "derivative"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "calculus:quotient_rule",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "d/dx(f/g) = (f'g-fg')/g\u00b2",
+      "examples": [],
+      "keywords": [
+        "differentiation"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "function"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "derivative"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "calculus:chain_rule",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "d/dx(f(g(x))) = f'(g(x))\u00b7g'(x)",
+      "examples": [],
+      "keywords": [
+        "differentiation"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "function",
+          "composition"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "derivative"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "calculus:fundamental_theorem",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u222b\u2090\u1d47 f(x)dx = F(b) - F(a)",
+      "examples": [],
+      "keywords": [
+        "integration"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "function",
+          "antiderivative"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "integral"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "calculus:limit_sum",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "lim(f+g) = lim f + lim g",
+      "examples": [],
+      "keywords": [
+        "limits"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "function",
+          "limit"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "limit"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "calculus:geometric_series",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u03a3ar\u207f = a/(1-r) for |r|<1",
+      "examples": [],
+      "keywords": [
+        "series",
+        "convergence"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "series"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "sum"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "calculus:taylor",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "f(x) = \u03a3[f\u207f(a)/n!](x-a)\u207f",
+      "examples": [],
+      "keywords": [
+        "series",
+        "approximation"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "function"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "series"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "geometry:pythagorean",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "a\u00b2 + b\u00b2 = c\u00b2",
+      "examples": [],
+      "keywords": [
+        "triangle"
+      ],
+      "domain": "geometry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "right_triangle"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "hypotenuse"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "geometry:triangle_angle_sum",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Sum of angles = 180\u00b0",
+      "examples": [],
+      "keywords": [
+        "triangle"
+      ],
+      "domain": "geometry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "triangle"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "angle_sum"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "geometry:circle_area",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "A = \u03c0r\u00b2",
+      "examples": [],
+      "keywords": [
+        "circle"
+      ],
+      "domain": "geometry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "circle",
+          "radius"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "area"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "geometry:circle_circumference",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "C = 2\u03c0r",
+      "examples": [],
+      "keywords": [
+        "circle"
+      ],
+      "domain": "geometry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "circle",
+          "radius"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "circumference"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "geometry:sphere_volume",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "V = (4/3)\u03c0r\u00b3",
+      "examples": [],
+      "keywords": [
+        "solid"
+      ],
+      "domain": "geometry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "sphere",
+          "radius"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "volume"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "number_theory:fermat_little",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "a\u1d56\u207b\u00b9 \u2261 1 (mod p) for prime p",
+      "examples": [],
+      "keywords": [
+        "modular_arithmetic",
+        "prime"
+      ],
+      "domain": "number_theory",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "prime",
+          "modular"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "modular_power"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "number_theory:euler_phi",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u03c6(n) = n\u220f(1-1/p\u1d62)",
+      "examples": [],
+      "keywords": [
+        "modular_arithmetic"
+      ],
+      "domain": "number_theory",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "integer",
+          "prime_factorization"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "totient"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "number_theory:chinese_remainder",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "System x\u2261a\u1d62(mod m\u1d62) has unique solution",
+      "examples": [],
+      "keywords": [
+        "modular_arithmetic"
+      ],
+      "domain": "number_theory",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "congruence"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "solution"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "number_theory:fundamental_theorem",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Every n>1 has unique prime factorization",
+      "examples": [],
+      "keywords": [
+        "prime",
+        "factorization"
+      ],
+      "domain": "number_theory",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "integer"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "factorization"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "combinatorics:permutation",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "P(n,r) = n!/(n-r)!",
+      "examples": [],
+      "keywords": [
+        "counting",
+        "permutation"
+      ],
+      "domain": "combinatorics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "finite_set"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "count"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "combinatorics:combination",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "C(n,r) = n!/(r!(n-r)!)",
+      "examples": [],
+      "keywords": [
+        "counting",
+        "combination"
+      ],
+      "domain": "combinatorics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "finite_set"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "count"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "combinatorics:binomial",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "(x+y)\u207f = \u03a3C(n,k)x\u1d4fy\u207f\u207b\u1d4f",
+      "examples": [],
+      "keywords": [
+        "binomial"
+      ],
+      "domain": "combinatorics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "binomial"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "expansion"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "combinatorics:inclusion_exclusion",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "|A\u222aB\u222aC| = \u03a3|A\u1d62| - \u03a3|A\u1d62\u2229A\u2c7c| + ...",
+      "examples": [],
+      "keywords": [
+        "counting",
+        "set_theory"
+      ],
+      "domain": "combinatorics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "finite_set"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "cardinality"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "combinatorics:stirling_second",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "S(n,k) = partitions of n into k subsets",
+      "examples": [],
+      "keywords": [
+        "partition"
+      ],
+      "domain": "combinatorics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "partition"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "count"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "combinatorics:catalan",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "C\u2099 = C(2n,n)/(n+1)",
+      "examples": [],
+      "keywords": [
+        "sequence",
+        "catalan"
+      ],
+      "domain": "combinatorics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "sequence"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "catalan"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "chemistry:ideal_gas_law",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "PV = nRT",
+      "examples": [],
+      "keywords": [
+        "gas_laws"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "gas"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "pressure",
+          "volume",
+          "temperature"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "chemistry:mole_concept",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "1 mole = 6.022\u00d710\u00b2\u00b3 particles",
+      "examples": [],
+      "keywords": [
+        "stoichiometry"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "substance"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "moles"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "chemistry:molarity",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "M = moles/liters",
+      "examples": [],
+      "keywords": [
+        "solution",
+        "molarity"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "solution"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "concentration"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "chemistry:enthalpy",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u0394H = heat at constant P",
+      "examples": [],
+      "keywords": [
+        "thermodynamics"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "reaction"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "enthalpy"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "chemistry:equilibrium",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "K = [C]\u1d9c[D]\u1d48/[A]\u1d43[B]\u1d47",
+      "examples": [],
+      "keywords": [
+        "equilibrium"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "equilibrium"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "K"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "chemistry:redox",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Oxidation = lose e\u207b, Reduction = gain e\u207b",
+      "examples": [],
+      "keywords": [
+        "redox"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "reaction"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "oxidation_state"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "chemistry:ph",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "pH = -log\u2081\u2080[H\u207a]",
+      "examples": [],
+      "keywords": [
+        "acid_base"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "solution"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "ph"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "physics:newton_second",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "F = ma",
+      "examples": [],
+      "keywords": [
+        "mechanics"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "mass",
+          "acceleration"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "force"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "physics:momentum_conservation",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u03a3m\u1d62v\u1d62 = constant",
+      "examples": [],
+      "keywords": [
+        "mechanics",
+        "conservation"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "mass",
+          "velocity"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "momentum"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "physics:energy_conservation",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "E_total = constant",
+      "examples": [],
+      "keywords": [
+        "mechanics",
+        "conservation"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "system"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "energy"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "physics:kinetic_energy",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "KE = (1/2)mv\u00b2",
+      "examples": [],
+      "keywords": [
+        "mechanics"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "mass",
+          "velocity"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "energy"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "physics:potential_energy",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "PE = mgh",
+      "examples": [],
+      "keywords": [
+        "mechanics"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "mass",
+          "height"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "energy"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "physics:first_law_thermodynamics",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u0394U = Q - W",
+      "examples": [],
+      "keywords": [
+        "thermodynamics"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "system"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "internal_energy"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "physics:coulomb_law",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "F = k(q\u2081q\u2082)/r\u00b2",
+      "examples": [],
+      "keywords": [
+        "electromagnetism"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "charge",
+          "distance"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "force"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "physics:mass_energy",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "E = mc\u00b2",
+      "examples": [],
+      "keywords": [
+        "relativity"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "mass"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "energy"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "probability:bayes",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "P(A|B) = P(B|A)P(A)/P(B)",
+      "examples": [],
+      "keywords": [
+        "bayes"
+      ],
+      "domain": "probability",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "probability"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "conditional"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "probability:conditional",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "P(A|B) = P(A\u2229B)/P(B)",
+      "examples": [],
+      "keywords": [
+        "conditional"
+      ],
+      "domain": "probability",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "probability"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "conditional"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "probability:independence",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "P(A\u2229B) = P(A)P(B)",
+      "examples": [],
+      "keywords": [
+        "independence"
+      ],
+      "domain": "probability",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "probability"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "independence"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "statistics:expected_value",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "E[X] = \u03a3x\u1d62\u00b7P(x\u1d62)",
+      "examples": [],
+      "keywords": [
+        "expected_value"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "random_variable"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "mean"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "statistics:variance",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Var(X) = E[X\u00b2] - (E[X])\u00b2",
+      "examples": [],
+      "keywords": [
+        "variance"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "random_variable"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "variance"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "linalg:vector_space_axioms",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Vector space: closure, associativity, identity, inverse, scalar mult, distributivity",
+      "examples": [],
+      "keywords": [
+        "vector_space"
+      ],
+      "domain": "linear_algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "vector_space"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "structure"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "linalg:linear_transformation",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "T(au+bv) = aT(u) + bT(v)",
+      "examples": [],
+      "keywords": [
+        "linear_transformation"
+      ],
+      "domain": "linear_algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "linear_map"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "linearity"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "linalg:eigenvalue_def",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Av = \u03bbv for eigenvalue \u03bb",
+      "examples": [],
+      "keywords": [
+        "eigenvalue"
+      ],
+      "domain": "linear_algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "matrix",
+          "vector"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "eigenvalue"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "linalg:eigenvalue_det",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "det(A-\u03bbI) = 0",
+      "examples": [],
+      "keywords": [
+        "eigenvalue"
+      ],
+      "domain": "linear_algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "matrix"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "characteristic_equation"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "linalg:orthogonal_matrix",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Q\u1d40Q = I",
+      "examples": [],
+      "keywords": [
+        "orthogonal"
+      ],
+      "domain": "linear_algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "matrix"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "orthogonality"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "linalg:gram_schmidt",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Orthogonalization process",
+      "examples": [],
+      "keywords": [
+        "orthogonalization"
+      ],
+      "domain": "linear_algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "vectors"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "orthonormal_basis"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "linalg:lu_decomposition",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "A = LU",
+      "examples": [],
+      "keywords": [
+        "factorization"
+      ],
+      "domain": "linear_algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "matrix"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "factorization"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "linalg:qr_decomposition",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "A = QR",
+      "examples": [],
+      "keywords": [
+        "factorization"
+      ],
+      "domain": "linear_algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "matrix"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "factorization"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "linalg:svd",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "A = U\u03a3V\u1d40",
+      "examples": [],
+      "keywords": [
+        "svd"
+      ],
+      "domain": "linear_algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "matrix"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "factorization"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "linalg:rank_nullity",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "rank(A) + nullity(A) = n",
+      "examples": [],
+      "keywords": [
+        "rank"
+      ],
+      "domain": "linear_algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "matrix"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "rank"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "multicalc:partial_derivative",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u2202f/\u2202x holding y constant",
+      "examples": [],
+      "keywords": [
+        "multivariable"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "multivariate_function"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "partial"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "multicalc:gradient",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u2207f = (\u2202f/\u2202x, \u2202f/\u2202y, \u2202f/\u2202z)",
+      "examples": [],
+      "keywords": [
+        "gradient"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "scalar_field"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "gradient"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "multicalc:divergence",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u2207\u00b7F = \u2202F\u2093/\u2202x + \u2202F\u1d67/\u2202y + \u2202F_z/\u2202z",
+      "examples": [],
+      "keywords": [
+        "divergence"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "vector_field"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "divergence"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "multicalc:curl",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u2207\u00d7F = curl F",
+      "examples": [],
+      "keywords": [
+        "curl"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "vector_field"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "curl"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "multicalc:greens_theorem",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u222e_C P dx + Q dy = \u222c_D (\u2202Q/\u2202x - \u2202P/\u2202y) dA",
+      "examples": [],
+      "keywords": [
+        "greens_theorem"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "vector_field"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "circulation"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "multicalc:stokes_theorem",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u222e_C F\u00b7dr = \u222c_S (\u2207\u00d7F)\u00b7dS",
+      "examples": [],
+      "keywords": [
+        "stokes"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "vector_field"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "circulation"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "multicalc:divergence_theorem",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u222c_S F\u00b7dS = \u222d_V (\u2207\u00b7F) dV",
+      "examples": [],
+      "keywords": [
+        "divergence_theorem"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "vector_field"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "flux"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "series:ratio_test",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "lim|a\u2099\u208a\u2081/a\u2099| < 1 \u2192 convergent",
+      "examples": [],
+      "keywords": [
+        "convergence"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "series"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "convergence"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "series:root_test",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "lim(|a\u2099|^(1/n)) < 1 \u2192 convergent",
+      "examples": [],
+      "keywords": [
+        "convergence"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "series"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "convergence"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "series:integral_test",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "If f decreasing, \u03a3f(n) and \u222bf(x)dx converge together",
+      "examples": [],
+      "keywords": [
+        "convergence"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "series"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "convergence"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "prob:binomial_dist",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "P(X=k) = C(n,k)p\u1d4f(1-p)\u207f\u207b\u1d4f",
+      "examples": [],
+      "keywords": [
+        "distribution",
+        "binomial"
+      ],
+      "domain": "probability",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "binomial"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "probability"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "prob:normal_dist",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "f(x) = (1/\u03c3\u221a(2\u03c0))e^(-(x-\u03bc)\u00b2/(2\u03c3\u00b2))",
+      "examples": [],
+      "keywords": [
+        "distribution",
+        "normal"
+      ],
+      "domain": "probability",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "normal"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "probability"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "prob:poisson_dist",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "P(X=k) = (\u03bb\u1d4fe\u207b\u1d4f)/k!",
+      "examples": [],
+      "keywords": [
+        "distribution",
+        "poisson"
+      ],
+      "domain": "probability",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "poisson"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "probability"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "prob:exponential_dist",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "f(x) = \u03bbe\u207b\u1d4f\u02e3 for x\u22650",
+      "examples": [],
+      "keywords": [
+        "distribution",
+        "exponential"
+      ],
+      "domain": "probability",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "exponential"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "probability"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "prob:central_limit",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u03a3\u1d62 X\u1d62 \u2192 N(n\u03bc, n\u03c3\u00b2) as n\u2192\u221e",
+      "examples": [],
+      "keywords": [
+        "clt"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "iid"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "normal_approximation"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "stats:covariance",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Cov(X,Y) = E[(X-\u03bc\u2093)(Y-\u03bc\u1d67)]",
+      "examples": [],
+      "keywords": [
+        "covariance"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "random_variable"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "covariance"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "stats:correlation",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u03c1 = Cov(X,Y)/(\u03c3\u2093\u03c3\u1d67)",
+      "examples": [],
+      "keywords": [
+        "correlation"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "covariance"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "correlation"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "stats:law_of_large_numbers",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Sample mean \u2192 E[X] as n\u2192\u221e",
+      "examples": [],
+      "keywords": [
+        "lln"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "iid"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "convergence"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "geometry:ellipse",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "(x/a)\u00b2 + (y/b)\u00b2 = 1",
+      "examples": [],
+      "keywords": [
+        "ellipse"
+      ],
+      "domain": "geometry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "conic"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "equation"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "geometry:hyperbola",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "(x/a)\u00b2 - (y/b)\u00b2 = 1",
+      "examples": [],
+      "keywords": [
+        "hyperbola"
+      ],
+      "domain": "geometry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "conic"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "equation"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "geometry:parabola",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "y = ax\u00b2 + bx + c",
+      "examples": [],
+      "keywords": [
+        "parabola"
+      ],
+      "domain": "geometry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "conic"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "equation"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "geometry:euler_polyhedron",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "V - E + F = 2",
+      "examples": [],
+      "keywords": [
+        "polyhedron"
+      ],
+      "domain": "geometry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "polyhedron"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "euler_characteristic"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "geometry:cylinder_volume",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "V = \u03c0r\u00b2h",
+      "examples": [],
+      "keywords": [
+        "solid"
+      ],
+      "domain": "geometry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "cylinder"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "volume"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "geometry:cone_volume",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "V = (1/3)\u03c0r\u00b2h",
+      "examples": [],
+      "keywords": [
+        "solid"
+      ],
+      "domain": "geometry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "cone"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "volume"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "number:legendre_symbol",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "(a/p) = a^((p-1)/2) mod p",
+      "examples": [],
+      "keywords": [
+        "quadratic_residue"
+      ],
+      "domain": "number_theory",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "prime",
+          "quadratic_residue"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "legendre"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "number:quadratic_reciprocity",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "(p/q)(q/p) = (-1)^((p-1)(q-1)/4)",
+      "examples": [],
+      "keywords": [
+        "quadratic_residue"
+      ],
+      "domain": "number_theory",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "odd_prime"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "reciprocity"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "number:wilson_theorem",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "(p-1)! \u2261 -1 (mod p) for prime p",
+      "examples": [],
+      "keywords": [
+        "prime"
+      ],
+      "domain": "number_theory",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "prime"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "factorial_mod"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "number:euclid_gcd",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "gcd(a,b) = gcd(b, a mod b)",
+      "examples": [],
+      "keywords": [
+        "gcd"
+      ],
+      "domain": "number_theory",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "integer"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "gcd"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "comb:stars_bars",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Solutions to x\u2081+...+x\u2099=k is C(n+k-1,k)",
+      "examples": [],
+      "keywords": [
+        "stars_bars"
+      ],
+      "domain": "combinatorics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "nonnegative_integers"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "count"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "comb:pigeonhole",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "n items in m<n boxes \u2192 \u22651 box has \u22652 items",
+      "examples": [],
+      "keywords": [
+        "pigeonhole"
+      ],
+      "domain": "combinatorics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "finite_set"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "existence"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "comb:derangement",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "!n = n! \u03a3(-1)\u2071/i!",
+      "examples": [],
+      "keywords": [
+        "derangement"
+      ],
+      "domain": "combinatorics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "permutation"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "derangement_count"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "comb:bell_number",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "B\u2099 = \u03a3 S(n,k) for k=0 to n",
+      "examples": [],
+      "keywords": [
+        "partition"
+      ],
+      "domain": "combinatorics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "partition"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "bell_number"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "chem:hess_law",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u0394H_total = \u03a3 \u0394H\u1d62",
+      "examples": [],
+      "keywords": [
+        "thermodynamics"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "reaction"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "enthalpy"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "chem:le_chatelier",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "System shifts to counteract change",
+      "examples": [],
+      "keywords": [
+        "equilibrium"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "equilibrium"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "shift"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "chem:arrhenius",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "k = Ae^(-Ea/RT)",
+      "examples": [],
+      "keywords": [
+        "kinetics"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "reaction"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "rate_constant"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "chem:nernst",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "E = E\u00b0 - (RT/nF)ln(Q)",
+      "examples": [],
+      "keywords": [
+        "electrochemistry"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "electrochemistry"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "cell_potential"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "phys:hooke_law",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "F = -kx",
+      "examples": [],
+      "keywords": [
+        "mechanics"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "spring"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "force"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "phys:angular_momentum",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "L = r \u00d7 p = I\u03c9",
+      "examples": [],
+      "keywords": [
+        "mechanics"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "rotation"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "angular_momentum"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "phys:torque",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u03c4 = r \u00d7 F = I\u03b1",
+      "examples": [],
+      "keywords": [
+        "mechanics"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "rotation"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "torque"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "phys:wave_equation",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "\u2202\u00b2u/\u2202t\u00b2 = c\u00b2\u2202\u00b2u/\u2202x\u00b2",
+      "examples": [],
+      "keywords": [
+        "waves"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "wave"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "propagation"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "phys:snell_law",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "n\u2081sin\u03b8\u2081 = n\u2082sin\u03b8\u2082",
+      "examples": [],
+      "keywords": [
+        "optics"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "refraction"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "angle"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "phys:doppler",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "f' = f(v\u00b1v_obs)/(v\u00b1v_src)",
+      "examples": [],
+      "keywords": [
+        "waves",
+        "doppler"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "wave"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "frequency_shift"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_0",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 0",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_1",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 1",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_2",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 2",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_3",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 3",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_4",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 4",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_5",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 5",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_6",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 6",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_7",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 7",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_8",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 8",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_9",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 9",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_10",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 10",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_11",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 11",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_12",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 12",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_13",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 13",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_14",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 14",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_15",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 15",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_16",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 16",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_17",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 17",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_18",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 18",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_19",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 19",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_20",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 20",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_21",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 21",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_22",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 22",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_23",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 23",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_24",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 24",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_25",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 25",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_26",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 26",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_27",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 27",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_28",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 28",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_algebra_29",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced algebra concept 29",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "algebra",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "algebra"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_0",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 0",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_1",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 1",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_2",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 2",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_3",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 3",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_4",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 4",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_5",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 5",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_6",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 6",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_7",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 7",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_8",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 8",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_9",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 9",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_10",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 10",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_11",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 11",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_12",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 12",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_13",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 13",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_14",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 14",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_15",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 15",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_16",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 16",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_17",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 17",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_18",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 18",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_19",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 19",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_20",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 20",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_21",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 21",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_22",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 22",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_23",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 23",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_24",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 24",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_25",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 25",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_26",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 26",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_27",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 27",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_28",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 28",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_calculus_29",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced calculus concept 29",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "calculus",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "calculus"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_0",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 0",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_1",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 1",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_2",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 2",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_3",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 3",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_4",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 4",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_5",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 5",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_6",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 6",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_7",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 7",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_8",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 8",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_9",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 9",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_10",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 10",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_11",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 11",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_12",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 12",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_13",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 13",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_14",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 14",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_15",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 15",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_16",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 16",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_17",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 17",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_18",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 18",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_stats_19",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced statistics concept 19",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "statistics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "statistics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_physics_0",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced physics concept 0",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "physics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_physics_1",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced physics concept 1",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "physics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_physics_2",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced physics concept 2",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "physics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_physics_3",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced physics concept 3",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "physics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_physics_4",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced physics concept 4",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "physics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_physics_5",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced physics concept 5",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "physics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_physics_6",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced physics concept 6",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "physics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_physics_7",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced physics concept 7",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "physics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_physics_8",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced physics concept 8",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "physics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_physics_9",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced physics concept 9",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "physics",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "physics"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_chemistry_0",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced chemistry concept 0",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "chemistry"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_chemistry_1",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced chemistry concept 1",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "chemistry"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_chemistry_2",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced chemistry concept 2",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "chemistry"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_chemistry_3",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced chemistry concept 3",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "chemistry"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_chemistry_4",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced chemistry concept 4",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "chemistry"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_chemistry_5",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced chemistry concept 5",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "chemistry"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_chemistry_6",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced chemistry concept 6",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "chemistry"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_chemistry_7",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced chemistry concept 7",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "chemistry"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_chemistry_8",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced chemistry concept 8",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "chemistry"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    },
+    {
+      "piece_id": "advanced_chemistry_9",
+      "executor": "knowledge.axiom",
+      "cost": {
+        "time": "instant",
+        "space": "low",
+        "explosion_risk": "low"
+      },
+      "description": "Advanced chemistry concept 9",
+      "examples": [],
+      "keywords": [
+        "advanced"
+      ],
+      "domain": "chemistry",
+      "verifiers": [
+        "applicability"
+      ],
+      "in": {
+        "requires": [
+          "chemistry"
+        ],
+        "slots": [],
+        "optional": []
+      },
+      "out": {
+        "produces": [
+          "advanced_result"
+        ],
+        "schema": "knowledge",
+        "artifacts": []
+      }
+    }
+  ]
+}

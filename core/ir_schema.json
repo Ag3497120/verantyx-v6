@@ -1,0 +1,208 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "InternalRepresentation",
+  "description": "Internal Representation (IR) - 問題文から抽出した構造化指示",
+  "type": "object",
+  "required": ["task", "domain", "answer_schema"],
+  "properties": {
+    "task": {
+      "type": "string",
+      "enum": [
+        "compute",
+        "decide",
+        "construct",
+        "prove",
+        "choose",
+        "count",
+        "find",
+        "optimize"
+      ],
+      "description": "問題のタスクタイプ"
+    },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "arithmetic",
+        "algebra",
+        "geometry",
+        "logic_propositional",
+        "logic_modal",
+        "logic_first_order",
+        "graph_theory",
+        "number_theory",
+        "combinatorics",
+        "probability",
+        "chess",
+        "puzzle",
+        "physics",
+        "chemistry",
+        "computer_science",
+        "philosophy",
+        "law",
+        "unknown"
+      ],
+      "description": "問題のドメイン"
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "エンティティのタイプ (number, symbol, graph, formula, etc.)"
+          },
+          "name": {
+            "type": "string",
+            "description": "エンティティの名前"
+          },
+          "value": {
+            "description": "エンティティの値（型は可変）"
+          },
+          "params": {
+            "type": "object",
+            "description": "追加パラメータ"
+          }
+        }
+      },
+      "description": "問題に含まれるエンティティ"
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "equals",
+              "not_equals",
+              "less_than",
+              "greater_than",
+              "range",
+              "membership",
+              "ordering",
+              "parity",
+              "divisibility",
+              "custom"
+            ]
+          },
+          "lhs": {
+            "description": "左辺"
+          },
+          "rhs": {
+            "description": "右辺"
+          },
+          "var": {
+            "type": "string",
+            "description": "変数名"
+          },
+          "min": {
+            "description": "最小値"
+          },
+          "max": {
+            "description": "最大値"
+          },
+          "expression": {
+            "type": "string",
+            "description": "カスタム制約式"
+          }
+        }
+      },
+      "description": "問題の制約条件"
+    },
+    "query": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "find",
+            "compute",
+            "count",
+            "decide",
+            "optimize",
+            "construct",
+            "prove"
+          ]
+        },
+        "target": {
+          "type": "string",
+          "description": "求める対象"
+        },
+        "property": {
+          "type": "string",
+          "enum": [
+            "value",
+            "minimal",
+            "maximal",
+            "existence",
+            "cardinality",
+            "sequence",
+            "structure"
+          ],
+          "description": "求める性質"
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "クエリ固有の制約"
+        }
+      },
+      "description": "問題のクエリ"
+    },
+    "answer_schema": {
+      "type": "string",
+      "enum": [
+        "integer",
+        "rational",
+        "decimal",
+        "complex",
+        "expression",
+        "formula",
+        "boolean",
+        "option_label",
+        "move_sequence",
+        "sequence",
+        "set",
+        "graph",
+        "matrix",
+        "proof",
+        "text"
+      ],
+      "description": "期待される答えのスキーマ"
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "選択肢（multiple-choice問題の場合）"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "ambiguity_flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_text": {
+          "type": "string"
+        }
+      },
+      "description": "メタデータ"
+    }
+  }
+}

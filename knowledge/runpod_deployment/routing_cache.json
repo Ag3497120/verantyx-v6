@@ -1,0 +1,3236 @@
+{
+  "metadata": {
+    "stub_mode": true,
+    "top_k": 8
+  },
+  "num_layers": 61,
+  "num_experts_per_layer": 256,
+  "probe_counts": {
+    "math": 15,
+    "physics": 10,
+    "chemistry": 10,
+    "biology": 10,
+    "computer_science": 10,
+    "history": 10,
+    "literature": 10,
+    "philosophy": 10
+  },
+  "domain_experts": {
+    "math": [
+      {
+        "layer": 30,
+        "expert_id": 213,
+        "domain": "math",
+        "activation_frequency": 0.03331945022907122,
+        "mean_activation_score": 0.6027762720470424,
+        "query_count": 15
+      },
+      {
+        "layer": 59,
+        "expert_id": 108,
+        "domain": "math",
+        "activation_frequency": 0.03290295710120783,
+        "mean_activation_score": 0.5702207763864234,
+        "query_count": 15
+      },
+      {
+        "layer": 45,
+        "expert_id": 197,
+        "domain": "math",
+        "activation_frequency": 0.03206997084548105,
+        "mean_activation_score": 0.5795375607811892,
+        "query_count": 15
+      },
+      {
+        "layer": 44,
+        "expert_id": 197,
+        "domain": "math",
+        "activation_frequency": 0.03206997084548105,
+        "mean_activation_score": 0.5955639171769556,
+        "query_count": 15
+      },
+      {
+        "layer": 57,
+        "expert_id": 197,
+        "domain": "math",
+        "activation_frequency": 0.03165347771761766,
+        "mean_activation_score": 0.6073664223799827,
+        "query_count": 15
+      },
+      {
+        "layer": 23,
+        "expert_id": 255,
+        "domain": "math",
+        "activation_frequency": 0.03165347771761766,
+        "mean_activation_score": 0.6230197957798156,
+        "query_count": 15
+      },
+      {
+        "layer": 23,
+        "expert_id": 179,
+        "domain": "math",
+        "activation_frequency": 0.030820491461890878,
+        "mean_activation_score": 0.5786890566701222,
+        "query_count": 15
+      },
+      {
+        "layer": 15,
+        "expert_id": 37,
+        "domain": "math",
+        "activation_frequency": 0.030820491461890878,
+        "mean_activation_score": 0.6033037264692835,
+        "query_count": 15
+      },
+      {
+        "layer": 55,
+        "expert_id": 213,
+        "domain": "math",
+        "activation_frequency": 0.030403998334027488,
+        "mean_activation_score": 0.5947919185594455,
+        "query_count": 15
+      },
+      {
+        "layer": 30,
+        "expert_id": 198,
+        "domain": "math",
+        "activation_frequency": 0.029987505206164097,
+        "mean_activation_score": 0.60471314327399,
+        "query_count": 15
+      },
+      {
+        "layer": 36,
+        "expert_id": 103,
+        "domain": "math",
+        "activation_frequency": 0.029987505206164097,
+        "mean_activation_score": 0.6284570515556163,
+        "query_count": 15
+      },
+      {
+        "layer": 46,
+        "expert_id": 106,
+        "domain": "math",
+        "activation_frequency": 0.029987505206164097,
+        "mean_activation_score": 0.6209418511234566,
+        "query_count": 15
+      },
+      {
+        "layer": 40,
+        "expert_id": 204,
+        "domain": "math",
+        "activation_frequency": 0.029987505206164097,
+        "mean_activation_score": 0.59849466568411,
+        "query_count": 15
+      },
+      {
+        "layer": 23,
+        "expert_id": 4,
+        "domain": "math",
+        "activation_frequency": 0.029987505206164097,
+        "mean_activation_score": 0.5876773106348616,
+        "query_count": 15
+      },
+      {
+        "layer": 40,
+        "expert_id": 106,
+        "domain": "math",
+        "activation_frequency": 0.029571012078300707,
+        "mean_activation_score": 0.6016371345173115,
+        "query_count": 15
+      },
+      {
+        "layer": 41,
+        "expert_id": 255,
+        "domain": "math",
+        "activation_frequency": 0.029571012078300707,
+        "mean_activation_score": 0.620466613519362,
+        "query_count": 15
+      },
+      {
+        "layer": 27,
+        "expert_id": 58,
+        "domain": "math",
+        "activation_frequency": 0.029571012078300707,
+        "mean_activation_score": 0.6125638425714047,
+        "query_count": 15
+      },
+      {
+        "layer": 59,
+        "expert_id": 37,
+        "domain": "math",
+        "activation_frequency": 0.029571012078300707,
+        "mean_activation_score": 0.5893606647578942,
+        "query_count": 15
+      },
+      {
+        "layer": 44,
+        "expert_id": 136,
+        "domain": "math",
+        "activation_frequency": 0.029571012078300707,
+        "mean_activation_score": 0.5772817171732653,
+        "query_count": 15
+      },
+      {
+        "layer": 29,
+        "expert_id": 83,
+        "domain": "math",
+        "activation_frequency": 0.029154518950437316,
+        "mean_activation_score": 0.6076824469782066,
+        "query_count": 15
+      },
+      {
+        "layer": 40,
+        "expert_id": 83,
+        "domain": "math",
+        "activation_frequency": 0.029154518950437316,
+        "mean_activation_score": 0.6163532233438442,
+        "query_count": 15
+      },
+      {
+        "layer": 29,
+        "expert_id": 197,
+        "domain": "math",
+        "activation_frequency": 0.029154518950437316,
+        "mean_activation_score": 0.6089770923787953,
+        "query_count": 15
+      },
+      {
+        "layer": 41,
+        "expert_id": 106,
+        "domain": "math",
+        "activation_frequency": 0.029154518950437316,
+        "mean_activation_score": 0.5865495857669353,
+        "query_count": 15
+      },
+      {
+        "layer": 41,
+        "expert_id": 103,
+        "domain": "math",
+        "activation_frequency": 0.028738025822573926,
+        "mean_activation_score": 0.573515636534807,
+        "query_count": 15
+      },
+      {
+        "layer": 59,
+        "expert_id": 255,
+        "domain": "math",
+        "activation_frequency": 0.028738025822573926,
+        "mean_activation_score": 0.5878135232356975,
+        "query_count": 15
+      },
+      {
+        "layer": 44,
+        "expert_id": 58,
+        "domain": "math",
+        "activation_frequency": 0.028738025822573926,
+        "mean_activation_score": 0.6017665647295123,
+        "query_count": 15
+      },
+      {
+        "layer": 33,
+        "expert_id": 83,
+        "domain": "math",
+        "activation_frequency": 0.028738025822573926,
+        "mean_activation_score": 0.5966785680182795,
+        "query_count": 15
+      },
+      {
+        "layer": 41,
+        "expert_id": 230,
+        "domain": "math",
+        "activation_frequency": 0.028738025822573926,
+        "mean_activation_score": 0.6157293051341228,
+        "query_count": 15
+      },
+      {
+        "layer": 40,
+        "expert_id": 108,
+        "domain": "math",
+        "activation_frequency": 0.028738025822573926,
+        "mean_activation_score": 0.5932345149523934,
+        "query_count": 15
+      },
+      {
+        "layer": 33,
+        "expert_id": 128,
+        "domain": "math",
+        "activation_frequency": 0.028321532694710536,
+        "mean_activation_score": 0.6100643113771153,
+        "query_count": 15
+      },
+      {
+        "layer": 40,
+        "expert_id": 10,
+        "domain": "math",
+        "activation_frequency": 0.028321532694710536,
+        "mean_activation_score": 0.6059683704883567,
+        "query_count": 15
+      },
+      {
+        "layer": 27,
+        "expert_id": 93,
+        "domain": "math",
+        "activation_frequency": 0.028321532694710536,
+        "mean_activation_score": 0.624707726934824,
+        "query_count": 15
+      },
+      {
+        "layer": 36,
+        "expert_id": 152,
+        "domain": "math",
+        "activation_frequency": 0.028321532694710536,
+        "mean_activation_score": 0.6238469308145438,
+        "query_count": 15
+      },
+      {
+        "layer": 57,
+        "expert_id": 142,
+        "domain": "math",
+        "activation_frequency": 0.028321532694710536,
+        "mean_activation_score": 0.6297637693508603,
+        "query_count": 15
+      },
+      {
+        "layer": 55,
+        "expert_id": 58,
+        "domain": "math",
+        "activation_frequency": 0.028321532694710536,
+        "mean_activation_score": 0.5994276330040323,
+        "query_count": 15
+      },
+      {
+        "layer": 41,
+        "expert_id": 23,
+        "domain": "math",
+        "activation_frequency": 0.028321532694710536,
+        "mean_activation_score": 0.589842844030141,
+        "query_count": 15
+      },
+      {
+        "layer": 33,
+        "expert_id": 252,
+        "domain": "math",
+        "activation_frequency": 0.02790503956684715,
+        "mean_activation_score": 0.5744215491009229,
+        "query_count": 15
+      },
+      {
+        "layer": 45,
+        "expert_id": 136,
+        "domain": "math",
+        "activation_frequency": 0.02790503956684715,
+        "mean_activation_score": 0.5959044026304146,
+        "query_count": 15
+      },
+      {
+        "layer": 59,
+        "expert_id": 230,
+        "domain": "math",
+        "activation_frequency": 0.02790503956684715,
+        "mean_activation_score": 0.6213426986144935,
+        "query_count": 15
+      },
+      {
+        "layer": 40,
+        "expert_id": 224,
+        "domain": "math",
+        "activation_frequency": 0.02790503956684715,
+        "mean_activation_score": 0.5907621724214505,
+        "query_count": 15
+      },
+      {
+        "layer": 59,
+        "expert_id": 58,
+        "domain": "math",
+        "activation_frequency": 0.02790503956684715,
+        "mean_activation_score": 0.6043159390868853,
+        "query_count": 15
+      },
+      {
+        "layer": 40,
+        "expert_id": 58,
+        "domain": "math",
+        "activation_frequency": 0.02790503956684715,
+        "mean_activation_score": 0.6078745825121026,
+        "query_count": 15
+      },
+      {
+        "layer": 59,
+        "expert_id": 142,
+        "domain": "math",
+        "activation_frequency": 0.02790503956684715,
+        "mean_activation_score": 0.6036050640804985,
+        "query_count": 15
+      },
+      {
+        "layer": 55,
+        "expert_id": 136,
+        "domain": "math",
+        "activation_frequency": 0.02790503956684715,
+        "mean_activation_score": 0.6159914361032107,
+        "query_count": 15
+      },
+      {
+        "layer": 55,
+        "expert_id": 83,
+        "domain": "math",
+        "activation_frequency": 0.02790503956684715,
+        "mean_activation_score": 0.605198870894879,
+        "query_count": 15
+      },
+      {
+        "layer": 15,
+        "expert_id": 103,
+        "domain": "math",
+        "activation_frequency": 0.02790503956684715,
+        "mean_activation_score": 0.5821128735412063,
+        "query_count": 15
+      },
+      {
+        "layer": 41,
+        "expert_id": 224,
+        "domain": "math",
+        "activation_frequency": 0.02790503956684715,
+        "mean_activation_score": 0.5773834318099961,
+        "query_count": 15
+      },
+      {
+        "layer": 27,
+        "expert_id": 153,
+        "domain": "math",
+        "activation_frequency": 0.027488546438983758,
+        "mean_activation_score": 0.6166874057119439,
+        "query_count": 15
+      },
+      {
+        "layer": 40,
+        "expert_id": 142,
+        "domain": "math",
+        "activation_frequency": 0.027488546438983758,
+        "mean_activation_score": 0.602561954808348,
+        "query_count": 15
+      },
+      {
+        "layer": 29,
+        "expert_id": 104,
+        "domain": "math",
+        "activation_frequency": 0.027488546438983758,
+        "mean_activation_score": 0.6036216071850489,
+        "query_count": 15
+      }
+    ],
+    "physics": [
+      {
+        "layer": 20,
+        "expert_id": 253,
+        "domain": "physics",
+        "activation_frequency": 0.03310430980637102,
+        "mean_activation_score": 0.6224465950337821,
+        "query_count": 10
+      },
+      {
+        "layer": 60,
+        "expert_id": 129,
+        "domain": "physics",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.5779203749855517,
+        "query_count": 10
+      },
+      {
+        "layer": 42,
+        "expert_id": 135,
+        "domain": "physics",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.6208447113216364,
+        "query_count": 10
+      },
+      {
+        "layer": 45,
+        "expert_id": 222,
+        "domain": "physics",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.6093125493095595,
+        "query_count": 10
+      },
+      {
+        "layer": 3,
+        "expert_id": 191,
+        "domain": "physics",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.590339297111326,
+        "query_count": 10
+      },
+      {
+        "layer": 48,
+        "expert_id": 214,
+        "domain": "physics",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.599384729682968,
+        "query_count": 10
+      },
+      {
+        "layer": 6,
+        "expert_id": 36,
+        "domain": "physics",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.6221913494757164,
+        "query_count": 10
+      },
+      {
+        "layer": 14,
+        "expert_id": 140,
+        "domain": "physics",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.6019978331638854,
+        "query_count": 10
+      },
+      {
+        "layer": 23,
+        "expert_id": 212,
+        "domain": "physics",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.6006805891314929,
+        "query_count": 10
+      },
+      {
+        "layer": 45,
+        "expert_id": 135,
+        "domain": "physics",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.604150011897593,
+        "query_count": 10
+      },
+      {
+        "layer": 60,
+        "expert_id": 229,
+        "domain": "physics",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.6006128570970062,
+        "query_count": 10
+      },
+      {
+        "layer": 24,
+        "expert_id": 108,
+        "domain": "physics",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5943496541038464,
+        "query_count": 10
+      },
+      {
+        "layer": 25,
+        "expert_id": 170,
+        "domain": "physics",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5790553089823958,
+        "query_count": 10
+      },
+      {
+        "layer": 39,
+        "expert_id": 191,
+        "domain": "physics",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5912690751748246,
+        "query_count": 10
+      },
+      {
+        "layer": 29,
+        "expert_id": 250,
+        "domain": "physics",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5683072659451766,
+        "query_count": 10
+      },
+      {
+        "layer": 3,
+        "expert_id": 246,
+        "domain": "physics",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6079834728021806,
+        "query_count": 10
+      },
+      {
+        "layer": 24,
+        "expert_id": 253,
+        "domain": "physics",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5769385583870966,
+        "query_count": 10
+      },
+      {
+        "layer": 39,
+        "expert_id": 129,
+        "domain": "physics",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5775727451304818,
+        "query_count": 10
+      },
+      {
+        "layer": 45,
+        "expert_id": 246,
+        "domain": "physics",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6125018601552593,
+        "query_count": 10
+      },
+      {
+        "layer": 20,
+        "expert_id": 191,
+        "domain": "physics",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6109662761696815,
+        "query_count": 10
+      },
+      {
+        "layer": 27,
+        "expert_id": 27,
+        "domain": "physics",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6254040740582173,
+        "query_count": 10
+      },
+      {
+        "layer": 60,
+        "expert_id": 51,
+        "domain": "physics",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5905009934831319,
+        "query_count": 10
+      },
+      {
+        "layer": 39,
+        "expert_id": 199,
+        "domain": "physics",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5729485865074389,
+        "query_count": 10
+      },
+      {
+        "layer": 23,
+        "expert_id": 121,
+        "domain": "physics",
+        "activation_frequency": 0.028107432854465958,
+        "mean_activation_score": 0.6106953453541784,
+        "query_count": 10
+      },
+      {
+        "layer": 39,
+        "expert_id": 250,
+        "domain": "physics",
+        "activation_frequency": 0.028107432854465958,
+        "mean_activation_score": 0.6183783743340492,
+        "query_count": 10
+      },
+      {
+        "layer": 53,
+        "expert_id": 140,
+        "domain": "physics",
+        "activation_frequency": 0.028107432854465958,
+        "mean_activation_score": 0.6248077547182216,
+        "query_count": 10
+      },
+      {
+        "layer": 52,
+        "expert_id": 36,
+        "domain": "physics",
+        "activation_frequency": 0.028107432854465958,
+        "mean_activation_score": 0.5972689422956609,
+        "query_count": 10
+      },
+      {
+        "layer": 52,
+        "expert_id": 108,
+        "domain": "physics",
+        "activation_frequency": 0.028107432854465958,
+        "mean_activation_score": 0.6052085215968088,
+        "query_count": 10
+      },
+      {
+        "layer": 48,
+        "expert_id": 136,
+        "domain": "physics",
+        "activation_frequency": 0.028107432854465958,
+        "mean_activation_score": 0.6109298803168736,
+        "query_count": 10
+      },
+      {
+        "layer": 20,
+        "expert_id": 136,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.6126813828103382,
+        "query_count": 10
+      },
+      {
+        "layer": 45,
+        "expert_id": 170,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.6266821479545025,
+        "query_count": 10
+      },
+      {
+        "layer": 52,
+        "expert_id": 217,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.6011783789010364,
+        "query_count": 10
+      },
+      {
+        "layer": 3,
+        "expert_id": 250,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5621463517309866,
+        "query_count": 10
+      },
+      {
+        "layer": 14,
+        "expert_id": 250,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5827964334116478,
+        "query_count": 10
+      },
+      {
+        "layer": 23,
+        "expert_id": 199,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5912705424185437,
+        "query_count": 10
+      },
+      {
+        "layer": 24,
+        "expert_id": 73,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5938672749016551,
+        "query_count": 10
+      },
+      {
+        "layer": 51,
+        "expert_id": 117,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5828829219121485,
+        "query_count": 10
+      },
+      {
+        "layer": 3,
+        "expert_id": 229,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.55984037252502,
+        "query_count": 10
+      },
+      {
+        "layer": 24,
+        "expert_id": 191,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5650015191190095,
+        "query_count": 10
+      },
+      {
+        "layer": 25,
+        "expert_id": 246,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5839247711187273,
+        "query_count": 10
+      },
+      {
+        "layer": 14,
+        "expert_id": 36,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5774361096385818,
+        "query_count": 10
+      },
+      {
+        "layer": 25,
+        "expert_id": 202,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.640004008961168,
+        "query_count": 10
+      },
+      {
+        "layer": 20,
+        "expert_id": 199,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5964972735454842,
+        "query_count": 10
+      },
+      {
+        "layer": 45,
+        "expert_id": 136,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5765453142755018,
+        "query_count": 10
+      },
+      {
+        "layer": 48,
+        "expert_id": 121,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5979723829442969,
+        "query_count": 10
+      },
+      {
+        "layer": 48,
+        "expert_id": 191,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5848996815200592,
+        "query_count": 10
+      },
+      {
+        "layer": 27,
+        "expert_id": 210,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.6031739633528571,
+        "query_count": 10
+      },
+      {
+        "layer": 27,
+        "expert_id": 36,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.6022731531474467,
+        "query_count": 10
+      },
+      {
+        "layer": 25,
+        "expert_id": 191,
+        "domain": "physics",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.6263639570655284,
+        "query_count": 10
+      },
+      {
+        "layer": 23,
+        "expert_id": 202,
+        "domain": "physics",
+        "activation_frequency": 0.026858213616489695,
+        "mean_activation_score": 0.5813798516797354,
+        "query_count": 10
+      }
+    ],
+    "chemistry": [
+      {
+        "layer": 39,
+        "expert_id": 70,
+        "domain": "chemistry",
+        "activation_frequency": 0.03685196752029981,
+        "mean_activation_score": 0.5934171536251815,
+        "query_count": 10
+      },
+      {
+        "layer": 56,
+        "expert_id": 56,
+        "domain": "chemistry",
+        "activation_frequency": 0.03685196752029981,
+        "mean_activation_score": 0.6246538899872716,
+        "query_count": 10
+      },
+      {
+        "layer": 16,
+        "expert_id": 188,
+        "domain": "chemistry",
+        "activation_frequency": 0.03497813866333541,
+        "mean_activation_score": 0.6087791277810142,
+        "query_count": 10
+      },
+      {
+        "layer": 30,
+        "expert_id": 8,
+        "domain": "chemistry",
+        "activation_frequency": 0.034353529044347283,
+        "mean_activation_score": 0.6449980235436664,
+        "query_count": 10
+      },
+      {
+        "layer": 30,
+        "expert_id": 59,
+        "domain": "chemistry",
+        "activation_frequency": 0.033728919425359154,
+        "mean_activation_score": 0.5890646020185439,
+        "query_count": 10
+      },
+      {
+        "layer": 27,
+        "expert_id": 205,
+        "domain": "chemistry",
+        "activation_frequency": 0.03310430980637102,
+        "mean_activation_score": 0.5823153814899189,
+        "query_count": 10
+      },
+      {
+        "layer": 38,
+        "expert_id": 70,
+        "domain": "chemistry",
+        "activation_frequency": 0.03247970018738289,
+        "mean_activation_score": 0.621256902916277,
+        "query_count": 10
+      },
+      {
+        "layer": 7,
+        "expert_id": 59,
+        "domain": "chemistry",
+        "activation_frequency": 0.03247970018738289,
+        "mean_activation_score": 0.608721960550933,
+        "query_count": 10
+      },
+      {
+        "layer": 27,
+        "expert_id": 76,
+        "domain": "chemistry",
+        "activation_frequency": 0.03247970018738289,
+        "mean_activation_score": 0.5840577869627137,
+        "query_count": 10
+      },
+      {
+        "layer": 57,
+        "expert_id": 170,
+        "domain": "chemistry",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.6031444450283391,
+        "query_count": 10
+      },
+      {
+        "layer": 38,
+        "expert_id": 170,
+        "domain": "chemistry",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.6209944575259584,
+        "query_count": 10
+      },
+      {
+        "layer": 16,
+        "expert_id": 202,
+        "domain": "chemistry",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.5943090046375071,
+        "query_count": 10
+      },
+      {
+        "layer": 38,
+        "expert_id": 248,
+        "domain": "chemistry",
+        "activation_frequency": 0.03123048094940662,
+        "mean_activation_score": 0.6064868747643442,
+        "query_count": 10
+      },
+      {
+        "layer": 26,
+        "expert_id": 202,
+        "domain": "chemistry",
+        "activation_frequency": 0.03123048094940662,
+        "mean_activation_score": 0.6063365073373691,
+        "query_count": 10
+      },
+      {
+        "layer": 58,
+        "expert_id": 163,
+        "domain": "chemistry",
+        "activation_frequency": 0.03123048094940662,
+        "mean_activation_score": 0.6008605535194336,
+        "query_count": 10
+      },
+      {
+        "layer": 27,
+        "expert_id": 144,
+        "domain": "chemistry",
+        "activation_frequency": 0.03123048094940662,
+        "mean_activation_score": 0.6001309184911258,
+        "query_count": 10
+      },
+      {
+        "layer": 44,
+        "expert_id": 160,
+        "domain": "chemistry",
+        "activation_frequency": 0.03123048094940662,
+        "mean_activation_score": 0.6257573741763583,
+        "query_count": 10
+      },
+      {
+        "layer": 44,
+        "expert_id": 199,
+        "domain": "chemistry",
+        "activation_frequency": 0.03123048094940662,
+        "mean_activation_score": 0.5593684037675378,
+        "query_count": 10
+      },
+      {
+        "layer": 29,
+        "expert_id": 144,
+        "domain": "chemistry",
+        "activation_frequency": 0.03123048094940662,
+        "mean_activation_score": 0.5808222140094775,
+        "query_count": 10
+      },
+      {
+        "layer": 39,
+        "expert_id": 237,
+        "domain": "chemistry",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.5787976894124042,
+        "query_count": 10
+      },
+      {
+        "layer": 59,
+        "expert_id": 236,
+        "domain": "chemistry",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.5950210161050549,
+        "query_count": 10
+      },
+      {
+        "layer": 59,
+        "expert_id": 76,
+        "domain": "chemistry",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.5962576043234673,
+        "query_count": 10
+      },
+      {
+        "layer": 29,
+        "expert_id": 242,
+        "domain": "chemistry",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.5560853213884172,
+        "query_count": 10
+      },
+      {
+        "layer": 16,
+        "expert_id": 34,
+        "domain": "chemistry",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.6271211767902523,
+        "query_count": 10
+      },
+      {
+        "layer": 56,
+        "expert_id": 59,
+        "domain": "chemistry",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.6179869853500959,
+        "query_count": 10
+      },
+      {
+        "layer": 38,
+        "expert_id": 144,
+        "domain": "chemistry",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.5875976070931987,
+        "query_count": 10
+      },
+      {
+        "layer": 58,
+        "expert_id": 236,
+        "domain": "chemistry",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.5552287259709526,
+        "query_count": 10
+      },
+      {
+        "layer": 26,
+        "expert_id": 34,
+        "domain": "chemistry",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.6120906411268693,
+        "query_count": 10
+      },
+      {
+        "layer": 26,
+        "expert_id": 16,
+        "domain": "chemistry",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.5781639865340282,
+        "query_count": 10
+      },
+      {
+        "layer": 57,
+        "expert_id": 166,
+        "domain": "chemistry",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.629500062032311,
+        "query_count": 10
+      },
+      {
+        "layer": 39,
+        "expert_id": 188,
+        "domain": "chemistry",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.579808932831115,
+        "query_count": 10
+      },
+      {
+        "layer": 44,
+        "expert_id": 248,
+        "domain": "chemistry",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.5932992626937302,
+        "query_count": 10
+      },
+      {
+        "layer": 57,
+        "expert_id": 163,
+        "domain": "chemistry",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.5745641069105184,
+        "query_count": 10
+      },
+      {
+        "layer": 59,
+        "expert_id": 202,
+        "domain": "chemistry",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.56832212972479,
+        "query_count": 10
+      },
+      {
+        "layer": 27,
+        "expert_id": 160,
+        "domain": "chemistry",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.601745049348364,
+        "query_count": 10
+      },
+      {
+        "layer": 29,
+        "expert_id": 192,
+        "domain": "chemistry",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.5580186646073414,
+        "query_count": 10
+      },
+      {
+        "layer": 57,
+        "expert_id": 253,
+        "domain": "chemistry",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.582483255518431,
+        "query_count": 10
+      },
+      {
+        "layer": 39,
+        "expert_id": 253,
+        "domain": "chemistry",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.6434986903826387,
+        "query_count": 10
+      },
+      {
+        "layer": 58,
+        "expert_id": 10,
+        "domain": "chemistry",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.6084592327166554,
+        "query_count": 10
+      },
+      {
+        "layer": 38,
+        "expert_id": 76,
+        "domain": "chemistry",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5669184933166104,
+        "query_count": 10
+      },
+      {
+        "layer": 56,
+        "expert_id": 70,
+        "domain": "chemistry",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5988172203061247,
+        "query_count": 10
+      },
+      {
+        "layer": 39,
+        "expert_id": 66,
+        "domain": "chemistry",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5876485152756746,
+        "query_count": 10
+      },
+      {
+        "layer": 41,
+        "expert_id": 66,
+        "domain": "chemistry",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.591034332935276,
+        "query_count": 10
+      },
+      {
+        "layer": 39,
+        "expert_id": 192,
+        "domain": "chemistry",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5522099995591696,
+        "query_count": 10
+      },
+      {
+        "layer": 56,
+        "expert_id": 76,
+        "domain": "chemistry",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5813037499701037,
+        "query_count": 10
+      },
+      {
+        "layer": 59,
+        "expert_id": 188,
+        "domain": "chemistry",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5556762581930474,
+        "query_count": 10
+      },
+      {
+        "layer": 26,
+        "expert_id": 192,
+        "domain": "chemistry",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.6098273723982924,
+        "query_count": 10
+      },
+      {
+        "layer": 56,
+        "expert_id": 163,
+        "domain": "chemistry",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.6089640800392288,
+        "query_count": 10
+      },
+      {
+        "layer": 38,
+        "expert_id": 59,
+        "domain": "chemistry",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.583479261784377,
+        "query_count": 10
+      },
+      {
+        "layer": 3,
+        "expert_id": 70,
+        "domain": "chemistry",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6318275499860587,
+        "query_count": 10
+      }
+    ],
+    "biology": [
+      {
+        "layer": 39,
+        "expert_id": 166,
+        "domain": "biology",
+        "activation_frequency": 0.034353529044347283,
+        "mean_activation_score": 0.576673962541434,
+        "query_count": 10
+      },
+      {
+        "layer": 47,
+        "expert_id": 225,
+        "domain": "biology",
+        "activation_frequency": 0.033728919425359154,
+        "mean_activation_score": 0.5793620502272566,
+        "query_count": 10
+      },
+      {
+        "layer": 32,
+        "expert_id": 251,
+        "domain": "biology",
+        "activation_frequency": 0.03310430980637102,
+        "mean_activation_score": 0.6179587896731462,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 140,
+        "domain": "biology",
+        "activation_frequency": 0.03247970018738289,
+        "mean_activation_score": 0.5963405811440782,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 230,
+        "domain": "biology",
+        "activation_frequency": 0.03247970018738289,
+        "mean_activation_score": 0.6006308058260011,
+        "query_count": 10
+      },
+      {
+        "layer": 32,
+        "expert_id": 59,
+        "domain": "biology",
+        "activation_frequency": 0.03247970018738289,
+        "mean_activation_score": 0.5908569637478792,
+        "query_count": 10
+      },
+      {
+        "layer": 27,
+        "expert_id": 23,
+        "domain": "biology",
+        "activation_frequency": 0.03247970018738289,
+        "mean_activation_score": 0.6038169438406776,
+        "query_count": 10
+      },
+      {
+        "layer": 27,
+        "expert_id": 166,
+        "domain": "biology",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.6211922900476035,
+        "query_count": 10
+      },
+      {
+        "layer": 59,
+        "expert_id": 45,
+        "domain": "biology",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.6130808894301467,
+        "query_count": 10
+      },
+      {
+        "layer": 59,
+        "expert_id": 40,
+        "domain": "biology",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.5949007923625241,
+        "query_count": 10
+      },
+      {
+        "layer": 58,
+        "expert_id": 215,
+        "domain": "biology",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.5767088685923758,
+        "query_count": 10
+      },
+      {
+        "layer": 32,
+        "expert_id": 166,
+        "domain": "biology",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.5998738275175156,
+        "query_count": 10
+      },
+      {
+        "layer": 39,
+        "expert_id": 99,
+        "domain": "biology",
+        "activation_frequency": 0.03123048094940662,
+        "mean_activation_score": 0.6366107171011158,
+        "query_count": 10
+      },
+      {
+        "layer": 28,
+        "expert_id": 177,
+        "domain": "biology",
+        "activation_frequency": 0.03123048094940662,
+        "mean_activation_score": 0.600000750705917,
+        "query_count": 10
+      },
+      {
+        "layer": 7,
+        "expert_id": 145,
+        "domain": "biology",
+        "activation_frequency": 0.03123048094940662,
+        "mean_activation_score": 0.6062756825399328,
+        "query_count": 10
+      },
+      {
+        "layer": 19,
+        "expert_id": 99,
+        "domain": "biology",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.5847803821929677,
+        "query_count": 10
+      },
+      {
+        "layer": 12,
+        "expert_id": 16,
+        "domain": "biology",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.5883931306631828,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 251,
+        "domain": "biology",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.5603288091434127,
+        "query_count": 10
+      },
+      {
+        "layer": 48,
+        "expert_id": 196,
+        "domain": "biology",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.6205222741329252,
+        "query_count": 10
+      },
+      {
+        "layer": 43,
+        "expert_id": 34,
+        "domain": "biology",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.5782689462524154,
+        "query_count": 10
+      },
+      {
+        "layer": 9,
+        "expert_id": 177,
+        "domain": "biology",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.5954354398762205,
+        "query_count": 10
+      },
+      {
+        "layer": 43,
+        "expert_id": 251,
+        "domain": "biology",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.6072706753203732,
+        "query_count": 10
+      },
+      {
+        "layer": 12,
+        "expert_id": 225,
+        "domain": "biology",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.5618380935158319,
+        "query_count": 10
+      },
+      {
+        "layer": 12,
+        "expert_id": 34,
+        "domain": "biology",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.6064709076240443,
+        "query_count": 10
+      },
+      {
+        "layer": 28,
+        "expert_id": 70,
+        "domain": "biology",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.6061748471728755,
+        "query_count": 10
+      },
+      {
+        "layer": 39,
+        "expert_id": 45,
+        "domain": "biology",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.6076052785125887,
+        "query_count": 10
+      },
+      {
+        "layer": 59,
+        "expert_id": 140,
+        "domain": "biology",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.5835702417800638,
+        "query_count": 10
+      },
+      {
+        "layer": 32,
+        "expert_id": 196,
+        "domain": "biology",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.6025448482934668,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 119,
+        "domain": "biology",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.6082806614550409,
+        "query_count": 10
+      },
+      {
+        "layer": 28,
+        "expert_id": 140,
+        "domain": "biology",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5999242126400552,
+        "query_count": 10
+      },
+      {
+        "layer": 48,
+        "expert_id": 124,
+        "domain": "biology",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.6156412963008175,
+        "query_count": 10
+      },
+      {
+        "layer": 7,
+        "expert_id": 99,
+        "domain": "biology",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.6081232053291524,
+        "query_count": 10
+      },
+      {
+        "layer": 43,
+        "expert_id": 59,
+        "domain": "biology",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5846537164213397,
+        "query_count": 10
+      },
+      {
+        "layer": 52,
+        "expert_id": 124,
+        "domain": "biology",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.572378017173439,
+        "query_count": 10
+      },
+      {
+        "layer": 19,
+        "expert_id": 124,
+        "domain": "biology",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.6214895392856639,
+        "query_count": 10
+      },
+      {
+        "layer": 48,
+        "expert_id": 160,
+        "domain": "biology",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5684202304936855,
+        "query_count": 10
+      },
+      {
+        "layer": 27,
+        "expert_id": 164,
+        "domain": "biology",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.6281252422564853,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 205,
+        "domain": "biology",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.583906050416504,
+        "query_count": 10
+      },
+      {
+        "layer": 7,
+        "expert_id": 34,
+        "domain": "biology",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5832768903326196,
+        "query_count": 10
+      },
+      {
+        "layer": 28,
+        "expert_id": 196,
+        "domain": "biology",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.6110757373317041,
+        "query_count": 10
+      },
+      {
+        "layer": 5,
+        "expert_id": 196,
+        "domain": "biology",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5833580979482089,
+        "query_count": 10
+      },
+      {
+        "layer": 48,
+        "expert_id": 166,
+        "domain": "biology",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5887206642937715,
+        "query_count": 10
+      },
+      {
+        "layer": 58,
+        "expert_id": 40,
+        "domain": "biology",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6096380779683878,
+        "query_count": 10
+      },
+      {
+        "layer": 19,
+        "expert_id": 16,
+        "domain": "biology",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5813922280940848,
+        "query_count": 10
+      },
+      {
+        "layer": 47,
+        "expert_id": 196,
+        "domain": "biology",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5761016042236198,
+        "query_count": 10
+      },
+      {
+        "layer": 39,
+        "expert_id": 215,
+        "domain": "biology",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5919781150394384,
+        "query_count": 10
+      },
+      {
+        "layer": 7,
+        "expert_id": 63,
+        "domain": "biology",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6171708748374496,
+        "query_count": 10
+      },
+      {
+        "layer": 12,
+        "expert_id": 124,
+        "domain": "biology",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5757048678174853,
+        "query_count": 10
+      },
+      {
+        "layer": 39,
+        "expert_id": 63,
+        "domain": "biology",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6310093818823348,
+        "query_count": 10
+      },
+      {
+        "layer": 59,
+        "expert_id": 124,
+        "domain": "biology",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5879846154302144,
+        "query_count": 10
+      }
+    ],
+    "computer_science": [
+      {
+        "layer": 18,
+        "expert_id": 229,
+        "domain": "computer_science",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.6213466397143522,
+        "query_count": 10
+      },
+      {
+        "layer": 52,
+        "expert_id": 121,
+        "domain": "computer_science",
+        "activation_frequency": 0.023735165521549032,
+        "mean_activation_score": 0.609037254499458,
+        "query_count": 10
+      },
+      {
+        "layer": 26,
+        "expert_id": 42,
+        "domain": "computer_science",
+        "activation_frequency": 0.023735165521549032,
+        "mean_activation_score": 0.6208321051705682,
+        "query_count": 10
+      },
+      {
+        "layer": 31,
+        "expert_id": 155,
+        "domain": "computer_science",
+        "activation_frequency": 0.023735165521549032,
+        "mean_activation_score": 0.5994786930240119,
+        "query_count": 10
+      },
+      {
+        "layer": 26,
+        "expert_id": 92,
+        "domain": "computer_science",
+        "activation_frequency": 0.023735165521549032,
+        "mean_activation_score": 0.5909571453272774,
+        "query_count": 10
+      },
+      {
+        "layer": 52,
+        "expert_id": 196,
+        "domain": "computer_science",
+        "activation_frequency": 0.0231105559025609,
+        "mean_activation_score": 0.5880914053732496,
+        "query_count": 10
+      },
+      {
+        "layer": 50,
+        "expert_id": 236,
+        "domain": "computer_science",
+        "activation_frequency": 0.0231105559025609,
+        "mean_activation_score": 0.5771410101189581,
+        "query_count": 10
+      },
+      {
+        "layer": 20,
+        "expert_id": 131,
+        "domain": "computer_science",
+        "activation_frequency": 0.0231105559025609,
+        "mean_activation_score": 0.5962095212668128,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 60,
+        "domain": "computer_science",
+        "activation_frequency": 0.0231105559025609,
+        "mean_activation_score": 0.5907208046594327,
+        "query_count": 10
+      },
+      {
+        "layer": 20,
+        "expert_id": 189,
+        "domain": "computer_science",
+        "activation_frequency": 0.0231105559025609,
+        "mean_activation_score": 0.6007091035086024,
+        "query_count": 10
+      },
+      {
+        "layer": 52,
+        "expert_id": 217,
+        "domain": "computer_science",
+        "activation_frequency": 0.0231105559025609,
+        "mean_activation_score": 0.5986535340335891,
+        "query_count": 10
+      },
+      {
+        "layer": 56,
+        "expert_id": 56,
+        "domain": "computer_science",
+        "activation_frequency": 0.0231105559025609,
+        "mean_activation_score": 0.5941227512173197,
+        "query_count": 10
+      },
+      {
+        "layer": 23,
+        "expert_id": 211,
+        "domain": "computer_science",
+        "activation_frequency": 0.0231105559025609,
+        "mean_activation_score": 0.5804407661685146,
+        "query_count": 10
+      },
+      {
+        "layer": 43,
+        "expert_id": 195,
+        "domain": "computer_science",
+        "activation_frequency": 0.0231105559025609,
+        "mean_activation_score": 0.6136131553021621,
+        "query_count": 10
+      },
+      {
+        "layer": 44,
+        "expert_id": 211,
+        "domain": "computer_science",
+        "activation_frequency": 0.022485946283572766,
+        "mean_activation_score": 0.5988439163917691,
+        "query_count": 10
+      },
+      {
+        "layer": 44,
+        "expert_id": 236,
+        "domain": "computer_science",
+        "activation_frequency": 0.022485946283572766,
+        "mean_activation_score": 0.6064033044411283,
+        "query_count": 10
+      },
+      {
+        "layer": 56,
+        "expert_id": 195,
+        "domain": "computer_science",
+        "activation_frequency": 0.022485946283572766,
+        "mean_activation_score": 0.5831134864493642,
+        "query_count": 10
+      },
+      {
+        "layer": 37,
+        "expert_id": 11,
+        "domain": "computer_science",
+        "activation_frequency": 0.022485946283572766,
+        "mean_activation_score": 0.6244835440457616,
+        "query_count": 10
+      },
+      {
+        "layer": 52,
+        "expert_id": 172,
+        "domain": "computer_science",
+        "activation_frequency": 0.021861336664584636,
+        "mean_activation_score": 0.5761348053510371,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 40,
+        "domain": "computer_science",
+        "activation_frequency": 0.021861336664584636,
+        "mean_activation_score": 0.6197480058926054,
+        "query_count": 10
+      },
+      {
+        "layer": 37,
+        "expert_id": 189,
+        "domain": "computer_science",
+        "activation_frequency": 0.021861336664584636,
+        "mean_activation_score": 0.5749962787172836,
+        "query_count": 10
+      },
+      {
+        "layer": 50,
+        "expert_id": 248,
+        "domain": "computer_science",
+        "activation_frequency": 0.021861336664584636,
+        "mean_activation_score": 0.6240910828730725,
+        "query_count": 10
+      },
+      {
+        "layer": 60,
+        "expert_id": 147,
+        "domain": "computer_science",
+        "activation_frequency": 0.021861336664584636,
+        "mean_activation_score": 0.5924157372133577,
+        "query_count": 10
+      },
+      {
+        "layer": 16,
+        "expert_id": 76,
+        "domain": "computer_science",
+        "activation_frequency": 0.021861336664584636,
+        "mean_activation_score": 0.573137330555243,
+        "query_count": 10
+      },
+      {
+        "layer": 17,
+        "expert_id": 42,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.5997242361428329,
+        "query_count": 10
+      },
+      {
+        "layer": 26,
+        "expert_id": 59,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.587744962519845,
+        "query_count": 10
+      },
+      {
+        "layer": 31,
+        "expert_id": 56,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.6186019322716084,
+        "query_count": 10
+      },
+      {
+        "layer": 37,
+        "expert_id": 40,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.610786889084248,
+        "query_count": 10
+      },
+      {
+        "layer": 52,
+        "expert_id": 236,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.6248127102619659,
+        "query_count": 10
+      },
+      {
+        "layer": 3,
+        "expert_id": 236,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.562122692768131,
+        "query_count": 10
+      },
+      {
+        "layer": 44,
+        "expert_id": 76,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.605112874405106,
+        "query_count": 10
+      },
+      {
+        "layer": 58,
+        "expert_id": 8,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.6214116741622138,
+        "query_count": 10
+      },
+      {
+        "layer": 26,
+        "expert_id": 11,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.6131388540849715,
+        "query_count": 10
+      },
+      {
+        "layer": 44,
+        "expert_id": 193,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.6028937421107775,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 195,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.5518375175907813,
+        "query_count": 10
+      },
+      {
+        "layer": 50,
+        "expert_id": 155,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.6204567063563702,
+        "query_count": 10
+      },
+      {
+        "layer": 60,
+        "expert_id": 172,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.619273439632654,
+        "query_count": 10
+      },
+      {
+        "layer": 23,
+        "expert_id": 196,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.603273513412213,
+        "query_count": 10
+      },
+      {
+        "layer": 35,
+        "expert_id": 155,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.570437106713201,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 104,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.5984440187630635,
+        "query_count": 10
+      },
+      {
+        "layer": 37,
+        "expert_id": 121,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.5561347947773062,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 172,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.6117698245187242,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 162,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.5781836193379557,
+        "query_count": 10
+      },
+      {
+        "layer": 52,
+        "expert_id": 60,
+        "domain": "computer_science",
+        "activation_frequency": 0.021236727045596503,
+        "mean_activation_score": 0.613699510497135,
+        "query_count": 10
+      },
+      {
+        "layer": 20,
+        "expert_id": 76,
+        "domain": "computer_science",
+        "activation_frequency": 0.02061211742660837,
+        "mean_activation_score": 0.6183884996392099,
+        "query_count": 10
+      },
+      {
+        "layer": 26,
+        "expert_id": 40,
+        "domain": "computer_science",
+        "activation_frequency": 0.02061211742660837,
+        "mean_activation_score": 0.5908738129693683,
+        "query_count": 10
+      },
+      {
+        "layer": 31,
+        "expert_id": 196,
+        "domain": "computer_science",
+        "activation_frequency": 0.02061211742660837,
+        "mean_activation_score": 0.6106233357406234,
+        "query_count": 10
+      },
+      {
+        "layer": 35,
+        "expert_id": 56,
+        "domain": "computer_science",
+        "activation_frequency": 0.02061211742660837,
+        "mean_activation_score": 0.622609339573959,
+        "query_count": 10
+      },
+      {
+        "layer": 55,
+        "expert_id": 196,
+        "domain": "computer_science",
+        "activation_frequency": 0.02061211742660837,
+        "mean_activation_score": 0.6093980999605403,
+        "query_count": 10
+      },
+      {
+        "layer": 60,
+        "expert_id": 193,
+        "domain": "computer_science",
+        "activation_frequency": 0.02061211742660837,
+        "mean_activation_score": 0.5926501784273251,
+        "query_count": 10
+      }
+    ],
+    "history": [
+      {
+        "layer": 20,
+        "expert_id": 242,
+        "domain": "history",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.6009647223607667,
+        "query_count": 10
+      },
+      {
+        "layer": 48,
+        "expert_id": 71,
+        "domain": "history",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.6066375374051468,
+        "query_count": 10
+      },
+      {
+        "layer": 5,
+        "expert_id": 65,
+        "domain": "history",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.6114939807822675,
+        "query_count": 10
+      },
+      {
+        "layer": 15,
+        "expert_id": 215,
+        "domain": "history",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.6253494498827927,
+        "query_count": 10
+      },
+      {
+        "layer": 50,
+        "expert_id": 19,
+        "domain": "history",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5846263274776233,
+        "query_count": 10
+      },
+      {
+        "layer": 47,
+        "expert_id": 198,
+        "domain": "history",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5885908239761227,
+        "query_count": 10
+      },
+      {
+        "layer": 12,
+        "expert_id": 239,
+        "domain": "history",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6022500207890836,
+        "query_count": 10
+      },
+      {
+        "layer": 50,
+        "expert_id": 182,
+        "domain": "history",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5938676677919573,
+        "query_count": 10
+      },
+      {
+        "layer": 29,
+        "expert_id": 85,
+        "domain": "history",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5882886735823667,
+        "query_count": 10
+      },
+      {
+        "layer": 5,
+        "expert_id": 17,
+        "domain": "history",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5745724418897303,
+        "query_count": 10
+      },
+      {
+        "layer": 12,
+        "expert_id": 219,
+        "domain": "history",
+        "activation_frequency": 0.028107432854465958,
+        "mean_activation_score": 0.5731555956690706,
+        "query_count": 10
+      },
+      {
+        "layer": 15,
+        "expert_id": 35,
+        "domain": "history",
+        "activation_frequency": 0.028107432854465958,
+        "mean_activation_score": 0.575996857584345,
+        "query_count": 10
+      },
+      {
+        "layer": 15,
+        "expert_id": 255,
+        "domain": "history",
+        "activation_frequency": 0.028107432854465958,
+        "mean_activation_score": 0.5972085770124493,
+        "query_count": 10
+      },
+      {
+        "layer": 58,
+        "expert_id": 126,
+        "domain": "history",
+        "activation_frequency": 0.028107432854465958,
+        "mean_activation_score": 0.5898885773642252,
+        "query_count": 10
+      },
+      {
+        "layer": 6,
+        "expert_id": 137,
+        "domain": "history",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.590379415589858,
+        "query_count": 10
+      },
+      {
+        "layer": 16,
+        "expert_id": 48,
+        "domain": "history",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5958146882040313,
+        "query_count": 10
+      },
+      {
+        "layer": 20,
+        "expert_id": 126,
+        "domain": "history",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5965277450440736,
+        "query_count": 10
+      },
+      {
+        "layer": 27,
+        "expert_id": 224,
+        "domain": "history",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5784421046248893,
+        "query_count": 10
+      },
+      {
+        "layer": 47,
+        "expert_id": 35,
+        "domain": "history",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5440088502810183,
+        "query_count": 10
+      },
+      {
+        "layer": 27,
+        "expert_id": 134,
+        "domain": "history",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.6173538513930659,
+        "query_count": 10
+      },
+      {
+        "layer": 29,
+        "expert_id": 198,
+        "domain": "history",
+        "activation_frequency": 0.026858213616489695,
+        "mean_activation_score": 0.547045913885163,
+        "query_count": 10
+      },
+      {
+        "layer": 47,
+        "expert_id": 126,
+        "domain": "history",
+        "activation_frequency": 0.026858213616489695,
+        "mean_activation_score": 0.5842308023970967,
+        "query_count": 10
+      },
+      {
+        "layer": 27,
+        "expert_id": 126,
+        "domain": "history",
+        "activation_frequency": 0.026858213616489695,
+        "mean_activation_score": 0.6270828556698668,
+        "query_count": 10
+      },
+      {
+        "layer": 60,
+        "expert_id": 6,
+        "domain": "history",
+        "activation_frequency": 0.026858213616489695,
+        "mean_activation_score": 0.5997557036936616,
+        "query_count": 10
+      },
+      {
+        "layer": 58,
+        "expert_id": 61,
+        "domain": "history",
+        "activation_frequency": 0.026858213616489695,
+        "mean_activation_score": 0.6205388487090534,
+        "query_count": 10
+      },
+      {
+        "layer": 50,
+        "expert_id": 191,
+        "domain": "history",
+        "activation_frequency": 0.026858213616489695,
+        "mean_activation_score": 0.613558246002828,
+        "query_count": 10
+      },
+      {
+        "layer": 10,
+        "expert_id": 198,
+        "domain": "history",
+        "activation_frequency": 0.026858213616489695,
+        "mean_activation_score": 0.5771960751839543,
+        "query_count": 10
+      },
+      {
+        "layer": 12,
+        "expert_id": 137,
+        "domain": "history",
+        "activation_frequency": 0.026858213616489695,
+        "mean_activation_score": 0.5970252906800677,
+        "query_count": 10
+      },
+      {
+        "layer": 33,
+        "expert_id": 224,
+        "domain": "history",
+        "activation_frequency": 0.026858213616489695,
+        "mean_activation_score": 0.6363955248498375,
+        "query_count": 10
+      },
+      {
+        "layer": 4,
+        "expert_id": 48,
+        "domain": "history",
+        "activation_frequency": 0.02623360399750156,
+        "mean_activation_score": 0.5901384349727944,
+        "query_count": 10
+      },
+      {
+        "layer": 4,
+        "expert_id": 215,
+        "domain": "history",
+        "activation_frequency": 0.02623360399750156,
+        "mean_activation_score": 0.5821198336076463,
+        "query_count": 10
+      },
+      {
+        "layer": 15,
+        "expert_id": 137,
+        "domain": "history",
+        "activation_frequency": 0.02623360399750156,
+        "mean_activation_score": 0.628112260753596,
+        "query_count": 10
+      },
+      {
+        "layer": 33,
+        "expert_id": 137,
+        "domain": "history",
+        "activation_frequency": 0.02623360399750156,
+        "mean_activation_score": 0.5979989695919355,
+        "query_count": 10
+      },
+      {
+        "layer": 10,
+        "expert_id": 65,
+        "domain": "history",
+        "activation_frequency": 0.02623360399750156,
+        "mean_activation_score": 0.5824096287863297,
+        "query_count": 10
+      },
+      {
+        "layer": 12,
+        "expert_id": 207,
+        "domain": "history",
+        "activation_frequency": 0.02623360399750156,
+        "mean_activation_score": 0.5689812481119775,
+        "query_count": 10
+      },
+      {
+        "layer": 49,
+        "expert_id": 48,
+        "domain": "history",
+        "activation_frequency": 0.02623360399750156,
+        "mean_activation_score": 0.593152278490472,
+        "query_count": 10
+      },
+      {
+        "layer": 6,
+        "expert_id": 40,
+        "domain": "history",
+        "activation_frequency": 0.02623360399750156,
+        "mean_activation_score": 0.5828548262871754,
+        "query_count": 10
+      },
+      {
+        "layer": 44,
+        "expert_id": 129,
+        "domain": "history",
+        "activation_frequency": 0.02623360399750156,
+        "mean_activation_score": 0.5920005036563508,
+        "query_count": 10
+      },
+      {
+        "layer": 48,
+        "expert_id": 182,
+        "domain": "history",
+        "activation_frequency": 0.02623360399750156,
+        "mean_activation_score": 0.6099640150047078,
+        "query_count": 10
+      },
+      {
+        "layer": 60,
+        "expert_id": 145,
+        "domain": "history",
+        "activation_frequency": 0.02623360399750156,
+        "mean_activation_score": 0.6077072400931861,
+        "query_count": 10
+      },
+      {
+        "layer": 6,
+        "expert_id": 198,
+        "domain": "history",
+        "activation_frequency": 0.02623360399750156,
+        "mean_activation_score": 0.6184362353637584,
+        "query_count": 10
+      },
+      {
+        "layer": 58,
+        "expert_id": 129,
+        "domain": "history",
+        "activation_frequency": 0.02623360399750156,
+        "mean_activation_score": 0.5680275034027027,
+        "query_count": 10
+      },
+      {
+        "layer": 27,
+        "expert_id": 129,
+        "domain": "history",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.5636252560635158,
+        "query_count": 10
+      },
+      {
+        "layer": 29,
+        "expert_id": 36,
+        "domain": "history",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.641632491000159,
+        "query_count": 10
+      },
+      {
+        "layer": 58,
+        "expert_id": 134,
+        "domain": "history",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.5823928377562907,
+        "query_count": 10
+      },
+      {
+        "layer": 60,
+        "expert_id": 134,
+        "domain": "history",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.6273411869771937,
+        "query_count": 10
+      },
+      {
+        "layer": 6,
+        "expert_id": 85,
+        "domain": "history",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.6282652473624804,
+        "query_count": 10
+      },
+      {
+        "layer": 15,
+        "expert_id": 65,
+        "domain": "history",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.5577831152895095,
+        "query_count": 10
+      },
+      {
+        "layer": 33,
+        "expert_id": 182,
+        "domain": "history",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.5974347806973439,
+        "query_count": 10
+      },
+      {
+        "layer": 50,
+        "expert_id": 35,
+        "domain": "history",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.6075843342846904,
+        "query_count": 10
+      }
+    ],
+    "literature": [
+      {
+        "layer": 52,
+        "expert_id": 244,
+        "domain": "literature",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.604224034220756,
+        "query_count": 10
+      },
+      {
+        "layer": 16,
+        "expert_id": 11,
+        "domain": "literature",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5944028330557933,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 202,
+        "domain": "literature",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.569631334908758,
+        "query_count": 10
+      },
+      {
+        "layer": 19,
+        "expert_id": 56,
+        "domain": "literature",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5935314907529083,
+        "query_count": 10
+      },
+      {
+        "layer": 28,
+        "expert_id": 14,
+        "domain": "literature",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6069192767345466,
+        "query_count": 10
+      },
+      {
+        "layer": 31,
+        "expert_id": 132,
+        "domain": "literature",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6044951150604452,
+        "query_count": 10
+      },
+      {
+        "layer": 19,
+        "expert_id": 110,
+        "domain": "literature",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6088144337328298,
+        "query_count": 10
+      },
+      {
+        "layer": 23,
+        "expert_id": 5,
+        "domain": "literature",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5713499667310473,
+        "query_count": 10
+      },
+      {
+        "layer": 23,
+        "expert_id": 14,
+        "domain": "literature",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5634324858222786,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 4,
+        "domain": "literature",
+        "activation_frequency": 0.027482823235477825,
+        "mean_activation_score": 0.5767240367198281,
+        "query_count": 10
+      },
+      {
+        "layer": 23,
+        "expert_id": 100,
+        "domain": "literature",
+        "activation_frequency": 0.026858213616489695,
+        "mean_activation_score": 0.5802592476843063,
+        "query_count": 10
+      },
+      {
+        "layer": 16,
+        "expert_id": 239,
+        "domain": "literature",
+        "activation_frequency": 0.026858213616489695,
+        "mean_activation_score": 0.6070180728719569,
+        "query_count": 10
+      },
+      {
+        "layer": 16,
+        "expert_id": 16,
+        "domain": "literature",
+        "activation_frequency": 0.02623360399750156,
+        "mean_activation_score": 0.5786802786765985,
+        "query_count": 10
+      },
+      {
+        "layer": 29,
+        "expert_id": 98,
+        "domain": "literature",
+        "activation_frequency": 0.02623360399750156,
+        "mean_activation_score": 0.636255095239484,
+        "query_count": 10
+      },
+      {
+        "layer": 26,
+        "expert_id": 153,
+        "domain": "literature",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.6326553350576514,
+        "query_count": 10
+      },
+      {
+        "layer": 9,
+        "expert_id": 110,
+        "domain": "literature",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.6107088904118311,
+        "query_count": 10
+      },
+      {
+        "layer": 31,
+        "expert_id": 33,
+        "domain": "literature",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.6141078423881937,
+        "query_count": 10
+      },
+      {
+        "layer": 46,
+        "expert_id": 36,
+        "domain": "literature",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.6080104515238651,
+        "query_count": 10
+      },
+      {
+        "layer": 28,
+        "expert_id": 33,
+        "domain": "literature",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.5759862038124152,
+        "query_count": 10
+      },
+      {
+        "layer": 39,
+        "expert_id": 4,
+        "domain": "literature",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.5531550433065582,
+        "query_count": 10
+      },
+      {
+        "layer": 51,
+        "expert_id": 11,
+        "domain": "literature",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.6015817453007428,
+        "query_count": 10
+      },
+      {
+        "layer": 38,
+        "expert_id": 245,
+        "domain": "literature",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.5876250786508499,
+        "query_count": 10
+      },
+      {
+        "layer": 31,
+        "expert_id": 110,
+        "domain": "literature",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.6261160685168559,
+        "query_count": 10
+      },
+      {
+        "layer": 51,
+        "expert_id": 36,
+        "domain": "literature",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.6049407444540059,
+        "query_count": 10
+      },
+      {
+        "layer": 30,
+        "expert_id": 153,
+        "domain": "literature",
+        "activation_frequency": 0.02560899437851343,
+        "mean_activation_score": 0.6130384385357228,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 100,
+        "domain": "literature",
+        "activation_frequency": 0.024984384759525295,
+        "mean_activation_score": 0.6026789072953637,
+        "query_count": 10
+      },
+      {
+        "layer": 19,
+        "expert_id": 98,
+        "domain": "literature",
+        "activation_frequency": 0.024984384759525295,
+        "mean_activation_score": 0.6113110632112373,
+        "query_count": 10
+      },
+      {
+        "layer": 44,
+        "expert_id": 5,
+        "domain": "literature",
+        "activation_frequency": 0.024984384759525295,
+        "mean_activation_score": 0.6337552067549018,
+        "query_count": 10
+      },
+      {
+        "layer": 26,
+        "expert_id": 98,
+        "domain": "literature",
+        "activation_frequency": 0.024984384759525295,
+        "mean_activation_score": 0.6128511408652334,
+        "query_count": 10
+      },
+      {
+        "layer": 46,
+        "expert_id": 33,
+        "domain": "literature",
+        "activation_frequency": 0.024984384759525295,
+        "mean_activation_score": 0.6161233275436556,
+        "query_count": 10
+      },
+      {
+        "layer": 51,
+        "expert_id": 177,
+        "domain": "literature",
+        "activation_frequency": 0.024984384759525295,
+        "mean_activation_score": 0.6127074954828767,
+        "query_count": 10
+      },
+      {
+        "layer": 52,
+        "expert_id": 33,
+        "domain": "literature",
+        "activation_frequency": 0.024984384759525295,
+        "mean_activation_score": 0.607387521224277,
+        "query_count": 10
+      },
+      {
+        "layer": 3,
+        "expert_id": 5,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.6133119006487322,
+        "query_count": 10
+      },
+      {
+        "layer": 23,
+        "expert_id": 204,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.6128475276121633,
+        "query_count": 10
+      },
+      {
+        "layer": 31,
+        "expert_id": 189,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.6091712456218298,
+        "query_count": 10
+      },
+      {
+        "layer": 44,
+        "expert_id": 245,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.5829225422392279,
+        "query_count": 10
+      },
+      {
+        "layer": 3,
+        "expert_id": 16,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.6452647021086183,
+        "query_count": 10
+      },
+      {
+        "layer": 6,
+        "expert_id": 4,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.561191462693727,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 228,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.5766646096371747,
+        "query_count": 10
+      },
+      {
+        "layer": 26,
+        "expert_id": 14,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.6036871853117428,
+        "query_count": 10
+      },
+      {
+        "layer": 28,
+        "expert_id": 106,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.5748590925758572,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 110,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.596683989799494,
+        "query_count": 10
+      },
+      {
+        "layer": 15,
+        "expert_id": 5,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.6166934830960739,
+        "query_count": 10
+      },
+      {
+        "layer": 52,
+        "expert_id": 204,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.5983997092715813,
+        "query_count": 10
+      },
+      {
+        "layer": 16,
+        "expert_id": 153,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.5776647476780167,
+        "query_count": 10
+      },
+      {
+        "layer": 16,
+        "expert_id": 82,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.6129662006688142,
+        "query_count": 10
+      },
+      {
+        "layer": 52,
+        "expert_id": 177,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.6063574153110901,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 11,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.604433107687699,
+        "query_count": 10
+      },
+      {
+        "layer": 28,
+        "expert_id": 153,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.5959700114149422,
+        "query_count": 10
+      },
+      {
+        "layer": 28,
+        "expert_id": 163,
+        "domain": "literature",
+        "activation_frequency": 0.024359775140537165,
+        "mean_activation_score": 0.5740897380415299,
+        "query_count": 10
+      }
+    ],
+    "philosophy": [
+      {
+        "layer": 18,
+        "expert_id": 47,
+        "domain": "philosophy",
+        "activation_frequency": 0.03497813866333541,
+        "mean_activation_score": 0.5735931356893434,
+        "query_count": 10
+      },
+      {
+        "layer": 17,
+        "expert_id": 220,
+        "domain": "philosophy",
+        "activation_frequency": 0.03310430980637102,
+        "mean_activation_score": 0.6047273559791828,
+        "query_count": 10
+      },
+      {
+        "layer": 58,
+        "expert_id": 85,
+        "domain": "philosophy",
+        "activation_frequency": 0.03247970018738289,
+        "mean_activation_score": 0.5660181986738164,
+        "query_count": 10
+      },
+      {
+        "layer": 44,
+        "expert_id": 19,
+        "domain": "philosophy",
+        "activation_frequency": 0.03247970018738289,
+        "mean_activation_score": 0.5918142798235231,
+        "query_count": 10
+      },
+      {
+        "layer": 57,
+        "expert_id": 90,
+        "domain": "philosophy",
+        "activation_frequency": 0.03247970018738289,
+        "mean_activation_score": 0.5741583396517872,
+        "query_count": 10
+      },
+      {
+        "layer": 8,
+        "expert_id": 47,
+        "domain": "philosophy",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.5994366947871237,
+        "query_count": 10
+      },
+      {
+        "layer": 43,
+        "expert_id": 220,
+        "domain": "philosophy",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.6001696516682696,
+        "query_count": 10
+      },
+      {
+        "layer": 53,
+        "expert_id": 31,
+        "domain": "philosophy",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.5805253191816333,
+        "query_count": 10
+      },
+      {
+        "layer": 57,
+        "expert_id": 181,
+        "domain": "philosophy",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.5826273361713655,
+        "query_count": 10
+      },
+      {
+        "layer": 57,
+        "expert_id": 220,
+        "domain": "philosophy",
+        "activation_frequency": 0.03185509056839475,
+        "mean_activation_score": 0.5965774525953225,
+        "query_count": 10
+      },
+      {
+        "layer": 43,
+        "expert_id": 81,
+        "domain": "philosophy",
+        "activation_frequency": 0.03123048094940662,
+        "mean_activation_score": 0.5900560230729635,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 96,
+        "domain": "philosophy",
+        "activation_frequency": 0.03123048094940662,
+        "mean_activation_score": 0.5864685217616212,
+        "query_count": 10
+      },
+      {
+        "layer": 53,
+        "expert_id": 85,
+        "domain": "philosophy",
+        "activation_frequency": 0.03123048094940662,
+        "mean_activation_score": 0.6536250633627921,
+        "query_count": 10
+      },
+      {
+        "layer": 10,
+        "expert_id": 47,
+        "domain": "philosophy",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.6273256745223039,
+        "query_count": 10
+      },
+      {
+        "layer": 32,
+        "expert_id": 220,
+        "domain": "philosophy",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.6160490880938848,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 38,
+        "domain": "philosophy",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.5896154241463837,
+        "query_count": 10
+      },
+      {
+        "layer": 57,
+        "expert_id": 85,
+        "domain": "philosophy",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.6119842709603706,
+        "query_count": 10
+      },
+      {
+        "layer": 41,
+        "expert_id": 65,
+        "domain": "philosophy",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.6115939990698925,
+        "query_count": 10
+      },
+      {
+        "layer": 53,
+        "expert_id": 47,
+        "domain": "philosophy",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.6127531204132354,
+        "query_count": 10
+      },
+      {
+        "layer": 15,
+        "expert_id": 90,
+        "domain": "philosophy",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.5637784380052384,
+        "query_count": 10
+      },
+      {
+        "layer": 49,
+        "expert_id": 142,
+        "domain": "philosophy",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.6114326121134664,
+        "query_count": 10
+      },
+      {
+        "layer": 18,
+        "expert_id": 22,
+        "domain": "philosophy",
+        "activation_frequency": 0.030605871330418487,
+        "mean_activation_score": 0.6049854722223301,
+        "query_count": 10
+      },
+      {
+        "layer": 8,
+        "expert_id": 125,
+        "domain": "philosophy",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.613670441928638,
+        "query_count": 10
+      },
+      {
+        "layer": 32,
+        "expert_id": 59,
+        "domain": "philosophy",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.5850950720283684,
+        "query_count": 10
+      },
+      {
+        "layer": 53,
+        "expert_id": 171,
+        "domain": "philosophy",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.5888751861473674,
+        "query_count": 10
+      },
+      {
+        "layer": 10,
+        "expert_id": 90,
+        "domain": "philosophy",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.5937429779781029,
+        "query_count": 10
+      },
+      {
+        "layer": 57,
+        "expert_id": 38,
+        "domain": "philosophy",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.6242734361702157,
+        "query_count": 10
+      },
+      {
+        "layer": 53,
+        "expert_id": 227,
+        "domain": "philosophy",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.5969467149414452,
+        "query_count": 10
+      },
+      {
+        "layer": 32,
+        "expert_id": 90,
+        "domain": "philosophy",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.5994975516107136,
+        "query_count": 10
+      },
+      {
+        "layer": 41,
+        "expert_id": 122,
+        "domain": "philosophy",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.6029890084375876,
+        "query_count": 10
+      },
+      {
+        "layer": 53,
+        "expert_id": 142,
+        "domain": "philosophy",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.5638551209043084,
+        "query_count": 10
+      },
+      {
+        "layer": 10,
+        "expert_id": 96,
+        "domain": "philosophy",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.626180898439923,
+        "query_count": 10
+      },
+      {
+        "layer": 53,
+        "expert_id": 90,
+        "domain": "philosophy",
+        "activation_frequency": 0.029981261711430358,
+        "mean_activation_score": 0.5843699493926917,
+        "query_count": 10
+      },
+      {
+        "layer": 17,
+        "expert_id": 90,
+        "domain": "philosophy",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.6394145518125465,
+        "query_count": 10
+      },
+      {
+        "layer": 44,
+        "expert_id": 181,
+        "domain": "philosophy",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5575973867211643,
+        "query_count": 10
+      },
+      {
+        "layer": 17,
+        "expert_id": 255,
+        "domain": "philosophy",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.5855649830075081,
+        "query_count": 10
+      },
+      {
+        "layer": 49,
+        "expert_id": 121,
+        "domain": "philosophy",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.550475499376159,
+        "query_count": 10
+      },
+      {
+        "layer": 57,
+        "expert_id": 19,
+        "domain": "philosophy",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.6230563854273187,
+        "query_count": 10
+      },
+      {
+        "layer": 58,
+        "expert_id": 19,
+        "domain": "philosophy",
+        "activation_frequency": 0.029356652092442224,
+        "mean_activation_score": 0.6296103999539533,
+        "query_count": 10
+      },
+      {
+        "layer": 32,
+        "expert_id": 181,
+        "domain": "philosophy",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6209936653327262,
+        "query_count": 10
+      },
+      {
+        "layer": 49,
+        "expert_id": 95,
+        "domain": "philosophy",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6012828941681888,
+        "query_count": 10
+      },
+      {
+        "layer": 41,
+        "expert_id": 171,
+        "domain": "philosophy",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6231990765498203,
+        "query_count": 10
+      },
+      {
+        "layer": 41,
+        "expert_id": 227,
+        "domain": "philosophy",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6456513225448149,
+        "query_count": 10
+      },
+      {
+        "layer": 30,
+        "expert_id": 81,
+        "domain": "philosophy",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6261406280590651,
+        "query_count": 10
+      },
+      {
+        "layer": 35,
+        "expert_id": 121,
+        "domain": "philosophy",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.6238203627516584,
+        "query_count": 10
+      },
+      {
+        "layer": 41,
+        "expert_id": 85,
+        "domain": "philosophy",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.5956495023084355,
+        "query_count": 10
+      },
+      {
+        "layer": 44,
+        "expert_id": 142,
+        "domain": "philosophy",
+        "activation_frequency": 0.02873204247345409,
+        "mean_activation_score": 0.556652782674152,
+        "query_count": 10
+      },
+      {
+        "layer": 30,
+        "expert_id": 90,
+        "domain": "philosophy",
+        "activation_frequency": 0.028107432854465958,
+        "mean_activation_score": 0.6258185352756136,
+        "query_count": 10
+      },
+      {
+        "layer": 35,
+        "expert_id": 227,
+        "domain": "philosophy",
+        "activation_frequency": 0.028107432854465958,
+        "mean_activation_score": 0.5903178325736,
+        "query_count": 10
+      },
+      {
+        "layer": 58,
+        "expert_id": 31,
+        "domain": "philosophy",
+        "activation_frequency": 0.028107432854465958,
+        "mean_activation_score": 0.5748872925275941,
+        "query_count": 10
+      }
+    ]
+  }
+}

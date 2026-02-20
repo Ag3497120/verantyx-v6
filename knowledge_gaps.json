@@ -1,0 +1,541 @@
+{
+  "summary": {
+    "total_questions": 2500,
+    "mcq_count": 592,
+    "latex_count": 996,
+    "category_distribution": {
+      "Math": 1021,
+      "Biology/Medicine": 280,
+      "Computer Science/AI": 241,
+      "Other": 233,
+      "Physics": 230,
+      "Humanities/Social Science": 219,
+      "Chemistry": 165,
+      "Engineering": 111
+    },
+    "complexity_signals": {
+      "mcq": 592,
+      "exact_numeric": 541,
+      "visual": 461,
+      "multi_step": 246,
+      "proof_required": 42
+    }
+  },
+  "knowledge_gaps": {
+    "Chemistry": {
+      "total_questions_touching": 425,
+      "subdomain_frequency": {
+        "inorganic_chemistry": 203,
+        "biochemistry": 121,
+        "organic_chemistry": 53,
+        "physical_chemistry": 47,
+        "quantum_chemistry": 34,
+        "analytical_chemistry": 33
+      },
+      "top_subdomains": [
+        "inorganic_chemistry",
+        "biochemistry",
+        "organic_chemistry",
+        "physical_chemistry",
+        "quantum_chemistry"
+      ]
+    },
+    "Physics": {
+      "total_questions_touching": 588,
+      "subdomain_frequency": {
+        "thermodynamics": 198,
+        "mechanics": 137,
+        "electromagnetism": 119,
+        "quantum_mechanics": 100,
+        "quantum_field_theory": 73,
+        "optics_waves": 64,
+        "general_relativity": 58,
+        "condensed_matter": 54,
+        "nuclear_particle": 46,
+        "statistical_mechanics": 32
+      },
+      "top_subdomains": [
+        "thermodynamics",
+        "mechanics",
+        "electromagnetism",
+        "quantum_mechanics",
+        "quantum_field_theory"
+      ]
+    },
+    "Humanities/Social Science": {
+      "total_questions_touching": 541,
+      "subdomain_frequency": {
+        "history_science": 360,
+        "linguistics": 116,
+        "philosophy": 90,
+        "economics": 62
+      },
+      "top_subdomains": [
+        "history_science",
+        "linguistics",
+        "philosophy",
+        "economics"
+      ]
+    },
+    "Math": {
+      "total_questions_touching": 1269,
+      "subdomain_frequency": {
+        "graph_theory": 325,
+        "group_theory": 304,
+        "geometry": 281,
+        "analysis_calculus": 218,
+        "probability_stats": 192,
+        "linear_algebra": 180,
+        "logic_computation": 145,
+        "combinatorics": 93,
+        "topology": 75,
+        "number_theory": 70,
+        "differential_geometry": 43,
+        "algebraic_geometry": 43,
+        "number_fields": 5
+      },
+      "top_subdomains": [
+        "graph_theory",
+        "group_theory",
+        "geometry",
+        "analysis_calculus",
+        "probability_stats"
+      ]
+    },
+    "Computer Science/AI": {
+      "total_questions_touching": 315,
+      "subdomain_frequency": {
+        "algorithms": 110,
+        "data_structures": 100,
+        "machine_learning": 56,
+        "computer_architecture": 48,
+        "cryptography": 39,
+        "programming_languages": 18,
+        "information_theory": 16
+      },
+      "top_subdomains": [
+        "algorithms",
+        "data_structures",
+        "machine_learning",
+        "computer_architecture",
+        "cryptography"
+      ]
+    },
+    "Biology/Medicine": {
+      "total_questions_touching": 432,
+      "subdomain_frequency": {
+        "physiology": 212,
+        "molecular_biology": 115,
+        "cell_biology": 76,
+        "ecology_evolution": 73,
+        "genetics": 45,
+        "immunology": 42,
+        "neuroscience": 25
+      },
+      "top_subdomains": [
+        "physiology",
+        "molecular_biology",
+        "cell_biology",
+        "ecology_evolution",
+        "genetics"
+      ]
+    }
+  },
+  "domain_by_category": {
+    "Humanities/Social Science": {
+      "Humanities/Social Science": 97,
+      "Math": 49,
+      "Chemistry": 33,
+      "Physics": 32,
+      "Biology/Medicine": 27,
+      "Computer Science/AI": 21
+    },
+    "Other": {
+      "Humanities/Social Science": 72,
+      "Math": 46,
+      "Physics": 16,
+      "Biology/Medicine": 13,
+      "Computer Science/AI": 9,
+      "Chemistry": 5
+    },
+    "Math": {
+      "Math": 670,
+      "Physics": 156,
+      "Chemistry": 139,
+      "Humanities/Social Science": 132,
+      "Computer Science/AI": 111,
+      "Biology/Medicine": 82
+    },
+    "Physics": {
+      "Physics": 164,
+      "Math": 157,
+      "Biology/Medicine": 42,
+      "Humanities/Social Science": 38,
+      "Chemistry": 34,
+      "Computer Science/AI": 17
+    },
+    "Computer Science/AI": {
+      "Math": 141,
+      "Computer Science/AI": 118,
+      "Humanities/Social Science": 82,
+      "Physics": 56,
+      "Biology/Medicine": 50,
+      "Chemistry": 21
+    },
+    "Biology/Medicine": {
+      "Biology/Medicine": 149,
+      "Chemistry": 113,
+      "Math": 91,
+      "Humanities/Social Science": 84,
+      "Physics": 58,
+      "Computer Science/AI": 16
+    },
+    "Chemistry": {
+      "Chemistry": 75,
+      "Math": 48,
+      "Physics": 43,
+      "Biology/Medicine": 22,
+      "Humanities/Social Science": 17,
+      "Computer Science/AI": 7
+    },
+    "Engineering": {
+      "Math": 67,
+      "Physics": 63,
+      "Biology/Medicine": 47,
+      "Humanities/Social Science": 19,
+      "Computer Science/AI": 16,
+      "Chemistry": 5
+    }
+  },
+  "kb_expansion_priority": [
+    {
+      "group": "Humanities/Social Science",
+      "domain": "Humanities/Social Science",
+      "subdomain": "history_science",
+      "frequency": 360,
+      "priority": 1
+    },
+    {
+      "group": "Math",
+      "domain": "Math",
+      "subdomain": "graph_theory",
+      "frequency": 325,
+      "priority": 2
+    },
+    {
+      "group": "Math",
+      "domain": "Math",
+      "subdomain": "group_theory",
+      "frequency": 304,
+      "priority": 3
+    },
+    {
+      "group": "Math",
+      "domain": "Math",
+      "subdomain": "geometry",
+      "frequency": 281,
+      "priority": 4
+    },
+    {
+      "group": "Math",
+      "domain": "Math",
+      "subdomain": "analysis_calculus",
+      "frequency": 218,
+      "priority": 5
+    },
+    {
+      "group": "Biology/Medicine",
+      "domain": "Biology/Medicine",
+      "subdomain": "physiology",
+      "frequency": 212,
+      "priority": 6
+    },
+    {
+      "group": "Chemistry",
+      "domain": "Chemistry",
+      "subdomain": "inorganic_chemistry",
+      "frequency": 203,
+      "priority": 7
+    },
+    {
+      "group": "Physics",
+      "domain": "Physics",
+      "subdomain": "thermodynamics",
+      "frequency": 198,
+      "priority": 8
+    },
+    {
+      "group": "Math",
+      "domain": "Math",
+      "subdomain": "probability_stats",
+      "frequency": 192,
+      "priority": 9
+    },
+    {
+      "group": "Math",
+      "domain": "Math",
+      "subdomain": "linear_algebra",
+      "frequency": 180,
+      "priority": 10
+    },
+    {
+      "group": "Math",
+      "domain": "Math",
+      "subdomain": "logic_computation",
+      "frequency": 145,
+      "priority": 11
+    },
+    {
+      "group": "Physics",
+      "domain": "Physics",
+      "subdomain": "mechanics",
+      "frequency": 137,
+      "priority": 12
+    },
+    {
+      "group": "Chemistry",
+      "domain": "Chemistry",
+      "subdomain": "biochemistry",
+      "frequency": 121,
+      "priority": 13
+    },
+    {
+      "group": "Physics",
+      "domain": "Physics",
+      "subdomain": "electromagnetism",
+      "frequency": 119,
+      "priority": 14
+    },
+    {
+      "group": "Humanities/Social Science",
+      "domain": "Humanities/Social Science",
+      "subdomain": "linguistics",
+      "frequency": 116,
+      "priority": 15
+    },
+    {
+      "group": "Biology/Medicine",
+      "domain": "Biology/Medicine",
+      "subdomain": "molecular_biology",
+      "frequency": 115,
+      "priority": 16
+    },
+    {
+      "group": "Computer Science/AI",
+      "domain": "Computer Science/AI",
+      "subdomain": "algorithms",
+      "frequency": 110,
+      "priority": 17
+    },
+    {
+      "group": "Physics",
+      "domain": "Physics",
+      "subdomain": "quantum_mechanics",
+      "frequency": 100,
+      "priority": 18
+    },
+    {
+      "group": "Computer Science/AI",
+      "domain": "Computer Science/AI",
+      "subdomain": "data_structures",
+      "frequency": 100,
+      "priority": 19
+    },
+    {
+      "group": "Math",
+      "domain": "Math",
+      "subdomain": "combinatorics",
+      "frequency": 93,
+      "priority": 20
+    },
+    {
+      "group": "Humanities/Social Science",
+      "domain": "Humanities/Social Science",
+      "subdomain": "philosophy",
+      "frequency": 90,
+      "priority": 21
+    },
+    {
+      "group": "Biology/Medicine",
+      "domain": "Biology/Medicine",
+      "subdomain": "cell_biology",
+      "frequency": 76,
+      "priority": 22
+    },
+    {
+      "group": "Math",
+      "domain": "Math",
+      "subdomain": "topology",
+      "frequency": 75,
+      "priority": 23
+    },
+    {
+      "group": "Physics",
+      "domain": "Physics",
+      "subdomain": "quantum_field_theory",
+      "frequency": 73,
+      "priority": 24
+    },
+    {
+      "group": "Biology/Medicine",
+      "domain": "Biology/Medicine",
+      "subdomain": "ecology_evolution",
+      "frequency": 73,
+      "priority": 25
+    },
+    {
+      "group": "Math",
+      "domain": "Math",
+      "subdomain": "number_theory",
+      "frequency": 70,
+      "priority": 26
+    },
+    {
+      "group": "Physics",
+      "domain": "Physics",
+      "subdomain": "optics_waves",
+      "frequency": 64,
+      "priority": 27
+    },
+    {
+      "group": "Humanities/Social Science",
+      "domain": "Humanities/Social Science",
+      "subdomain": "economics",
+      "frequency": 62,
+      "priority": 28
+    },
+    {
+      "group": "Physics",
+      "domain": "Physics",
+      "subdomain": "general_relativity",
+      "frequency": 58,
+      "priority": 29
+    },
+    {
+      "group": "Computer Science/AI",
+      "domain": "Computer Science/AI",
+      "subdomain": "machine_learning",
+      "frequency": 56,
+      "priority": 30
+    },
+    {
+      "group": "Physics",
+      "domain": "Physics",
+      "subdomain": "condensed_matter",
+      "frequency": 54,
+      "priority": 31
+    },
+    {
+      "group": "Chemistry",
+      "domain": "Chemistry",
+      "subdomain": "organic_chemistry",
+      "frequency": 53,
+      "priority": 32
+    },
+    {
+      "group": "Computer Science/AI",
+      "domain": "Computer Science/AI",
+      "subdomain": "computer_architecture",
+      "frequency": 48,
+      "priority": 33
+    },
+    {
+      "group": "Chemistry",
+      "domain": "Chemistry",
+      "subdomain": "physical_chemistry",
+      "frequency": 47,
+      "priority": 34
+    },
+    {
+      "group": "Physics",
+      "domain": "Physics",
+      "subdomain": "nuclear_particle",
+      "frequency": 46,
+      "priority": 35
+    },
+    {
+      "group": "Biology/Medicine",
+      "domain": "Biology/Medicine",
+      "subdomain": "genetics",
+      "frequency": 45,
+      "priority": 36
+    },
+    {
+      "group": "Math",
+      "domain": "Math",
+      "subdomain": "differential_geometry",
+      "frequency": 43,
+      "priority": 37
+    },
+    {
+      "group": "Math",
+      "domain": "Math",
+      "subdomain": "algebraic_geometry",
+      "frequency": 43,
+      "priority": 38
+    },
+    {
+      "group": "Biology/Medicine",
+      "domain": "Biology/Medicine",
+      "subdomain": "immunology",
+      "frequency": 42,
+      "priority": 39
+    },
+    {
+      "group": "Computer Science/AI",
+      "domain": "Computer Science/AI",
+      "subdomain": "cryptography",
+      "frequency": 39,
+      "priority": 40
+    },
+    {
+      "group": "Chemistry",
+      "domain": "Chemistry",
+      "subdomain": "quantum_chemistry",
+      "frequency": 34,
+      "priority": 41
+    },
+    {
+      "group": "Chemistry",
+      "domain": "Chemistry",
+      "subdomain": "analytical_chemistry",
+      "frequency": 33,
+      "priority": 42
+    },
+    {
+      "group": "Physics",
+      "domain": "Physics",
+      "subdomain": "statistical_mechanics",
+      "frequency": 32,
+      "priority": 43
+    },
+    {
+      "group": "Biology/Medicine",
+      "domain": "Biology/Medicine",
+      "subdomain": "neuroscience",
+      "frequency": 25,
+      "priority": 44
+    },
+    {
+      "group": "Computer Science/AI",
+      "domain": "Computer Science/AI",
+      "subdomain": "programming_languages",
+      "frequency": 18,
+      "priority": 45
+    },
+    {
+      "group": "Computer Science/AI",
+      "domain": "Computer Science/AI",
+      "subdomain": "information_theory",
+      "frequency": 16,
+      "priority": 46
+    },
+    {
+      "group": "Math",
+      "domain": "Math",
+      "subdomain": "number_fields",
+      "frequency": 5,
+      "priority": 47
+    }
+  ]
+}

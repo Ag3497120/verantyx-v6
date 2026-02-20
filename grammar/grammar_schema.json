@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GrammarPiece",
+  "description": "Grammar Glue - 構造化候補を最終答えに変換するテンプレート",
+  "type": "object",
+  "required": ["grammar_id", "in", "template"],
+  "properties": {
+    "grammar_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "文法ピースの一意識別子"
+    },
+    "name": {
+      "type": "string",
+      "description": "人間可読名"
+    },
+    "description": {
+      "type": "string",
+      "description": "文法ピースの説明"
+    },
+    "in": {
+      "type": "object",
+      "required": ["answer_schema", "fields"],
+      "properties": {
+        "answer_schema": {
+          "type": "string",
+          "enum": [
+            "integer",
+            "rational",
+            "decimal",
+            "complex",
+            "expression",
+            "formula",
+            "boolean",
+            "option_label",
+            "move_sequence",
+            "sequence",
+            "set",
+            "graph",
+            "matrix",
+            "proof",
+            "text"
+          ],
+          "description": "入力スキーマ"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "description": "必要なフィールド"
+        },
+        "optional_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "オプショナルフィールド"
+        }
+      },
+      "description": "入力仕様"
+    },
+    "template": {
+      "type": "string",
+      "description": "出力テンプレート（{field}形式のプレースホルダーを含む）"
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "制約（フォーマット、長さ等）"
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "object"
+          },
+          "output": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "使用例"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "total": 2500,
+  "correct": 128,
+  "accuracy": 5.12,
+  "time": 26.98559594154358,
+  "category_stats": {
+    "Other": {
+      "total": 233,
+      "correct": 8
+    },
+    "Humanities/Social Science": {
+      "total": 219,
+      "correct": 16
+    },
+    "Math": {
+      "total": 1021,
+      "correct": 30
+    },
+    "Physics": {
+      "total": 230,
+      "correct": 11
+    },
+    "Computer Science/AI": {
+      "total": 241,
+      "correct": 11
+    },
+    "Biology/Medicine": {
+      "total": 280,
+      "correct": 36
+    },
+    "Chemistry": {
+      "total": 165,
+      "correct": 11
+    },
+    "Engineering": {
+      "total": 111,
+      "correct": 5
+    }
+  }
+}

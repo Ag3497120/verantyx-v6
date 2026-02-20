@@ -1,0 +1,159 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Piece",
+  "description": "Cross-DBのピース - 型付き推論部品",
+  "type": "object",
+  "required": ["piece_id", "in", "out", "executor"],
+  "properties": {
+    "piece_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "ピースの一意識別子"
+    },
+    "name": {
+      "type": "string",
+      "description": "人間可読名"
+    },
+    "description": {
+      "type": "string",
+      "description": "ピースの説明"
+    },
+    "in": {
+      "type": "object",
+      "required": ["requires"],
+      "properties": {
+        "requires": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z_]+:[a-z_]+$",
+            "description": "必要条件（type:value形式）"
+          },
+          "minItems": 1,
+          "description": "このピースが必要とする前提条件"
+        },
+        "slots": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "入力スロット名"
+        },
+        "optional": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "オプショナルな入力"
+        }
+      },
+      "description": "入力仕様"
+    },
+    "out": {
+      "type": "object",
+      "required": ["produces", "schema"],
+      "properties": {
+        "produces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "description": "このピースが生成するもの"
+        },
+        "schema": {
+          "type": "string",
+          "enum": [
+            "integer",
+            "rational",
+            "decimal",
+            "complex",
+            "expression",
+            "formula",
+            "boolean",
+            "option_label",
+            "move_sequence",
+            "sequence",
+            "set",
+            "graph",
+            "matrix",
+            "proof",
+            "text"
+          ],
+          "description": "出力のanswerスキーマ"
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "副産物（中間生成物）"
+        }
+      },
+      "description": "出力仕様"
+    },
+    "executor": {
+      "type": "string",
+      "pattern": "^[a-z_]+\\.[a-z_]+$",
+      "description": "実行モジュール（module.function形式）"
+    },
+    "verifiers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "検証器のID"
+    },
+    "cost": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string",
+          "enum": ["instant", "low", "medium", "high", "extreme"],
+          "default": "medium"
+        },
+        "space": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "default": "low"
+        },
+        "explosion_risk": {
+          "type": "string",
+          "enum": ["none", "low", "medium", "high"],
+          "default": "low",
+          "description": "組み合わせ爆発のリスク"
+        }
+      },
+      "description": "計算コスト"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 1.0,
+      "description": "ピースの信頼度（決定的=1.0、ヒューリスティック<1.0）"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "検索用タグ"
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "object"
+          },
+          "output": {
+            "type": "object"
+          }
+        }
+      },
+      "description": "使用例"
+    }
+  }
+}

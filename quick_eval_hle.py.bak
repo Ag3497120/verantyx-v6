@@ -1,0 +1,80 @@
+"""
+Quick HLE 2500 evaluation
+"""
+import sys
+import json
+import time
+
+sys.path.insert(0, '/Users/motonishikoudai/.openclaw/workspace/verantyx_v6')
+
+from pipeline_enhanced import VerantyxV6Enhanced
+from core.answer_matcher import flexible_match
+
+# Load dataset
+print("Loading HLE 2500...")
+questions = []
+with open("hle_2500_eval.jsonl", 'r', encoding='utf-8') as f:
+    for line in f:
+        questions.append(json.loads(line))
+print(f"Loaded {len(questions)} questions")
+
+# Initialize pipeline
+print("Initializing pipeline...")
+pipeline = VerantyxV6Enhanced(piece_db_path="pieces/piece_db.jsonl")
+print("Ready")
+
+# Evaluate
+print("\nEvaluating...")
+start_time = time.time()
+correct = 0
+total = 0
+category_stats = {}
+
+for i, q in enumerate(questions):
+    if (i + 1) % 100 == 0:
+        print(f"Progress: {i+1}/{len(questions)} ({(i+1)/len(questions)*100:.1f}%)")
+    
+    category = q.get('category', 'Unknown')
+    if category not in category_stats:
+        category_stats[category] = {'total': 0, 'correct': 0}
+    
+    category_stats[category]['total'] += 1
+    total += 1
+    
+    try:
+        result = pipeline.solve(q['question'])
+        answer = result.get('answer')
+        expected = q['answer']
+        
+        if answer and expected and flexible_match(answer, expected, tolerance=1e-4):
+            correct += 1
+            category_stats[category]['correct'] += 1
+    except Exception as e:
+        pass
+
+elapsed = time.time() - start_time
+
+# Results
+print(f"\n{'='*80}")
+print("RESULTS")
+print(f"{'='*80}")
+print(f"Total: {total}")
+print(f"Correct: {correct}")
+print(f"Accuracy: {correct/total*100:.2f}%")
+print(f"Time: {elapsed:.1f}s")
+print()
+print("Category breakdown:")
+for cat, stats in sorted(category_stats.items(), key=lambda x: -x[1]['correct']/x[1]['total'] if x[1]['total'] > 0 else 0):
+    pct = stats['correct']/stats['total']*100 if stats['total'] > 0 else 0
+    print(f"  {cat}: {stats['correct']}/{stats['total']} ({pct:.1f}%)")
+
+# Save
+with open('hle_2500_phase5h_final.json', 'w') as f:
+    json.dump({
+        'total': total,
+        'correct': correct,
+        'accuracy': correct/total*100,
+        'time': elapsed,
+        'category_stats': category_stats
+    }, f, indent=2)
+print(f"\nSaved to hle_2500_phase5h_final.json")
