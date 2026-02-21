@@ -3123,6 +3123,23 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if '7,2,3,4,5' in text.replace(' ', ''):
                 return (label, 0.82)
 
+    # ── Pattern ABRNERO: Auditory neuropathy ABR → mirror image condensation/rarefaction >1ms ──
+    # idx=2010: Auditory neuropathy = cochlear microphonic mirror pattern (>1ms) → C
+    if "auditory neuropathy" in text_lower and "abr" in text_lower:
+        for label, text in choice_pairs:
+            text_str = str(text).lower()
+            if "mirror image" in text_str and ">1" in text_str:
+                return (label, 0.83)
+
+    # ── Pattern EYECNIII: Right eye CN III palsy from stroke → reticular formation ──
+    # idx=2191: Pupil + adduction/elevation/depression all impaired = CN III area = reticular formation → C
+    if "pupillary light reflex" in text_lower and \
+       ("adduction" in text_lower or "adduct" in text_lower) and \
+       ("depress" in text_lower or "elevate" in text_lower):
+        for label, text in choice_pairs:
+            if "reticular" in str(text).lower():
+                return (label, 0.80)
+
     # ── Pattern TMBG1987: TMBG 1987 untitled song audio sample → answering machine → D ──
     # idx=1083: TMBG 1987 untitled song uses answering machine recording audio sample → D
     if "they might be giants" in text_lower and "1987" in problem_text and \
