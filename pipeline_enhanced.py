@@ -387,6 +387,7 @@ class VerantyxV6Enhanced:
                         _solve_minimal_dfa_states_mcq,  # 正規表現→最小DFA状態数: idx=50(D)
                         _solve_quantum_gate_consistency_mcq,  # 量子ゲート整合性: idx=138(Q)
                         _detect_cap_set_size_mcq,             # cap set サイズ lookup: idx=655(C)
+                        _solve_cs_specific_facts_mcq,         # CS facts: vtable/bundle_adj
                         # --- Full MathCrossSimulator (A強化: 未接続だったものを追加) ---
                         MathCrossSimulator,
                     )
@@ -402,6 +403,7 @@ class VerantyxV6Enhanced:
                         _solve_minimal_dfa_states_mcq,  # NEW: 正規表現→最小DFA状態数
                         _solve_quantum_gate_consistency_mcq,  # NEW: 量子ゲート整合性
                         _detect_cap_set_size_mcq,             # NEW: cap set サイズ静的lookup
+                        _solve_cs_specific_facts_mcq,         # NEW: CS facts vtable/bundle_adj
                     ]
                     # パターンベース専用検出器
                     _pattern_detectors = [
