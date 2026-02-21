@@ -1,12 +1,12 @@
 {
   "total": 2500,
-  "correct": 122,
-  "accuracy": 4.88,
-  "time": 57.16760802268982,
+  "correct": 123,
+  "accuracy": 4.92,
+  "time": 57.31050181388855,
   "category_stats": {
     "Other": {
       "total": 233,
-      "correct": 4
+      "correct": 5
     },
     "Humanities/Social Science": {
       "total": 219,
@@ -39,7 +39,7 @@
   },
   "method_stats": {
     "cegis_proved": 69,
-    "math_cross_sim": 33,
+    "math_cross_sim": 34,
     "unknown": 17,
     "puzzle_reasoning": 1,
     "propositional_simulation": 1,
