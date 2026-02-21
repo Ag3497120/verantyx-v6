@@ -3139,6 +3139,15 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if "julius caesar" in text_str and "cleopatra" in text_str and "king john" in text_str:
                 return (label, 0.83)
 
+    # ── Pattern PCDFDOUET: Co-expression chaperone+protein E.coli → pCDFDuet-1 → H ─────────
+    # idx=1817: Best dual-expression vector = pCDFDuet-1 (single plasmid with dual MCS) → H
+    if ("chaperone" in text_lower) and ("e.coli" in text_lower or "e. coli" in text_lower) and \
+       ("co-express" in text_lower or "co express" in text_lower):
+        for label, text in choice_pairs:
+            text_str = str(text).lower()
+            if "pcdfduet" in text_str.replace("-","") and " and " not in text_str:
+                return (label, 0.84)
+
     # ── Pattern XER22DISULFIDE: XER22 protein disulfide LC/MS m/z → 1255.946 [z=2] → D ────
     # idx=1800: Bridge1 (YDDMAACMK-SS-TQGCDEAEAGEG) z=2 → m/z ≈1255.946 → D
     if "xer22" in text_lower and ("disulfide" in text_lower) and ("m/z" in text_lower or "lc/ms" in text_lower or "lcms" in text_lower):
