@@ -5242,10 +5242,10 @@
   {
     "idx": 655,
     "category": "Math",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 656,
