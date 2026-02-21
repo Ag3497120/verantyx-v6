@@ -546,10 +546,10 @@
   {
     "idx": 68,
     "category": "Humanities/Social Science",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 69,
@@ -5690,10 +5690,10 @@
   {
     "idx": 711,
     "category": "Humanities/Social Science",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "H",
     "expected": "H",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 712,
