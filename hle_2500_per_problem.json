@@ -10,10 +10,10 @@
   {
     "idx": 1,
     "category": "Humanities/Social Science",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 2,
@@ -4210,10 +4210,10 @@
   {
     "idx": 526,
     "category": "Humanities/Social Science",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 527,
@@ -5602,10 +5602,10 @@
   {
     "idx": 700,
     "category": "Humanities/Social Science",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 701,
@@ -6674,18 +6674,18 @@
   {
     "idx": 834,
     "category": "Other",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "K",
     "expected": "K",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 835,
     "category": "Other",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "L",
     "expected": "L",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 836,
