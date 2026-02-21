@@ -381,6 +381,9 @@ class VerantyxV6Enhanced:
                         _solve_mcq_combinatorics_exact_compute, # Stirling/Bell/Catalan/binomial, ~93%
                         _solve_mcq_linear_algebra_det_compute,  # det/trace, ~94%
                         _solve_mcq_graph_chromatic_compute,     # chromatic/Petersen/K_n, ~89%
+                        # --- 新規追加: ODE系 + 容器パズル (2026-02-21) ---
+                        _solve_ode_system_mcq,          # ODE数値シミュ: idx=1792(E), idx=1865(C)
+                        _solve_container_pouring_mcq,   # 容器パズルBFS: idx=1023(F)
                         # --- Full MathCrossSimulator (A強化: 未接続だったものを追加) ---
                         MathCrossSimulator,
                     )
@@ -391,6 +394,8 @@ class VerantyxV6Enhanced:
                         _solve_mcq_combinatorics_exact_compute,
                         _solve_mcq_linear_algebra_det_compute,
                         _solve_mcq_graph_chromatic_compute,
+                        _solve_ode_system_mcq,          # NEW: ODE系数値ソルバー
+                        _solve_container_pouring_mcq,   # NEW: 容器パズルBFS
                     ]
                     # パターンベース専用検出器
                     _pattern_detectors = [
