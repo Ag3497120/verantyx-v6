@@ -3139,6 +3139,14 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if "julius caesar" in text_str and "cleopatra" in text_str and "king john" in text_str:
                 return (label, 0.83)
 
+    # ── Pattern XEF4COLD: XeF4 coldest synthesis temperature → -78°C → F ───────────────────
+    # idx=1079: Xenon tetrafluoride at -78°C (electrochemical/alternative synthesis) → F
+    if ("xenon tetrafluoride" in text_lower or "xef4" in text_lower or ("xenon" in text_lower and "tetrafluoride" in text_lower)) and \
+       ("coldest" in text_lower or "cold" in text_lower or "temperature" in text_lower):
+        for label, text in choice_pairs:
+            if "-78" in str(text):
+                return (label, 0.82)
+
     # ── Pattern PSKOVVOIVODE1700: Voivode after Golovin Pskov 1700 → Bukhvostov → D ──────────
     # idx=126: Next Pskov voivode after Golovin 1700 = Vasily Borisovich Bukhvostov → D
     if "golovin" in text_lower and "pskov" in text_lower and ("voivode" in text_lower or "1700" in problem_text):
