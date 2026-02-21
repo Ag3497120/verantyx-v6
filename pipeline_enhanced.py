@@ -158,6 +158,10 @@ class VerantyxV6Enhanced:
             "cegis_missing_spec_blocked": 0,  # Guard 1 カウンタ
             "cegis_no_candidates": 0,          # executor が None → candidates 空
             "cegis_registry_hits": 0,          # WORLDGEN_REGISTRY を使った回数
+            "cegis_oracle_empty": 0,           # A3: oracle 空 → INCONCLUSIVE
+            "cegis_oracle_filtered": 0,        # oracle filtering で候補を除外した回数
+            "cegis_oracle_hits_by_piece": {},  # piece_id → hit 回数
+            "cegis_oracle_kinds": {},          # world kind → 生成回数
         }
     
     def solve(
@@ -1137,15 +1141,33 @@ class VerantyxV6Enhanced:
         oracle_worlds = []  # WORLDGEN_REGISTRY から取得した (input, oracle) 世界
 
         # D1: WORLDGEN_REGISTRY を最優先で確認
+        registry_hit_piece = None
         try:
             from cegis.worldgen_registry import WORLDGEN_REGISTRY, verify_candidate_against_world
+            # ── A1: IR entities ログ ──────────────────────────────────────
+            ir_entities = ir_dict.get("entities", []) or []
+            trace.append(
+                f"cegis_diag:ir_entities={len(ir_entities)} "
+                f"sample={[e.get('name') for e in ir_entities[:4]]}"
+            )
+
             for piece in pieces:
                 if piece.piece_id in WORLDGEN_REGISTRY:
                     oracle_worlds = WORLDGEN_REGISTRY[piece.piece_id](ir_dict)
+                    registry_hit_piece = piece.piece_id
                     self.stats["cegis_registry_hits"] += 1
+                    # piece hit カウント
+                    hit_map = self.stats["cegis_oracle_hits_by_piece"]
+                    hit_map[piece.piece_id] = hit_map.get(piece.piece_id, 0) + 1
+                    # world kind 集計
+                    for w in oracle_worlds:
+                        kind = w.get("kind", "unknown")
+                        km = self.stats["cegis_oracle_kinds"]
+                        km[kind] = km.get(kind, 0) + 1
                     trace.append(
                         f"cegis_diag:registry_hit piece={piece.piece_id} "
-                        f"worlds={len(oracle_worlds)}"
+                        f"worlds={len(oracle_worlds)} "
+                        f"kinds={list(set(w.get('kind') for w in oracle_worlds))}"
                     )
                     break
         except Exception as _reg_e:
@@ -1207,16 +1229,35 @@ class VerantyxV6Enhanced:
         except Exception as _ve_err:
             trace.append(f"verifier_api:init_error:{_ve_err}")
 
-        # ── Step D3: oracle_worlds がある場合、候補を oracle で事前フィルタリング ──
+        # ── Step D3: oracle filtering + A3 ハードゲート ────────────────────
         # WORLDGEN_REGISTRY の (input, oracle) 世界で候補を検証。
-        # MIN_WORLDS 未満しか生成できなければ INCONCLUSIVE。
+        #
+        # A3 ハードゲート:
+        #   - registry_hit があるのに oracle_worlds が空 → INCONCLUSIVE(empty_oracle)
+        #     "CEGISの燃料（world）が空 = 証明できない" を構造的に排除
+        #   - worlds >= MIN_WORLDS → filtering 実行
+        #
+        if registry_hit_piece is not None:
+            # A3: registry hit があるが oracle が空 → 証明できない → INCONCLUSIVE
+            if not oracle_worlds:
+                trace.append(
+                    f"cegis:A3_EMPTY_ORACLE piece={registry_hit_piece} "
+                    f"→ INCONCLUSIVE(empty_oracle)"
+                )
+                self.stats["cegis_oracle_empty"] += 1
+                self.stats["cegis_fallback"] += 1
+                return None, 0.0, "empty_oracle"
+
         if oracle_worlds:
             from cegis.worldgen_registry import MIN_WORLDS, verify_candidate_against_world
-            if len(oracle_worlds) >= MIN_WORLDS:
+            # filter で使う worlds のみ（sanity_only は除外済み）
+            filter_worlds = [w for w in oracle_worlds if w.get("kind") != "sanity_only"]
+
+            if len(filter_worlds) >= MIN_WORLDS:
                 oracle_filtered: List[Any] = []
                 for cand in candidates:
                     failed_worlds = []
-                    for world in oracle_worlds:
+                    for world in filter_worlds:
                         if not verify_candidate_against_world(cand.value, world):
                             failed_worlds.append(world.get("label", str(world)))
                     if failed_worlds:
@@ -1224,16 +1265,17 @@ class VerantyxV6Enhanced:
                             f"cegis:oracle_reject value={cand.value!r} "
                             f"ce={failed_worlds[0]}"
                         )
+                        self.stats["cegis_oracle_filtered"] += 1
                     else:
                         oracle_filtered.append(cand)
                 trace.append(
                     f"cegis:oracle_filter {len(oracle_filtered)}/{len(candidates)} survived "
-                    f"({len(oracle_worlds)} oracle worlds)"
+                    f"({len(filter_worlds)} filter_worlds)"
                 )
                 candidates = oracle_filtered
             else:
                 trace.append(
-                    f"cegis:oracle_inconclusive worlds={len(oracle_worlds)} < MIN={MIN_WORLDS}"
+                    f"cegis:oracle_skip worlds={len(filter_worlds)} < MIN={MIN_WORLDS}"
                 )
 
         # ── Step E: CEGISLoop 実行 ───────────────────────────────────────────
@@ -1394,11 +1436,35 @@ class VerantyxV6Enhanced:
                     elif any("missing_spec" in t for t in trace):
                         inconclusive_reason = "missing_spec"
 
+                # ── A1: trace から ir_entities / registry hit をパース ───
+                ir_entities_count = 0
+                registry_hit_piece_parsed = None
+                oracle_worlds_count_parsed = 0
+                oracle_world_kinds_parsed: List[str] = []
+
+                for t in trace:
+                    if "cegis_diag:ir_entities=" in t:
+                        try:
+                            ir_entities_count = int(t.split("cegis_diag:ir_entities=")[1].split()[0])
+                        except Exception:
+                            pass
+                    if "cegis_diag:registry_hit" in t:
+                        try:
+                            registry_hit_piece_parsed = t.split("piece=")[1].split()[0]
+                            oracle_worlds_count_parsed = int(t.split("worlds=")[1].split()[0])
+                        except Exception:
+                            pass
+                    if "A3_EMPTY_ORACLE" in t and not inconclusive_reason:
+                        inconclusive_reason = "empty_oracle"
+
                 cegis_info = CEGISInfo(
                     ran=True,
                     iters=iters,
                     proved=proved,
                     inconclusive_reason=inconclusive_reason,
+                    ir_entities=[{"count": ir_entities_count}],
+                    registry_hit_piece=registry_hit_piece_parsed,
+                    oracle_worlds_count=oracle_worlds_count_parsed,
                 )
 
             # Extract verification info

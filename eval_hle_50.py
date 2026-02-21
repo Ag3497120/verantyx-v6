@@ -239,6 +239,17 @@ def main():
     print(f"  Guard1 blocked:  {stats['cegis_missing_spec_blocked']}")
     print(f"  Halluc rejected: {stats['cegis_rejected_hallucination']}")
 
+    # ── A: oracle filtering 統計 ────────────────────────────────────
+    print(f"\n── Oracle filtering (A1/A2/A3) ──────────────────────────")
+    print(f"  oracle_empty(A3): {stats.get('cegis_oracle_empty', 0)}  (registry hit but 0 worlds → INCONCLUSIVE)")
+    print(f"  oracle_filtered:  {stats.get('cegis_oracle_filtered', 0)}  (candidates rejected by oracle)")
+    hits_by_piece = stats.get("cegis_oracle_hits_by_piece", {})
+    if hits_by_piece:
+        print(f"  hits_by_piece:    {dict(sorted(hits_by_piece.items(), key=lambda x: -x[1]))}")
+    oracle_kinds = stats.get("cegis_oracle_kinds", {})
+    if oracle_kinds:
+        print(f"  oracle_kinds:     {dict(sorted(oracle_kinds.items(), key=lambda x: -x[1]))}")
+
     # カテゴリ別
     print(f"\n── カテゴリ別正答数 ──────────────────────────────────────")
     cat_stats: dict = defaultdict(lambda: {"total": 0, "correct": 0})
