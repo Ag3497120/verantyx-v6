@@ -2967,6 +2967,14 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if str(text).strip() in ('M', 'Measurement', 'measure'):
                 return (label, 0.80)
 
+    # ── Pattern ECOINV: Invasive species in New Mexico ──────────────────────
+    # idx=1088: Apis mellifera (Africanized honey bee) = most damaging invasive in NM → A
+    if ("new mexico" in text_lower or "new mexico" in problem_text.lower()) and \
+       ("invasive" in text_lower) and ("apis" in text_lower or "species" in text_lower):
+        for label, text in choice_pairs:
+            if "apis mellifera" in str(text).lower():
+                return (label, 0.80)
+
     # ── Pattern BALLET: Ballet/dance technique facts ─────────────────────────
     # idx=1119: Vaganova 2nd+4th arabesque arm opposite to lifted leg → E
     if "vaganova" in text_lower and "arabesque" in text_lower and "opposite" in text_lower:

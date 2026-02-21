@@ -8954,10 +8954,10 @@
   {
     "idx": 1119,
     "category": "Other",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1120,
@@ -9394,10 +9394,10 @@
   {
     "idx": 1174,
     "category": "Other",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1175,
@@ -12546,10 +12546,10 @@
   {
     "idx": 1568,
     "category": "Other",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1569,
