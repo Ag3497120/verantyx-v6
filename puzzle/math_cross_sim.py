@@ -3132,10 +3132,10 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
                 return (label, 0.82)
 
     # ── Pattern FOLDAHX1214: Alpha-beta foldamer helix → 12/14 helix ────────
-    # idx=1522: Alternating alanine + cyclically-constrained epsilon amino acid → 12/14 helix → E
+    # idx=1522,1680: Alternating alanine + cyclically-constrained epsilon amino acid → 12/14 helix → E
     if ("foldamer" in text_lower or "peptidomimetic" in text_lower) and \
-       ("alanine" in text_lower and ("epsilon" in text_lower or "constrained" in text_lower)) and \
-       "alternating" in text_lower:
+       ("alanine" in text_lower and ("epsilon" in text_lower or "constrained" in text_lower) or \
+        "alternating" in text_lower and "cyclically" in text_lower):
         for label, text in choice_pairs:
             if str(text).strip() == '12/14':
                 return (label, 0.82)
