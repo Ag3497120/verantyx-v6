@@ -1,8 +1,8 @@
 {
   "total": 2500,
-  "correct": 110,
-  "accuracy": 4.3999999999999995,
-  "time": 56.605051040649414,
+  "correct": 112,
+  "accuracy": 4.4799999999999995,
+  "time": 56.68439435958862,
   "category_stats": {
     "Other": {
       "total": 233,
@@ -18,7 +18,7 @@
     },
     "Physics": {
       "total": 230,
-      "correct": 8
+      "correct": 9
     },
     "Computer Science/AI": {
       "total": 241,
@@ -26,7 +26,7 @@
     },
     "Biology/Medicine": {
       "total": 280,
-      "correct": 24
+      "correct": 25
     },
     "Chemistry": {
       "total": 165,
@@ -39,7 +39,7 @@
   },
   "method_stats": {
     "cegis_proved": 69,
-    "math_cross_sim": 21,
+    "math_cross_sim": 23,
     "unknown": 17,
     "puzzle_reasoning": 1,
     "propositional_simulation": 1,

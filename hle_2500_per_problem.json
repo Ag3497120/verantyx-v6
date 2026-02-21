@@ -11130,10 +11130,10 @@
   {
     "idx": 1391,
     "category": "Biology/Medicine",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1392,
@@ -14474,10 +14474,10 @@
   {
     "idx": 1809,
     "category": "Physics",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "F",
     "expected": "F",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1810,
