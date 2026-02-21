@@ -2306,10 +2306,10 @@
   {
     "idx": 288,
     "category": "Humanities/Social Science",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "G",
     "expected": "G",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 289,
@@ -3114,10 +3114,10 @@
   {
     "idx": 389,
     "category": "Humanities/Social Science",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 390,
@@ -14050,10 +14050,10 @@
   {
     "idx": 1756,
     "category": "Humanities/Social Science",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1757,
@@ -18882,10 +18882,10 @@
   {
     "idx": 2360,
     "category": "Biology/Medicine",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 2361,
