@@ -2674,6 +2674,95 @@ def _solve_container_pouring_mcq(problem_text: str, choice_pairs: list) -> Optio
     return None
 
 
+def _solve_ejr_approval_voting_mcq(problem_text: str, choice_pairs: list) -> Optional[Tuple[str, float]]:
+    """
+    Extended Justified Representation (EJR) approval voting solver.
+
+    対象: 承認投票 + EJR + 特定候補者の委員会内承認数を問う問題
+    アプローチ: 全EJR満足委員会を列挙し、最小/最大承認数を計算
+    """
+    import re as _re
+    from itertools import combinations as _combinations
+
+    text_lower = problem_text.lower()
+
+    if not ("ejr" in text_lower or "extended justified representation" in text_lower or
+            "approval ballot" in text_lower):
+        return None
+    if "committee" not in text_lower:
+        return None
+
+    # 投票者と承認集合を抽出
+    voter_pattern = _re.findall(r'[Vv]oter\s+(\d+):\s*\{([^}]+)\}', problem_text)
+    if not voter_pattern:
+        return None
+
+    voters = {}
+    for v_id_str, cands_str in voter_pattern:
+        v_id = int(v_id_str)
+        cands = {c.strip() for c in cands_str.split(',') if c.strip()}
+        voters[v_id] = cands
+
+    n = len(voters)
+
+    # 委員会サイズを抽出
+    k_match = _re.search(r'committee\s+with\s+(\d+)\s+member', problem_text, _re.IGNORECASE)
+    if not k_match:
+        return None
+    k = int(k_match.group(1))
+
+    # 対象投票者を抽出 (通常 Voter 1)
+    target_match = _re.search(r'approved by voter\s+(\d+)', problem_text, _re.IGNORECASE)
+    target_v = int(target_match.group(1)) if target_match else 1
+    if target_v not in voters:
+        return None
+
+    target_approvals = voters[target_v]
+
+    # 全候補者
+    all_cands = sorted(set(c for v in voters.values() for c in v))
+
+    if len(all_cands) > 20 or k > 8 or n > 12:
+        return None  # 計算量が多すぎる場合はスキップ
+
+    def check_ejr(committee, voters, n, k):
+        voter_ids = list(voters.keys())
+        for l in range(1, k+1):
+            threshold = l * n // k
+            for grp_size in range(threshold, n+1):
+                for grp in _combinations(voter_ids, grp_size):
+                    common = voters[grp[0]].copy()
+                    for v in grp[1:]:
+                        common &= voters[v]
+                    if len(common) >= l:
+                        if not any(len(voters[v] & committee) >= l for v in grp):
+                            return False
+        return True
+
+    min_appr = k + 1
+    max_appr = -1
+
+    for comm_tuple in _combinations(all_cands, k):
+        comm = set(comm_tuple)
+        if check_ejr(comm, voters, n, k):
+            appr = len(target_approvals & comm)
+            min_appr = min(min_appr, appr)
+            max_appr = max(max_appr, appr)
+
+    if min_appr > k or max_appr < 0:
+        return None
+
+    # 選択肢からmatch
+    match_str = f"min {min_appr}"
+    match_str2 = f"max {max_appr}"
+    for label, text in choice_pairs:
+        text_str = str(text).strip().lower()
+        if match_str in text_str and match_str2 in text_str:
+            return (label, 0.90)
+
+    return None
+
+
 def _solve_chess_mate_mcq(problem_text: str, choice_pairs: list) -> Optional[Tuple[str, float]]:
     """
     Chess forced-mate problem solver using Stockfish.

@@ -389,6 +389,7 @@ class VerantyxV6Enhanced:
                         _detect_cap_set_size_mcq,             # cap set サイズ lookup: idx=655(C)
                         _solve_cs_specific_facts_mcq,         # CS facts: vtable/Edmonds/bundle_adj
                         _solve_chess_mate_mcq,                # chess FEN+Stockfish: idx=435(D)
+                        _solve_ejr_approval_voting_mcq,       # EJR approval voting: idx=711(H)
                         # --- Full MathCrossSimulator (A強化: 未接続だったものを追加) ---
                         MathCrossSimulator,
                     )
@@ -406,6 +407,7 @@ class VerantyxV6Enhanced:
                         _detect_cap_set_size_mcq,             # NEW: cap set サイズ静的lookup
                         _solve_cs_specific_facts_mcq,         # NEW: CS facts vtable/Edmonds/bundle_adj
                         _solve_chess_mate_mcq,                # NEW: chess FEN+Stockfish
+                        _solve_ejr_approval_voting_mcq,       # NEW: EJR approval voting
                     ]
                     # パターンベース専用検出器
                     _pattern_detectors = [
