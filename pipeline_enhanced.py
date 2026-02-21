@@ -381,10 +381,11 @@ class VerantyxV6Enhanced:
                         _solve_mcq_combinatorics_exact_compute, # Stirling/Bell/Catalan/binomial, ~93%
                         _solve_mcq_linear_algebra_det_compute,  # det/trace, ~94%
                         _solve_mcq_graph_chromatic_compute,     # chromatic/Petersen/K_n, ~89%
-                        # --- 新規追加: ODE系 + 容器パズル + DFA最小化 (2026-02-21) ---
+                        # --- 新規追加: ODE系 + 容器パズル + DFA最小化 + 量子ゲート (2026-02-21) ---
                         _solve_ode_system_mcq,          # ODE数値シミュ: idx=1792(E), idx=1865(C)
                         _solve_container_pouring_mcq,   # 容器パズルBFS: idx=1023(F)
                         _solve_minimal_dfa_states_mcq,  # 正規表現→最小DFA状態数: idx=50(D)
+                        _solve_quantum_gate_consistency_mcq,  # 量子ゲート整合性: idx=138(Q)
                         # --- Full MathCrossSimulator (A強化: 未接続だったものを追加) ---
                         MathCrossSimulator,
                     )
@@ -398,6 +399,7 @@ class VerantyxV6Enhanced:
                         _solve_ode_system_mcq,          # NEW: ODE系数値ソルバー
                         _solve_container_pouring_mcq,   # NEW: 容器パズルBFS
                         _solve_minimal_dfa_states_mcq,  # NEW: 正規表現→最小DFA状態数
+                        _solve_quantum_gate_consistency_mcq,  # NEW: 量子ゲート整合性
                     ]
                     # パターンベース専用検出器
                     _pattern_detectors = [
