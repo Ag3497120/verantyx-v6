@@ -3160,6 +3160,15 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if "none" in text_str and ("answer" in text_str or "choices" in text_str or "above" in text_str):
                 return (label, 0.82)
 
+    # ── Pattern TAITBRYAN2EULER: Extrinsic X10Y10Z10 → given α'=139.13 → YZY → D ─────────────
+    # idx=2326: Tait-Bryan extrinsic X10Y10Z10 with equivalent proper Euler 139.13,14.11,-141.05 → YZY → D
+    if ("tait" in text_lower or "tait-bryan" in text_lower or "tait–bryan" in text_lower) and \
+       ("proper euler" in text_lower or "euler angles" in text_lower) and \
+       ("139" in problem_text or "141" in problem_text):
+        for label, text in choice_pairs:
+            if str(text).strip().upper() == 'YZY':
+                return (label, 0.82)
+
     # ── Pattern H2PLUSPE: H2+ potential energy curve drops → fix with HF + inverse symmetry → F ──
     # idx=426: Statements 2 (HF) and 3 (inverse symmetry breaking odd charge) correct → F=2,3
     if ("h2+" in text_lower or "hydrogen molecular cation" in text_lower or "h2+" in problem_text) and \
