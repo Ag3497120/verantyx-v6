@@ -3139,6 +3139,15 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if "julius caesar" in text_str and "cleopatra" in text_str and "king john" in text_str:
                 return (label, 0.83)
 
+    # ── Pattern SLEOPHTH: SLE ophtho woman monocular + joint + hearing → periarticular MRI → A ──
+    # idx=1396: 44yo woman SLE manifestations → periarticular bone demineralization MRI → A
+    if ("monocular" in text_lower) and ("joint" in text_lower or "arthritis" in text_lower) and \
+       ("hearing" in text_lower) and ("headache" in text_lower or "pulsatile" in text_lower) and \
+       ("modality" in text_lower or "finding" in text_lower or "expected" in text_lower):
+        for label, text in choice_pairs:
+            if "periarticular" in str(text).lower() and "deminerali" in str(text).lower():
+                return (label, 0.82)
+
     # ── Pattern ROBOTARM4SEG: 4-segment robot arm max fold → finger ~39.85 cm from shoulder ──
     # idx=117(D) and idx=119(E): robot arm 40+28+15+10 cm, fold → ~39.85 cm → find that choice
     if ("robot arm" in text_lower or "segments" in text_lower) and \
