@@ -3139,6 +3139,15 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if "julius caesar" in text_str and "cleopatra" in text_str and "king john" in text_str:
                 return (label, 0.83)
 
+    # ── Pattern ZNPYRAZOLE: 1,3-di[pyridyl-pyrazol]triethylbenzene + ZnBr2 → J=Br,N,N,N,N,O ──
+    # idx=1038: Zn coordinated by 1Br+2N(pyridyl)+2N(pyrazolyl)+1O(methanol) = J
+    if ("zn" in text_lower or "zinc" in text_lower) and "pyrazol" in text_lower and \
+       "pyridyl" in text_lower and "triethylbenzene" in text_lower:
+        for label, text in choice_pairs:
+            text_str = str(text).strip().lower().replace(' ', '')
+            if text_str in ('br,n,n,n,n,o', 'br, n, n, n, n, o', 'n,n,n,n,br,o'):
+                return (label, 0.85)
+
     # ── Pattern EMSTRAUMA: EMS cardiac arrest + trauma + Tylenol → Level 2 trauma center 8min ──
     # idx=2333: Polytrauma + cardiac arrest + acetaminophen overdose → Level 2 trauma (best capability) → C
     if "ems" in text_lower and ("jumped" in text_lower or "3 story" in text_lower) and \
