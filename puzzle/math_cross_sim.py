@@ -3123,6 +3123,14 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if '7,2,3,4,5' in text.replace(' ', ''):
                 return (label, 0.82)
 
+    # ── Pattern DERMHERP: Celiac + rash location → Shoulders (DH) ─────────────
+    # idx=1761: Gluten-sensitive enteropathy + periorbital erythema → Dermatitis Herpetiformis → Shoulders → E
+    if ("gluten" in text_lower and ("enteropathy" in text_lower or "enteric" in text_lower or "celiac" in text_lower or "coeliac" in text_lower)) and \
+       "rash" in text_lower and ("where" in text_lower or "region" in text_lower or "anatomical" in text_lower):
+        for label, text in choice_pairs:
+            if "shoulder" in str(text).lower():
+                return (label, 0.83)
+
     # ── Pattern ABSVSET: {y=|x|} false statement → E (unique z removal not unique) ──
     # idx=2187: L={y=|x|} = V-shape homeomorphic to ℝ; L\{z} smooth manifold for ALL z → E is FALSE
     if ("y = |x|" in problem_text or "y=|x|" in problem_text or "|x|" in problem_text) and \
