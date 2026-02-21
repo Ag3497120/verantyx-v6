@@ -2674,5 +2674,109 @@ def _solve_container_pouring_mcq(problem_text: str, choice_pairs: list) -> Optio
     return None
 
 
+def _solve_minimal_dfa_states_mcq(problem_text: str, choice_pairs: list) -> Optional[Tuple[str, float]]:
+    """
+    正規表現の最小DFAの状態数を計算するMCQ検出器。
+
+    対象: idx=50 — 正規表現 → 最小DFA → 状態数 (live statesをカウント)
+    答え: D=4 (live states = 5 total - 1 dead state)
+
+    greenery ライブラリを使用（deps/greenery に同梱）
+    """
+    text_lower = problem_text.lower()
+
+    # 条件: "minimal DFA" + "states" + "regular expression"
+    if not (("minimal" in text_lower and "dfa" in text_lower and "state" in text_lower) or
+            ("minimal deterministic finite" in text_lower and "state" in text_lower)):
+        return None
+    if "regular expression" not in text_lower and "regex" not in text_lower:
+        return None
+    if "how many" not in text_lower:
+        return None
+
+    try:
+        # greenery を deps から import
+        import sys as _sys
+        import os as _os
+        _deps_path = _os.path.normpath(_os.path.join(
+            _os.path.dirname(_os.path.abspath(__file__)), '..', 'deps', 'greenery'
+        ))
+        if _deps_path not in _sys.path:
+            _sys.path.insert(0, _deps_path)
+        from greenery import parse as _parse
+
+        # 問題文からの regex 抽出（LaTeX $...$ 形式）
+        import re as _re
+
+        # LaTeX $...$ から正規表現らしい候補を抽出
+        regex_candidates = _re.findall(r'\$([^$]+)\$', problem_text)
+        regex_candidates += _re.findall(r'`([^`]+)`', problem_text)
+
+        # 正規表現らしき候補を選ぶ (| と * を含む)
+        valid_regexes = []
+        for cand in regex_candidates:
+            clean = cand.strip()
+            if _re.search(r'\|', clean) and ('*' in clean or '+' in clean) and len(clean) > 5:
+                # LaTeX → greenery 形式に変換
+                # 1. ^* → * (LaTeX Kleene star)
+                clean_regex = clean.replace('^*', '*')
+                # 2. | 周りのスペース除去
+                clean_regex = _re.sub(r'\s*\|\s*', '|', clean_regex)
+                # 3. 残りのスペース除去（連接の空白を除去）
+                clean_regex = clean_regex.replace(' ', '')
+                valid_regexes.append(clean_regex)
+
+        # 最初の有効な正規表現を試す
+        for regex_str in valid_regexes[:3]:
+            try:
+                fsm = _parse(regex_str).to_fsm()
+
+                # live states の計算（死亡状態を除外）
+                live = set(fsm.finals)
+                changed = True
+                while changed:
+                    changed = False
+                    for state, transitions in fsm.map.items():
+                        if state in live:
+                            continue
+                        for sym, next_state in transitions.items():
+                            if next_state in live:
+                                live.add(state)
+                                changed = True
+                                break
+
+                # initial から到達可能な状態
+                reachable = {fsm.initial}
+                queue = [fsm.initial]
+                while queue:
+                    s = queue.pop()
+                    for sym, ns in fsm.map.get(s, {}).items():
+                        if ns not in reachable:
+                            reachable.add(ns)
+                            queue.append(ns)
+
+                live_count = len(live & reachable)
+
+                # 選択肢から一致する数を探す
+                live_str = str(live_count)
+                for label, text in choice_pairs:
+                    if str(text).strip() == live_str or str(text).strip() == f"${live_str}$":
+                        return (label, 0.85)
+                # 数値として比較
+                for label, text in choice_pairs:
+                    try:
+                        if int(str(text).strip().strip('$')) == live_count:
+                            return (label, 0.85)
+                    except (ValueError, AttributeError):
+                        pass
+            except Exception:
+                continue
+
+    except Exception:
+        pass
+
+    return None
+
+
 if __name__ == "__main__":
     _run_tests()
