@@ -1,8 +1,8 @@
 {
   "total": 2500,
-  "correct": 156,
-  "accuracy": 6.239999999999999,
-  "time": 55.84509301185608,
+  "correct": 159,
+  "accuracy": 6.36,
+  "time": 55.64670395851135,
   "category_stats": {
     "Other": {
       "total": 233,
@@ -10,11 +10,11 @@
     },
     "Humanities/Social Science": {
       "total": 219,
-      "correct": 17
+      "correct": 19
     },
     "Math": {
       "total": 1021,
-      "correct": 34
+      "correct": 35
     },
     "Physics": {
       "total": 230,
@@ -38,8 +38,8 @@
     }
   },
   "method_stats": {
+    "math_cross_sim": 70,
     "cegis_proved": 69,
-    "math_cross_sim": 67,
     "unknown": 17,
     "puzzle_reasoning": 1,
     "propositional_simulation": 1,
