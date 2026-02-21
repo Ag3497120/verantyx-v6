@@ -2226,10 +2226,10 @@
   {
     "idx": 278,
     "category": "Physics",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 279,
@@ -7506,10 +7506,10 @@
   {
     "idx": 938,
     "category": "Biology/Medicine",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 939,
@@ -8586,10 +8586,10 @@
   {
     "idx": 1073,
     "category": "Biology/Medicine",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1074,
@@ -9458,10 +9458,10 @@
   {
     "idx": 1182,
     "category": "Other",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1183,
@@ -10666,10 +10666,10 @@
   {
     "idx": 1333,
     "category": "Other",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1334,
@@ -10962,10 +10962,10 @@
   {
     "idx": 1370,
     "category": "Other",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1371,
@@ -13410,10 +13410,10 @@
   {
     "idx": 1676,
     "category": "Physics",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1677,
