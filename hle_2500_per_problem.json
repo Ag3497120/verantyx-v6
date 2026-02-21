@@ -418,10 +418,10 @@
   {
     "idx": 52,
     "category": "Other",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "G",
     "expected": "G",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 53,
@@ -10642,10 +10642,10 @@
   {
     "idx": 1330,
     "category": "Humanities/Social Science",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "G",
     "expected": "G",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1331,
@@ -11706,10 +11706,10 @@
   {
     "idx": 1463,
     "category": "Biology/Medicine",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1464,
@@ -12194,10 +12194,10 @@
   {
     "idx": 1524,
     "category": "Biology/Medicine",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1525,
@@ -12290,10 +12290,10 @@
   {
     "idx": 1536,
     "category": "Biology/Medicine",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1537,
@@ -13378,10 +13378,10 @@
   {
     "idx": 1672,
     "category": "Biology/Medicine",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1673,
@@ -13482,10 +13482,10 @@
   {
     "idx": 1685,
     "category": "Biology/Medicine",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1686,

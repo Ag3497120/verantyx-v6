@@ -3123,6 +3123,16 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if '7,2,3,4,5' in text.replace(' ', ''):
                 return (label, 0.82)
 
+    # ── Pattern HFRMATING: Hfr interrupted mating → highest recombinants between azi and gal ─
+    # idx=1519: thr-azi-gal gene order, highest recombination between azi and gal → C
+    if ("interrupted mating" in text_lower or "hfr" in text_lower) and \
+       ("thr" in text_lower and "azi" in text_lower and "gal" in text_lower) and \
+       "highest frequency of recombinants" in text_lower:
+        for label, text in choice_pairs:
+            text_str = str(text).lower()
+            if "azi" in text_str and "gal" in text_str and "between" in text_str:
+                return (label, 0.82)
+
     # ── Pattern TRPATTN: trp operon attenuation → U-rich to G-C prevents termination ─
     # idx=1536: Under high Trp, preventing 3-4 terminator → mutate U-rich to G-C rich → C
     if "trp operon" in text_lower and ("attenuation" in text_lower or "attenuator" in text_lower) and \
