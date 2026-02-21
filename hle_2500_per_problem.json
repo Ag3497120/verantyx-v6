@@ -10210,10 +10210,10 @@
   {
     "idx": 1276,
     "category": "Engineering",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1277,
@@ -13042,10 +13042,10 @@
   {
     "idx": 1630,
     "category": "Engineering",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1631,

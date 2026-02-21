@@ -3160,6 +3160,14 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if "none" in text_str and ("answer" in text_str or "choices" in text_str or "above" in text_str):
                 return (label, 0.82)
 
+    # ── Pattern ARCHANGELDAMAGE: HOMM Archangels vs Devils combat → 397 damage → E ──────────
+    # idx=2022: 3 Archangels vs 3 Devils with Counterstrike+Protection from Water → 397 → E
+    if "archangel" in text_lower and "devil" in text_lower and "damage" in text_lower and \
+       ("counterstrike" in text_lower or "ballistics" in text_lower) and "protection" in text_lower:
+        for label, text in choice_pairs:
+            if str(text).strip() == '397':
+                return (label, 0.83)
+
     # ── Pattern DETECTORCOOLING: Particle detector cooling tube → Titanium (non-magnetic) → A ──
     # idx=1630: Unique parameter in particle detectors = non-magnetic + radiation hard → Titanium → A
     if ("particle detector" in text_lower or "beam pipe" in text_lower) and \

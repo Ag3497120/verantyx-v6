@@ -1,8 +1,8 @@
 {
   "total": 2500,
-  "correct": 207,
-  "accuracy": 8.28,
-  "time": 55.879640102386475,
+  "correct": 209,
+  "accuracy": 8.36,
+  "time": 55.401641845703125,
   "category_stats": {
     "Other": {
       "total": 233,
@@ -34,11 +34,11 @@
     },
     "Engineering": {
       "total": 111,
-      "correct": 4
+      "correct": 6
     }
   },
   "method_stats": {
-    "math_cross_sim": 118,
+    "math_cross_sim": 120,
     "cegis_proved": 69,
     "unknown": 17,
     "puzzle_reasoning": 1,
