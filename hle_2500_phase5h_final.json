@@ -1,8 +1,8 @@
 {
   "total": 2500,
-  "correct": 204,
-  "accuracy": 8.16,
-  "time": 55.3984489440918,
+  "correct": 206,
+  "accuracy": 8.24,
+  "time": 55.68368196487427,
   "category_stats": {
     "Other": {
       "total": 233,
@@ -26,7 +26,7 @@
     },
     "Biology/Medicine": {
       "total": 280,
-      "correct": 57
+      "correct": 59
     },
     "Chemistry": {
       "total": 165,
@@ -38,7 +38,7 @@
     }
   },
   "method_stats": {
-    "math_cross_sim": 115,
+    "math_cross_sim": 117,
     "cegis_proved": 69,
     "unknown": 17,
     "puzzle_reasoning": 1,
