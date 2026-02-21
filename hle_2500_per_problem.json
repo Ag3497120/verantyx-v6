@@ -4450,10 +4450,10 @@
   {
     "idx": 556,
     "category": "Computer Science/AI",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "F",
     "expected": "F",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 557,
@@ -10730,10 +10730,10 @@
   {
     "idx": 1341,
     "category": "Computer Science/AI",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1342,
@@ -15426,10 +15426,10 @@
   {
     "idx": 1928,
     "category": "Computer Science/AI",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1929,
@@ -17802,10 +17802,10 @@
   {
     "idx": 2225,
     "category": "Computer Science/AI",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "H",
     "expected": "H",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 2226,

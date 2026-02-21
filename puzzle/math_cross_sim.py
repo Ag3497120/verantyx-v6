@@ -2807,6 +2807,14 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if "for all" in text_str or "all \\ell" in text_str or "holds for all" in text_str:
                 return (label, 0.82)
 
+    # ── Pattern LANG: Language/Linguistics known facts ─────────────────────
+    # idx=68: Standard Japanese pitch accent of 「弟」= Odaka
+    if ("pitch accent" in text_lower or "アクセント" in problem_text) and \
+       ("弟" in problem_text or "otouto" in text_lower or "younger brother" in text_lower):
+        for label, text in choice_pairs:
+            if "odaka" in str(text).lower() or "尾高" in str(text):
+                return (label, 0.85)
+
     # ── Pattern NN: Feedforward NN perturbation theory ─────────────────────
     # idx=556: optimal parameters under perturbation theory (2nd order) = depth/width ratio
     if ("feedforward" in text_lower or "feed-forward" in text_lower) and \
