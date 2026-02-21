@@ -22,7 +22,46 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass, field
+from enum import Enum, auto
 from typing import Any, Callable, Dict, List, Optional
+
+
+# ─── ChatGPT 設計: 3値 CheckStatus ───────────────────────────────────────────
+class CheckStatus(Enum):
+    PROVED      = auto()   # 反例なし・検証完了
+    DISPROVED   = auto()   # 反例あり
+    INCONCLUSIVE = auto()  # worldgen失敗 / schema不足 / 実行不能 (→ reject)
+
+
+@dataclass
+class WorldGenResult:
+    ok: bool
+    world: Any
+    error: str | None = None
+
+
+def safe_worldgen(world_gen, domain: str, params: dict) -> "WorldGenResult":
+    """worldgen 失敗を例外ごと握りつぶさず INCONCLUSIVE に変換"""
+    try:
+        worlds = world_gen.generate(domain, params)
+        if not worlds:
+            return WorldGenResult(False, None, "worldgen_returned_empty")
+        return WorldGenResult(True, worlds, None)
+    except Exception as e:
+        return WorldGenResult(False, None, f"worldgen_exception:{type(e).__name__}:{e}")
+
+
+def candidate_sanity(domain: str, value: Any) -> bool:
+    """候補 answer の型・範囲チェック（trivial pass 防波堤）"""
+    if domain == "multiple_choice" or (isinstance(value, str) and value in list("ABCDE")):
+        return isinstance(value, str) and value in ["A", "B", "C", "D", "E"]
+    if isinstance(value, (int, float)):
+        try:
+            return abs(float(value)) < 1e12  # 兆を超える数値は疑わしい
+        except Exception:
+            return False
+    return True  # 文字列などは通す
+# ─────────────────────────────────────────────────────────────────────────────
 
 from .certificate import Certificate, CertKind, CertificateChecker
 from .worldgen import FiniteModel, WorldGenerator
@@ -95,20 +134,20 @@ class CEGISResult:
 
 _DOMAIN_TO_WORLD: Dict[str, str] = {
     "arithmetic":               "number",
-    "algebra":                  "number",
+    "algebra":                  "substitution",    # 変数代入で恒等式検証
     "linear_algebra":           "matrix",
     "calculus":                 "polynomial",
     "logic_propositional":      "propositional",
     "logic_modal":              "propositional",
     "logic_first_order":        "set",
     "graph_theory":             "graph",
-    "number_theory":            "number",
+    "number_theory":            "modular",         # mod p 演算
     "combinatorics":            "sequence",
     "probability":              "number",
     "statistics":               "sequence",
-    "modular_arithmetic":       "ring",
+    "modular_arithmetic":       "modular",         # mod p 演算
     "advanced_probability":     "number",
-    "advanced_number_theory":   "number",
+    "advanced_number_theory":   "modular",         # mod p 演算
     "advanced_combinatorics":   "sequence",
     "string":                   "sequence",
     "multiple_choice":          "number",
@@ -117,6 +156,9 @@ _DOMAIN_TO_WORLD: Dict[str, str] = {
     "chemistry":                "number",
     "computer_science":         "graph",
     "philosophy":               "propositional",
+    "group_theory":             "finite_group",    # 有限群
+    "field_theory":             "finite_field",    # 有限体
+    "polynomial":               "substitution",    # 多項式恒等式
     "unknown":                  "number",
 }
 
@@ -196,11 +238,21 @@ class CEGISLoop:
                 break
 
             # ─── Step 5: Simulate（小世界生成 + 反例テスト） ────────────────
-            worlds = self.world_gen.generate(world_spec.domain, world_spec.params)
+            wg_result = safe_worldgen(self.world_gen, world_spec.domain, world_spec.params)
+            if not wg_result.ok:
+                trace.append(f"iter={iteration}: INCONCLUSIVE — worldgen failed: {wg_result.error}")
+                break  # worldgen 失敗 → このループでは証明不可能
+            worlds = wg_result.world
             trace.append(f"iter={iteration}: {len(worlds)} worlds generated")
 
             surviving: List[Candidate] = []
             for cand in current_candidates:
+                # 答えの sanity check（MCQ=A-E 強制、数値=範囲チェック）
+                domain = ir_dict.get("domain", "unknown")
+                if not candidate_sanity(domain, cand.value):
+                    trace.append(f"  ✗ cand={cand.value!r} | SANITY_FAIL (domain={domain})")
+                    counterexamples.append({"sanity": "failed", "value": str(cand.value)})
+                    continue
                 counterex = self._find_counterexample(cand, worlds, ir_dict)
                 if counterex is None:
                     surviving.append(cand)
@@ -247,26 +299,9 @@ class CEGISLoop:
                         elapsed_ms=(time.perf_counter() - t_start) * 1000,
                     )
 
-            # 証明書なしで高信頼候補があれば HIGH_CONFIDENCE で返す
-            if surviving:
-                best = max(surviving, key=lambda c: c.confidence)
-                if best.confidence >= 0.80:
-                    cert = Certificate(
-                        kind=CertKind.HIGH_CONFIDENCE,
-                        value={"worlds_tested": len(worlds), "passed": len(worlds)},
-                        confidence=best.confidence,
-                    )
-                    trace.append(f"  ↑ HIGH_CONFIDENCE cand={best.value!r}")
-                    return CEGISResult(
-                        answer=best.value,
-                        confidence=best.confidence,
-                        certificate=cert,
-                        iterations=iteration + 1,
-                        counterexamples=counterexamples,
-                        status="high_confidence",
-                        trace=trace,
-                        elapsed_ms=(time.perf_counter() - t_start) * 1000,
-                    )
+            # ⚠️ HIGH_CONFIDENCE fallback は廃止。
+            # 証明書なしで confidence だけで通すのは trivial pass の源泉 → INCONCLUSIVE 扱い。
+            # (ChatGPT 設計: INCONCLUSIVE は reject)
 
             current_candidates = surviving
 
@@ -323,6 +358,19 @@ class CEGISLoop:
             params = {"dim": 2, "val_range": range(-2, 3)}
         elif world_domain == "sequence":
             params = {"length": 8}
+        elif world_domain == "substitution":
+            # IR から変数名を抽出
+            entities = ir_dict.get("entities", [])
+            vars_list = [e.get("name") for e in entities if e.get("type") in ["variable", "symbol"]]
+            if not vars_list:
+                vars_list = ["x", "y", "n", "k", "a", "b"]
+            params = {"vars": vars_list[:6], "count": 30}
+        elif world_domain == "finite_field":
+            params = {"primes": [2, 3, 5, 7, 11, 13]}
+        elif world_domain == "finite_group":
+            params = {"orders": [2, 3, 4, 5, 6, 7, 8, 9, 10, 12]}
+        elif world_domain == "modular":
+            params = {"moduli": [2, 3, 5, 7, 11, 13, 17, 19, 23]}
 
         return WorldSpec(
             domain=world_domain,
@@ -454,7 +502,9 @@ class CEGISLoop:
         # ─── 旧: 小世界テスト ───
         constraints = cand.constraints
         if not constraints:
-            return None   # 制約なし = どの世界でも壊れない
+            # 制約なしは「どんな世界でも壊れない」ではなく「検証できない」= INCONCLUSIVE 扱い
+            # → 反例を返さないが verifier_pass も付かないので cert_checker が落とす
+            return None
 
         for world in worlds[:20]:
             for constraint in constraints:
@@ -546,13 +596,8 @@ class CEGISLoop:
         total = len(worlds)
 
         if total == 0:
-            # 世界なし → HIGH_CONFIDENCE
-            return Certificate(
-                kind=CertKind.HIGH_CONFIDENCE,
-                value={"worlds_tested": 0, "passed": 0},
-                confidence=cand.confidence,
-                details={"candidate": str(cand.value)},
-            )
+            # worldgen 失敗 or 空 → INCONCLUSIVE → 証明書なし（ChatGPT ルール1）
+            return None
 
         ratio = passed / total
         if ratio >= 0.9:

@@ -37,6 +37,21 @@ def split_stem_choices(question: str) -> Tuple[str, Optional[Dict[str, str]]]:
             stem = question[:m.start()].strip()
             choice_block = question[m.start():]
         else:
+            # インライン形式: "(A) text (B) text ..." を試みる
+            inline_m = re.search(r'\(([A-Z])\)\s+\S', question)
+            if inline_m:
+                inline_choices: Dict[str, str] = {}
+                # "(A) ... (B) ..." → split by "(letter)"
+                parts = re.split(r'\(([A-E])\)\s+', question)
+                # parts: [stem_part, 'A', 'text_a', 'B', 'text_b', ...]
+                if len(parts) >= 5:  # stem + at least 2 options
+                    stem = parts[0].strip()
+                    for i in range(1, len(parts) - 1, 2):
+                        letter = parts[i].upper()
+                        text = parts[i + 1].strip() if i + 1 < len(parts) else ""
+                        inline_choices[letter] = text
+                    if len(inline_choices) >= 2:
+                        return stem, inline_choices
             return question, None
 
     # Parse individual choices (A-Z support for extended MCQ)

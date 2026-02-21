@@ -93,7 +93,7 @@
     "correct": true,
     "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 12,
@@ -109,7 +109,7 @@
     "correct": true,
     "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 14,
@@ -117,7 +117,7 @@
     "correct": false,
     "answer": "A",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 15,
@@ -133,7 +133,7 @@
     "correct": false,
     "answer": "C",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 17,
@@ -213,7 +213,7 @@
     "correct": false,
     "answer": "158",
     "expected": "56",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 27,
@@ -237,7 +237,7 @@
     "correct": false,
     "answer": null,
     "expected": "(1,4,5), (1,3,4,5,6)",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 30,
@@ -259,7 +259,7 @@
     "idx": 32,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": null,
+    "answer": "H",
     "expected": "J",
     "method": "unknown"
   },
@@ -269,7 +269,7 @@
     "correct": false,
     "answer": "135",
     "expected": "6",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 34,
@@ -357,15 +357,15 @@
     "correct": false,
     "answer": "A",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 45,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "+",
+    "answer": null,
     "expected": "flag{no_zeros}",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 46,
@@ -397,7 +397,7 @@
     "correct": false,
     "answer": "3.5",
     "expected": "5429515560378",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 50,
@@ -413,7 +413,7 @@
     "correct": false,
     "answer": "104",
     "expected": "(6, 14, 15, 7)",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 52,
@@ -477,7 +477,7 @@
     "correct": false,
     "answer": "D",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 60,
@@ -485,7 +485,7 @@
     "correct": false,
     "answer": "A",
     "expected": "F",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 61,
@@ -541,7 +541,7 @@
     "correct": false,
     "answer": "6",
     "expected": "3.14183994",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 68,
@@ -565,7 +565,7 @@
     "correct": false,
     "answer": "A",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 71,
@@ -581,7 +581,7 @@
     "correct": false,
     "answer": "E",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 73,
@@ -589,7 +589,7 @@
     "correct": false,
     "answer": "101",
     "expected": "4",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 74,
@@ -605,7 +605,7 @@
     "correct": false,
     "answer": "C",
     "expected": "K",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 76,
@@ -629,7 +629,7 @@
     "correct": false,
     "answer": "550",
     "expected": "7",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 79,
@@ -701,7 +701,7 @@
     "correct": false,
     "answer": "E",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 88,
@@ -709,7 +709,7 @@
     "correct": false,
     "answer": "C",
     "expected": "I",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 89,
@@ -733,7 +733,7 @@
     "correct": false,
     "answer": "309",
     "expected": "kənʃə",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 92,
@@ -797,7 +797,7 @@
     "correct": false,
     "answer": "True",
     "expected": "$\\frac{3}{10}$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 100,
@@ -837,7 +837,7 @@
     "correct": false,
     "answer": "288",
     "expected": "624",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 105,
@@ -869,7 +869,7 @@
     "correct": false,
     "answer": "E",
     "expected": "I",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 109,
@@ -877,7 +877,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 110,
@@ -893,15 +893,15 @@
     "correct": false,
     "answer": "B",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 112,
     "category": "Math",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 113,
@@ -917,7 +917,7 @@
     "correct": false,
     "answer": "E",
     "expected": "H",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 115,
@@ -949,7 +949,7 @@
     "correct": false,
     "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 119,
@@ -981,7 +981,7 @@
     "correct": false,
     "answer": "182",
     "expected": "10",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 123,
@@ -1053,7 +1053,7 @@
     "correct": false,
     "answer": "A",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 132,
@@ -1101,7 +1101,7 @@
     "correct": false,
     "answer": "271",
     "expected": "4",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 138,
@@ -1123,7 +1123,7 @@
     "idx": 140,
     "category": "Math",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "Edges are preserved and become sharper",
     "method": "unknown"
   },
@@ -1133,7 +1133,7 @@
     "correct": false,
     "answer": "C",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 142,
@@ -1141,7 +1141,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 143,
@@ -1165,7 +1165,7 @@
     "correct": true,
     "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 146,
@@ -1189,7 +1189,7 @@
     "correct": false,
     "answer": "214",
     "expected": "10",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 149,
@@ -1205,15 +1205,15 @@
     "correct": false,
     "answer": "48",
     "expected": "Kenya",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 151,
     "category": "Engineering",
     "correct": false,
-    "answer": "6",
+    "answer": null,
     "expected": "\\frac{32}{29}",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 152,
@@ -1221,7 +1221,7 @@
     "correct": false,
     "answer": "95",
     "expected": "369",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 153,
@@ -1229,7 +1229,7 @@
     "correct": false,
     "answer": "241",
     "expected": "4667348672819419628992129",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 154,
@@ -1245,7 +1245,7 @@
     "correct": true,
     "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 156,
@@ -1269,7 +1269,7 @@
     "correct": false,
     "answer": "E",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 159,
@@ -1277,7 +1277,7 @@
     "correct": false,
     "answer": "137",
     "expected": "3",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 160,
@@ -1357,7 +1357,7 @@
     "correct": true,
     "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 170,
@@ -1405,7 +1405,7 @@
     "correct": false,
     "answer": "998",
     "expected": "59",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 176,
@@ -1413,7 +1413,7 @@
     "correct": false,
     "answer": "C",
     "expected": "G",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 177,
@@ -1421,15 +1421,15 @@
     "correct": false,
     "answer": "347",
     "expected": "5904",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 178,
     "category": "Biology/Medicine",
     "correct": false,
-    "answer": null,
+    "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 179,
@@ -1437,7 +1437,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 180,
@@ -1469,7 +1469,7 @@
     "correct": false,
     "answer": "49",
     "expected": "501",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 184,
@@ -1477,7 +1477,7 @@
     "correct": false,
     "answer": "E",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 185,
@@ -1517,7 +1517,7 @@
     "correct": false,
     "answer": "D",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 190,
@@ -1533,7 +1533,7 @@
     "correct": false,
     "answer": "B",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 192,
@@ -1571,9 +1571,9 @@
     "idx": 196,
     "category": "Math",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "$\\frac{1}{2}$",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 197,
@@ -1581,7 +1581,7 @@
     "correct": false,
     "answer": "860",
     "expected": "841",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 198,
@@ -1589,7 +1589,7 @@
     "correct": false,
     "answer": "1",
     "expected": "18800 ms",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 199,
@@ -1627,7 +1627,7 @@
     "idx": 203,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": null,
+    "answer": "0.0",
     "expected": "[11,19,22,23,29,30,31,36]",
     "method": "unknown"
   },
@@ -1637,7 +1637,7 @@
     "correct": false,
     "answer": "747",
     "expected": "4809",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 205,
@@ -1749,7 +1749,7 @@
     "correct": false,
     "answer": "D",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 219,
@@ -1779,9 +1779,9 @@
     "idx": 222,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "93326215443944150965646704795953882578400970373184098831012889540582227238570431295066113089288327277825849664006524270554535976289719382852181865895959724032",
+    "answer": null,
     "expected": "10",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 223,
@@ -1829,7 +1829,7 @@
     "correct": false,
     "answer": "245",
     "expected": "12,000 migrants, 60,000 acres larger. ",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 229,
@@ -1877,7 +1877,7 @@
     "correct": false,
     "answer": "37",
     "expected": "Japan",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 235,
@@ -1925,7 +1925,7 @@
     "correct": false,
     "answer": "144",
     "expected": "46",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 241,
@@ -1965,7 +1965,7 @@
     "correct": false,
     "answer": "388",
     "expected": "19",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 246,
@@ -1973,7 +1973,7 @@
     "correct": false,
     "answer": "104",
     "expected": "118584442309",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 247,
@@ -1981,7 +1981,7 @@
     "correct": false,
     "answer": "98",
     "expected": "76",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 248,
@@ -1989,7 +1989,7 @@
     "correct": false,
     "answer": "403",
     "expected": "12345",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 249,
@@ -2013,7 +2013,7 @@
     "correct": false,
     "answer": "A",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 252,
@@ -2045,7 +2045,7 @@
     "correct": false,
     "answer": "130",
     "expected": "72",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 256,
@@ -2053,7 +2053,7 @@
     "correct": false,
     "answer": "1172700",
     "expected": "19",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 257,
@@ -2077,7 +2077,7 @@
     "correct": false,
     "answer": "469",
     "expected": "$42,250",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 260,
@@ -2091,9 +2091,9 @@
     "idx": 261,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "93326215443944150965646704795953882578400970373184098831012889540582227238570431295066113089288327277825849664006524270554535976289719382852181865895959724032",
+    "answer": null,
     "expected": "171:933",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 262,
@@ -2101,7 +2101,7 @@
     "correct": false,
     "answer": "A",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 263,
@@ -2141,7 +2141,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 268,
@@ -2173,7 +2173,7 @@
     "correct": false,
     "answer": "153",
     "expected": "0",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 272,
@@ -2181,7 +2181,7 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 273,
@@ -2221,7 +2221,7 @@
     "correct": false,
     "answer": "288",
     "expected": "7",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 278,
@@ -2245,7 +2245,7 @@
     "correct": false,
     "answer": "B",
     "expected": "F",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 281,
@@ -2325,7 +2325,7 @@
     "correct": false,
     "answer": "163",
     "expected": "321",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 291,
@@ -2357,7 +2357,7 @@
     "correct": false,
     "answer": "B",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 295,
@@ -2413,7 +2413,7 @@
     "correct": false,
     "answer": "267",
     "expected": "a: n+1-m, b: m-1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 302,
@@ -2469,7 +2469,7 @@
     "correct": false,
     "answer": "399",
     "expected": "955",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 309,
@@ -2477,13 +2477,13 @@
     "correct": false,
     "answer": "D",
     "expected": "G",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 310,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "True",
     "expected": "9",
     "method": "unknown"
   },
@@ -2523,7 +2523,7 @@
     "idx": 315,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "False",
     "expected": "\\frac{6}{13}",
     "method": "unknown"
   },
@@ -2557,7 +2557,7 @@
     "correct": false,
     "answer": "22",
     "expected": "10",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 320,
@@ -2589,7 +2589,7 @@
     "correct": false,
     "answer": "3",
     "expected": "$\\frac{k-1}{2}-1$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 324,
@@ -2597,7 +2597,7 @@
     "correct": false,
     "answer": "61",
     "expected": "31",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 325,
@@ -2605,7 +2605,7 @@
     "correct": false,
     "answer": "754",
     "expected": "126",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 326,
@@ -2629,7 +2629,7 @@
     "correct": true,
     "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 329,
@@ -2645,7 +2645,7 @@
     "correct": false,
     "answer": "A",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 331,
@@ -2653,7 +2653,7 @@
     "correct": false,
     "answer": "C",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 332,
@@ -2669,7 +2669,7 @@
     "correct": false,
     "answer": "93",
     "expected": "63",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 334,
@@ -2709,7 +2709,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 339,
@@ -2723,9 +2723,9 @@
     "idx": 340,
     "category": "Math",
     "correct": false,
-    "answer": "-",
+    "answer": "(8)/(5)-",
     "expected": "-\\frac{2}{5}",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 341,
@@ -2749,7 +2749,7 @@
     "correct": false,
     "answer": null,
     "expected": "(a) $\\{\\}$, $\\mathbb{R}$; (b) No; (c) Yes.",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 344,
@@ -2757,7 +2757,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 345,
@@ -2773,7 +2773,7 @@
     "correct": false,
     "answer": "C",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 347,
@@ -2843,7 +2843,7 @@
     "idx": 355,
     "category": "Math",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "12",
     "method": "unknown"
   },
@@ -2861,7 +2861,7 @@
     "correct": false,
     "answer": "113",
     "expected": "5",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 358,
@@ -2949,7 +2949,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 369,
@@ -3013,7 +3013,7 @@
     "correct": false,
     "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 377,
@@ -3109,7 +3109,7 @@
     "correct": false,
     "answer": "E",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 389,
@@ -3133,7 +3133,7 @@
     "correct": false,
     "answer": "392",
     "expected": "108",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 392,
@@ -3141,7 +3141,7 @@
     "correct": false,
     "answer": "E",
     "expected": "F",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 393,
@@ -3157,7 +3157,7 @@
     "correct": false,
     "answer": "788",
     "expected": "35.9 micro Tesla",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 395,
@@ -3179,9 +3179,9 @@
     "idx": 397,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "d5",
+    "answer": "d4d5",
     "expected": "7",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 398,
@@ -3189,7 +3189,7 @@
     "correct": false,
     "answer": "143",
     "expected": "3",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 399,
@@ -3229,7 +3229,7 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 404,
@@ -3253,7 +3253,7 @@
     "correct": false,
     "answer": "1",
     "expected": "6",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 407,
@@ -3275,9 +3275,9 @@
     "idx": 409,
     "category": "Physics",
     "correct": false,
-    "answer": null,
+    "answer": "0",
     "expected": "\\frac{3g^4}{64\\pi E^2}",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 410,
@@ -3285,7 +3285,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 411,
@@ -3349,13 +3349,13 @@
     "correct": false,
     "answer": "1079",
     "expected": "0.3",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 419,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "27",
     "expected": "5",
     "method": "unknown"
   },
@@ -3381,7 +3381,7 @@
     "correct": false,
     "answer": "288",
     "expected": "73",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 423,
@@ -3437,7 +3437,7 @@
     "correct": false,
     "answer": "D",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 430,
@@ -3445,7 +3445,7 @@
     "correct": false,
     "answer": "2",
     "expected": "1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 431,
@@ -3461,7 +3461,7 @@
     "correct": false,
     "answer": "B",
     "expected": "I",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 433,
@@ -3469,7 +3469,7 @@
     "correct": false,
     "answer": "C",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 434,
@@ -3493,7 +3493,7 @@
     "correct": false,
     "answer": "273",
     "expected": "(r-1)!^d",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 437,
@@ -3533,7 +3533,7 @@
     "correct": true,
     "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 442,
@@ -3549,7 +3549,7 @@
     "correct": false,
     "answer": "348",
     "expected": "2",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 444,
@@ -3557,7 +3557,7 @@
     "correct": false,
     "answer": "121",
     "expected": "1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 445,
@@ -3579,7 +3579,7 @@
     "idx": 447,
     "category": "Engineering",
     "correct": false,
-    "answer": "True",
+    "answer": "False",
     "expected": "Time Slot 1:Antenna 1: $0.8 \\times (-1-j) \\times e^{j(7\\pi/24)}$Antenna 2: $$0.8 \\times (1-j) \\times e^{j(7\\pi/24)}$$Time Slot 2:Antenna 1: $0.8 \\times (1+j) \\times e^{j(7\\pi/24)}$Antenna 2: $$0.8 \\times (-1-j) \\times e^{j(7\\pi/24)}$$",
     "method": "unknown"
   },
@@ -3589,7 +3589,7 @@
     "correct": false,
     "answer": "66",
     "expected": "6",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 449,
@@ -3605,7 +3605,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 451,
@@ -3613,7 +3613,7 @@
     "correct": false,
     "answer": "D",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 452,
@@ -3637,7 +3637,7 @@
     "correct": false,
     "answer": "E",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 455,
@@ -3709,7 +3709,7 @@
     "correct": false,
     "answer": "C",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 464,
@@ -3725,7 +3725,7 @@
     "correct": false,
     "answer": "285",
     "expected": "9",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 466,
@@ -3779,7 +3779,7 @@
     "idx": 472,
     "category": "Math",
     "correct": false,
-    "answer": "1",
+    "answer": null,
     "expected": "2",
     "method": "unknown"
   },
@@ -3805,7 +3805,7 @@
     "correct": false,
     "answer": "496",
     "expected": "175",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 476,
@@ -3827,9 +3827,9 @@
     "idx": 478,
     "category": "Chemistry",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "Fe + 2FeCl3 = 3FeCl2",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 479,
@@ -3845,7 +3845,7 @@
     "correct": false,
     "answer": "109",
     "expected": "5",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 481,
@@ -3917,7 +3917,7 @@
     "correct": false,
     "answer": "305",
     "expected": "15 moves",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 490,
@@ -3925,7 +3925,7 @@
     "correct": false,
     "answer": "171",
     "expected": "Yes",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 491,
@@ -3973,7 +3973,7 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 497,
@@ -4029,7 +4029,7 @@
     "correct": false,
     "answer": "627",
     "expected": "\\(\\left(4.99,15.0\\right)\\text{ qeV}\\)",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 504,
@@ -4149,7 +4149,7 @@
     "correct": false,
     "answer": "2",
     "expected": "2357947691",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 519,
@@ -4165,7 +4165,7 @@
     "correct": false,
     "answer": "1)",
     "expected": "3, 1, 1, infinity",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 521,
@@ -4181,7 +4181,7 @@
     "correct": false,
     "answer": "B",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 523,
@@ -4197,7 +4197,7 @@
     "correct": false,
     "answer": "115",
     "expected": "3",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 525,
@@ -4253,7 +4253,7 @@
     "correct": false,
     "answer": "A",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 532,
@@ -4269,7 +4269,7 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 534,
@@ -4301,7 +4301,7 @@
     "correct": false,
     "answer": "46",
     "expected": "7",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 538,
@@ -4317,7 +4317,7 @@
     "correct": false,
     "answer": "A",
     "expected": "M",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 540,
@@ -4349,7 +4349,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 544,
@@ -4387,9 +4387,9 @@
     "idx": 548,
     "category": "Humanities/Social Science",
     "correct": false,
-    "answer": null,
+    "answer": "N",
     "expected": "M",
-    "method": "unknown"
+    "method": "mcq_executor_verified:sum_verified:16.0"
   },
   {
     "idx": 549,
@@ -4477,7 +4477,7 @@
     "correct": false,
     "answer": "256",
     "expected": "$2F_nF_{n-1}$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 560,
@@ -4493,7 +4493,7 @@
     "correct": false,
     "answer": "174",
     "expected": "$58\\choose 22$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 562,
@@ -4605,7 +4605,7 @@
     "correct": false,
     "answer": "3.5",
     "expected": "0.15",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 576,
@@ -4627,7 +4627,7 @@
     "idx": 578,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "0",
     "expected": "[S,s,irr,33] [S,s,irr,3] [A,uc,6]",
     "method": "unknown"
   },
@@ -4637,7 +4637,7 @@
     "correct": false,
     "answer": "210",
     "expected": "Abortionist",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 580,
@@ -4685,7 +4685,7 @@
     "correct": false,
     "answer": "72",
     "expected": "3",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 586,
@@ -4717,7 +4717,7 @@
     "correct": true,
     "answer": "1",
     "expected": "1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 590,
@@ -4725,13 +4725,13 @@
     "correct": false,
     "answer": "157",
     "expected": "96",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 591,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": null,
+    "answer": "E",
     "expected": "C",
     "method": "unknown"
   },
@@ -4741,7 +4741,7 @@
     "correct": false,
     "answer": "C",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 593,
@@ -4755,9 +4755,9 @@
     "idx": 594,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "2*(",
     "expected": "22168",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 595,
@@ -4781,7 +4781,7 @@
     "correct": false,
     "answer": "516",
     "expected": "2",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 598,
@@ -4837,7 +4837,7 @@
     "correct": false,
     "answer": "C",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 605,
@@ -4917,7 +4917,7 @@
     "correct": false,
     "answer": "B",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 615,
@@ -4981,7 +4981,7 @@
     "correct": false,
     "answer": "73",
     "expected": "510",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 623,
@@ -4989,7 +4989,7 @@
     "correct": false,
     "answer": "3.5",
     "expected": "329/150",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 624,
@@ -4997,7 +4997,7 @@
     "correct": false,
     "answer": "-",
     "expected": "8",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 625,
@@ -5005,7 +5005,7 @@
     "correct": false,
     "answer": "B",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 626,
@@ -5061,7 +5061,7 @@
     "correct": false,
     "answer": "354",
     "expected": "[18,36,43]",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 633,
@@ -5069,7 +5069,7 @@
     "correct": false,
     "answer": "A",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 634,
@@ -5093,7 +5093,7 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 637,
@@ -5163,9 +5163,9 @@
     "idx": 645,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "535",
     "expected": "96497666192130",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 646,
@@ -5181,7 +5181,7 @@
     "correct": false,
     "answer": "C",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 648,
@@ -5195,7 +5195,7 @@
     "idx": 649,
     "category": "Chemistry",
     "correct": false,
-    "answer": null,
+    "answer": "False",
     "expected": "(R), (S), (S), (S)",
     "method": "unknown"
   },
@@ -5237,7 +5237,7 @@
     "correct": false,
     "answer": "C",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 655,
@@ -5293,7 +5293,7 @@
     "correct": true,
     "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 662,
@@ -5349,7 +5349,7 @@
     "correct": false,
     "answer": "B",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 669,
@@ -5365,13 +5365,13 @@
     "correct": false,
     "answer": "168",
     "expected": "2",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 671,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": null,
+    "answer": "False",
     "expected": "Yes",
     "method": "unknown"
   },
@@ -5405,7 +5405,7 @@
     "correct": false,
     "answer": "340",
     "expected": "6",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 676,
@@ -5421,7 +5421,7 @@
     "correct": false,
     "answer": "C",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 678,
@@ -5499,7 +5499,7 @@
     "idx": 687,
     "category": "Biology/Medicine",
     "correct": false,
-    "answer": null,
+    "answer": "L",
     "expected": "K",
     "method": "unknown"
   },
@@ -5509,7 +5509,7 @@
     "correct": false,
     "answer": "B",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 689,
@@ -5581,7 +5581,7 @@
     "correct": false,
     "answer": "E",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 698,
@@ -5597,7 +5597,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 700,
@@ -5613,7 +5613,7 @@
     "correct": false,
     "answer": "110",
     "expected": "1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 702,
@@ -5629,7 +5629,7 @@
     "correct": false,
     "answer": "394",
     "expected": "2",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 704,
@@ -5731,9 +5731,9 @@
     "idx": 716,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "*",
     "expected": "24",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 717,
@@ -5747,9 +5747,9 @@
     "idx": 718,
     "category": "Physics",
     "correct": false,
-    "answer": "1569",
+    "answer": null,
     "expected": "1, 5",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 719,
@@ -5757,7 +5757,7 @@
     "correct": false,
     "answer": "51",
     "expected": "976251475791861661945371",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 720,
@@ -5765,7 +5765,7 @@
     "correct": false,
     "answer": "5",
     "expected": "3/9/4",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 721,
@@ -5773,7 +5773,7 @@
     "correct": false,
     "answer": "16",
     "expected": "2",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 722,
@@ -5851,7 +5851,7 @@
     "idx": 731,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": null,
+    "answer": "1",
     "expected": "0.25\\Phi(\\delta/2)e^(-KL(P_0^n, \\Bat{P}))",
     "method": "unknown"
   },
@@ -5875,7 +5875,7 @@
     "idx": 734,
     "category": "Humanities/Social Science",
     "correct": false,
-    "answer": "-",
+    "answer": null,
     "expected": "0.218",
     "method": "unknown"
   },
@@ -5893,7 +5893,7 @@
     "correct": false,
     "answer": "2",
     "expected": "$p^{k-1}+1$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 737,
@@ -5917,7 +5917,7 @@
     "correct": false,
     "answer": "2(",
     "expected": "\\frac{(K+14)s^2+41s-K+26}{-s^2+(6+K)s+16}",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 740,
@@ -5973,7 +5973,7 @@
     "correct": false,
     "answer": "301",
     "expected": "1452",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 747,
@@ -5981,7 +5981,7 @@
     "correct": false,
     "answer": "C",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 748,
@@ -6021,7 +6021,7 @@
     "correct": false,
     "answer": "D",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 753,
@@ -6061,7 +6061,7 @@
     "correct": false,
     "answer": "-",
     "expected": "\\mu a. \\theta(1, a+\\mu b.\\theta(0,b+1))",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 758,
@@ -6165,7 +6165,7 @@
     "correct": false,
     "answer": "-",
     "expected": "225600",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 771,
@@ -6187,9 +6187,9 @@
     "idx": 773,
     "category": "Chemistry",
     "correct": false,
-    "answer": null,
+    "answer": "C",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 774,
@@ -6237,7 +6237,7 @@
     "correct": false,
     "answer": "A",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 780,
@@ -6325,7 +6325,7 @@
     "correct": false,
     "answer": "C",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 791,
@@ -6333,7 +6333,7 @@
     "correct": false,
     "answer": "E",
     "expected": "G",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 792,
@@ -6365,7 +6365,7 @@
     "correct": false,
     "answer": "3.5",
     "expected": "3, 5, 6",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 796,
@@ -6389,7 +6389,7 @@
     "correct": false,
     "answer": "3",
     "expected": "*sorted({int(x)for x in findall(",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 799,
@@ -6405,7 +6405,7 @@
     "correct": false,
     "answer": "C",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 801,
@@ -6413,7 +6413,7 @@
     "correct": false,
     "answer": "A",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 802,
@@ -6427,7 +6427,7 @@
     "idx": 803,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": null,
+    "answer": "False",
     "expected": "P, NP",
     "method": "unknown"
   },
@@ -6437,7 +6437,7 @@
     "correct": false,
     "answer": "1",
     "expected": "34",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 805,
@@ -6485,7 +6485,7 @@
     "correct": false,
     "answer": "B",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 811,
@@ -6501,7 +6501,7 @@
     "correct": false,
     "answer": "A",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 813,
@@ -6517,15 +6517,15 @@
     "correct": true,
     "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 815,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "**2+3",
     "expected": "494",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 816,
@@ -6557,7 +6557,7 @@
     "correct": false,
     "answer": "E",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 820,
@@ -6581,7 +6581,7 @@
     "correct": false,
     "answer": "A",
     "expected": "H",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 823,
@@ -6589,7 +6589,7 @@
     "correct": false,
     "answer": "214",
     "expected": "1 = H, 2 = CH3, 3 = H, 4 = CH3, 5 = CH3",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 824,
@@ -6645,7 +6645,7 @@
     "correct": false,
     "answer": "D",
     "expected": "F",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 831,
@@ -6653,7 +6653,7 @@
     "correct": false,
     "answer": "B",
     "expected": "F",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 832,
@@ -6701,7 +6701,7 @@
     "correct": false,
     "answer": "84",
     "expected": "70",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 838,
@@ -6717,7 +6717,7 @@
     "correct": false,
     "answer": "73",
     "expected": "392",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 840,
@@ -6733,7 +6733,7 @@
     "correct": false,
     "answer": "82",
     "expected": "12",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 842,
@@ -6749,7 +6749,7 @@
     "correct": false,
     "answer": "80",
     "expected": "20",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 844,
@@ -6941,7 +6941,7 @@
     "correct": false,
     "answer": "C",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 868,
@@ -6963,7 +6963,7 @@
     "idx": 870,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "False",
     "expected": "$\\frac{1}{2n - 1}$",
     "method": "unknown"
   },
@@ -7005,7 +7005,7 @@
     "correct": false,
     "answer": "B",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 876,
@@ -7013,7 +7013,7 @@
     "correct": false,
     "answer": "B",
     "expected": "F",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 877,
@@ -7069,7 +7069,7 @@
     "correct": true,
     "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 884,
@@ -7085,7 +7085,7 @@
     "correct": false,
     "answer": "D",
     "expected": "G",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 886,
@@ -7109,7 +7109,7 @@
     "correct": false,
     "answer": "1",
     "expected": "$\\prod_{k=1}^{n-1} \\frac{Z(-k)}{q_v^k-1}$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 889,
@@ -7141,7 +7141,7 @@
     "correct": false,
     "answer": "B",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 893,
@@ -7157,7 +7157,7 @@
     "correct": false,
     "answer": "E",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 895,
@@ -7181,7 +7181,7 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 898,
@@ -7293,7 +7293,7 @@
     "correct": false,
     "answer": "D",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 912,
@@ -7373,7 +7373,7 @@
     "correct": false,
     "answer": "A",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 922,
@@ -7381,7 +7381,7 @@
     "correct": false,
     "answer": "491",
     "expected": "11",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 923,
@@ -7389,7 +7389,7 @@
     "correct": false,
     "answer": "A",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 924,
@@ -7413,7 +7413,7 @@
     "correct": false,
     "answer": "C",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 927,
@@ -7477,7 +7477,7 @@
     "correct": false,
     "answer": "D",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 935,
@@ -7485,7 +7485,7 @@
     "correct": false,
     "answer": "E",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 936,
@@ -7501,7 +7501,7 @@
     "correct": false,
     "answer": "B",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 938,
@@ -7525,7 +7525,7 @@
     "correct": false,
     "answer": "500",
     "expected": "Yes",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 941,
@@ -7539,7 +7539,7 @@
     "idx": 942,
     "category": "Biology/Medicine",
     "correct": false,
-    "answer": null,
+    "answer": "J",
     "expected": "M",
     "method": "unknown"
   },
@@ -7565,7 +7565,7 @@
     "correct": false,
     "answer": "E",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 946,
@@ -7589,7 +7589,7 @@
     "correct": false,
     "answer": "B",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 949,
@@ -7613,7 +7613,7 @@
     "correct": false,
     "answer": "1270",
     "expected": " a^2(a \\omega)^2 \\cos^2\\theta \\sin^2\\theta",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 952,
@@ -7637,7 +7637,7 @@
     "correct": false,
     "answer": "347",
     "expected": "$\\frac{q^{g-1}(q-1)\\log q}{e^\\gamma h}$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 955,
@@ -7645,7 +7645,7 @@
     "correct": false,
     "answer": "482",
     "expected": "96",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 956,
@@ -7661,7 +7661,7 @@
     "correct": false,
     "answer": "119",
     "expected": "3",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 958,
@@ -7715,7 +7715,7 @@
     "idx": 964,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": null,
+    "answer": "False",
     "expected": "Yes",
     "method": "unknown"
   },
@@ -7733,7 +7733,7 @@
     "correct": false,
     "answer": "C",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 967,
@@ -7765,7 +7765,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 971,
@@ -7773,7 +7773,7 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 972,
@@ -7853,7 +7853,7 @@
     "correct": false,
     "answer": "A",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 982,
@@ -7933,7 +7933,7 @@
     "correct": false,
     "answer": "-",
     "expected": "9/4",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 992,
@@ -7947,9 +7947,9 @@
     "idx": 993,
     "category": "Engineering",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "$W(D) = \\frac{N_0}{F^*(D^{-1})}$",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 994,
@@ -7973,7 +7973,7 @@
     "correct": false,
     "answer": "162",
     "expected": "8",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 997,
@@ -7981,7 +7981,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 998,
@@ -7989,7 +7989,7 @@
     "correct": false,
     "answer": "844",
     "expected": "\\frac{318281087}{8016470462}",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 999,
@@ -8101,7 +8101,7 @@
     "correct": false,
     "answer": "A",
     "expected": "G",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1013,
@@ -8157,7 +8157,7 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1020,
@@ -8197,7 +8197,7 @@
     "correct": false,
     "answer": "E",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1025,
@@ -8221,7 +8221,7 @@
     "correct": false,
     "answer": "384",
     "expected": "D,E,L",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1028,
@@ -8229,15 +8229,15 @@
     "correct": false,
     "answer": "1",
     "expected": "$\\max\\limits_i (a_ia_{i+1}\\sin\\phi)/b_i$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1029,
     "category": "Math",
     "correct": false,
-    "answer": "4**",
+    "answer": "4**(-1)",
     "expected": "11",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1030,
@@ -8277,7 +8277,7 @@
     "correct": false,
     "answer": "33",
     "expected": "1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1035,
@@ -8285,7 +8285,7 @@
     "correct": false,
     "answer": "1",
     "expected": "(R)-3-methylcyclohex-1-ene",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1036,
@@ -8365,7 +8365,7 @@
     "correct": false,
     "answer": "B",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1046,
@@ -8373,7 +8373,7 @@
     "correct": false,
     "answer": "A",
     "expected": "J",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1047,
@@ -8381,7 +8381,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1048,
@@ -8389,7 +8389,7 @@
     "correct": false,
     "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1049,
@@ -8397,7 +8397,7 @@
     "correct": false,
     "answer": "D",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1050,
@@ -8413,7 +8413,7 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1052,
@@ -8437,7 +8437,7 @@
     "correct": false,
     "answer": "B",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1055,
@@ -8445,7 +8445,7 @@
     "correct": false,
     "answer": "A",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1056,
@@ -8453,7 +8453,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1057,
@@ -8461,7 +8461,7 @@
     "correct": false,
     "answer": "C",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1058,
@@ -8469,7 +8469,7 @@
     "correct": false,
     "answer": "C",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1059,
@@ -8533,7 +8533,7 @@
     "correct": false,
     "answer": "D",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1067,
@@ -8541,7 +8541,7 @@
     "correct": false,
     "answer": "E",
     "expected": "F",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1068,
@@ -8645,7 +8645,7 @@
     "correct": false,
     "answer": "E",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1081,
@@ -8653,7 +8653,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1082,
@@ -8685,7 +8685,7 @@
     "correct": false,
     "answer": "-1",
     "expected": "0",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1086,
@@ -8717,7 +8717,7 @@
     "correct": true,
     "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1090,
@@ -8795,7 +8795,7 @@
     "idx": 1099,
     "category": "Math",
     "correct": false,
-    "answer": "1",
+    "answer": null,
     "expected": "TTTTFT",
     "method": "unknown"
   },
@@ -8877,15 +8877,15 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1110,
     "category": "Math",
     "correct": false,
-    "answer": "0",
+    "answer": null,
     "expected": "64",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1111,
@@ -8901,7 +8901,7 @@
     "correct": false,
     "answer": "270",
     "expected": "294",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1113,
@@ -8949,7 +8949,7 @@
     "correct": false,
     "answer": "811",
     "expected": "91",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1119,
@@ -8981,7 +8981,7 @@
     "correct": false,
     "answer": "192",
     "expected": "18",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1123,
@@ -9013,7 +9013,7 @@
     "correct": false,
     "answer": "B",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1127,
@@ -9021,7 +9021,7 @@
     "correct": false,
     "answer": "B",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1128,
@@ -9029,7 +9029,7 @@
     "correct": false,
     "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1129,
@@ -9037,7 +9037,7 @@
     "correct": false,
     "answer": "A",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1130,
@@ -9045,7 +9045,7 @@
     "correct": false,
     "answer": "C",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1131,
@@ -9069,7 +9069,7 @@
     "correct": false,
     "answer": "C",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1134,
@@ -9085,7 +9085,7 @@
     "correct": false,
     "answer": "C",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1136,
@@ -9109,7 +9109,7 @@
     "correct": false,
     "answer": "D",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1139,
@@ -9117,7 +9117,7 @@
     "correct": false,
     "answer": "C",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1140,
@@ -9133,7 +9133,7 @@
     "correct": false,
     "answer": "963",
     "expected": "$95.55 \\, \\text{ MVAr}$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1142,
@@ -9197,7 +9197,7 @@
     "correct": false,
     "answer": "16921",
     "expected": "Iridium",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1150,
@@ -9205,7 +9205,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1151,
@@ -9229,7 +9229,7 @@
     "correct": false,
     "answer": "D",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1154,
@@ -9253,7 +9253,7 @@
     "correct": false,
     "answer": "283",
     "expected": "带",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1157,
@@ -9261,7 +9261,7 @@
     "correct": false,
     "answer": "952",
     "expected": "$80 \\, \\text{MVAR}$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1158,
@@ -9277,7 +9277,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1160,
@@ -9291,9 +9291,9 @@
     "idx": 1161,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "True",
+    "answer": null,
     "expected": "0.7916",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1162,
@@ -9307,9 +9307,9 @@
     "idx": 1163,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "2",
+    "answer": null,
     "expected": "0,1,0,1/2,0,0",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1164,
@@ -9333,7 +9333,7 @@
     "correct": true,
     "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1167,
@@ -9341,7 +9341,7 @@
     "correct": false,
     "answer": "6",
     "expected": "25",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1168,
@@ -9363,7 +9363,7 @@
     "idx": 1170,
     "category": "Physics",
     "correct": false,
-    "answer": null,
+    "answer": "False",
     "expected": "-\\sqrt{2}",
     "method": "unknown"
   },
@@ -9437,7 +9437,7 @@
     "correct": false,
     "answer": "A",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1180,
@@ -9445,7 +9445,7 @@
     "correct": false,
     "answer": "-",
     "expected": "1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1181,
@@ -9509,7 +9509,7 @@
     "correct": false,
     "answer": "E",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1189,
@@ -9541,7 +9541,7 @@
     "correct": false,
     "answer": "E",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1193,
@@ -9557,7 +9557,7 @@
     "correct": false,
     "answer": "1",
     "expected": "542 kN/m2",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1195,
@@ -9573,7 +9573,7 @@
     "correct": false,
     "answer": "C",
     "expected": "F",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1197,
@@ -9597,7 +9597,7 @@
     "correct": false,
     "answer": "510",
     "expected": "76",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1200,
@@ -9637,7 +9637,7 @@
     "correct": false,
     "answer": "645",
     "expected": "20 ways",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1205,
@@ -9725,7 +9725,7 @@
     "correct": false,
     "answer": "A",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1216,
@@ -9757,7 +9757,7 @@
     "correct": false,
     "answer": "C",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1220,
@@ -9765,7 +9765,7 @@
     "correct": false,
     "answer": "C",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1221,
@@ -9837,7 +9837,7 @@
     "correct": false,
     "answer": "24",
     "expected": "(2, 2)",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1230,
@@ -9853,7 +9853,7 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1232,
@@ -9869,7 +9869,7 @@
     "correct": false,
     "answer": "274",
     "expected": "2000000",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1234,
@@ -9877,7 +9877,7 @@
     "correct": false,
     "answer": "A",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1235,
@@ -9893,7 +9893,7 @@
     "correct": false,
     "answer": "D",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1237,
@@ -9909,13 +9909,13 @@
     "correct": false,
     "answer": "484",
     "expected": "$\\frac{2}{\\pi}R,\\frac{2}{\\pi} R$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1239,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": null,
+    "answer": "True",
     "expected": "n + (\\frac{\\pi^2}{6} - 1)n\\alpha",
     "method": "unknown"
   },
@@ -9947,9 +9947,9 @@
     "idx": 1243,
     "category": "Math",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "4(10^{20} - 0.5)/(10^{40} + 1)",
-    "method": "propositional_simulation"
+    "method": "unknown"
   },
   {
     "idx": 1244,
@@ -9981,7 +9981,7 @@
     "correct": false,
     "answer": "1",
     "expected": "5",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1248,
@@ -9989,7 +9989,7 @@
     "correct": false,
     "answer": "190",
     "expected": "1256",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1249,
@@ -9997,7 +9997,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1250,
@@ -10005,7 +10005,7 @@
     "correct": false,
     "answer": "270",
     "expected": "5",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1251,
@@ -10021,7 +10021,7 @@
     "correct": false,
     "answer": "63",
     "expected": "16",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1253,
@@ -10045,7 +10045,7 @@
     "correct": false,
     "answer": "171",
     "expected": "q^240",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1256,
@@ -10077,7 +10077,7 @@
     "correct": false,
     "answer": "1",
     "expected": "13",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1260,
@@ -10085,7 +10085,7 @@
     "correct": false,
     "answer": "B",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1261,
@@ -10093,7 +10093,7 @@
     "correct": false,
     "answer": "True",
     "expected": "$\\frac{\\sqrt{5}}{2}$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1262,
@@ -10109,7 +10109,7 @@
     "correct": false,
     "answer": "E",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1264,
@@ -10117,7 +10117,7 @@
     "correct": false,
     "answer": "1843",
     "expected": " Switch to High-dose Atorvastatin",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1265,
@@ -10133,7 +10133,7 @@
     "correct": false,
     "answer": "209",
     "expected": "1.5",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1267,
@@ -10157,7 +10157,7 @@
     "correct": false,
     "answer": "A",
     "expected": "I",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1270,
@@ -10181,7 +10181,7 @@
     "correct": false,
     "answer": "E",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1273,
@@ -10197,7 +10197,7 @@
     "correct": false,
     "answer": "772",
     "expected": "contains red clover, increases prolactin",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1275,
@@ -10221,7 +10221,7 @@
     "correct": false,
     "answer": "119",
     "expected": "1365",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1278,
@@ -10245,7 +10245,7 @@
     "correct": false,
     "answer": "806",
     "expected": "\\frac{2l_0GM}{2GM - l_0v_0^2}",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1281,
@@ -10277,7 +10277,7 @@
     "correct": false,
     "answer": "1115",
     "expected": "14:21:60.5",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1285,
@@ -10285,7 +10285,7 @@
     "correct": false,
     "answer": "C",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1286,
@@ -10317,7 +10317,7 @@
     "correct": false,
     "answer": "-7",
     "expected": "2",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1290,
@@ -10341,7 +10341,7 @@
     "correct": true,
     "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1293,
@@ -10365,7 +10365,7 @@
     "correct": false,
     "answer": "400-100",
     "expected": "30",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1296,
@@ -10389,7 +10389,7 @@
     "correct": false,
     "answer": "A",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1299,
@@ -10413,7 +10413,7 @@
     "correct": false,
     "answer": "C",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1302,
@@ -10429,7 +10429,7 @@
     "correct": false,
     "answer": "11",
     "expected": "$n! \\cdot 2^{n-1}$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1304,
@@ -10437,7 +10437,7 @@
     "correct": false,
     "answer": "10",
     "expected": "$6.02 × 10^{26}$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1305,
@@ -10474,10 +10474,10 @@
   {
     "idx": 1309,
     "category": "Math",
-    "correct": true,
-    "answer": "B",
+    "correct": false,
+    "answer": "D",
     "expected": "B",
-    "method": "math_cross_sim"
+    "method": "mcq_executor_verified:sum_verified:20.0"
   },
   {
     "idx": 1310,
@@ -10533,15 +10533,15 @@
     "correct": false,
     "answer": "A",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1317,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": null,
+    "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1318,
@@ -10619,9 +10619,9 @@
     "idx": 1327,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "1061",
     "expected": "0",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1328,
@@ -10637,7 +10637,7 @@
     "correct": false,
     "answer": "79",
     "expected": "Four main depressions",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1330,
@@ -10685,7 +10685,7 @@
     "correct": false,
     "answer": "1",
     "expected": "130",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1336,
@@ -10717,7 +10717,7 @@
     "correct": false,
     "answer": "C",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1340,
@@ -10741,13 +10741,13 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1343,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "True",
     "expected": "2/3",
     "method": "unknown"
   },
@@ -10859,9 +10859,9 @@
     "idx": 1357,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "2",
     "expected": "8",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1358,
@@ -10877,7 +10877,7 @@
     "correct": false,
     "answer": "**4",
     "expected": "1,3,6,9",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1360,
@@ -10939,7 +10939,7 @@
     "idx": 1367,
     "category": "Math",
     "correct": false,
-    "answer": "**2",
+    "answer": null,
     "expected": "S_t converges in distribution, not in L1",
     "method": "unknown"
   },
@@ -10973,7 +10973,7 @@
     "correct": false,
     "answer": "110",
     "expected": "3",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1372,
@@ -10997,7 +10997,7 @@
     "correct": false,
     "answer": "77",
     "expected": "7",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1375,
@@ -11037,7 +11037,7 @@
     "correct": false,
     "answer": "A",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1380,
@@ -11045,7 +11045,7 @@
     "correct": false,
     "answer": "D",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1381,
@@ -11061,7 +11061,7 @@
     "correct": false,
     "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1383,
@@ -11069,7 +11069,7 @@
     "correct": false,
     "answer": "E",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1384,
@@ -11077,7 +11077,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1385,
@@ -11085,7 +11085,7 @@
     "correct": false,
     "answer": "C",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1386,
@@ -11093,7 +11093,7 @@
     "correct": false,
     "answer": "B",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1387,
@@ -11117,7 +11117,7 @@
     "correct": false,
     "answer": "B",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1390,
@@ -11125,7 +11125,7 @@
     "correct": true,
     "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1391,
@@ -11149,7 +11149,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1394,
@@ -11157,7 +11157,7 @@
     "correct": false,
     "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1395,
@@ -11237,7 +11237,7 @@
     "correct": false,
     "answer": "977",
     "expected": "60129542144",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1405,
@@ -11253,7 +11253,7 @@
     "correct": false,
     "answer": "8",
     "expected": "32400",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1407,
@@ -11267,7 +11267,7 @@
     "idx": 1408,
     "category": "Math",
     "correct": false,
-    "answer": "1",
+    "answer": null,
     "expected": "\\( n \\leq 3 k - 2 \\).",
     "method": "unknown"
   },
@@ -11301,7 +11301,7 @@
     "correct": false,
     "answer": null,
     "expected": "(a) No; (b) \\( d \\in \\{ n-1, n-2 \\} \\).",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1413,
@@ -11325,7 +11325,7 @@
     "correct": false,
     "answer": "B",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1416,
@@ -11365,7 +11365,7 @@
     "correct": false,
     "answer": "B",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1421,
@@ -11397,7 +11397,7 @@
     "correct": false,
     "answer": "C",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1425,
@@ -11405,7 +11405,7 @@
     "correct": false,
     "answer": "188",
     "expected": "263",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1426,
@@ -11469,7 +11469,7 @@
     "correct": false,
     "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1434,
@@ -11483,9 +11483,9 @@
     "idx": 1435,
     "category": "Math",
     "correct": false,
-    "answer": "1",
+    "answer": null,
     "expected": "(a) Yes; (b) yes; (c) 2.",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1436,
@@ -11501,7 +11501,7 @@
     "correct": false,
     "answer": "440",
     "expected": "48",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1438,
@@ -11515,9 +11515,9 @@
     "idx": 1439,
     "category": "Math",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "(a) Yes (b) 0 (c) $-w^2(g^2 a \\cdot 1_R)$",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1440,
@@ -11539,7 +11539,7 @@
     "idx": 1442,
     "category": "Math",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "(a) Yes; (b) yes; (c) no.",
     "method": "unknown"
   },
@@ -11579,9 +11579,9 @@
     "idx": 1447,
     "category": "Math",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "(a) Yes; (b) yes; (c) 3.",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1448,
@@ -11589,7 +11589,7 @@
     "correct": false,
     "answer": "710",
     "expected": "1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1449,
@@ -11605,7 +11605,7 @@
     "correct": false,
     "answer": "D",
     "expected": "J",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1451,
@@ -11621,7 +11621,7 @@
     "correct": false,
     "answer": "A",
     "expected": "O",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1453,
@@ -11637,15 +11637,15 @@
     "correct": true,
     "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1455,
     "category": "Math",
     "correct": false,
-    "answer": "True",
+    "answer": null,
     "expected": "(a) Yes, $n-1$; (b) yes; (c) 2.",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1456,
@@ -11669,7 +11669,7 @@
     "correct": true,
     "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1459,
@@ -11677,7 +11677,7 @@
     "correct": true,
     "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1460,
@@ -11685,7 +11685,7 @@
     "correct": false,
     "answer": "C",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1461,
@@ -11701,7 +11701,7 @@
     "correct": false,
     "answer": "A",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1463,
@@ -11717,7 +11717,7 @@
     "correct": false,
     "answer": "68",
     "expected": "7",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1465,
@@ -11741,7 +11741,7 @@
     "correct": false,
     "answer": "E",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1468,
@@ -11773,7 +11773,7 @@
     "correct": false,
     "answer": "1335",
     "expected": "248832",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1472,
@@ -11787,9 +11787,9 @@
     "idx": 1473,
     "category": "Math",
     "correct": false,
-    "answer": "True",
+    "answer": "602",
     "expected": "8",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1474,
@@ -11805,7 +11805,7 @@
     "correct": false,
     "answer": "362",
     "expected": "$\\infty$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1476,
@@ -11813,7 +11813,7 @@
     "correct": false,
     "answer": "A",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1477,
@@ -11853,7 +11853,7 @@
     "correct": false,
     "answer": "C",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1482,
@@ -11869,7 +11869,7 @@
     "correct": false,
     "answer": "-",
     "expected": "Kuzmin; barn swallow; Pontius Pilate",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1484,
@@ -11909,7 +11909,7 @@
     "correct": false,
     "answer": "B",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1489,
@@ -11925,7 +11925,7 @@
     "correct": false,
     "answer": "868",
     "expected": "24 8",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1491,
@@ -11963,9 +11963,9 @@
     "idx": 1495,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "B",
     "expected": "A)$\\ell$ B)$(2e_1+d)\\prod_{j=2}^s(2e_j+1)$",
-    "method": "unknown"
+    "method": "mcq_reasoning:compute_and_match:gcd(2,2)=2"
   },
   {
     "idx": 1496,
@@ -11979,9 +11979,9 @@
     "idx": 1497,
     "category": "Chemistry",
     "correct": false,
-    "answer": null,
+    "answer": "1254",
     "expected": "CC1(C)OC2COC3(COC(C)(C)O3)C(=O)C2O1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1498,
@@ -12037,7 +12037,7 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1505,
@@ -12045,7 +12045,7 @@
     "correct": false,
     "answer": "A",
     "expected": "G",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1506,
@@ -12101,7 +12101,7 @@
     "correct": false,
     "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1513,
@@ -12141,7 +12141,7 @@
     "correct": false,
     "answer": "B",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1518,
@@ -12149,7 +12149,7 @@
     "correct": false,
     "answer": "C",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1519,
@@ -12165,7 +12165,7 @@
     "correct": false,
     "answer": "B",
     "expected": "F",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1521,
@@ -12227,9 +12227,9 @@
     "idx": 1528,
     "category": "Math",
     "correct": false,
-    "answer": "A",
+    "answer": "B",
     "expected": "F",
-    "method": "unknown"
+    "method": "mcq_reasoning:compute_and_match:1^0=1"
   },
   {
     "idx": 1529,
@@ -12245,7 +12245,7 @@
     "correct": true,
     "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1531,
@@ -12277,7 +12277,7 @@
     "correct": true,
     "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1535,
@@ -12315,9 +12315,9 @@
     "idx": 1539,
     "category": "Math",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "(a) True (b) True (c) Type HA, TW, or AS.",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1540,
@@ -12333,7 +12333,7 @@
     "correct": false,
     "answer": "2",
     "expected": " \\( \\frac{(p+1)_2' + (p-1)_2'}{2} - 1 \\)",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1542,
@@ -12355,9 +12355,9 @@
     "idx": 1544,
     "category": "Math",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "(a) No; (b) \\( n \\).",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1545,
@@ -12365,7 +12365,7 @@
     "correct": false,
     "answer": "B",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1546,
@@ -12373,7 +12373,7 @@
     "correct": false,
     "answer": "C",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1547,
@@ -12381,7 +12381,7 @@
     "correct": false,
     "answer": "E",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1548,
@@ -12413,7 +12413,7 @@
     "correct": false,
     "answer": "2",
     "expected": "571,41",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1552,
@@ -12429,7 +12429,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1554,
@@ -12445,15 +12445,15 @@
     "correct": false,
     "answer": "190",
     "expected": "Fox the Red",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1556,
     "category": "Math",
     "correct": false,
-    "answer": "True",
+    "answer": null,
     "expected": "(a) No; (b) $\\{(2),(3)\\}$; (c) $1-O(1/q)$.",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1557,
@@ -12501,7 +12501,7 @@
     "correct": false,
     "answer": "151",
     "expected": "9",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1563,
@@ -12525,7 +12525,7 @@
     "correct": false,
     "answer": "D",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1566,
@@ -12603,9 +12603,9 @@
     "idx": 1575,
     "category": "Math",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "(a) Yes; (b) Both; (c) Yes.",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1576,
@@ -12621,7 +12621,7 @@
     "correct": true,
     "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1578,
@@ -12629,7 +12629,7 @@
     "correct": false,
     "answer": "True",
     "expected": "202",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1579,
@@ -12637,7 +12637,7 @@
     "correct": false,
     "answer": "718",
     "expected": "47377612800",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1580,
@@ -12693,7 +12693,7 @@
     "correct": false,
     "answer": "E",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1587,
@@ -12725,7 +12725,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1591,
@@ -12749,7 +12749,7 @@
     "correct": false,
     "answer": "277",
     "expected": "же, бо, бы, мя, еси",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1594,
@@ -12773,7 +12773,7 @@
     "correct": true,
     "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1597,
@@ -12789,7 +12789,7 @@
     "correct": false,
     "answer": "C",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1599,
@@ -12915,9 +12915,9 @@
     "idx": 1614,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "219",
+    "answer": null,
     "expected": "O(d^\\omega(1))",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1615,
@@ -12981,15 +12981,15 @@
     "correct": false,
     "answer": "46440",
     "expected": "$26$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1623,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "a3",
+    "answer": "a2a3",
     "expected": "9",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1624,
@@ -13013,7 +13013,7 @@
     "correct": false,
     "answer": "206",
     "expected": "142",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1627,
@@ -13037,7 +13037,7 @@
     "correct": false,
     "answer": "1014",
     "expected": "39.5:11.0",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1630,
@@ -13061,7 +13061,7 @@
     "correct": false,
     "answer": "**",
     "expected": "3ϵ/16",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1633,
@@ -13405,7 +13405,7 @@
     "correct": false,
     "answer": "152",
     "expected": "1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1676,
@@ -13435,9 +13435,9 @@
     "idx": 1679,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "C",
     "expected": "D",
-    "method": "unknown"
+    "method": "mcq_reasoning:compute_and_match:1^2=1"
   },
   {
     "idx": 1680,
@@ -13461,7 +13461,7 @@
     "correct": true,
     "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1683,
@@ -13493,7 +13493,7 @@
     "correct": false,
     "answer": "B",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1687,
@@ -13517,7 +13517,7 @@
     "correct": false,
     "answer": "30",
     "expected": "coverro",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1690,
@@ -13525,7 +13525,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1691,
@@ -13557,7 +13557,7 @@
     "correct": false,
     "answer": "C",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1695,
@@ -13565,7 +13565,7 @@
     "correct": false,
     "answer": "430",
     "expected": "0",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1696,
@@ -13573,7 +13573,7 @@
     "correct": false,
     "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1697,
@@ -13581,7 +13581,7 @@
     "correct": true,
     "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1698,
@@ -13605,7 +13605,7 @@
     "correct": false,
     "answer": "-3",
     "expected": "0.63",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1701,
@@ -13669,7 +13669,7 @@
     "correct": false,
     "answer": "234",
     "expected": "5",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1709,
@@ -13701,7 +13701,7 @@
     "correct": false,
     "answer": "4227",
     "expected": "364",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1713,
@@ -13717,7 +13717,7 @@
     "correct": false,
     "answer": "2958",
     "expected": "468",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1715,
@@ -13757,7 +13757,7 @@
     "correct": false,
     "answer": "C",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1720,
@@ -13803,9 +13803,9 @@
     "idx": 1725,
     "category": "Math",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "(a) True; (b) $\\frac{v}{2} + \\mu$; (c) Yes",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1726,
@@ -13813,7 +13813,7 @@
     "correct": false,
     "answer": null,
     "expected": "(a) True; (b) Yes; (c) No.",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1727,
@@ -13859,9 +13859,9 @@
     "idx": 1732,
     "category": "Math",
     "correct": false,
-    "answer": "True",
+    "answer": null,
     "expected": "(a) No; (b) Yes.",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1733,
@@ -13877,7 +13877,7 @@
     "correct": false,
     "answer": "64",
     "expected": "3",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1735,
@@ -13893,7 +13893,7 @@
     "correct": false,
     "answer": "206",
     "expected": "3",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1737,
@@ -13949,7 +13949,7 @@
     "correct": false,
     "answer": "E",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1744,
@@ -13997,7 +13997,7 @@
     "correct": false,
     "answer": "A",
     "expected": "I",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1750,
@@ -14045,7 +14045,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1756,
@@ -14101,7 +14101,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1763,
@@ -14133,7 +14133,7 @@
     "correct": false,
     "answer": "D",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1767,
@@ -14179,9 +14179,9 @@
     "idx": 1772,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "Kh2",
+    "answer": "g1h2",
     "expected": "Kh1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1773,
@@ -14229,7 +14229,7 @@
     "correct": false,
     "answer": "168",
     "expected": "3",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1779,
@@ -14261,7 +14261,7 @@
     "correct": false,
     "answer": "65",
     "expected": "Angelika McPherson",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1783,
@@ -14301,7 +14301,7 @@
     "correct": false,
     "answer": "D",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1788,
@@ -14357,7 +14357,7 @@
     "correct": false,
     "answer": "69",
     "expected": "Adios muchachos, a tango from Argentina",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1795,
@@ -14437,7 +14437,7 @@
     "correct": false,
     "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1805,
@@ -14445,7 +14445,7 @@
     "correct": false,
     "answer": "429",
     "expected": "61",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1806,
@@ -14453,7 +14453,7 @@
     "correct": false,
     "answer": "Whatisthetitleofthepaintingfromthe19thcentury,asmallfragmentofwhichispresented?",
     "expected": "Battle of Grunwald",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1807,
@@ -14485,7 +14485,7 @@
     "correct": true,
     "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1811,
@@ -14501,7 +14501,7 @@
     "correct": false,
     "answer": "1037836800",
     "expected": "4",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1813,
@@ -14509,7 +14509,7 @@
     "correct": false,
     "answer": "241",
     "expected": "2",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1814,
@@ -14581,7 +14581,7 @@
     "correct": false,
     "answer": "92",
     "expected": "97",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1823,
@@ -14589,7 +14589,7 @@
     "correct": false,
     "answer": "203",
     "expected": "38",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1824,
@@ -14659,9 +14659,9 @@
     "idx": 1832,
     "category": "Math",
     "correct": false,
-    "answer": "0",
+    "answer": null,
     "expected": "3166",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1833,
@@ -14693,7 +14693,7 @@
     "correct": false,
     "answer": "E",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1837,
@@ -14749,7 +14749,7 @@
     "correct": false,
     "answer": "D",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1844,
@@ -14757,7 +14757,7 @@
     "correct": false,
     "answer": "3",
     "expected": "13",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1845,
@@ -14789,7 +14789,7 @@
     "correct": false,
     "answer": "57",
     "expected": "13",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1849,
@@ -14805,7 +14805,7 @@
     "correct": false,
     "answer": "246",
     "expected": "12",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1851,
@@ -14829,7 +14829,7 @@
     "correct": false,
     "answer": "E",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1854,
@@ -14837,7 +14837,7 @@
     "correct": false,
     "answer": "P^{3431}",
     "expected": "3.748",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1855,
@@ -14853,7 +14853,7 @@
     "correct": true,
     "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1857,
@@ -14861,7 +14861,7 @@
     "correct": false,
     "answer": "175",
     "expected": "5",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1858,
@@ -14893,7 +14893,7 @@
     "correct": false,
     "answer": "B",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1862,
@@ -14901,7 +14901,7 @@
     "correct": true,
     "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1863,
@@ -14957,7 +14957,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1870,
@@ -14973,7 +14973,7 @@
     "correct": false,
     "answer": "C",
     "expected": "F",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1872,
@@ -14989,7 +14989,7 @@
     "correct": false,
     "answer": "91",
     "expected": "500",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1874,
@@ -15045,7 +15045,7 @@
     "correct": false,
     "answer": "D",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1881,
@@ -15125,7 +15125,7 @@
     "correct": false,
     "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1891,
@@ -15189,7 +15189,7 @@
     "correct": false,
     "answer": "(2",
     "expected": "6",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1899,
@@ -15237,7 +15237,7 @@
     "correct": false,
     "answer": "13",
     "expected": "4",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1905,
@@ -15253,7 +15253,7 @@
     "correct": true,
     "answer": "True",
     "expected": "1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1907,
@@ -15277,15 +15277,15 @@
     "correct": false,
     "answer": "C",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1910,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "2",
+    "answer": null,
     "expected": "26/7e15:25/7e15",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1911,
@@ -15301,7 +15301,7 @@
     "correct": false,
     "answer": "119",
     "expected": "110",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1913,
@@ -15325,7 +15325,7 @@
     "correct": false,
     "answer": "E",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1916,
@@ -15341,7 +15341,7 @@
     "correct": false,
     "answer": "A",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1918,
@@ -15357,7 +15357,7 @@
     "correct": true,
     "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1920,
@@ -15381,7 +15381,7 @@
     "correct": false,
     "answer": "C",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1923,
@@ -15413,7 +15413,7 @@
     "correct": false,
     "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1927,
@@ -15421,7 +15421,7 @@
     "correct": false,
     "answer": "D",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1928,
@@ -15469,7 +15469,7 @@
     "correct": true,
     "answer": "D",
     "expected": "A,C,D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1934,
@@ -15509,7 +15509,7 @@
     "correct": false,
     "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1939,
@@ -15555,7 +15555,7 @@
     "idx": 1944,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": null,
+    "answer": "False",
     "expected": "44 bytes.",
     "method": "unknown"
   },
@@ -15565,7 +15565,7 @@
     "correct": false,
     "answer": "E",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1946,
@@ -15581,7 +15581,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1948,
@@ -15637,7 +15637,7 @@
     "correct": false,
     "answer": "487",
     "expected": "13",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1955,
@@ -15661,7 +15661,7 @@
     "correct": false,
     "answer": "382",
     "expected": "12\\chi + C^2 - K_S^2 - (4 - 4g)",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1958,
@@ -15669,7 +15669,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1959,
@@ -15677,7 +15677,7 @@
     "correct": false,
     "answer": "2190",
     "expected": "306.7103",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1960,
@@ -15691,9 +15691,9 @@
     "idx": 1961,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "2",
+    "answer": null,
     "expected": "747",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1962,
@@ -15701,7 +15701,7 @@
     "correct": false,
     "answer": "757",
     "expected": "\\[50 \\sqrt{3} \\, \\text{square units}\\]",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1963,
@@ -15725,7 +15725,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1966,
@@ -15741,7 +15741,7 @@
     "correct": false,
     "answer": "98",
     "expected": "$\\omega\\cdot(1+\\eta)$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1968,
@@ -15781,7 +15781,7 @@
     "correct": false,
     "answer": "B",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1973,
@@ -15795,9 +15795,9 @@
     "idx": 1974,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "93.6:0",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1975,
@@ -15845,7 +15845,7 @@
     "correct": false,
     "answer": "C",
     "expected": "H",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1981,
@@ -15885,7 +15885,7 @@
     "correct": false,
     "answer": null,
     "expected": "6 7",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1986,
@@ -15925,7 +15925,7 @@
     "correct": false,
     "answer": "3033",
     "expected": "12",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 1991,
@@ -15955,9 +15955,9 @@
     "idx": 1994,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "0.9963:6",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 1995,
@@ -16005,7 +16005,7 @@
     "correct": false,
     "answer": "77",
     "expected": "15",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2001,
@@ -16013,7 +16013,7 @@
     "correct": false,
     "answer": "2",
     "expected": "37 m",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2002,
@@ -16029,7 +16029,7 @@
     "correct": true,
     "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2004,
@@ -16045,7 +16045,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2006,
@@ -16069,7 +16069,7 @@
     "correct": false,
     "answer": "2",
     "expected": "8",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2009,
@@ -16077,7 +16077,7 @@
     "correct": false,
     "answer": "313",
     "expected": "36 cm",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2010,
@@ -16125,7 +16125,7 @@
     "correct": false,
     "answer": "226",
     "expected": "$\\pi/2$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2016,
@@ -16213,7 +16213,7 @@
     "correct": false,
     "answer": "359",
     "expected": "5",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2027,
@@ -16253,7 +16253,7 @@
     "correct": false,
     "answer": "156",
     "expected": "1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2032,
@@ -16301,7 +16301,7 @@
     "correct": false,
     "answer": "A",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2038,
@@ -16365,7 +16365,7 @@
     "correct": false,
     "answer": "1",
     "expected": "4",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2046,
@@ -16397,7 +16397,7 @@
     "correct": false,
     "answer": "640",
     "expected": "70",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2050,
@@ -16437,7 +16437,7 @@
     "correct": false,
     "answer": "Whatisthelargestunionof20antichainsin[1,823564528378596]inthedivisorposet?",
     "expected": "60",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2055,
@@ -16509,7 +16509,7 @@
     "correct": false,
     "answer": "A",
     "expected": "B,C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2064,
@@ -16579,7 +16579,7 @@
     "idx": 2072,
     "category": "Physics",
     "correct": false,
-    "answer": null,
+    "answer": "False",
     "expected": "No.",
     "method": "unknown"
   },
@@ -16589,7 +16589,7 @@
     "correct": false,
     "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2074,
@@ -16597,7 +16597,7 @@
     "correct": false,
     "answer": "D",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2075,
@@ -16701,7 +16701,7 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2088,
@@ -16773,7 +16773,7 @@
     "correct": false,
     "answer": "291",
     "expected": "2",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2097,
@@ -16781,7 +16781,7 @@
     "correct": false,
     "answer": "C",
     "expected": "F",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2098,
@@ -16805,7 +16805,7 @@
     "correct": false,
     "answer": "153",
     "expected": "13",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2101,
@@ -16853,7 +16853,7 @@
     "correct": false,
     "answer": "5",
     "expected": "1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2107,
@@ -16909,7 +16909,7 @@
     "correct": false,
     "answer": "98",
     "expected": "18",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2114,
@@ -16933,7 +16933,7 @@
     "correct": false,
     "answer": "D",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2117,
@@ -16941,7 +16941,7 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2118,
@@ -16949,7 +16949,7 @@
     "correct": false,
     "answer": "513",
     "expected": "1 + 1/\\sqrt{1 + 2\\exp(-4x/(3L))}",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2119,
@@ -16973,7 +16973,7 @@
     "correct": false,
     "answer": "75",
     "expected": "4",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2122,
@@ -16981,7 +16981,7 @@
     "correct": false,
     "answer": "189",
     "expected": "2",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2123,
@@ -16995,7 +16995,7 @@
     "idx": 2124,
     "category": "Physics",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "2e^2 B/h(V_1)",
     "method": "unknown"
   },
@@ -17003,9 +17003,9 @@
     "idx": 2125,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "-",
     "expected": "0",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2126,
@@ -17045,7 +17045,7 @@
     "correct": false,
     "answer": "4845",
     "expected": "51",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2131,
@@ -17085,7 +17085,7 @@
     "correct": false,
     "answer": "199",
     "expected": "11",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2136,
@@ -17101,7 +17101,7 @@
     "correct": false,
     "answer": "302",
     "expected": "7",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2138,
@@ -17125,7 +17125,7 @@
     "correct": false,
     "answer": "B",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2141,
@@ -17229,7 +17229,7 @@
     "correct": false,
     "answer": "B",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2154,
@@ -17253,7 +17253,7 @@
     "correct": false,
     "answer": "2358",
     "expected": "2.77×10^–3 ppb",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2157,
@@ -17269,7 +17269,7 @@
     "correct": false,
     "answer": "B",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2159,
@@ -17301,7 +17301,7 @@
     "correct": false,
     "answer": "2",
     "expected": "1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2163,
@@ -17309,7 +17309,7 @@
     "correct": false,
     "answer": "A",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2164,
@@ -17397,7 +17397,7 @@
     "correct": false,
     "answer": "A",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2175,
@@ -17411,9 +17411,9 @@
     "idx": 2176,
     "category": "Biology/Medicine",
     "correct": false,
-    "answer": "882",
+    "answer": null,
     "expected": "13",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 2177,
@@ -17421,7 +17421,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2178,
@@ -17429,7 +17429,7 @@
     "correct": false,
     "answer": "1054",
     "expected": "3.92*10^-6",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2179,
@@ -17477,7 +17477,7 @@
     "correct": false,
     "answer": "448",
     "expected": "c",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2185,
@@ -17525,7 +17525,7 @@
     "correct": false,
     "answer": "80",
     "expected": "16",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2191,
@@ -17541,7 +17541,7 @@
     "correct": false,
     "answer": "81",
     "expected": "7",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2193,
@@ -17565,7 +17565,7 @@
     "correct": false,
     "answer": "311",
     "expected": "15",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2196,
@@ -17573,7 +17573,7 @@
     "correct": false,
     "answer": "105",
     "expected": "64",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2197,
@@ -17581,7 +17581,7 @@
     "correct": true,
     "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2198,
@@ -17605,7 +17605,7 @@
     "correct": false,
     "answer": "E",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2201,
@@ -17621,7 +17621,7 @@
     "correct": false,
     "answer": "E",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2203,
@@ -17683,9 +17683,9 @@
     "idx": 2210,
     "category": "Math",
     "correct": false,
-    "answer": "585",
+    "answer": null,
     "expected": "2",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 2211,
@@ -17731,9 +17731,9 @@
     "idx": 2216,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "*",
     "expected": "0",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2217,
@@ -17757,7 +17757,7 @@
     "correct": false,
     "answer": "True",
     "expected": "73",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2220,
@@ -17781,7 +17781,7 @@
     "correct": false,
     "answer": "1",
     "expected": "396",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2223,
@@ -17813,7 +17813,7 @@
     "correct": false,
     "answer": "1",
     "expected": "$p+q-1\\leq n,\\frac{3}{\\pi^{2}}$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2227,
@@ -17861,13 +17861,13 @@
     "correct": true,
     "answer": "D",
     "expected": "A,C,D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2233,
     "category": "Math",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "False",
     "expected": "0",
     "method": "unknown"
   },
@@ -17875,7 +17875,7 @@
     "idx": 2234,
     "category": "Physics",
     "correct": false,
-    "answer": null,
+    "answer": "False",
     "expected": "$1-d(2F-1)^2$",
     "method": "unknown"
   },
@@ -17925,7 +17925,7 @@
     "correct": false,
     "answer": "1",
     "expected": "544",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2241,
@@ -17949,7 +17949,7 @@
     "correct": false,
     "answer": "0.25",
     "expected": "0",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2244,
@@ -18061,7 +18061,7 @@
     "correct": false,
     "answer": "A",
     "expected": "I",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2258,
@@ -18093,7 +18093,7 @@
     "correct": true,
     "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2262,
@@ -18179,7 +18179,7 @@
     "idx": 2272,
     "category": "Math",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "r^{A(1-\\cos\\theta)+B\\sin\\theta}",
     "method": "unknown"
   },
@@ -18285,7 +18285,7 @@
     "correct": true,
     "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2286,
@@ -18325,7 +18325,7 @@
     "correct": false,
     "answer": "2",
     "expected": "21",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2291,
@@ -18347,9 +18347,9 @@
     "idx": 2293,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "False",
     "expected": "10^{9}",
-    "method": "unknown"
+    "method": "propositional_simulation"
   },
   {
     "idx": 2294,
@@ -18453,7 +18453,7 @@
     "correct": false,
     "answer": "164",
     "expected": "12",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2307,
@@ -18469,7 +18469,7 @@
     "correct": true,
     "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2309,
@@ -18597,7 +18597,7 @@
     "correct": false,
     "answer": "E",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2325,
@@ -18605,7 +18605,7 @@
     "correct": false,
     "answer": "201",
     "expected": "278",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2326,
@@ -18645,7 +18645,7 @@
     "correct": false,
     "answer": "3.5",
     "expected": "Yes",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2331,
@@ -18661,7 +18661,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2333,
@@ -18677,7 +18677,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2335,
@@ -18685,7 +18685,7 @@
     "correct": false,
     "answer": "A",
     "expected": "E",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2336,
@@ -18701,13 +18701,13 @@
     "correct": false,
     "answer": "C",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2338,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "False",
     "expected": "-20",
     "method": "unknown"
   },
@@ -18725,7 +18725,7 @@
     "correct": false,
     "answer": "50",
     "expected": "17",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2341,
@@ -18755,17 +18755,17 @@
     "idx": 2344,
     "category": "Math",
     "correct": false,
-    "answer": "1",
+    "answer": null,
     "expected": "(a) No; (b) No; (c) 7.",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 2345,
     "category": "Math",
     "correct": false,
-    "answer": "False",
+    "answer": null,
     "expected": "(a) Yes; (b) Yes; (c) Yes.",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 2346,
@@ -18845,7 +18845,7 @@
     "correct": false,
     "answer": "-",
     "expected": "1000000000",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2356,
@@ -18861,7 +18861,7 @@
     "correct": false,
     "answer": "1242",
     "expected": "$lim ᵣ→∞ P(n) = ∏ᵢ₌₀⁷(1 - 1/8ⁱ⁺¹)$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2358,
@@ -18877,7 +18877,7 @@
     "correct": false,
     "answer": "360",
     "expected": "2,2,infinity,infinity,4,14",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2360,
@@ -18893,7 +18893,7 @@
     "correct": false,
     "answer": "257",
     "expected": "33,1",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2362,
@@ -18917,7 +18917,7 @@
     "correct": false,
     "answer": "B",
     "expected": "D",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2365,
@@ -18941,7 +18941,7 @@
     "correct": false,
     "answer": "E",
     "expected": "C",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2368,
@@ -18973,7 +18973,7 @@
     "correct": true,
     "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2372,
@@ -19037,7 +19037,7 @@
     "correct": false,
     "answer": "C",
     "expected": "B",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2380,
@@ -19085,7 +19085,7 @@
     "correct": false,
     "answer": "3.5",
     "expected": "$\\frac{xF_{X_i}(x)-I_{X_i}(x)}{\\mu_{X_i}}$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2386,
@@ -19101,7 +19101,7 @@
     "correct": false,
     "answer": "9",
     "expected": "The Great Escape",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2388,
@@ -19117,7 +19117,7 @@
     "correct": false,
     "answer": "E",
     "expected": "A",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2390,
@@ -19181,7 +19181,7 @@
     "correct": false,
     "answer": "63",
     "expected": "梦里不知身是客",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2398,
@@ -19189,7 +19189,7 @@
     "correct": false,
     "answer": "114",
     "expected": "质多文少",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2399,
@@ -19205,7 +19205,7 @@
     "correct": false,
     "answer": "1",
     "expected": "{54,26,20,42}",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2401,
@@ -19243,9 +19243,9 @@
     "idx": 2405,
     "category": "Math",
     "correct": false,
-    "answer": "540",
+    "answer": null,
     "expected": "$-\\frac{29380}{81\\pi^3}-\\frac{436}{81\\pi}$",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 2406,
@@ -19253,7 +19253,7 @@
     "correct": false,
     "answer": "2",
     "expected": "10711",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2407,
@@ -19291,9 +19291,9 @@
     "idx": 2411,
     "category": "Math",
     "correct": false,
-    "answer": "2.23606797749979",
+    "answer": "2.23607",
     "expected": "$-\\frac{\\ln 2}{\\pi}$",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2412,
@@ -19349,7 +19349,7 @@
     "correct": false,
     "answer": "+",
     "expected": "Mayakovsky",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2419,
@@ -19437,7 +19437,7 @@
     "correct": false,
     "answer": "2",
     "expected": "{8,3,2,6,4,1,7,5}",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2430,
@@ -19595,9 +19595,9 @@
     "idx": 2449,
     "category": "Engineering",
     "correct": false,
-    "answer": "True",
+    "answer": null,
     "expected": "51/28",
-    "method": "unknown"
+    "method": "mcq_guard_blocked"
   },
   {
     "idx": 2450,
@@ -19611,7 +19611,7 @@
     "idx": 2451,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "36",
     "expected": "1/(1-e)^3",
     "method": "unknown"
   },
@@ -19789,7 +19789,7 @@
     "correct": false,
     "answer": "7",
     "expected": "ALINA",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2474,
@@ -19861,7 +19861,7 @@
     "correct": false,
     "answer": "1",
     "expected": "1200",
-    "method": "unknown"
+    "method": "cegis_proved"
   },
   {
     "idx": 2483,

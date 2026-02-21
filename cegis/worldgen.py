@@ -5,17 +5,21 @@ CEGISループの「世界生成」担当。
 LLM不使用で、反例探索・候補フィルタリングのための小世界を構築する。
 
 生成できる構造:
-  group       - 有限群 (Z_n, S_n, V4, D_n)
-  graph       - 有限グラフ (完全, 空, パス, サイクル, 二部)
-  ring        - 有限環 (Z_n)
-  sequence    - 数列 (等差, 等比, フィボナッチ, 素数列)
-  number      - 整数・有理数サンプル
-  propositional - 命題論理の真偽割り当て
-  set         - 有限集合・部分集合
-  function    - 有限集合上の関数
-  permutation - 置換
-  matrix      - 有限行列サンプル
-  polynomial  - 多項式サンプル
+  group          - 有限群 (Z_n, S_n, V4, D_n)
+  graph          - 有限グラフ (完全, 空, パス, サイクル, 二部)
+  ring           - 有限環 (Z_n)
+  sequence       - 数列 (等差, 等比, フィボナッチ, 素数列)
+  number         - 整数・有理数サンプル
+  propositional  - 命題論理の真偽割り当て
+  set            - 有限集合・部分集合
+  function       - 有限集合上の関数
+  permutation    - 置換
+  matrix         - 有限行列サンプル
+  polynomial     - 多項式サンプル
+  substitution   - 変数代入の小世界 (恒等式・多項式検証用)
+  finite_field   - 有限体 GF(p)
+  finite_group   - 有限群 (巡回群・対称群の強化版)
+  modular        - 剰余演算の世界 (合同式・Fermat小定理)
 """
 
 from __future__ import annotations
@@ -75,6 +79,10 @@ class WorldGenerator:
             "permutation":   self._gen_permutations,
             "matrix":        self._gen_matrices,
             "polynomial":    self._gen_polynomials,
+            "substitution":  self._gen_substitution,
+            "finite_field":  self._gen_finite_field,
+            "finite_group":  self._gen_finite_group,
+            "modular":       self._gen_modular,
         }
         gen_fn = gen_map.get(domain, self._gen_number_samples)
         return list(itertools.islice(gen_fn(params), self.max_worlds))
@@ -517,3 +525,209 @@ class WorldGenerator:
         if len(mat) == 2 and len(mat[0]) == 2:
             return mat[0][0]*mat[1][1] - mat[0][1]*mat[1][0]
         return None
+
+    # ────────────────────────────────────────────────────────────────────
+    # 変数代入の小世界 (恒等式・多項式検証用)
+    # ────────────────────────────────────────────────────────────────────
+
+    def _gen_substitution(self, params: Dict) -> Generator[FiniteModel, None, None]:
+        """変数代入の小世界 — 多項式恒等式の反例探索用"""
+        count = params.get("count", 30)
+        var_names = params.get("vars", ["x", "y", "n", "k", "a", "b"])
+
+        # 戦略的な値のセット
+        seed_values = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 7, 11, 13, 17]
+        # 有理数も追加
+        from fractions import Fraction
+        seed_values.extend([Fraction(1, 2), Fraction(1, 3), Fraction(2, 3),
+                           Fraction(-1, 2), Fraction(3, 2)])
+
+        generated = 0
+        for _ in range(count * 3):  # 多めに試行
+            if generated >= count:
+                break
+
+            # ランダムに変数を選択（1〜4個）
+            num_vars = self._rng.randint(1, min(4, len(var_names)))
+            selected_vars = self._rng.sample(var_names, num_vars)
+
+            # 値を割り当て
+            assignment = {v: self._rng.choice(seed_values) for v in selected_vars}
+
+            yield FiniteModel(
+                domain="substitution",
+                size=len(assignment),
+                elements=list(assignment.values()),
+                relations={"assignment": assignment},
+                properties=assignment,
+                generator_params={"vars": selected_vars, "type": "substitution"},
+            )
+            generated += 1
+
+    # ────────────────────────────────────────────────────────────────────
+    # 有限体 GF(p)
+    # ────────────────────────────────────────────────────────────────────
+
+    def _gen_finite_field(self, params: Dict) -> Generator[FiniteModel, None, None]:
+        """有限体 GF(p) を生成"""
+        primes = params.get("primes", [2, 3, 5, 7, 11, 13])
+
+        for p in primes:
+            if not self._is_prime(p):
+                continue
+
+            elements = list(range(p))
+            add_table = {(a, b): (a + b) % p for a in elements for b in elements}
+            mul_table = {(a, b): (a * b) % p for a in elements for b in elements}
+
+            # 乗法逆元を計算
+            inv_table = {}
+            for a in elements:
+                if a == 0:
+                    continue
+                for b in elements:
+                    if mul_table[(a, b)] == 1:
+                        inv_table[a] = b
+                        break
+
+            # primitive root を探索
+            primitive_root = None
+            for g in range(1, p):
+                powers = set()
+                for k in range(1, p):
+                    powers.add(pow(g, k, p))
+                if len(powers) == p - 1:  # 全ての非零元を生成
+                    primitive_root = g
+                    break
+
+            yield FiniteModel(
+                domain="finite_field",
+                size=p,
+                elements=elements,
+                relations={
+                    "add": add_table,
+                    "mul": mul_table,
+                    "inv": inv_table,
+                    "zero": 0,
+                    "one": 1,
+                    "primitive_root": primitive_root,
+                },
+                properties={
+                    "p": p,
+                    "characteristic": p,
+                    "size": p,
+                    "field": True,
+                    "prime_field": True,
+                    "has_primitive_root": primitive_root is not None,
+                },
+                generator_params={"type": "GF(p)", "p": p},
+            )
+
+    # ────────────────────────────────────────────────────────────────────
+    # 有限群（強化版） - 巡回群・対称群
+    # ────────────────────────────────────────────────────────────────────
+
+    def _gen_finite_group(self, params: Dict) -> Generator[FiniteModel, None, None]:
+        """有限群を生成（既存の _gen_groups を補完）"""
+        orders = params.get("orders", [2, 3, 4, 5, 6, 7, 8, 9, 10, 12])
+
+        for n in orders:
+            if n > self.max_size and n > 12:
+                continue
+
+            # 巡回群 Z/nZ
+            elements = list(range(n))
+            op = {(i, j): (i + j) % n for i in elements for j in elements}
+
+            # 生成元を見つける
+            generators = []
+            for g in range(n):
+                generated = set()
+                current = 0
+                for _ in range(n):
+                    generated.add(current)
+                    current = (current + g) % n
+                if len(generated) == n:
+                    generators.append(g)
+
+            yield FiniteModel(
+                domain="finite_group",
+                size=n,
+                elements=elements,
+                relations={
+                    "op": op,
+                    "identity": 0,
+                    "generators": generators,
+                    "type": f"Z_{n}",
+                },
+                properties={
+                    "abelian": True,
+                    "cyclic": True,
+                    "order": n,
+                    "simple": self._is_prime(n),
+                    "prime_order": self._is_prime(n),
+                },
+                generator_params={"type": "cyclic", "n": n},
+            )
+
+    # ────────────────────────────────────────────────────────────────────
+    # 剰余演算の世界 (mod p)
+    # ────────────────────────────────────────────────────────────────────
+
+    def _gen_modular(self, params: Dict) -> Generator[FiniteModel, None, None]:
+        """剰余演算の世界 — 合同式・Fermat小定理の検証用"""
+        moduli = params.get("moduli", [2, 3, 5, 7, 11, 13, 17, 19, 23])
+
+        for m in moduli:
+            if m > 30:  # 大きすぎる modulus は避ける
+                continue
+
+            elements = list(range(m))
+
+            # ユニット群 (Z/mZ)* の要素（m と互いに素）
+            units = [a for a in elements if math.gcd(a, m) == 1]
+
+            # Euler の totient 関数
+            phi = len(units)
+
+            # Fermat の小定理の検証用: a^(p-1) ≡ 1 (mod p) for prime p
+            fermat_holds = True
+            if self._is_prime(m) and m > 1:
+                for a in range(1, m):
+                    if pow(a, m - 1, m) != 1:
+                        fermat_holds = False
+                        break
+            else:
+                fermat_holds = False
+
+            # primitive root の存在（素数の場合）
+            primitive_root = None
+            if self._is_prime(m):
+                for g in range(1, m):
+                    powers = set()
+                    for k in range(1, m):
+                        powers.add(pow(g, k, m))
+                    if len(powers) == m - 1:
+                        primitive_root = g
+                        break
+
+            yield FiniteModel(
+                domain="modular",
+                size=m,
+                elements=elements,
+                relations={
+                    "mod": m,
+                    "units": units,
+                    "phi": phi,
+                    "primitive_root": primitive_root,
+                },
+                properties={
+                    "mod": m,
+                    "prime": self._is_prime(m),
+                    "composite": m > 1 and not self._is_prime(m),
+                    "phi": phi,
+                    "fermat_holds": fermat_holds,
+                    "has_primitive_root": primitive_root is not None,
+                },
+                generator_params={"type": "Z/mZ", "mod": m},
+            )

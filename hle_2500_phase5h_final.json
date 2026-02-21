@@ -1,8 +1,8 @@
 {
   "total": 2500,
-  "correct": 95,
-  "accuracy": 3.8,
-  "time": 53.877269983291626,
+  "correct": 96,
+  "accuracy": 3.84,
+  "time": 52.79552602767944,
   "category_stats": {
     "Other": {
       "total": 233,
@@ -14,7 +14,7 @@
     },
     "Math": {
       "total": 1021,
-      "correct": 28
+      "correct": 29
     },
     "Physics": {
       "total": 230,
@@ -38,7 +38,8 @@
     }
   },
   "method_stats": {
-    "unknown": 85,
+    "cegis_proved": 69,
+    "unknown": 17,
     "math_cross_sim": 7,
     "puzzle_reasoning": 1,
     "propositional_simulation": 1,

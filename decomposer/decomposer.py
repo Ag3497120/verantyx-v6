@@ -9,6 +9,7 @@ import re
 
 from core.ir import IR, TaskType, Domain, AnswerSchema, Entity, Constraint, Query
 from decomposer.problem_type_detector import ProblemTypeDetector
+from decomposer.latex_normalizer import normalize_latex, detect_answer_schema as detect_answer_schema_latex
 
 # 600B concept_dirs ブースト（オプション、キャッシュがあれば0ms）
 _concept_booster = None
@@ -142,22 +143,27 @@ class RuleBasedDecomposer:
     def decompose(self, problem_text: str) -> IR:
         """
         問題文をIRに分解
-        
+
         Args:
             problem_text: 問題文
-        
+
         Returns:
             IR
         """
-        text = problem_text.strip()
-        text_lower = text.lower()
-        
+        # LaTeX 正規化（最初に必ず実行）
+        original_text = problem_text.strip()
+        normalized_text = normalize_latex(original_text)
+
+        # 両方保持（schema判定には元テキスト、処理には正規化テキスト）
+        text = normalized_text
+        text_lower = normalized_text.lower()
+
         # 問題タイプ検出（新規）
         problem_type_info = self.type_detector.detect(text)
-        
+
         # タスクタイプ推定
         task = self._detect_task(text_lower)
-        
+
         # ドメイン推定（問題タイプからのブーストを適用）
         domain = self._detect_domain(text_lower, problem_type_info=problem_type_info)
         
@@ -165,6 +171,9 @@ class RuleBasedDecomposer:
         options = self._extract_options(text)
         
         # Answer Schema推定
+        # LaTeX-based answer schema detection (for metadata hint)
+        latex_answer_schema = detect_answer_schema_latex(original_text)
+
         if options:
             answer_schema = AnswerSchema.OPTION_LABEL
         else:
@@ -345,7 +354,9 @@ class RuleBasedDecomposer:
                 "confidence": domain_confidence,
                 "keywords": keywords,
                 "problem_type": problem_type_info.get('primary_type').value if problem_type_info else "unknown",
-                "problem_type_confidence": problem_type_info.get('confidence', 0.0) if problem_type_info else 0.0
+                "problem_type_confidence": problem_type_info.get('confidence', 0.0) if problem_type_info else 0.0,
+                "latex_answer_schema": latex_answer_schema,  # LaTeX-based answer type hint
+                "normalized_text": normalized_text  # Store normalized version
             }
         )
         
@@ -400,11 +411,17 @@ class RuleBasedDecomposer:
                     except (KeyError, AttributeError):
                         pass
 
-        # 600B concept_dirs ブースト（キャッシュ使用時0ms、未キャッシュ時60ms）
+        # 600B concept_dirs ブースト（アンカーキーワード max-pooling）
+        # 全文 mean より discriminative power が高い
         booster = _get_concept_booster()
         if booster is not None:
             try:
-                concept_scores = booster.get_scores(text)
+                from knowledge.concept_boost import extract_anchor_kws
+                anchor_kws = extract_anchor_kws(text)
+                if anchor_kws:
+                    concept_scores = booster.get_scores_by_keywords(anchor_kws)
+                else:
+                    concept_scores = booster.get_scores(text)
                 for domain_val, boost in concept_scores.items():
                     try:
                         domain_enum = Domain(domain_val)

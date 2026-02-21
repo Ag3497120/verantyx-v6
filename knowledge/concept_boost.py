@@ -180,6 +180,15 @@ class ConceptBooster:
         if verbose:
             print(f"Cache built: {written} entries → {out_path} ({elapsed:.1f}s)")
 
+    def _map_raw_scores(self, raw_scores: Dict[str, float]) -> Dict[str, float]:
+        """raw ConceptSearcher スコア → Verantyx domain スコアに変換（内部ヘルパー）"""
+        result: Dict[str, float] = {}
+        for cs_domain, weight in raw_scores.items():
+            for dval, multiplier in DOMAIN_MAP.get(cs_domain, []):
+                score = weight * multiplier * BOOST_FACTOR
+                result[dval] = max(result.get(dval, 0.0), score)
+        return result
+
     def load_cache(self, cache_path: str = "knowledge/concept_cache.jsonl") -> int:
         """
         事前計算済みキャッシュを読み込む。
@@ -198,6 +207,139 @@ class ConceptBooster:
                 self._cache[entry["key"]] = entry["scores"]
                 count += 1
         return count
+
+
+# ─── アンカーキーワード抽出 ───────────────────────────────────────
+# 数学・科学の discriminative term リスト（全文 mean よりも高精度）
+_ANCHOR_TERMS = frozenset([
+    # calculus
+    "derivative", "integral", "limit", "differentiate", "integrate",
+    "gradient", "partial", "taylor", "maclaurin", "fourier",
+    "convergence", "divergence", "series",
+    # algebra
+    "polynomial", "equation", "solve", "factor", "eigenvalue",
+    "eigenvector", "matrix", "determinant", "linear", "quadratic",
+    # number theory
+    "prime", "factorial", "divisor", "modulo", "gcd", "lcm",
+    "congruent", "fermat", "euler", "totient",
+    # combinatorics
+    "permutation", "combination", "binomial", "stirling", "derangement",
+    "pigeonhole", "counting",
+    # probability
+    "probability", "bayes", "conditional", "distribution", "variance",
+    "expected", "random", "stochastic",
+    # geometry
+    "triangle", "circle", "radius", "area", "perimeter",
+    "pythagorean", "angle", "hypotenuse", "ellipse",
+    # linear algebra
+    "vector", "dot product", "cross product", "orthogonal", "projection",
+    "rank", "null space", "trace",
+    # logic
+    "implies", "satisfiable", "tautology", "modal", "kripke",
+    "theorem", "proof", "corollary",
+    # physics/chemistry
+    "velocity", "acceleration", "force", "momentum", "entropy",
+    "electron", "photon", "wavelength",
+    # CS/AI
+    "algorithm", "complexity", "automaton", "turing", "graph",
+    "vertex", "edge", "cycle", "path",
+])
+
+_STOP_WORDS = frozenset([
+    "the", "a", "an", "is", "are", "was", "were", "be", "been",
+    "have", "has", "do", "does", "did", "will", "would", "could",
+    "should", "may", "might", "shall", "can", "need", "used",
+    "which", "that", "this", "these", "those", "what", "how",
+    "when", "where", "why", "who", "whom", "whose",
+    "and", "or", "but", "if", "then", "than", "so",
+    "of", "in", "to", "for", "on", "at", "by", "from", "with",
+    "as", "about", "into", "through", "during", "before", "after",
+    "above", "below", "between", "each", "every", "all", "both",
+    "few", "more", "most", "other", "some", "such", "no", "not",
+    "only", "same", "too", "very", "just", "also", "following",
+    "given", "let", "find", "compute", "calculate", "determine",
+    "show", "prove", "evaluate", "consider",
+])
+
+
+def extract_anchor_kws(text: str, max_kws: int = 12) -> List[str]:
+    """
+    問題文から discriminative なアンカーキーワードを抽出する。
+
+    戦略:
+    1. 既知の数学・科学用語リストに一致する単語を優先
+    2. 英数字トークンで stop word 以外 + 長さ≥4 の単語も候補
+    3. 最大 max_kws 個を返す
+    """
+    import re
+    words = re.findall(r"[A-Za-z]+(?:'[A-Za-z]+)?", text.lower())
+    anchor: List[str] = []
+    generic: List[str] = []
+    seen: set = set()
+    for w in words:
+        if w in seen:
+            continue
+        seen.add(w)
+        if w in _ANCHOR_TERMS:
+            anchor.append(w)
+        elif len(w) >= 4 and w not in _STOP_WORDS:
+            generic.append(w)
+    combined = anchor + generic
+    return combined[:max_kws]
+
+
+class ConceptBoosterWithTrace:
+    """
+    RoutingTrace 付きでブーストスコアを返す薄いラッパー。
+    """
+    def __init__(self, booster: "ConceptBooster"):
+        self._b = booster
+
+    def get_scores_with_trace(
+        self,
+        text: str,
+        anchor_kws: Optional[List[str]] = None,
+    ) -> Tuple[Dict[str, float], "RoutingTrace"]:
+        """
+        anchor_kws が与えられればキーワード max-pooling 検索、
+        なければ全文 mean 検索（キャッシュ優先）。
+        RoutingTrace も返す。
+        """
+        from knowledge.concept_search import RoutingTrace as CSRoutingTrace
+        import time
+
+        t0 = time.time()
+        kws = anchor_kws if anchor_kws else []
+        cache_hit = False
+
+        if kws:
+            # keyword max-pooling 検索
+            cs = self._b._get_searcher()
+            raw_scores, rt = cs.search_with_trace(kws)
+            scores = self._b._map_raw_scores(raw_scores)
+            mode = "keyword_maxpool"
+        else:
+            # 全文キャッシュ優先
+            key = text.lower()[:200]
+            if self._b._use_cache and key in self._b._cache:
+                scores = self._b._cache[key]
+                cache_hit = True
+                mode = "fulltext_cache"
+            else:
+                scores = self._b.get_scores(text)
+                mode = "fulltext_mean"
+
+        elapsed_ms = round((time.time() - t0) * 1000, 2)
+        # RoutingTrace（AuditBundle 用の同型）
+        from audit.audit_bundle import RoutingTrace as ABRoutingTrace
+        rt_ab = ABRoutingTrace(
+            mode=mode,
+            anchor_kws=kws,
+            top_domains=sorted(scores.items(), key=lambda x: -x[1])[:3],
+            elapsed_ms=elapsed_ms,
+            cache_hit=cache_hit,
+        )
+        return scores, rt_ab
 
 
 # ─── グローバルシングルトン ───────────────────────────────────────
