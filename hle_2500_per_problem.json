@@ -8666,10 +8666,10 @@
   {
     "idx": 1083,
     "category": "Other",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1084,
@@ -10602,10 +10602,10 @@
   {
     "idx": 1325,
     "category": "Other",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1326,
@@ -16082,10 +16082,10 @@
   {
     "idx": 2010,
     "category": "Biology/Medicine",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 2011,
@@ -17530,10 +17530,10 @@
   {
     "idx": 2191,
     "category": "Biology/Medicine",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 2192,
