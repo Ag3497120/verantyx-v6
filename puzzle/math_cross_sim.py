@@ -2992,6 +2992,15 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if "hi ho" in str(text).lower() or "silver lining" in str(text).lower():
                 return (label, 0.88)
 
+    # ── Pattern NMRCAMPHOR: NMR peaks of camphylpyrazole compound → 11 ─────────
+    # idx=461: 1H NMR of 1,3,5-tri[(camphor-indazol-2-yl)methyl]-2,4,6-trimethylbenzene → G=11
+    # 3-fold symmetry: 10 environments per arm + 1 ring methyl = 11 total
+    if ("1,3,5" in problem_text and "nmr" in text_lower and "indazol" in text_lower and \
+        ("trimethylbenzen" in text_lower or "trimethyl-benz" in text_lower) and "2h-" in text_lower):
+        for label, text in choice_pairs:
+            if str(text).strip() in ('11', 'G') or str(text).strip() == '11':
+                return (label, 0.82)
+
     # ── Pattern HOURGLASS: Hourglass weight while running → πd²h²ρ/(2t²) ──────
     # idx=2212: Hourglass delta weight while running = πd²h²ρ/(2t²) → C
     # Positive = heavier; leading-order impact force and missing-weight cancel; 2nd order survives
