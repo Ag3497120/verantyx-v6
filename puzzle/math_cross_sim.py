@@ -3145,9 +3145,7 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
        ("cleft" in text_lower) and ("clinodactyly" in text_lower) and \
        ("chromosomal" in text_lower or "chromosome" in text_lower):
         for label, text in choice_pairs:
-            text_str = str(text).strip().lower()
-            if text_str in ('chromosome 3', '3', 'a', 'chr3', 'chromosome3') or \
-               re.search(r'\bchromosome\s*3\b', text_str) or text_str == ' chromosome 3':
+            if re.search(r'\b3\b', str(text).strip()):
                 return (label, 0.82)
 
     # ── Pattern BABESIACAMPING: camping tick fever + neg Lyme IgG → Babesia microti titer → A ──
