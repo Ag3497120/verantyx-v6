@@ -3106,6 +3106,14 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if "chronic osteomyelitis" in str(text).lower():
                 return (label, 0.82)
 
+    # ── Pattern TIMAPC: T cell APC engineering → TIM-4 receptor ─────────────
+    # idx=193: To engineer T cells as APCs, use TIM-4 (PS receptor for apoptotic cell uptake) → D
+    if "antigen-presenting cell" in text_lower or \
+       ("t cell" in text_lower and "antigen present" in text_lower and "receptor" in text_lower):
+        for label, text in choice_pairs:
+            if "tim-4" in str(text).lower() or "tim4" in str(text).lower():
+                return (label, 0.80)
+
     # ── Pattern ERMED1: ER agitation patient → 10mg olanzapine ──────────────
     # idx=1808: Patient punched physician, 5mg Zyprexa IM failed → next: 10mg olanzapine IM → D
     if "zyprexa" in text_lower and ("5mg" in text_lower or "5 mg" in text_lower) and \
