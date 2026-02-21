@@ -2834,10 +2834,10 @@
   {
     "idx": 354,
     "category": "Computer Science/AI",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 355,
@@ -10522,10 +10522,10 @@
   {
     "idx": 1315,
     "category": "Computer Science/AI",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1316,
@@ -16962,10 +16962,10 @@
   {
     "idx": 2120,
     "category": "Computer Science/AI",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 2121,
