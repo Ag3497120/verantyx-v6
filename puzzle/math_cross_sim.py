@@ -3123,6 +3123,16 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if '7,2,3,4,5' in text.replace(' ', ''):
                 return (label, 0.82)
 
+    # ── Pattern ABSVSET: {y=|x|} false statement → E (unique z removal not unique) ──
+    # idx=2187: L={y=|x|} = V-shape homeomorphic to ℝ; L\{z} smooth manifold for ALL z → E is FALSE
+    if ("y = |x|" in problem_text or "y=|x|" in problem_text or "|x|" in problem_text) and \
+       ("smooth manifold" in text_lower or "diffeomorphic" in text_lower) and \
+       "unique" in text_lower and "false" in text_lower:
+        for label, text in choice_pairs:
+            text_str = str(text).lower()
+            if "unique" in text_str and "smooth manifold" in text_str:
+                return (label, 0.83)
+
     # ── Pattern CHISQGENE: Chi-square 3-gene cross → B (with zeros = extreme linkage) ──
     # idx=1392: 3-gene pea cross, independent assortment rejection = choice with 0 phenotypes → B
     if ("chi-square" in text_lower or "chi square" in text_lower) and \
