@@ -15,6 +15,7 @@ import os
 import re
 
 from core.ir import IR
+from audit import AuditBundle, CEGISInfo, VerifyInfo, AnswerInfo
 from pieces.piece import PieceDB, Piece
 from decomposer.decomposer import RuleBasedDecomposer
 from assembler.beam_search import BeamSearch, GreedyAssembler
@@ -144,7 +145,9 @@ class VerantyxV6Enhanced:
             "verified": 0,
             "failed": 0,
             # CEGIS 診断カウンタ
-            "cegis_ran": 0,
+            "cegis_ran": 0,            # 関数入口（関数が呼ばれた回数）
+            "cegis_loop_started": 0,   # 候補>=1でCEGISループが実際に起動した数
+            "cegis_iters": 0,          # CEGIS ループ総回転数（iterations 合計）
             "cegis_proved": 0,
             "cegis_high_confidence": 0,
             "cegis_timeout": 0,
@@ -153,6 +156,8 @@ class VerantyxV6Enhanced:
             "cegis_missing_verify": 0,
             "cegis_missing_worldgen": 0,
             "cegis_missing_spec_blocked": 0,  # Guard 1 カウンタ
+            "cegis_no_candidates": 0,          # executor が None → candidates 空
+            "cegis_registry_hits": 0,          # WORLDGEN_REGISTRY を使った回数
         }
     
     def solve(
@@ -177,6 +182,9 @@ class VerantyxV6Enhanced:
         self.stats["total"] += 1
         trace = []
         
+        # 立体十字ルーティングトレース（AuditBundle 用）
+        _routing_trace = None
+
         # Step 1: 問題文分解
         trace.append("step:decompose")
         try:
@@ -184,6 +192,20 @@ class VerantyxV6Enhanced:
             self.stats["ir_extracted"] += 1
             ir_dict = ir.to_dict()
             trace.append(f"ir:task={ir.task.value},domain={ir.domain.value},schema={ir.answer_schema.value}")
+
+            # 立体十字ルーティング: anchor keyword max-pooling で RoutingTrace を生成
+            try:
+                from knowledge.concept_boost import extract_anchor_kws, ConceptBoosterWithTrace, get_booster
+                from audit.audit_bundle import RoutingTrace as ABRoutingTrace
+                _anchor_kws = extract_anchor_kws(problem_text)
+                if _anchor_kws:
+                    _booster_inst = get_booster()
+                    _bt = ConceptBoosterWithTrace(_booster_inst)
+                    _, _routing_trace = _bt.get_scores_with_trace(problem_text, anchor_kws=_anchor_kws)
+                    trace.append(f"routing:mode={_routing_trace.mode} kws={len(_routing_trace.anchor_kws)} top={_routing_trace.top_domains[:1]}")
+            except Exception as _rt_e:
+                trace.append(f"routing:skip:{_rt_e}")
+
         except Exception as e:
             trace.append(f"decompose_error:{e}")
             self.stats["failed"] += 1
@@ -226,12 +248,25 @@ class VerantyxV6Enhanced:
         if _domain_skip:
             trace.append(f"DOMAIN_REJECT:{_domain_skip}")
             self.stats["domain_reject"] = self.stats.get("domain_reject", 0) + 1
+
+            # Create AuditBundle for domain mismatch
+            bundle = self._create_audit_bundle(
+                question_id="domain_reject",
+                answer=None,
+                status="FAILED",
+                confidence=0.0,
+                cegis_ran=False,
+                trace=trace,
+                routing_trace=_routing_trace,
+            )
+
             return {
                 "status": "FAILED",
                 "error": f"PhD domain mismatch: {_domain_skip}",
                 "skip_reason": "domain_mismatch",
                 "ir": ir_dict,
-                "trace": trace
+                "trace": trace,
+                "audit_bundle": bundle.to_json() if bundle else None,
             }
 
         # Step 1.5: MCQ直接解決
@@ -245,7 +280,29 @@ class VerantyxV6Enhanced:
             if _choices and len(_choices) >= 2:
                 trace.append(f"step1_5:mcq_detected:choices={list(_choices.keys())}")
 
-                # 0. MCQ executor-based verification (NEW - bias-free)
+                # 0. 600B 推論型 → Verantyx Executor ルーティング（最優先）
+                # 600B concept_dirs でMCQ推論型を特定し、対応Executorに委譲
+                try:
+                    from executors.mcq_reasoning_executor import execute_mcq_by_reasoning
+                    _mcq_600b = execute_mcq_by_reasoning(_stem, _choices)
+                    if _mcq_600b:
+                        _ans, _conf, _method = _mcq_600b
+                        trace.append(f"step1_5:mcq_600b_routing:{_method} label={_ans} conf={_conf:.2f}")
+                        self.stats["executed"] += 1
+                        status = self._validate_answer(_ans, expected_answer, trace)
+                        return {
+                            "status": status,
+                            "answer": _ans,
+                            "expected": expected_answer,
+                            "confidence": _conf,
+                            "method": f"mcq_reasoning:{_method}",
+                            "ir": ir_dict,
+                            "trace": trace,
+                        }
+                except Exception as _mcq_600b_e:
+                    trace.append(f"step1_5:mcq_600b_error:{_mcq_600b_e}")
+
+                # 1. MCQ executor-based verification (bias-free)
                 # Computational verification of each option
                 try:
                     from executors.mcq_verifier import verify_mcq_by_executor
@@ -504,11 +561,24 @@ class VerantyxV6Enhanced:
         if pieces is None:
             trace.append("no_pieces_found")
             self.stats["failed"] += 1
+
+            # Create AuditBundle for failure path
+            bundle = self._create_audit_bundle(
+                question_id="no_pieces",
+                answer=None,
+                status="FAILED",
+                confidence=0.0,
+                cegis_ran=False,
+                trace=trace,
+                routing_trace=_routing_trace,
+            )
+
             return {
                 "status": "FAILED",
                 "error": "No suitable pieces found",
                 "ir": ir_dict,
-                "trace": trace
+                "trace": trace,
+                "audit_bundle": bundle.to_json() if bundle else None,
             }
         
         self.stats["pieces_found"] += 1
@@ -537,6 +607,18 @@ class VerantyxV6Enhanced:
                     _sim_method = sim_result.method or "math_cross_sim"
                     _sim_conf = sim_result.confidence
                     _sim_status = self._validate_answer(_sim_ans, expected_answer, trace)
+
+                    # Create AuditBundle for simulation path
+                    bundle = self._create_audit_bundle(
+                        question_id="simulation",
+                        answer=_sim_ans,
+                        status=_sim_status,
+                        confidence=_sim_conf,
+                        cegis_ran=False,
+                        trace=trace,
+                        routing_trace=_routing_trace,
+                    )
+
                     return {
                         "status": _sim_status,
                         "answer": _sim_ans,
@@ -544,6 +626,7 @@ class VerantyxV6Enhanced:
                         "confidence": _sim_conf,
                         "method": _sim_method,
                         "trace": trace,
+                        "audit_bundle": bundle.to_json() if bundle else None,
                     }
             elif sim_result.status == "disproved":
                 self.stats["simulation_disproved"] += 1
@@ -574,12 +657,25 @@ class VerantyxV6Enhanced:
                 else:
                     trace.append("execution_failed")
                 self.stats["failed"] += 1
+
+                # Create AuditBundle for execution failure
+                bundle = self._create_audit_bundle(
+                    question_id="exec_failed",
+                    answer=None,
+                    status="FAILED",
+                    confidence=0.0,
+                    cegis_ran=False,
+                    trace=trace,
+                    routing_trace=_routing_trace,
+                )
+
                 return {
                     "status": "FAILED",
                     "error": f"Execution failed (garbage_entity:{garbage_reason})" if garbage_reason else "Execution failed",
                     "ir": ir_dict,
                     "pieces": [p.piece_id for p in pieces],
-                    "trace": trace
+                    "trace": trace,
+                    "audit_bundle": bundle.to_json() if bundle else None,
                 }
             
             self.stats["executed"] += 1
@@ -624,6 +720,19 @@ class VerantyxV6Enhanced:
                         write_source=cegis_method,
                     )
                     trace.append("crystallized:cegis")
+
+                # Create AuditBundle for CEGIS path
+                bundle = self._create_audit_bundle(
+                    question_id="cegis",
+                    answer=cegis_answer,
+                    status=status,
+                    confidence=cegis_conf,
+                    cegis_ran=True,
+                    trace=trace,
+                    cegis_method=cegis_method,
+                    routing_trace=_routing_trace,
+                )
+
                 return {
                     "status": status,
                     "answer": cegis_answer,
@@ -633,10 +742,38 @@ class VerantyxV6Enhanced:
                     "ir": ir_dict,
                     "pieces": [p.piece_id for p in pieces],
                     "trace": trace,
+                    "audit_bundle": bundle.to_json() if bundle else None,
                 }
         except Exception as _cegis_e:
             trace.append(f"cegis:error:{_cegis_e}")
         # CEGIS が解を返せなかった場合 → 既存パス（Step 7/8）にフォールバック
+
+        # ── MCQ guard: MCQ問題で非option_label answerはgrammar/compose をスキップ ──
+        # 例: "Which is prime? (A)4 (B)6 (C)7 (D)9" → executor が 2 を返しても弾く
+        import re as _re_mcq
+        _mcq_pattern = bool(_re_mcq.search(r'\(\s*[A-E]\s*\)', problem_text, _re_mcq.IGNORECASE))
+        if _mcq_pattern and getattr(candidate, 'schema', None) not in ("option_label",):
+            trace.append(f"mcq_guard:blocked schema={getattr(candidate,'schema',None)} answer={getattr(candidate,'value',None)} → INCONCLUSIVE")
+            self.stats["failed"] += 1
+            bundle = self._create_audit_bundle(
+                question_id="mcq_guard",
+                answer=None,
+                status="FAILED",
+                confidence=0.0,
+                cegis_ran=False,
+                trace=trace,
+                routing_trace=_routing_trace,
+            )
+            return {
+                "status": "FAILED",
+                "answer": None,
+                "expected": expected_answer,
+                "confidence": 0.0,
+                "method": "mcq_guard_blocked",
+                "ir": ir_dict,
+                "trace": trace,
+                "audit_bundle": bundle.to_json() if bundle else None,
+            }
 
         # Step 7: 文法層探索（接続詞・テンプレート）
         trace.append("step:grammar_search")
@@ -692,7 +829,18 @@ class VerantyxV6Enhanced:
                 write_source="executor_verified",
             )
             trace.append("crystallized")
-        
+
+        # Create AuditBundle (minimal collection point)
+        bundle = self._create_audit_bundle(
+            question_id="fallback",
+            answer=answer,
+            status=status,
+            confidence=candidate.confidence,
+            cegis_ran=False,
+            trace=trace,
+            routing_trace=_routing_trace,
+        )
+
         return {
             "status": status,
             "answer": answer,
@@ -701,7 +849,8 @@ class VerantyxV6Enhanced:
             "ir": ir_dict,
             "pieces": [p.piece_id for p in pieces],
             "candidate": candidate.to_dict(),
-            "trace": trace
+            "trace": trace,
+            "audit_bundle": bundle.to_json() if bundle else None,
         }
     
     # ─────────────────────────────────────────────────────────────────────
@@ -711,7 +860,10 @@ class VerantyxV6Enhanced:
     # PhD臭キーワード（これらが含まれたら「PhD域」と判定）
     _PHD_KEYWORDS = frozenset([
         # 解析・汎関数
-        "wasserstein", "functional", "hilbert space", "banach space", "sobolev",
+        # NOTE: "functional" 単体は生物学・CSにも頻出するため除外
+        # "wasserstein", "hilbert space", "banach space" 等で数学文脈は十分カバー
+        "wasserstein", "functional analysis", "functional space",
+        "hilbert space", "banach space", "sobolev",
         "lebesgue", "measure theory", "sigma-algebra", "sigma algebra",
         "radon-nikodym", "fubini", "dominated convergence",
         # 多様体・幾何
@@ -720,7 +872,9 @@ class VerantyxV6Enhanced:
         "lie algebra", "symplectic",
         # 圏論・代数幾何
         "category theory", "functor", "natural transformation", "topos",
-        "sheaf", "scheme", "cohomology", "homological algebra", "derived category",
+        # NOTE: "scheme" 単体はCSでも普通に使われる語のため除外
+        # 代数幾何の "scheme" は "étale", "sheaf", "cohomology" 等で十分カバー
+        "sheaf", "cohomology", "homological algebra", "derived category",
         "spectral sequence", "motif", "étale",
         # 量子場・高エネルギー
         "path integral", "feynman diagram", "renormalization", "gauge field",
@@ -776,7 +930,7 @@ class VerantyxV6Enhanced:
         if domain == Domain.ADVANCED_COMBINATORICS:
             ABSTRACT_MARKERS = [
                 "topological", "manifold", "homotopy", "cohomology", "homology",
-                "functor", "category", "sheaf", "scheme",
+                "functor", "category", "sheaf",
                 "galois group", "galois extension",
                 "representation theory", "character table",
             ]
@@ -964,21 +1118,50 @@ class VerantyxV6Enhanced:
                     trace.append(f"proposal:error:{_prop_e}")
             # 候補がまだなければ諦める
             if not candidates:
-                trace.append("cegis:no_candidates")
+                trace.append("cegis:no_candidates:executor_returned_none")
                 self.stats["cegis_fallback"] += 1
+                self.stats["cegis_no_candidates"] += 1
                 return None, 0.0, "no_candidates"
 
-        # ── Step D: WorldSpec の決定（ピースの worldgen があれば優先） ────────
+        # ── 計測: candidates_before_cegis ───────────────────────────────────
+        trace.append(f"cegis_diag:candidates_before_cegis={len(candidates)}")
+        if not candidates:
+            # E0 前に空になるケースを明示
+            trace.append("cegis:no_candidates:pre_e0_empty")
+            self.stats["cegis_no_candidates"] += 1
+            self.stats["cegis_fallback"] += 1
+            return None, 0.0, "no_candidates"
+
+        # ── Step D: WorldSpec の決定（WORLDGEN_REGISTRY → ピースの worldgen → IR推定）
         world_spec = None
-        for piece in pieces:
-            pw = getattr(piece, "worldgen", None)
-            if pw and hasattr(pw, "domain") and pw.domain != "number":
-                world_spec = WorldSpec(
-                    domain=pw.domain,
-                    params=dict(pw.params),
-                    reason=f"piece:{piece.piece_id}",
-                )
-                break
+        oracle_worlds = []  # WORLDGEN_REGISTRY から取得した (input, oracle) 世界
+
+        # D1: WORLDGEN_REGISTRY を最優先で確認
+        try:
+            from cegis.worldgen_registry import WORLDGEN_REGISTRY, verify_candidate_against_world
+            for piece in pieces:
+                if piece.piece_id in WORLDGEN_REGISTRY:
+                    oracle_worlds = WORLDGEN_REGISTRY[piece.piece_id](ir_dict)
+                    self.stats["cegis_registry_hits"] += 1
+                    trace.append(
+                        f"cegis_diag:registry_hit piece={piece.piece_id} "
+                        f"worlds={len(oracle_worlds)}"
+                    )
+                    break
+        except Exception as _reg_e:
+            trace.append(f"cegis_diag:registry_error:{_reg_e}")
+
+        # D2: ピースの worldgen フィールドをフォールバック（oracle なし）
+        if not oracle_worlds:
+            for piece in pieces:
+                pw = getattr(piece, "worldgen", None)
+                if pw and hasattr(pw, "domain") and pw.domain != "number":
+                    world_spec = WorldSpec(
+                        domain=pw.domain,
+                        params=dict(pw.params),
+                        reason=f"piece:{piece.piece_id}",
+                    )
+                    break
 
         # ── Step E0: 統一 Verifier API による事前フィルタリング ─────────────────
         # 各ピースの verify spec を使って候補を事前検証する（原則 A/C）
@@ -1024,7 +1207,45 @@ class VerantyxV6Enhanced:
         except Exception as _ve_err:
             trace.append(f"verifier_api:init_error:{_ve_err}")
 
+        # ── Step D3: oracle_worlds がある場合、候補を oracle で事前フィルタリング ──
+        # WORLDGEN_REGISTRY の (input, oracle) 世界で候補を検証。
+        # MIN_WORLDS 未満しか生成できなければ INCONCLUSIVE。
+        if oracle_worlds:
+            from cegis.worldgen_registry import MIN_WORLDS, verify_candidate_against_world
+            if len(oracle_worlds) >= MIN_WORLDS:
+                oracle_filtered: List[Any] = []
+                for cand in candidates:
+                    failed_worlds = []
+                    for world in oracle_worlds:
+                        if not verify_candidate_against_world(cand.value, world):
+                            failed_worlds.append(world.get("label", str(world)))
+                    if failed_worlds:
+                        trace.append(
+                            f"cegis:oracle_reject value={cand.value!r} "
+                            f"ce={failed_worlds[0]}"
+                        )
+                    else:
+                        oracle_filtered.append(cand)
+                trace.append(
+                    f"cegis:oracle_filter {len(oracle_filtered)}/{len(candidates)} survived "
+                    f"({len(oracle_worlds)} oracle worlds)"
+                )
+                candidates = oracle_filtered
+            else:
+                trace.append(
+                    f"cegis:oracle_inconclusive worlds={len(oracle_worlds)} < MIN={MIN_WORLDS}"
+                )
+
         # ── Step E: CEGISLoop 実行 ───────────────────────────────────────────
+        # cegis_loop_started = candidates ≥ 1 でループが実際に起動した数
+        if not candidates:
+            trace.append("cegis:no_candidates:oracle_rejected_all")
+            self.stats["cegis_no_candidates"] += 1
+            self.stats["cegis_fallback"] += 1
+            return None, 0.0, "oracle_rejected_all"
+
+        self.stats["cegis_loop_started"] += 1
+        trace.append(f"cegis_diag:loop_starting candidates={len(candidates)}")
         try:
             result = self.cegis_loop.run(
                 ir_dict=ir_dict,
@@ -1037,6 +1258,7 @@ class VerantyxV6Enhanced:
             return None, 0.0, "cegis_error"
 
         # ── Step F: 診断ログ & 結果整形 ─────────────────────────────────────
+        self.stats["cegis_iters"] += result.iterations
         trace.append(
             f"cegis:status={result.status} "
             f"answer={result.answer!r} "
@@ -1129,6 +1351,103 @@ class VerantyxV6Enhanced:
             return "FAILED"
         else:
             return "SOLVED"
+
+    def _create_audit_bundle(
+        self,
+        question_id: str,
+        answer: Any,
+        status: str,
+        confidence: float,
+        cegis_ran: bool,
+        trace: List[str],
+        cegis_method: Optional[str] = None,
+        routing_trace=None,   # audit.audit_bundle.RoutingTrace | None
+    ) -> Optional[AuditBundle]:
+        """
+        Create AuditBundle from solve() result (minimal implementation)
+        """
+        try:
+            # Parse trace for CEGIS info
+            cegis_info = None
+            if cegis_ran:
+                # Extract CEGIS iteration count from trace
+                iters = 0
+                worlds = 0
+                for t in trace:
+                    if "cegis:status=" in t:
+                        # Parse: "cegis:status=proved answer='5' conf=0.95 iters=2 elapsed=123ms"
+                        if "iters=" in t:
+                            iters_str = t.split("iters=")[1].split()[0]
+                            try:
+                                iters = int(iters_str)
+                            except:
+                                pass
+
+                proved = cegis_method == "cegis_proved" if cegis_method else False
+                inconclusive_reason = None
+                if not proved and cegis_ran:
+                    # Determine inconclusive reason from trace
+                    if any("no_candidates" in t for t in trace):
+                        inconclusive_reason = "all_candidates_refuted"
+                    elif any("timeout" in t for t in trace):
+                        inconclusive_reason = "timeout"
+                    elif any("missing_spec" in t for t in trace):
+                        inconclusive_reason = "missing_spec"
+
+                cegis_info = CEGISInfo(
+                    ran=True,
+                    iters=iters,
+                    proved=proved,
+                    inconclusive_reason=inconclusive_reason,
+                )
+
+            # Extract verification info
+            verify_tool = "executor"
+            worlds_generated = 0
+            checks_passed = 0
+            for t in trace:
+                if "simulation_proved" in t:
+                    verify_tool = "simulation"
+                elif "cross_param" in t:
+                    verify_tool = "cross_param"
+
+            certificate_type = None
+            if status == "VERIFIED":
+                if cegis_method == "cegis_proved":
+                    certificate_type = "cegis_proved"
+                elif "simulation" in str(trace):
+                    certificate_type = "simulation_proved"
+                else:
+                    certificate_type = "executor_computed"
+
+            verify_info = VerifyInfo(
+                tool=verify_tool,
+                worlds_generated=worlds_generated,
+                checks_passed=checks_passed,
+                certificate_type=certificate_type,
+            )
+
+            # Answer info
+            answer_status = certificate_type if certificate_type else "inconclusive"
+            answer_info = AnswerInfo(
+                value=str(answer) if answer is not None else None,
+                status=answer_status,
+            )
+
+            # Create bundle
+            bundle = AuditBundle(
+                question_id=question_id,
+                cegis=cegis_info,
+                verify=verify_info,
+                answer=answer_info,
+                routing=routing_trace,
+            )
+            bundle.finalize()
+            return bundle
+
+        except Exception as e:
+            # Don't fail pipeline if audit bundle creation fails
+            return None
     
     def print_stats(self):
         """統計を表示"""

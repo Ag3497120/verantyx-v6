@@ -199,8 +199,12 @@ def main():
 
     # ── Guard 2: 最終集計 ─────────────────────────────────────────────────────
     stats = pipeline.stats
-    cegis_ran    = stats.get("cegis_ran", 0)
-    cegis_proved = stats.get("cegis_proved", 0) + stats.get("cegis_high_confidence", 0)
+    cegis_ran          = stats.get("cegis_ran", 0)
+    cegis_loop_started = stats.get("cegis_loop_started", 0)
+    cegis_iters        = stats.get("cegis_iters", 0)
+    cegis_proved       = stats.get("cegis_proved", 0) + stats.get("cegis_high_confidence", 0)
+    cegis_no_cands     = stats.get("cegis_no_candidates", 0)
+    cegis_registry     = stats.get("cegis_registry_hits", 0)
 
     metrics["cegis_runs"]   = cegis_ran
     metrics["cegis_proved"] = cegis_proved
@@ -212,10 +216,14 @@ def main():
 
     print("\n── Guard 2: 5指標 ────────────────────────────────────────")
     step6_rate   = metrics["step6_reached"] / total
-    proved_rate  = cegis_proved / max(1, cegis_ran)
+    proved_rate  = cegis_proved / max(1, cegis_loop_started)
     print(f"  1. step6_reach_rate:  {metrics['step6_reached']}/{total} = {step6_rate:.1%}")
-    print(f"  2. cegis_runs:        {cegis_ran}")
-    print(f"  3. proved_rate:       {cegis_proved}/{cegis_ran} = {proved_rate:.1%}")
+    print(f"  2. cegis_entered:     {cegis_ran}  (関数入口)")
+    print(f"     cegis_loop_start:  {cegis_loop_started}  (実ループ起動)")
+    print(f"     cegis_no_cands:    {cegis_no_cands}  (候補空で止まった数)")
+    print(f"     cegis_registry:    {cegis_registry}  (WORLDGEN_REGISTRY hits)")
+    print(f"     cegis_iters:       {cegis_iters}  (総ループ回転数)")
+    print(f"  3. proved_rate:       {cegis_proved}/{cegis_loop_started} = {proved_rate:.1%}")
     print(f"  4. missing_spec_cnt:  {metrics['missing_spec_count']}")
     print(f"  5. fail_tags:")
     for tag, cnt in sorted(metrics["fail_tags"].items(), key=lambda x: -x[1]):
