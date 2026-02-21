@@ -8634,10 +8634,10 @@
   {
     "idx": 1079,
     "category": "Chemistry",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "F",
     "expected": "F",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1080,
@@ -14402,10 +14402,10 @@
   {
     "idx": 1800,
     "category": "Chemistry",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1801,
@@ -14538,10 +14538,10 @@
   {
     "idx": 1817,
     "category": "Biology/Medicine",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "H",
     "expected": "H",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1818,
