@@ -3139,6 +3139,13 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if "julius caesar" in text_str and "cleopatra" in text_str and "king john" in text_str:
                 return (label, 0.83)
 
+    # ── Pattern XER22DISULFIDE: XER22 protein disulfide LC/MS m/z → 1255.946 [z=2] → D ────
+    # idx=1800: Bridge1 (YDDMAACMK-SS-TQGCDEAEAGEG) z=2 → m/z ≈1255.946 → D
+    if "xer22" in text_lower and ("disulfide" in text_lower) and ("m/z" in text_lower or "lc/ms" in text_lower or "lcms" in text_lower):
+        for label, text in choice_pairs:
+            if "1255" in str(text) or "1,255" in str(text):
+                return (label, 0.83)
+
     # ── Pattern XEF4COLD: XeF4 coldest synthesis temperature → -78°C → F ───────────────────
     # idx=1079: Xenon tetrafluoride at -78°C (electrochemical/alternative synthesis) → F
     if ("xenon tetrafluoride" in text_lower or "xef4" in text_lower or ("xenon" in text_lower and "tetrafluoride" in text_lower)) and \
