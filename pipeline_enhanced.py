@@ -225,23 +225,19 @@ class VerantyxV6Enhanced:
                                 f"piece_boosts={[p for p,_ in _expert_piece_boosts[:3]]} "
                                 f"entity_hints={_expert_entity_hints[:4]}"
                             )
-                            # D: entity hints を IR の entities に追記（entity 名のみ、値は補助）
-                            if _expert_entity_hints and "entities" in ir_dict:
-                                existing_names = {e.get("name","").lower() for e in ir_dict["entities"] if isinstance(e, dict)}
-                                for hint in _expert_entity_hints:
-                                    if hint not in existing_names:
-                                        ir_dict["entities"].append({
-                                            "name": hint, "type": "variable",
-                                            "value": None, "_source": "expert_hint"
-                                        })
-                            # B: worldgen_profile を ir_dict メタデータに埋め込む
-                            # → _run_cegis_verification の D1 で参照して oracle 選択に使う
+                            # D: entity hints — 現段階はログのみ（IR への追記は停止）
+                            # 理由: 汎用的なヒント("n","k")が無関係な問題のIRを汚染して regression を起こす
+                            # 今後: pieces が確定してから piece 固有の hints のみ追記する形に変更予定
+                            if _expert_entity_hints:
+                                trace.append(f"expert_boost:entity_hints_log={_expert_entity_hints[:4]} (not injected)")
+
+                            # B: worldgen_profile — piece 確定後のみ設定（logs only for now）
                             _epm_wg_profile = _epm.get_worldgen_profile(_top_experts)
                             if _epm_wg_profile:
-                                meta = ir_dict.setdefault("metadata", {})
-                                meta["expert_worldgen_profile"] = _epm_wg_profile
+                                # 注: _run_cegis_verification で piece の registry hit がある場合のみ有効
+                                # → 汎用的に metadata に埋め込むと wrong piece に対して wg_prime_world 等が発動する
                                 trace.append(
-                                    f"expert_boost:worldgen_profile={_epm_wg_profile.get('wg')}"
+                                    f"expert_boost:worldgen_profile_log={_epm_wg_profile.get('wg')} (advisory)"
                                 )
                     except Exception as _epm_e:
                         trace.append(f"expert_boost:skip:{_epm_e}")
@@ -623,29 +619,16 @@ class VerantyxV6Enhanced:
                 "audit_bundle": bundle.to_json() if bundle else None,
             }
         
-        # ── A: expert_piece_boosts でピースを補強・並び替え ──────────────────
-        # expert→piece 直結マップで高 boost のピースを優先注入する
+        # ── A: expert_piece_boosts ログのみ（現段階では piece 差し替えは行わない）──
+        # expert boost が既存ピースと overlap しているかをログで確認するだけ。
+        # 差し替えは「piece が1つも刺さらない (step6_not_reached)」ケースに限定予定。
         if _expert_piece_boosts and pieces is not None:
-            boost_piece_ids = {pid for pid, _ in _expert_piece_boosts}
             existing_ids = {p.piece_id for p in pieces}
-            # ① 既存 pieces を boost スコアで並び替え
-            def _piece_boost_score(p):
-                return next((sc for pid, sc in _expert_piece_boosts if pid == p.piece_id), 0.0)
-            pieces_boosted = sorted(pieces, key=lambda p: -(_piece_boost_score(p) + p.confidence))
-            # ② boost にはあるが既存にないピースを追加
-            added = 0
-            for boost_pid, boost_sc in _expert_piece_boosts:
-                if boost_pid not in existing_ids and added < 3:
-                    p = self.piece_db.find_by_id(boost_pid)
-                    if p:
-                        pieces_boosted.append(p)
-                        added += 1
-            if pieces_boosted != pieces:
-                trace.append(
-                    f"expert_boost:reordered={[p.piece_id for p in pieces_boosted[:3]]} "
-                    f"added={added}"
-                )
-                pieces = pieces_boosted[:5]  # 最大5ピース
+            overlap = [pid for pid, _ in _expert_piece_boosts if pid in existing_ids]
+            trace.append(
+                f"expert_boost:overlap={overlap[:3]} "
+                f"(boosts={[p for p,_ in _expert_piece_boosts[:3]]} existing={list(existing_ids)[:3]})"
+            )
 
         self.stats["pieces_found"] += 1
         trace.append(f"pieces_found:{len(pieces)}")
@@ -1234,30 +1217,6 @@ class VerantyxV6Enhanced:
                     break
         except Exception as _reg_e:
             trace.append(f"cegis_diag:registry_error:{_reg_e}")
-
-        # D2a: B: expert_worldgen_profile を使って oracle_worlds を補強
-        # registry hit がなかった場合でも、expert が worldgen を指示していれば使う
-        if not oracle_worlds:
-            expert_wg_profile = ir_dict.get("metadata", {}).get("expert_worldgen_profile")
-            if expert_wg_profile:
-                wg_fn_name = expert_wg_profile.get("wg")
-                try:
-                    from cegis.worldgen_registry import WORLDGEN_REGISTRY
-                    wg_fn_map = {
-                        "wg_arithmetic_small_int": WORLDGEN_REGISTRY.get("nt_factorial"),
-                        "wg_prime_world":          WORLDGEN_REGISTRY.get("number_theory_prime"),
-                        "wg_mcq_choice_sanity":    WORLDGEN_REGISTRY.get("solve_multiple_choice"),
-                    }
-                    wg_fn = wg_fn_map.get(wg_fn_name)
-                    if wg_fn:
-                        oracle_worlds = wg_fn(ir_dict)
-                        registry_hit_piece = f"expert_profile:{wg_fn_name}"
-                        trace.append(
-                            f"cegis_diag:expert_wg_profile={wg_fn_name} "
-                            f"worlds={len(oracle_worlds)}"
-                        )
-                except Exception as _ewg_e:
-                    trace.append(f"cegis_diag:expert_wg_error:{_ewg_e}")
 
         # D2b: ピースの worldgen フィールドをフォールバック（oracle なし）
         if not oracle_worlds:
