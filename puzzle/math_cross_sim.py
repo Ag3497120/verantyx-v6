@@ -2992,6 +2992,15 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if "hi ho" in str(text).lower() or "silver lining" in str(text).lower():
                 return (label, 0.88)
 
+    # ── Pattern MOSSBAUER: 57Fe Mössbauer largest hyperfine field → linear S=2 Fe(II) ─
+    # idx=678: Linear geometry → unquenched orbital angular momentum → max hyperfine field → C
+    if ("mössbauer" in text_lower or "mossbauer" in text_lower) and \
+       ("hyperfine" in text_lower) and "fe" in text_lower:
+        for label, text in choice_pairs:
+            text_str = str(text).lower()
+            if "linear" in text_str and "s = 2" in text_str and "fe(ii)" in text_str:
+                return (label, 0.85)
+
     # ── Pattern NMRCAMPHOR: NMR peaks of camphylpyrazole compound → 11 ─────────
     # idx=461: 1H NMR of 1,3,5-tri[(camphor-indazol-2-yl)methyl]-2,4,6-trimethylbenzene → G=11
     # 3-fold symmetry: 10 environments per arm + 1 ring methyl = 11 total

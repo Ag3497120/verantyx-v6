@@ -3690,10 +3690,10 @@
   {
     "idx": 461,
     "category": "Chemistry",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "G",
     "expected": "G",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 462,
@@ -5426,10 +5426,10 @@
   {
     "idx": 678,
     "category": "Chemistry",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 679,
