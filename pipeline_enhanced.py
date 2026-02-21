@@ -199,9 +199,13 @@ class VerantyxV6Enhanced:
             trace.append(f"ir:task={ir.task.value},domain={ir.domain.value},schema={ir.answer_schema.value}")
 
             # 立体十字ルーティング: anchor keyword max-pooling で RoutingTrace を生成
+            # DISABLE_CONCEPT_BOOST=1 の場合はスキップ（bulk eval 時の速度優先）
             _expert_piece_boosts = []   # A: expert→piece boost [(piece_id, score)]
             _expert_entity_hints = []   # D: expert→entity hint ["n", "k", ...]
+            _routing_disabled = __import__('os').environ.get("DISABLE_CONCEPT_BOOST") == "1"
             try:
+                if _routing_disabled:
+                    raise ImportError("routing disabled by DISABLE_CONCEPT_BOOST")
                 from knowledge.concept_boost import extract_anchor_kws, ConceptBoosterWithTrace, get_booster
                 from audit.audit_bundle import RoutingTrace as ABRoutingTrace
                 _anchor_kws = extract_anchor_kws(problem_text)
