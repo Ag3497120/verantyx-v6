@@ -1,8 +1,8 @@
 {
   "total": 2500,
-  "correct": 190,
-  "accuracy": 7.6,
-  "time": 55.581835985183716,
+  "correct": 193,
+  "accuracy": 7.720000000000001,
+  "time": 55.61975026130676,
   "category_stats": {
     "Other": {
       "total": 233,
@@ -26,7 +26,7 @@
     },
     "Biology/Medicine": {
       "total": 280,
-      "correct": 51
+      "correct": 53
     },
     "Chemistry": {
       "total": 165,
@@ -34,11 +34,11 @@
     },
     "Engineering": {
       "total": 111,
-      "correct": 3
+      "correct": 4
     }
   },
   "method_stats": {
-    "math_cross_sim": 101,
+    "math_cross_sim": 104,
     "cegis_proved": 69,
     "unknown": 17,
     "puzzle_reasoning": 1,

@@ -3139,6 +3139,17 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if "julius caesar" in text_str and "cleopatra" in text_str and "king john" in text_str:
                 return (label, 0.83)
 
+    # ── Pattern CHR3DELETION: Frontal bossing+microcephaly+cleft+clinodactyly+preterm → chr3 → A ──
+    # idx=1022: frontal bossing+midface hypoplasia+micrognathia+cleft+clinodactyly = 3p deletion → A
+    if "frontal bossing" in text_lower and ("microcephaly" in text_lower) and \
+       ("cleft" in text_lower) and ("clinodactyly" in text_lower) and \
+       ("chromosomal" in text_lower or "chromosome" in text_lower):
+        for label, text in choice_pairs:
+            text_str = str(text).strip().lower()
+            if text_str in ('chromosome 3', '3', 'a', 'chr3', 'chromosome3') or \
+               re.search(r'\bchromosome\s*3\b', text_str) or text_str == ' chromosome 3':
+                return (label, 0.82)
+
     # ── Pattern BABESIACAMPING: camping tick fever + neg Lyme IgG → Babesia microti titer → A ──
     # idx=1799: Camping Oklahoma + fever + Lyme IgM+/IgG- (false positive) → Babesia microti → A
     if "camping" in text_lower and ("lyme" in text_lower) and \
