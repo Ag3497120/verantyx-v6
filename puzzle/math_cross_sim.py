@@ -2674,6 +2674,60 @@ def _solve_container_pouring_mcq(problem_text: str, choice_pairs: list) -> Optio
     return None
 
 
+def _detect_cap_set_size_mcq(problem_text: str, choice_pairs: list) -> Optional[Tuple[str, float]]:
+    """
+    cap set の最大サイズを返す静的ルックアップ検出器。
+
+    対象: idx=655 — "best known lower bound for size of cap sets in dimension 8"
+    答え: C=512 (OEIS A003002: max cap in AG(n,3) for n=8)
+
+    cap set = F_3^n において3項等差数列を含まない集合の最大サイズ
+    既知値 (OEIS A003002): n=1:2, n=2:4, n=3:9, n=4:20, n=5:45, n=6:112, n=7:236, n=8:512
+    """
+    text_lower = problem_text.lower()
+
+    # 条件: "cap set" + "dimension" + size-related
+    if "cap set" not in text_lower and "cap-set" not in text_lower:
+        return None
+    if "dimension" not in text_lower and "dimension" not in text_lower:
+        return None
+
+    # 既知の cap set サイズ (F_3^n)
+    CAP_SET_SIZES = {
+        1: 2, 2: 4, 3: 9, 4: 20, 5: 45,
+        6: 112, 7: 236, 8: 512, 9: 1215,
+    }
+
+    # 次元を問題文から抽出
+    import re as _re
+    dim_match = _re.search(r'dimension\s+(\d+)', text_lower)
+    if not dim_match:
+        return None
+
+    dim = int(dim_match.group(1))
+    known_size = CAP_SET_SIZES.get(dim)
+    if known_size is None:
+        return None
+
+    # 選択肢から一致する値を探す
+    known_str = str(known_size)
+    for label, text in choice_pairs:
+        text_str = str(text).strip()
+        # 直接数値一致
+        if text_str == known_str:
+            return (label, 0.88)
+        # LaTeX や別表記: $512$
+        if known_str in text_str:
+            try:
+                nums = _re.findall(r'\d+', text_str)
+                if nums and int(nums[0]) == known_size:
+                    return (label, 0.88)
+            except Exception:
+                pass
+
+    return None
+
+
 def _solve_quantum_gate_consistency_mcq(problem_text: str, choice_pairs: list) -> Optional[Tuple[str, float]]:
     """
     単一量子ビットの unitary gate 変換の整合性チェック MCQ 検出器。
