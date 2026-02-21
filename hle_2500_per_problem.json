@@ -6298,10 +6298,10 @@
   {
     "idx": 787,
     "category": "Math",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 788,
@@ -6338,10 +6338,10 @@
   {
     "idx": 792,
     "category": "Math",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "J",
     "expected": "J",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 793,
@@ -7490,10 +7490,10 @@
   {
     "idx": 936,
     "category": "Math",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 937,

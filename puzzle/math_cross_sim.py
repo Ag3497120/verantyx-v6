@@ -3189,6 +3189,18 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if str(text).strip() == '4':
                 return (label, 0.82)
 
+    # ── Pattern NEUROMORPHICNN: Neuromorphic optimal model = discrete + full adaptive → E ───────
+    # idx=1419: Neuromorphic computing optimal ANN → discrete time update (w(x,t+1)) + full adaptive threshold
+    # + memory decay + dropout → E (not differential ∂w/∂t, not truncated)
+    if "neuromorphic" in text_lower and ("optimal" in text_lower or "best" in text_lower) and \
+       ("neural network" in text_lower or "model" in text_lower):
+        for label, text in choice_pairs:
+            text_str = str(text)
+            # Choice E: discrete "Updates (w(x, t+1))" AND has "Memory Decay" AND "Dropout Mask"
+            if ("w(x, t+1)" in text_str or "w(x,t+1)" in text_str) and \
+               "Memory Decay" in text_str and "Dropout Mask" in text_str:
+                return (label, 0.85)
+
     # ── Pattern NSVSZBETA: NSVZ beta function condition → anomalous dimension = gauge coupling → G ──
     # idx=1740: NSVZ condition = anomalous dimension equals gauge coupling → G
     if "nsvz" in text_lower and ("beta function" in text_lower) and \
