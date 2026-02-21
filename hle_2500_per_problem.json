@@ -7738,10 +7738,10 @@
   {
     "idx": 967,
     "category": "Physics",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 968,
@@ -17698,10 +17698,10 @@
   {
     "idx": 2212,
     "category": "Physics",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 2213,

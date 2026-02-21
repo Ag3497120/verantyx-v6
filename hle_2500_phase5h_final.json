@@ -1,8 +1,8 @@
 {
   "total": 2500,
-  "correct": 152,
-  "accuracy": 6.08,
-  "time": 55.631040811538696,
+  "correct": 154,
+  "accuracy": 6.16,
+  "time": 55.75859880447388,
   "category_stats": {
     "Other": {
       "total": 233,
@@ -18,7 +18,7 @@
     },
     "Physics": {
       "total": 230,
-      "correct": 12
+      "correct": 14
     },
     "Computer Science/AI": {
       "total": 241,
@@ -39,7 +39,7 @@
   },
   "method_stats": {
     "cegis_proved": 69,
-    "math_cross_sim": 63,
+    "math_cross_sim": 65,
     "unknown": 17,
     "puzzle_reasoning": 1,
     "propositional_simulation": 1,
