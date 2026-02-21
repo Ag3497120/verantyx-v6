@@ -1106,10 +1106,10 @@
   {
     "idx": 138,
     "category": "Computer Science/AI",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "Q",
     "expected": "Q",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 139,
