@@ -25,8 +25,22 @@ import os
 import json
 import time
 import numpy as np
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
+
+
+@dataclass
+class RoutingTrace:
+    """
+    立体十字ルーティングのトレース情報。
+    AuditBundle に埋め込んで透明性を確保する。
+    """
+    mode: str                           # "keyword_maxpool" | "fulltext_mean"
+    anchor_kws: List[str]               # 使用したアンカーキーワード
+    top_domains: List[Tuple[str, float]]  # (domain, score) top3
+    elapsed_ms: float                   # 検索時間
+    cache_hit: bool = False             # キャッシュヒットしたか
 
 DB_DIR = Path("/Users/motonishikoudai/avh_math/avh_math/db/moe_sparse_cross_600b_real")
 
@@ -276,6 +290,77 @@ class ConceptSearcher:
             domain_scores[d] /= total_weight
 
         return dict(sorted(domain_scores.items(), key=lambda x: -x[1]))
+
+    def search_top_experts(
+        self,
+        text: str,
+        top_k: int = 30,
+        min_sim: float = 0.05,
+    ) -> List[Tuple[str, float]]:
+        """
+        テキストから top-K experts を (expert_key, score) のリストで返す。
+
+        A/B: Expert→Piece / Expert→WorldgenProfile 直結ルーティング用。
+
+        Returns:
+            [("L3E0", 0.82), ("L7E15", 0.71), ...]  (降順)
+        """
+        self._load()
+        query = self._encode_query(text)
+        sims_flat = self._concept_dirs @ query
+        sims = sims_flat.reshape(15104, 4)
+        max_sims = sims.max(axis=1)
+
+        k = min(top_k, len(max_sims))
+        top_indices = np.argpartition(max_sims, -k)[-k:]
+        top_indices = top_indices[np.argsort(max_sims[top_indices])[::-1]]
+
+        results = []
+        for idx in top_indices:
+            sim = float(max_sims[idx])
+            if sim < min_sim:
+                break
+            if idx < len(self._expert_keys):
+                results.append((self._expert_keys[idx], sim))
+        return results
+
+    def search_with_trace(
+        self,
+        anchor_kws: List[str],
+        full_text: Optional[str] = None,
+        top_k: int = 50,
+        use_idf: bool = True,
+    ) -> Tuple[Dict[str, float], "RoutingTrace"]:
+        """
+        アンカーキーワードで max-pooling 検索し、RoutingTrace も返す。
+
+        anchor_kws が空の場合は full_text での全文 mean 検索にフォールバック。
+
+        Returns:
+            (domain_scores, RoutingTrace)
+        """
+        t0 = time.time()
+        if anchor_kws:
+            scores = self.search_keywords(anchor_kws, top_k=top_k, use_idf=use_idf)
+            mode = "keyword_maxpool"
+            used_kws = anchor_kws
+        elif full_text:
+            scores = self.search(full_text, top_k=top_k, use_idf=use_idf)
+            mode = "fulltext_mean"
+            used_kws = []
+        else:
+            return {}, RoutingTrace(
+                mode="empty", anchor_kws=[], top_domains=[], elapsed_ms=0.0
+            )
+        elapsed_ms = (time.time() - t0) * 1000
+        top_domains = list(scores.items())[:3]
+        trace = RoutingTrace(
+            mode=mode,
+            anchor_kws=used_kws,
+            top_domains=top_domains,
+            elapsed_ms=round(elapsed_ms, 2),
+        )
+        return scores, trace
 
     def get_domain_boost(
         self,

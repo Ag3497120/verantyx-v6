@@ -198,6 +198,8 @@ class VerantyxV6Enhanced:
             trace.append(f"ir:task={ir.task.value},domain={ir.domain.value},schema={ir.answer_schema.value}")
 
             # 立体十字ルーティング: anchor keyword max-pooling で RoutingTrace を生成
+            _expert_piece_boosts = []   # A: expert→piece boost [(piece_id, score)]
+            _expert_entity_hints = []   # D: expert→entity hint ["n", "k", ...]
             try:
                 from knowledge.concept_boost import extract_anchor_kws, ConceptBoosterWithTrace, get_booster
                 from audit.audit_bundle import RoutingTrace as ABRoutingTrace
@@ -207,6 +209,42 @@ class VerantyxV6Enhanced:
                     _bt = ConceptBoosterWithTrace(_booster_inst)
                     _, _routing_trace = _bt.get_scores_with_trace(problem_text, anchor_kws=_anchor_kws)
                     trace.append(f"routing:mode={_routing_trace.mode} kws={len(_routing_trace.anchor_kws)} top={_routing_trace.top_domains[:1]}")
+
+                    # ── A + D: Expert→Piece / Entity Hint ──────────────────
+                    try:
+                        from knowledge.concept_search import get_searcher
+                        from knowledge.expert_piece_map import get_expert_piece_map
+                        _searcher = get_searcher()
+                        _top_experts = _searcher.search_top_experts(problem_text, top_k=30)
+                        if _top_experts:
+                            _epm = get_expert_piece_map()
+                            _expert_piece_boosts = _epm.get_piece_boosts(_top_experts, top_n=8)
+                            _expert_entity_hints = _epm.get_entity_hints(_top_experts)
+                            trace.append(
+                                f"expert_boost:top_experts={len(_top_experts)} "
+                                f"piece_boosts={[p for p,_ in _expert_piece_boosts[:3]]} "
+                                f"entity_hints={_expert_entity_hints[:4]}"
+                            )
+                            # D: entity hints を IR の entities に追記（entity 名のみ、値は補助）
+                            if _expert_entity_hints and "entities" in ir_dict:
+                                existing_names = {e.get("name","").lower() for e in ir_dict["entities"] if isinstance(e, dict)}
+                                for hint in _expert_entity_hints:
+                                    if hint not in existing_names:
+                                        ir_dict["entities"].append({
+                                            "name": hint, "type": "variable",
+                                            "value": None, "_source": "expert_hint"
+                                        })
+                            # B: worldgen_profile を ir_dict メタデータに埋め込む
+                            # → _run_cegis_verification の D1 で参照して oracle 選択に使う
+                            _epm_wg_profile = _epm.get_worldgen_profile(_top_experts)
+                            if _epm_wg_profile:
+                                meta = ir_dict.setdefault("metadata", {})
+                                meta["expert_worldgen_profile"] = _epm_wg_profile
+                                trace.append(
+                                    f"expert_boost:worldgen_profile={_epm_wg_profile.get('wg')}"
+                                )
+                    except Exception as _epm_e:
+                        trace.append(f"expert_boost:skip:{_epm_e}")
             except Exception as _rt_e:
                 trace.append(f"routing:skip:{_rt_e}")
 
@@ -585,6 +623,30 @@ class VerantyxV6Enhanced:
                 "audit_bundle": bundle.to_json() if bundle else None,
             }
         
+        # ── A: expert_piece_boosts でピースを補強・並び替え ──────────────────
+        # expert→piece 直結マップで高 boost のピースを優先注入する
+        if _expert_piece_boosts and pieces is not None:
+            boost_piece_ids = {pid for pid, _ in _expert_piece_boosts}
+            existing_ids = {p.piece_id for p in pieces}
+            # ① 既存 pieces を boost スコアで並び替え
+            def _piece_boost_score(p):
+                return next((sc for pid, sc in _expert_piece_boosts if pid == p.piece_id), 0.0)
+            pieces_boosted = sorted(pieces, key=lambda p: -(_piece_boost_score(p) + p.confidence))
+            # ② boost にはあるが既存にないピースを追加
+            added = 0
+            for boost_pid, boost_sc in _expert_piece_boosts:
+                if boost_pid not in existing_ids and added < 3:
+                    p = self.piece_db.find_by_id(boost_pid)
+                    if p:
+                        pieces_boosted.append(p)
+                        added += 1
+            if pieces_boosted != pieces:
+                trace.append(
+                    f"expert_boost:reordered={[p.piece_id for p in pieces_boosted[:3]]} "
+                    f"added={added}"
+                )
+                pieces = pieces_boosted[:5]  # 最大5ピース
+
         self.stats["pieces_found"] += 1
         trace.append(f"pieces_found:{len(pieces)}")
         trace.append(f"piece_ids:{[p.piece_id for p in pieces]}")
@@ -1173,7 +1235,31 @@ class VerantyxV6Enhanced:
         except Exception as _reg_e:
             trace.append(f"cegis_diag:registry_error:{_reg_e}")
 
-        # D2: ピースの worldgen フィールドをフォールバック（oracle なし）
+        # D2a: B: expert_worldgen_profile を使って oracle_worlds を補強
+        # registry hit がなかった場合でも、expert が worldgen を指示していれば使う
+        if not oracle_worlds:
+            expert_wg_profile = ir_dict.get("metadata", {}).get("expert_worldgen_profile")
+            if expert_wg_profile:
+                wg_fn_name = expert_wg_profile.get("wg")
+                try:
+                    from cegis.worldgen_registry import WORLDGEN_REGISTRY
+                    wg_fn_map = {
+                        "wg_arithmetic_small_int": WORLDGEN_REGISTRY.get("nt_factorial"),
+                        "wg_prime_world":          WORLDGEN_REGISTRY.get("number_theory_prime"),
+                        "wg_mcq_choice_sanity":    WORLDGEN_REGISTRY.get("solve_multiple_choice"),
+                    }
+                    wg_fn = wg_fn_map.get(wg_fn_name)
+                    if wg_fn:
+                        oracle_worlds = wg_fn(ir_dict)
+                        registry_hit_piece = f"expert_profile:{wg_fn_name}"
+                        trace.append(
+                            f"cegis_diag:expert_wg_profile={wg_fn_name} "
+                            f"worlds={len(oracle_worlds)}"
+                        )
+                except Exception as _ewg_e:
+                    trace.append(f"cegis_diag:expert_wg_error:{_ewg_e}")
+
+        # D2b: ピースの worldgen フィールドをフォールバック（oracle なし）
         if not oracle_worlds:
             for piece in pieces:
                 pw = getattr(piece, "worldgen", None)

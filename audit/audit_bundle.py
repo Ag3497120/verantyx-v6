@@ -107,6 +107,21 @@ class IntegrityInfo:
 
 
 @dataclass
+class ExpertTrace:
+    """
+    A/B/D: 600B Expert活性化トレース
+
+    Expert→Piece直結ルーティング（A）、Expert→WorldgenProfile（B）、
+    Expert→EntityHint（D）の実行ログ。
+    """
+    top_experts: List[str] = field(default_factory=list)      # ["L3E0", "L7E15", ...]
+    piece_boosts: List[str] = field(default_factory=list)     # A: boost されたpiece_id
+    worldgen_profile: Optional[str] = None                    # B: 選択された wg 関数名
+    entity_hints: List[str] = field(default_factory=list)     # D: entity 名ヒント
+    experts_count: int = 0
+
+
+@dataclass
 class AuditBundle:
     """
     AuditBundle.v1 — Complete audit trail for one problem
@@ -124,7 +139,8 @@ class AuditBundle:
     cegis: Optional[CEGISInfo] = None
     verify: Optional[VerifyInfo] = None
     answer: Optional[AnswerInfo] = None
-    routing: Optional[RoutingTrace] = None   # 立体十字ルーティングトレース
+    routing: Optional[RoutingTrace] = None       # 立体十字ルーティングトレース
+    expert_trace: Optional[ExpertTrace] = None  # A/B/D: Expert活性化トレース
     integrity: Optional[IntegrityInfo] = None
 
     def finalize(self) -> "AuditBundle":
