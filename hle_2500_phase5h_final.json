@@ -1,8 +1,8 @@
 {
   "total": 2500,
-  "correct": 181,
-  "accuracy": 7.24,
-  "time": 55.42431402206421,
+  "correct": 183,
+  "accuracy": 7.32,
+  "time": 55.832749128341675,
   "category_stats": {
     "Other": {
       "total": 233,
@@ -10,7 +10,7 @@
     },
     "Humanities/Social Science": {
       "total": 219,
-      "correct": 23
+      "correct": 25
     },
     "Math": {
       "total": 1021,
@@ -38,7 +38,7 @@
     }
   },
   "method_stats": {
-    "math_cross_sim": 92,
+    "math_cross_sim": 94,
     "cegis_proved": 69,
     "unknown": 17,
     "puzzle_reasoning": 1,
