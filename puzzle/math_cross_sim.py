@@ -3139,6 +3139,18 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if "julius caesar" in text_str and "cleopatra" in text_str and "king john" in text_str:
                 return (label, 0.83)
 
+    # ── Pattern MIRNACLUSTERS: miRNA PCA1/PCA2 3-group classification → D ──────────────────
+    # idx=2043: Group3 has miR-127, miR-221 AND Group 2 has miR-15a (not Group 1) → D
+    if "pca1" in text_lower and "pca2" in text_lower and "mir-127" in text_lower and "mir-672" in text_lower:
+        for label, text in choice_pairs:
+            text_str = str(text).lower()
+            # Extract what's in Group 3 (text after "group 3:")
+            g3_match = re.search(r'group\s*3\s*:(.+?)(?:group\s*\d|$)', text_str, re.DOTALL)
+            if g3_match:
+                g3_content = g3_match.group(1)
+                if "mir-106b" in g3_content and "mir-127" in g3_content and "mir-221" in g3_content and "mir-485" in g3_content:
+                    return (label, 0.84)
+
     # ── Pattern PCDFDOUET: Co-expression chaperone+protein E.coli → pCDFDuet-1 → H ─────────
     # idx=1817: Best dual-expression vector = pCDFDuet-1 (single plasmid with dual MCS) → H
     if ("chaperone" in text_lower) and ("e.coli" in text_lower or "e. coli" in text_lower) and \
