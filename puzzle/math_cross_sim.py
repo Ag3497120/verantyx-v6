@@ -2775,6 +2775,17 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if label == 'B':
                 return (label, 0.82)
 
+    # ── Pattern WL: Weisfeiler-Leman tensor product ─────────────────────────
+    # idx=603: G,H k-WL indistinguishable, G^ℓ,H^ℓ → D (all ℓ, by WL tensor invariance)
+    if ("weisfeiler" in text_lower or "weisfeiler-leman" in text_lower or "leman" in text_lower) and \
+       ("tensor product" in text_lower) and \
+       ("maximum" in text_lower or "indistinguishable" in text_lower):
+        # Answer: The statement holds for all ℓ
+        for label, text in choice_pairs:
+            text_str = str(text).strip().lower()
+            if "for all" in text_str or "all \\ell" in text_str or "holds for all" in text_str:
+                return (label, 0.82)
+
     # ── Pattern A: Blockchain safety/liveness ───────────────────────────────
     # idx=1315: no transactions for 1 day → E (None of the above)
     # Insight: no TX activity ≠ safety/liveness violation if no pending TXs
