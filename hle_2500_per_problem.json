@@ -3338,10 +3338,10 @@
   {
     "idx": 417,
     "category": "Biology/Medicine",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 418,
@@ -3410,10 +3410,10 @@
   {
     "idx": 426,
     "category": "Chemistry",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "F",
     "expected": "F",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 427,
