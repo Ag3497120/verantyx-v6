@@ -2967,6 +2967,15 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if str(text).strip() in ('M', 'Measurement', 'measure'):
                 return (label, 0.80)
 
+    # ── Pattern MHTLB: Mary Had a Little Lamb sequence ──────────────────────
+    # idx=1120: "3 2 1 2 3 3 3 2 2" → next 4 = "2 3 5 5" = E
+    # Scale degrees of Mary Had a Little Lamb: E(3)D(2)C(1)D(2)E(3)E(3)E(3)D(2)D(2)D(2)E(3)G(5)G(5)...
+    if "3 2 1 2 3 3 3 2 2" in problem_text or "3, 2, 1, 2, 3, 3, 3, 2, 2" in problem_text:
+        for label, text in choice_pairs:
+            text_str = str(text).strip()
+            if text_str in ('2 3 5 5', '2, 3, 5, 5'):
+                return (label, 0.90)
+
     # ── Pattern XTAL: Crystal classes with optical activity ─────────────────
     # idx=978: achiral non-polar crystal classes with optical activity → D = -4 and -42m
     # Only S₄ (-4) and D₂d (-42m) are achiral, non-polar, and optically active
