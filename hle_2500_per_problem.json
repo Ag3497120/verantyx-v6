@@ -8306,10 +8306,10 @@
   {
     "idx": 1038,
     "category": "Chemistry",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "J",
     "expected": "J",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1039,
