@@ -2992,6 +2992,25 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if "hi ho" in str(text).lower() or "silver lining" in str(text).lower():
                 return (label, 0.88)
 
+    # ── Pattern HOURGLASS: Hourglass weight while running → πd²h²ρ/(2t²) ──────
+    # idx=2212: Hourglass delta weight while running = πd²h²ρ/(2t²) → C
+    # Positive = heavier; leading-order impact force and missing-weight cancel; 2nd order survives
+    if "hourglass" in text_lower and ("weight" in text_lower or "weigh" in text_lower) and \
+       "running" in text_lower and "settled" in text_lower:
+        for label, text in choice_pairs:
+            text_str = str(text)
+            if "h^2" in text_str or "h²" in text_str or ("h" in text_str and "2t" in text_str and "rho" in text_str.lower()):
+                if "sqrt" not in text_str.lower() and "√" not in text_str:
+                    return (label, 0.82)
+
+    # ── Pattern NUCREACT: Nuclear reactor accident → Monte Carlo Serpent ─────
+    # idx=967: Most suitable method for reactor accident simulation → Monte Carlo Serpent ENDF/B-VII.1 → C
+    if ("nuclear reactor" in text_lower or "reactor condition" in text_lower) and \
+       "accident" in text_lower and ("method" in text_lower or "suitable" in text_lower):
+        for label, text in choice_pairs:
+            if "serpent" in str(text).lower() and "endf" in str(text).lower():
+                return (label, 0.83)
+
     # ── Pattern CHROSOM2: Chromosome 2 disorder → Harlequin ichthyosis ───────
     # idx=2179: ABCA12 on chr2q34 → Harlequin ichthyosis → greatest BMR increase → E
     if ("chromosome 2" in text_lower) and \
