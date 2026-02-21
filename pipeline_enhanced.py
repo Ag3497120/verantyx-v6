@@ -647,6 +647,42 @@ class VerantyxV6Enhanced:
                 pieces = self.assembler.assemble(ir_dict, ir.answer_schema.value)
         
         if pieces is None:
+            # ── 600B / テキストキーワード piece フォールバック ──────────────────────
+            # domain routing でピースが見つからない場合:
+            #   A) 600B expert_piece_boosts が利用可能なら使う (DISABLE_CONCEPT_BOOST=0 時)
+            #   B) なければ テキストキーワードマッチ (DISABLE_CONCEPT_BOOST=1 でも動作)
+            _fallback_piece_ids: List[str] = []
+            if _expert_piece_boosts:
+                # A) 600B expert→piece boosts
+                _fallback_piece_ids = [pid for pid, _ in _expert_piece_boosts[:5]]
+                trace.append(f"expert_boost_fallback:A_600b top_ids={_fallback_piece_ids[:3]}")
+            else:
+                # B) 軽量テキストキーワードマッチ（concept_dirs不要）
+                try:
+                    from knowledge.expert_piece_map import find_pieces_by_text_keywords
+                    _kw_boosts = find_pieces_by_text_keywords(problem_text, top_n=5)
+                    if _kw_boosts:
+                        _fallback_piece_ids = [pid for pid, _ in _kw_boosts]
+                        trace.append(f"expert_boost_fallback:B_text_kw ids={_fallback_piece_ids[:3]}")
+                except Exception as _kw_e:
+                    trace.append(f"expert_boost_fallback:B_error:{_kw_e}")
+
+            if _fallback_piece_ids:
+                _fallback_pieces = []
+                for _fp_id in _fallback_piece_ids:
+                    _fp = self.piece_db.find_by_id(_fp_id)
+                    if _fp is not None:
+                        _fallback_pieces.append(_fp)
+                if _fallback_pieces:
+                    trace.append(
+                        f"expert_boost_fallback:pieces={len(_fallback_pieces)} "
+                        f"ids={[p.piece_id for p in _fallback_pieces[:3]]}"
+                    )
+                    pieces = _fallback_pieces  # → 以降の CEGIS フローに乗せる
+                else:
+                    trace.append("expert_boost_fallback:no_pieces_in_db")
+
+        if pieces is None:
             trace.append("no_pieces_found")
             self.stats["failed"] += 1
 

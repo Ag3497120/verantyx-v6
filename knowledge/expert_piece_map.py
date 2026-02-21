@@ -302,6 +302,52 @@ class ExpertPieceMap:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# 軽量テキストキーワード → piece 検索（concept_dirs不要・DISABLE_CONCEPT_BOOST=1でも動作）
+# ─────────────────────────────────────────────────────────────────────────────
+
+import re as _re
+
+def find_pieces_by_text_keywords(
+    text: str,
+    top_n: int = 5,
+    min_hits: int = 1,
+) -> List[Tuple[str, float]]:
+    """
+    問題文テキストから直接 piece_id を検索する軽量バージョン。
+    concept_dirs / expert_math_tokens.json を使わず、PIECE_INDICATOR_TOKENS のみを使用。
+    DISABLE_CONCEPT_BOOST=1 の場合でも動作する。
+
+    Args:
+        text: 問題文
+        top_n: 返す piece 数上限
+        min_hits: 最低マッチ数
+
+    Returns:
+        [(piece_id, score), ...] 降順
+    """
+    # テキストをトークン化（小文字・英単語）
+    text_lower = text.lower()
+    text_tokens = set(_re.findall(r'[a-z]+', text_lower))
+
+    piece_scores: Dict[str, float] = {}
+    for pid, indicators in PIECE_INDICATOR_TOKENS.items():
+        # 各インジケータについてテキストに含まれるかチェック
+        hits = 0
+        for ind in indicators:
+            ind_lower = ind.lower()
+            # 部分文字列一致 or トークン完全一致
+            if ind_lower in text_lower or ind_lower in text_tokens:
+                hits += 1
+        if hits >= min_hits:
+            # スコア = マッチ数 / インジケータ総数
+            score = hits / max(len(indicators), 1)
+            piece_scores[pid] = score
+
+    sorted_pieces = sorted(piece_scores.items(), key=lambda x: -x[1])
+    return sorted_pieces[:top_n]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # シングルトン
 # ─────────────────────────────────────────────────────────────────────────────
 
