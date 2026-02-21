@@ -2698,10 +2698,10 @@
   {
     "idx": 337,
     "category": "Computer Science/AI",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "G",
     "expected": "G",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 338,
@@ -11106,10 +11106,10 @@
   {
     "idx": 1388,
     "category": "Computer Science/AI",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "B",
     "expected": "B",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1389,
