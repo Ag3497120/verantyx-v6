@@ -402,10 +402,10 @@
   {
     "idx": 50,
     "category": "Computer Science/AI",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 51,
