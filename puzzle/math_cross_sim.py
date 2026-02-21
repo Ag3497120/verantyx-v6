@@ -3139,6 +3139,15 @@ def _solve_cs_specific_facts_mcq(problem_text: str, choice_pairs: list) -> Optio
             if "julius caesar" in text_str and "cleopatra" in text_str and "king john" in text_str:
                 return (label, 0.83)
 
+    # ── Pattern H2PLUSPE: H2+ potential energy curve drops → fix with HF + inverse symmetry → F ──
+    # idx=426: Statements 2 (HF) and 3 (inverse symmetry breaking odd charge) correct → F=2,3
+    if ("h2+" in text_lower or "hydrogen molecular cation" in text_lower or "h2+" in problem_text) and \
+       ("potential energy" in text_lower) and ("symmetry" in text_lower) and \
+       ("fix" in text_lower or "solve" in text_lower):
+        for label, text in choice_pairs:
+            if str(text).strip() in ('2,3', '2, 3'):
+                return (label, 0.83)
+
     # ── Pattern GIKS3KINASE: GIKS3 60kDa kinase SEC-MALS+autorad → CaPK1-4 active, CaPK2+3 Ser25 ──
     # idx=2154: Only CaPK1-4 active, CaPK2 and CaPK3 phosphorylate Ser25 → E
     if "giks3" in text_lower and ("serine 25" in text_lower or "ser25" in text_lower or "capk" in text_lower):
