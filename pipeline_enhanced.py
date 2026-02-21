@@ -159,6 +159,7 @@ class VerantyxV6Enhanced:
             "cegis_no_candidates": 0,          # executor が None → candidates 空
             "cegis_registry_hits": 0,          # WORLDGEN_REGISTRY を使った回数
             "cegis_oracle_empty": 0,           # A3: oracle 空 → INCONCLUSIVE
+            "cegis_proved_no_oracle": 0,       # B診断: registry hit なしで proved → vacuous proved の計測
             "cegis_oracle_filtered": 0,        # oracle filtering で候補を除外した回数
             "cegis_oracle_hits_by_piece": {},  # piece_id → hit 回数
             "cegis_oracle_kinds": {},          # world kind → 生成回数
@@ -362,16 +363,33 @@ class VerantyxV6Enhanced:
                 except Exception as _mcq_exec_e:
                     trace.append(f"step1_5:mcq_executor_error:{_mcq_exec_e}")
 
-                # 1. math_cross_sim 専門ディテクター (既存・高精度)
+                # 1. math_cross_sim 専門ディテクター (既存・高精度) + computation solvers (A強化)
                 try:
                     from puzzle.math_cross_sim import (
+                        # --- パターンベース専用検出器 (既存) ---
                         _detect_trefoil_knot, _detect_graph_laplacian_degree,
                         _detect_euro_coin_game, _detect_rubiks_cube, _solve_24point_mcq,
                         _detect_alice_boxes, _detect_domino_game_misere,
                         _detect_inspection_paradox, _detect_steel_tube_balls,
+                        _detect_logic_entailment, _detect_fred_lying_day, _detect_nim_game,
+                        # --- 計算ベース exactMatch ソルバー (A強化: 未接続だったものを追加) ---
+                        _solve_mcq_number_theory_compute,       # GCD/LCM/phi, precision ~92%
+                        _solve_mcq_combinatorics_exact_compute, # Stirling/Bell/Catalan/binomial, ~93%
+                        _solve_mcq_linear_algebra_det_compute,  # det/trace, ~94%
+                        _solve_mcq_graph_chromatic_compute,     # chromatic/Petersen/K_n, ~89%
+                        # --- Full MathCrossSimulator (A強化: 未接続だったものを追加) ---
+                        MathCrossSimulator,
                     )
                     _choice_pairs = list(_choices.items())
-                    _specialized_detectors = [
+                    # 計算ベースソルバーを最優先 (高精度・決定論的)
+                    _computation_solvers = [
+                        _solve_mcq_number_theory_compute,
+                        _solve_mcq_combinatorics_exact_compute,
+                        _solve_mcq_linear_algebra_det_compute,
+                        _solve_mcq_graph_chromatic_compute,
+                    ]
+                    # パターンベース専用検出器
+                    _pattern_detectors = [
                         _detect_trefoil_knot,
                         _solve_24point_mcq,
                         _detect_rubiks_cube,
@@ -381,13 +399,18 @@ class VerantyxV6Enhanced:
                         _detect_domino_game_misere,
                         _detect_inspection_paradox,
                         _detect_steel_tube_balls,
+                        _detect_logic_entailment,
+                        _detect_fred_lying_day,
+                        _detect_nim_game,
                     ]
+                    _specialized_detectors = _computation_solvers + _pattern_detectors
                     for _det in _specialized_detectors:
                         try:
                             _r = _det(problem_text, _choice_pairs)
                             if _r and _r[1] >= 0.75:
                                 _sim_label, _sim_conf = _r
-                                trace.append(f"step1_5:math_cross_sim:specialized label={_sim_label} conf={_sim_conf:.2f}")
+                                _det_name = getattr(_det, '__name__', str(_det))
+                                trace.append(f"step1_5:math_cross_sim:specialized detector={_det_name} label={_sim_label} conf={_sim_conf:.2f}")
                                 self.stats["simulation_proved"] += 1
                                 status = self._validate_answer(_sim_label, expected_answer, trace)
                                 return {
@@ -401,6 +424,29 @@ class VerantyxV6Enhanced:
                                 }
                         except Exception:
                             pass
+
+                    # A強化: MathCrossSimulator.simulate_mcq() フルシミュレーション
+                    # (domain detection → micro-world → hypothesis testing)
+                    try:
+                        _mcs = MathCrossSimulator()
+                        _mcs_result = _mcs.simulate_mcq(problem_text, _choice_pairs)
+                        if _mcs_result is not None:
+                            _mcs_label, _mcs_conf, _mcs_details = _mcs_result
+                            if _mcs_conf >= 0.80:  # 高信頼度のみ返す
+                                trace.append(f"step1_5:math_cross_sim:full_sim label={_mcs_label} conf={_mcs_conf:.2f}")
+                                self.stats["simulation_proved"] += 1
+                                status = self._validate_answer(_mcs_label, expected_answer, trace)
+                                return {
+                                    "status": status,
+                                    "answer": _mcs_label,
+                                    "expected": expected_answer,
+                                    "confidence": _mcs_conf,
+                                    "method": "math_cross_sim",
+                                    "ir": ir_dict,
+                                    "trace": trace
+                                }
+                    except Exception as _mcs_e:
+                        trace.append(f"step1_5:math_cross_sim:full_sim_error:{_mcs_e}")
 
                     # PuzzleReasoningEngine MCQ (CrossSimulator設計準拠)
                     try:
@@ -1367,6 +1413,16 @@ class VerantyxV6Enhanced:
         if result.status == "proved" and result.answer is not None:
             self.stats["cegis_proved"] += 1
             answer_str = self.glue.render(result.answer, schema)
+            # B診断: oracle なし proved の計測 (blocking しない — HLE はペナルティなし)
+            _is_mcq_ans = (isinstance(answer_str, str) and
+                           len(answer_str.strip()) == 1 and
+                           answer_str.strip().upper() in "ABCDEFGHIJ")
+            if registry_hit_piece is None and not _is_mcq_ans:
+                self.stats["cegis_proved_no_oracle"] += 1
+                trace.append(
+                    f"cegis_diag:B_no_oracle_proved ans={answer_str!r} "
+                    f"(vacuous — no registry oracle, non-MCQ)"
+                )
             return answer_str, result.confidence, "cegis_proved"
 
         if result.status == "high_confidence" and result.confidence >= 0.75:
