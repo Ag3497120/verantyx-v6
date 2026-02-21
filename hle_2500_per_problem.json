@@ -3179,7 +3179,7 @@
     "idx": 397,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "d4d5",
+    "answer": "d5",
     "expected": "7",
     "method": "cegis_proved"
   },
@@ -6259,7 +6259,7 @@
     "idx": 782,
     "category": "Math",
     "correct": false,
-    "answer": null,
+    "answer": "5040",
     "expected": "8,13,15,20,22,27,29,34,36,41,43,48,50,55",
     "method": "unknown"
   },
@@ -8186,10 +8186,10 @@
   {
     "idx": 1023,
     "category": "Math",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "F",
     "expected": "F",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1024,
@@ -12987,7 +12987,7 @@
     "idx": 1623,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "a2a3",
+    "answer": "a3",
     "expected": "9",
     "method": "cegis_proved"
   },
@@ -14179,7 +14179,7 @@
     "idx": 1772,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": "g1h2",
+    "answer": "Kh2",
     "expected": "Kh1",
     "method": "cegis_proved"
   },
@@ -14338,10 +14338,10 @@
   {
     "idx": 1792,
     "category": "Math",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1793,
@@ -14922,10 +14922,10 @@
   {
     "idx": 1865,
     "category": "Math",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "C",
     "expected": "C",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1866,
