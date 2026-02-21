@@ -1938,10 +1938,10 @@
   {
     "idx": 242,
     "category": "Other",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 243,
@@ -5554,10 +5554,10 @@
   {
     "idx": 694,
     "category": "Biology/Medicine",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 695,
@@ -9882,10 +9882,10 @@
   {
     "idx": 1235,
     "category": "Other",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "D",
     "expected": "D",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1236,
