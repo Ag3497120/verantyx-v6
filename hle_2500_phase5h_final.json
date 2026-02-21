@@ -1,8 +1,8 @@
 {
   "total": 2500,
-  "correct": 200,
-  "accuracy": 8.0,
-  "time": 55.344743967056274,
+  "correct": 202,
+  "accuracy": 8.08,
+  "time": 55.686423778533936,
   "category_stats": {
     "Other": {
       "total": 233,
@@ -22,7 +22,7 @@
     },
     "Computer Science/AI": {
       "total": 241,
-      "correct": 29
+      "correct": 31
     },
     "Biology/Medicine": {
       "total": 280,
@@ -38,7 +38,7 @@
     }
   },
   "method_stats": {
-    "math_cross_sim": 111,
+    "math_cross_sim": 113,
     "cegis_proved": 69,
     "unknown": 17,
     "puzzle_reasoning": 1,
