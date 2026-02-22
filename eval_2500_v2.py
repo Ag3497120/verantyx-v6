@@ -33,7 +33,7 @@ from core.answer_matcher import flexible_match
 from decomposer.concept_extractor_v2 import extract_concepts_v2
 import types
 
-CHECKPOINT_FILE = 'hle_2500_no_cheat_checkpoint.json'
+CHECKPOINT_FILE = 'hle_2500_v2_checkpoint.json'
 RESULT_FILE = 'hle_2500_no_cheat_eval.json'
 LOG_FILE = 'eval_2500_no_cheat.log'
 

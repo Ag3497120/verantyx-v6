@@ -173,7 +173,11 @@ class AtomMatcher:
         'he', 'she', 'his', 'her', 'its',
         'charge', 'charge is e', 'and opposite to the charge of',
         'algebra', 'none', 'unknown', 'n/a', 'various', 'many', 'some',
+        'thing', 'something', 'everything', 'nothing', 'anything',
     }
+
+    # Max answer length — block verbose definitions from being returned as answers
+    MAX_ANSWER_LEN = 60
 
     # Predicate → query_type affinity
     PRED_QUERY_AFFINITY = {
@@ -197,6 +201,9 @@ class AtomMatcher:
             if atom.object.lower().strip() in self.BLOCKED:
                 continue
             if len(atom.object.strip()) < 1:
+                continue
+            # Block verbose definitions (is_a returns full definitions)
+            if len(atom.object) > self.MAX_ANSWER_LEN:
                 continue
 
             # Calculate relevance
