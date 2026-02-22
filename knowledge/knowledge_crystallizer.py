@@ -244,6 +244,11 @@ class KnowledgeCrystallizer:
                 if len(entity) > 2 and entity.lower() not in (
                     'the', 'this', 'that', 'these', 'those', 'they', 'there',
                     'which', 'where', 'when', 'what', 'however', 'also',
+                    'algebra', 'analysis', 'geometry', 'physics', 'chemistry',
+                    'biology', 'science', 'mathematics', 'theory', 'method',
+                    'problem', 'question', 'answer', 'example', 'case',
+                    'note', 'given', 'consider', 'suppose', 'assume',
+                    'murray gell', 'charge',
                 ):
                     atoms.append(FactAtom(
                         value=entity,
@@ -370,13 +375,22 @@ class ExactAnswerSynthesizer:
         if not candidates:
             return None
 
+        # 一般的すぎる候補を除去
+        BLOCKED_VALUES = {
+            'charge is e', 'charge', 'algebra', 'the', 'yes', 'no',
+            'true', 'false', 'none', 'unknown', 'n/a',
+        }
+        candidates = [a for a in candidates if a.value.lower().strip() not in BLOCKED_VALUES]
+        if not candidates:
+            return None
+
         # support fact 数が多い順にソート
         candidates.sort(key=lambda a: (len(a.support_fact_ids), a.confidence), reverse=True)
 
         best = candidates[0]
 
-        # 最低条件: support が2つ以上、または confidence が高い
-        if len(best.support_fact_ids) >= 2 or best.confidence >= 0.7:
+        # 最低条件: support が2つ以上（provenance必須）
+        if len(best.support_fact_ids) >= 2:
             return {
                 "answer": best.value,
                 "confidence": best.confidence,
