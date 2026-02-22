@@ -120,6 +120,7 @@ class IR:
     options: List[str] = field(default_factory=list)
     
     metadata: Dict[str, Any] = field(default_factory=dict)
+    missing: List[Dict[str, Any]] = field(default_factory=list)  # 不足知識ニーズ
     
     def to_dict(self) -> Dict[str, Any]:
         """辞書に変換"""
@@ -155,7 +156,8 @@ class IR:
                 "constraints": self.query.constraints
             } if self.query else None,
             "options": self.options,
-            "metadata": self.metadata
+            "metadata": self.metadata,
+            "missing": self.missing,
         }
     
     @classmethod

@@ -16,7 +16,7 @@ import re
 
 from core.ir import IR
 from audit import AuditBundle, CEGISInfo, VerifyInfo, AnswerInfo
-from pieces.piece import PieceDB, Piece
+from pieces.piece import PieceDB, Piece, PieceInput, PieceOutput, PieceVerify, PieceWorldGen
 from decomposer.decomposer import RuleBasedDecomposer
 from assembler.beam_search import BeamSearch, GreedyAssembler
 from assembler.executor import Executor, StructuredCandidate
@@ -33,6 +33,20 @@ from cegis.cegis_loop import (
 from cegis.certificate import Certificate, CertKind
 from grammar.glue_templates import GrammarGlue
 from core.answer_matcher import flexible_match
+
+# ── Knowledge Pipeline (問題文をLLMに渡さない知識補充) ──
+try:
+    from knowledge.knowledge_pipeline import KnowledgePipeline
+    _knowledge_pipeline_available = True
+except ImportError:
+    _knowledge_pipeline_available = False
+
+# ── Oracle Filter (oracle空 → INCONCLUSIVE) ──
+try:
+    from gates.oracle_filter import check_oracle_before_verify
+    _oracle_filter_available = True
+except ImportError:
+    _oracle_filter_available = False
 
 
 class VerantyxV6Enhanced:
@@ -163,7 +177,22 @@ class VerantyxV6Enhanced:
             "cegis_oracle_filtered": 0,        # oracle filtering で候補を除外した回数
             "cegis_oracle_hits_by_piece": {},  # piece_id → hit 回数
             "cegis_oracle_kinds": {},          # world kind → 生成回数
+            # Knowledge Pipeline stats
+            "knowledge_gaps_detected": 0,
+            "knowledge_facts_accepted": 0,
+            "knowledge_facts_rejected": 0,
+            "knowledge_pieces_created": 0,
         }
+
+        # ── Knowledge Pipeline 初期化 ──
+        self._knowledge_pipeline = None
+        if _knowledge_pipeline_available:
+            try:
+                self._knowledge_pipeline = KnowledgePipeline(piece_db=None)
+                # piece_db は PieceDB インスタンスだが、KnowledgePipeline の PieceDBInterface に合わせる必要がある
+                # 現段階では None（Gap検出のみ使い、PieceDB統合は次フェーズ）
+            except Exception:
+                pass
     
     def solve(
         self,
@@ -312,6 +341,95 @@ class VerantyxV6Enhanced:
                 "audit_bundle": bundle.to_json() if bundle else None,
             }
 
+        # Step 1.3: Knowledge Gap Detection + LLM 知識補充
+        # ⚠️ 設計原則: 問題文は LLM に渡さない。不足知識の問い合わせだけ。
+        _knowledge_audit = None
+        if self._knowledge_pipeline is not None:
+            try:
+                _ir_for_gap = {
+                    "domain_hint": [ir.domain.value] if hasattr(ir.domain, 'value') else [str(ir.domain)],
+                    "entities": [{"name": e.get("name", ""), "value": e.get("value", ""), "type": "unknown"}
+                                 for e in (ir_dict.get("entities") or [])],
+                    "query": {"ask": ir_dict.get("task", ""), "of": ""},
+                    "candidate_programs": [],
+                    "missing": ir_dict.get("missing", []),  # Decomposer の不足知識ニーズを直接渡す
+                }
+                _kp_result = self._knowledge_pipeline.run(_ir_for_gap)
+                _knowledge_audit = _kp_result.audit
+                if _kp_result.accepted_count > 0:
+                    trace.append(f"knowledge:accepted={_kp_result.accepted_count},rejected={_kp_result.rejected_count}")
+                    self.stats["knowledge_gaps_detected"] += _kp_result.audit.gap_count
+                    self.stats["knowledge_facts_accepted"] += _kp_result.accepted_count
+                    self.stats["knowledge_facts_rejected"] += _kp_result.rejected_count
+                    self.stats["knowledge_pieces_created"] += len(_kp_result.new_pieces)
+                    # CrossPiece → Piece 変換して PieceDB に投入
+                    for _cp in _kp_result.new_pieces:
+                        try:
+                            _domain_str = str(_cp.domain) if _cp.domain else "general"
+                            _piece = Piece(
+                                piece_id=_cp.piece_id,
+                                name=f"llm_{_cp.symbol}",
+                                description=_cp.transform.get("plain", _cp.transform.get("formal", "")),
+                                in_spec=PieceInput(
+                                    requires=[
+                                        f"domain:{_domain_str}",
+                                        f"task:{ir_dict.get('task', 'unknown')}",
+                                    ],
+                                    slots=[],
+                                    optional=[],
+                                ),
+                                out_spec=PieceOutput(
+                                    produces=["knowledge_fact"],
+                                    schema=ir_dict.get("answer_schema", "free_form"),
+                                    artifacts=[],
+                                ),
+                                executor="executors.knowledge_executor.execute_knowledge_piece",
+                                verifiers=[],
+                                confidence=0.5,  # LLM由来 = 低信頼度
+                                tags=[f"llm_origin", f"domain:{_domain_str}", f"kind:{_cp.kind}"],
+                                examples=[],
+                                verify=PieceVerify(
+                                    kind="cross_check",
+                                    method="llm_knowledge",
+                                    params={
+                                        "oracle": _cp.verify_spec.get("oracle", ""),
+                                        "constraints": _cp.verify_spec.get("constraints", []),
+                                    },
+                                ),
+                                worldgen=PieceWorldGen(
+                                    domain=_domain_str,
+                                    params={
+                                        "world_type": _cp.worldgen_spec.get("world_type", ""),
+                                        "generator": _cp.worldgen_spec.get("generator", ""),
+                                        "size": _cp.worldgen_spec.get("size", 10),
+                                    },
+                                ),
+                            )
+                            self.piece_db.add(_piece)
+                            trace.append(f"knowledge:piece_added={_cp.piece_id}")
+                        except Exception as _piece_e:
+                            trace.append(f"knowledge:piece_add_fail={_piece_e}")
+                elif not _kp_result.sufficient:
+                    trace.append(f"knowledge:gaps={_kp_result.audit.gap_count},no_facts_accepted")
+            except Exception as _kp_e:
+                trace.append(f"knowledge:skip:{_kp_e}")
+
+        # Step 1.4: 取得済み knowledge facts をまとめる（Step 1.5 MCQ ソルバーで使用）
+        _knowledge_facts = []
+        try:
+            if _kp_result and hasattr(_kp_result, 'new_pieces'):
+                for _cp in _kp_result.new_pieces:
+                    _knowledge_facts.append({
+                        "summary": _cp.transform.get("plain", ""),
+                        "properties": _cp.transform.get("properties", []),
+                        "formulas": _cp.transform.get("formulas", []),
+                        "numeric": _cp.transform.get("numeric", {}),
+                        "domain": _cp.domain,
+                        "symbol": _cp.symbol,
+                    })
+        except NameError:
+            pass  # _kp_result が未定義の場合
+
         # Step 1.5: MCQ直接解決
         # 優先順位:
         #   0. CEGIS MCQ option verification (NEW - highest priority)
@@ -368,6 +486,10 @@ class VerantyxV6Enhanced:
                     trace.append(f"step1_5:mcq_executor_error:{_mcq_exec_e}")
 
                 # 1. math_cross_sim 専門ディテクター (既存・高精度) + computation solvers (A強化)
+                # ⚠️ DISABLE_PATTERN_DETECTORS=1 でカンニング（パターンマッチ）無効化
+                if os.environ.get('DISABLE_PATTERN_DETECTORS'):
+                    trace.append("step1_5:pattern_detectors:DISABLED_BY_ENV")
+                    raise _SkipPatternDetectors()
                 try:
                     from puzzle.math_cross_sim import (
                         # --- パターンベース専用検出器 (既存) ---
@@ -524,8 +646,100 @@ class VerantyxV6Enhanced:
                         trace.append("step1_5:boost:no_confident_answer → fallthrough")
                 except Exception as _boost_e:
                     trace.append(f"step1_5:boost_error:{_boost_e}")
+
+                # ─── Step 1.5.9: レベル2 MCQ ソルバー（知識マッチング + 消去法） ───
+                # 既存ソルバーが全て失敗した場合のフォールバック
+                # 鉄の壁レベル2: IR + 選択肢 + facts のみ（問題文は渡さない）
+                if _knowledge_facts and _choices and len(_choices) >= 2:
+                    try:
+                        # 1. 知識マッチング
+                        from executors.mcq_knowledge_matcher import score_choices_against_facts
+                        _km_result = score_choices_against_facts(
+                            ir_dict, _choices, _knowledge_facts, use_llm=True
+                        )
+                        if _km_result:
+                            _km_ans, _km_conf, _km_method = _km_result
+                            trace.append(f"step1_5_9:knowledge_match:{_km_method} label={_km_ans} conf={_km_conf:.2f}")
+                            if _km_conf >= 0.3:
+                                self.stats["executed"] += 1
+                                status = self._validate_answer(_km_ans, expected_answer, trace)
+                                return {
+                                    "status": status,
+                                    "answer": _km_ans,
+                                    "expected": expected_answer,
+                                    "confidence": _km_conf,
+                                    "method": _km_method,
+                                    "ir": ir_dict,
+                                    "trace": trace,
+                                }
+                    except Exception as _km_e:
+                        trace.append(f"step1_5_9:knowledge_match_error:{_km_e}")
+
+                    try:
+                        # 2. 消去法
+                        from executors.mcq_elimination_solver import eliminate_choices
+                        _elim_result = eliminate_choices(
+                            ir_dict, _choices, _knowledge_facts, use_llm=True
+                        )
+                        if _elim_result:
+                            _el_ans, _el_conf, _el_method = _elim_result
+                            trace.append(f"step1_5_9:elimination:{_el_method} label={_el_ans} conf={_el_conf:.2f}")
+                            if _el_conf >= 0.3:
+                                self.stats["executed"] += 1
+                                status = self._validate_answer(_el_ans, expected_answer, trace)
+                                return {
+                                    "status": status,
+                                    "answer": _el_ans,
+                                    "expected": expected_answer,
+                                    "confidence": _el_conf,
+                                    "method": _el_method,
+                                    "ir": ir_dict,
+                                    "trace": trace,
+                                }
+                    except Exception as _el_e:
+                        trace.append(f"step1_5_9:elimination_error:{_el_e}")
+
         except Exception as _e:
             trace.append(f"step1_5:error:{_e}")
+
+        # Step 1.5.10: SymPy LaTeX Executor（MCQ/exactMatch共通）
+        try:
+            from executors.sympy_latex_executor import extract_and_solve_latex
+            _sympy_result = extract_and_solve_latex(problem_text)
+            if _sympy_result:
+                _sy_ans, _sy_conf, _sy_method = _sympy_result
+                trace.append(f"step1_5_10:sympy_latex:{_sy_method} answer={_sy_ans}")
+                # MCQ の場合は選択肢と照合
+                if '_choices' in dir() and _choices:
+                    for _label, _text in _choices.items():
+                        if str(_sy_ans) in _text or _text.strip() == str(_sy_ans):
+                            trace.append(f"step1_5_10:sympy_latex_mcq_match:{_label}")
+                            self.stats["executed"] += 1
+                            status = self._validate_answer(_label, expected_answer, trace)
+                            return {
+                                "status": status,
+                                "answer": _label,
+                                "expected": expected_answer,
+                                "confidence": _sy_conf,
+                                "method": _sy_method,
+                                "ir": ir_dict,
+                                "trace": trace,
+                            }
+                else:
+                    # exactMatch
+                    self.stats["executed"] += 1
+                    status = self._validate_answer(_sy_ans, expected_answer, trace)
+                    return {
+                        "status": status,
+                        "answer": _sy_ans,
+                        "expected": expected_answer,
+                        "confidence": _sy_conf,
+                        "method": _sy_method,
+                        "ir": ir_dict,
+                        "trace": trace,
+                    }
+        except Exception as _sy_e:
+            trace.append(f"step1_5_10:sympy_latex_error:{_sy_e}")
 
         # Step 1.6: Cross Param Engine for ExactMatch (パラメータ抽出→小世界計算)
         try:

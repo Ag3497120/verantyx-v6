@@ -10,6 +10,7 @@ import re
 from core.ir import IR, TaskType, Domain, AnswerSchema, Entity, Constraint, Query
 from decomposer.problem_type_detector import ProblemTypeDetector
 from decomposer.latex_normalizer import normalize_latex, detect_answer_schema as detect_answer_schema_latex
+from decomposer.knowledge_need_extractor import extract_knowledge_needs
 
 # 600B concept_dirs ブースト（オプション、キャッシュがあれば0ms）
 _concept_booster = None
@@ -340,6 +341,26 @@ class RuleBasedDecomposer:
             except Exception:
                 pass
 
+        # ─── 不足知識ニーズ抽出（鉄の壁設計: 概念名のみ、問題文は含まない）───
+        _pre_ir_dict = {
+            "domain": domain.value,
+            "task": task.value,
+            "entities": [{"type": e.type, "name": e.name, "value": e.value} for e in entities],
+            "metadata": {"keywords": keywords},
+        }
+        knowledge_needs = extract_knowledge_needs(_pre_ir_dict, problem_text)
+        missing = [
+            {
+                "concept": kn.concept,
+                "kind": kn.kind,
+                "domain": kn.domain,
+                "relation": kn.relation,
+                "scope": kn.scope,
+                "context_hint": kn.context_hint,
+            }
+            for kn in knowledge_needs
+        ]
+
         # IR構築（問題タイプ情報を追加）
         ir = IR(
             task=task,
@@ -357,7 +378,8 @@ class RuleBasedDecomposer:
                 "problem_type_confidence": problem_type_info.get('confidence', 0.0) if problem_type_info else 0.0,
                 "latex_answer_schema": latex_answer_schema,  # LaTeX-based answer type hint
                 "normalized_text": normalized_text  # Store normalized version
-            }
+            },
+            missing=missing,
         )
         
         return ir
