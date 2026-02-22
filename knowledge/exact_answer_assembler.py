@@ -413,9 +413,9 @@ class ExactAnswerAssembler:
         # 6. Select best candidate
         best = candidates[0]
 
-        # 7. Confidence threshold
+        # 7. Confidence threshold — lower for HLE (PhD-level questions are hard to match)
         combined = best.relevance_score * best.confidence * math.sqrt(len(best.support_atoms))
-        if combined < 0.25:
+        if combined < 0.15:
             return None
 
         # 8. Format answer

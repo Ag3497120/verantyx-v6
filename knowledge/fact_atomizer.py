@@ -173,10 +173,10 @@ class FactAtomizer:
             lambda m: (m.group(1), m.group(2).lower().replace(' ', '_') + "_of", m.group(3), None),
             0.85))
 
-        # "{X}, also known as {Y}" / "{X} (also {Y})"
+        # "{X}, also known as {Y}," — bounded alias (stop at comma/period/which/was)
         P.append(("also_known_as",
-            re.compile(r'^(.+?),?\s+(?:also\s+known\s+as|a\.?k\.?a\.?|also\s+called|or|otherwise\s+known\s+as)\s+(.+?)\.?$', re.I),
-            lambda m: (m.group(1), "alias", m.group(2), None),
+            re.compile(r'^(.+?),?\s+(?:also\s+known\s+as|a\.?k\.?a\.?|also\s+called|otherwise\s+known\s+as)\s+([^,]+?)(?:,|\.|$)', re.I),
+            lambda m: (m.group(1), "alias", m.group(2).strip(), None),
             0.85))
 
         # "{X} is called/named/known as {Y}"
