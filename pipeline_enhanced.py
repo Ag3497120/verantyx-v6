@@ -466,6 +466,41 @@ class VerantyxV6Enhanced:
         except Exception as _cryst_e:
             trace.append(f"step1_4_5:crystallize_error:{_cryst_e}")
 
+        # Step 1.4.7: Cross Verification（結晶化データ → Cross構造で検証）
+        # relations を使って MCQ/exactMatch を論理的に検証（LLM不使用）
+        if _crystal and (len(_crystal.relations) > 0 or len(_crystal.fact_atoms) > 0):
+            try:
+                from knowledge.crystal_to_cross import verify_with_cross
+                from executors.multiple_choice import split_stem_choices as _split_sc
+                _cv_stem, _cv_choices = _split_sc(problem_text)
+                _cv_result = verify_with_cross(
+                    ir_dict, _crystal.fact_atoms, _crystal.relations,
+                    choices=_cv_choices if _cv_choices and len(_cv_choices) >= 2 else None,
+                )
+                if _cv_result and _cv_result.answer and _cv_result.status in ("proved", "verified"):
+                    trace.append(
+                        f"step1_4_7:cross_verify:{_cv_result.method} "
+                        f"answer={_cv_result.answer} status={_cv_result.status}"
+                    )
+                    trace.extend(_cv_result.trace)
+                    self.stats["executed"] += 1
+                    status = self._validate_answer(_cv_result.answer, expected_answer, trace)
+                    return {
+                        "status": status,
+                        "answer": _cv_result.answer,
+                        "expected": expected_answer,
+                        "confidence": _cv_result.confidence,
+                        "method": _cv_result.method,
+                        "ir": ir_dict,
+                        "trace": trace,
+                    }
+                elif _cv_result:
+                    trace.append(f"step1_4_7:cross_verify:INCONCLUSIVE({_cv_result.status})")
+                else:
+                    trace.append("step1_4_7:cross_verify:no_result")
+            except Exception as _cv_e:
+                trace.append(f"step1_4_7:cross_verify_error:{_cv_e}")
+
         # Step 1.5: MCQ直接解決
         # 優先順位:
         #   0. CEGIS MCQ option verification (NEW - highest priority)
