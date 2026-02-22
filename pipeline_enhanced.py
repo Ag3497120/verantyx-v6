@@ -494,6 +494,50 @@ class VerantyxV6Enhanced:
             except Exception as _cv_e:
                 trace.append(f"step1_4_7:cross_verify_error:{_cv_e}")
 
+        # Step 1.4.9: ExactAnswerAssembler（Atom化 → query matching → 回答構成）
+        # non-MCQ問題で wiki_facts から答えを組み立てる
+        # MCQ問題はスキップ（Step 1.5以降で処理）
+        try:
+            from executors.multiple_choice import split_stem_choices as _split_sc_149
+            _stem_149, _choices_149 = _split_sc_149(problem_text)
+            _is_mcq_149 = bool(_choices_149 and len(_choices_149) >= 2)
+        except Exception:
+            _is_mcq_149 = False
+
+        if not _is_mcq_149 and _knowledge_facts:
+            try:
+                from knowledge.exact_answer_assembler import ExactAnswerAssembler
+                _assembler = ExactAnswerAssembler()
+                _wiki_texts = [f.get("summary", "") for f in _knowledge_facts if f.get("summary")]
+                _asm_result = _assembler.assemble(
+                    ir_dict=ir_dict,
+                    wiki_facts=_wiki_texts,
+                    problem_text=problem_text,
+                )
+                if _asm_result and _asm_result.get("answer"):
+                    _asm_ans = _asm_result["answer"]
+                    _asm_method = _asm_result["method"]
+                    _asm_conf = _asm_result["confidence"]
+                    trace.append(f"step1_4_9:exact_assembler:{_asm_method} answer={_asm_ans} conf={_asm_conf:.2f}")
+                    self.stats["executed"] += 1
+                    if "knowledge_match" not in self.stats:
+                        self.stats["knowledge_match"] = 0
+                    self.stats["knowledge_match"] += 1
+                    status = self._validate_answer(_asm_ans, expected_answer, trace)
+                    return {
+                        "status": status,
+                        "answer": _asm_ans,
+                        "expected": expected_answer,
+                        "confidence": _asm_conf,
+                        "method": _asm_method,
+                        "ir": ir_dict,
+                        "trace": trace,
+                    }
+                else:
+                    trace.append("step1_4_9:exact_assembler:INCONCLUSIVE")
+            except Exception as _asm_e:
+                trace.append(f"step1_4_9:exact_assembler_error:{_asm_e}")
+
         # Step 1.5: MCQ直接解決
         # 優先順位:
         #   0. CEGIS MCQ option verification (NEW - highest priority)
