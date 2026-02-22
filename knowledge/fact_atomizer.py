@@ -144,9 +144,20 @@ class FactAtomizer:
 
     def atomize_many(self, sentences: List[str], source: str = "wiki") -> List[FactAtom]:
         all_atoms = []
+        try:
+            from knowledge.sentence_splitter import split_to_clauses
+            use_splitter = True
+        except ImportError:
+            use_splitter = False
+
         for s in sentences:
             for sub in re.split(r'(?<=[.!?])\s+', s):
-                all_atoms.extend(self.atomize(sub, source))
+                if use_splitter:
+                    clauses = split_to_clauses(sub)
+                    for clause in clauses:
+                        all_atoms.extend(self.atomize(clause, source))
+                else:
+                    all_atoms.extend(self.atomize(sub, source))
         return all_atoms
 
     def _build_patterns(self):
@@ -870,11 +881,45 @@ class FactAtomizer:
         # U. ADDITIONAL CATCH-ALL PATTERNS
         # ════════════════════════════════════════════════════════
 
-        # "{X} {VERB}s {Y}" — generic SVO (very low confidence)
+        # "{X} {VERB}s {Y}" — broad transitive verbs
+        _transitive_verbs = (
+            'produce|generate|emit|absorb|reflect|transmit|conduct|'
+            'regulate|control|modulate|activate|deactivate|bind|inhibit|'
+            'catalyze|catalyse|metabolize|metabolise|oxidize|oxidise|reduce|'
+            'hydrolyze|hydrolyse|polymerize|polymerise|dissolve|precipitate|'
+            'crystallize|crystallise|evaporate|condense|sublimate|ionize|ionise|'
+            'decompose|corrode|erode|govern|manage|administer|oversee|'
+            'protect|defend|support|maintain|sustain|preserve|conserve|'
+            'cover|span|extend|reach|surround|enclose|separate|connect|'
+            'supply|provide|deliver|distribute|transport|carry|convey|'
+            'store|accumulate|collect|gather|concentrate|disperse|scatter|'
+            'transform|modify|alter|adjust|adapt|convert|process|'
+            'encode|decode|translate|interpret|analyze|analyse|evaluate|'
+            'demonstrate|illustrate|exemplify|embody|represent|depict|portray|'
+            'influence|affect|impact|shape|determine|define|characterize|'
+            'surpass|exceed|outperform|dominate|rival|complement|supplement|'
+            'require|need|demand|depend|rely|utilize|employ|exploit|'
+            'enable|allow|permit|facilitate|promote|enhance|improve|'
+            'limit|restrict|constrain|confine|prevent|prohibit|forbid|'
+            'replace|substitute|supersede|displace|succeed|follow|precede|'
+            'stimulate|trigger|initiate|launch|commence|terminate|complete|'
+            'teach|train|educate|mentor|instruct|guide|direct|lead|'
+            'measure|quantify|assess|test|verify|validate|confirm|'
+            'observe|detect|identify|recognize|distinguish|classify|'
+            'treat|diagnose|cure|heal|remedy|alleviate|relieve|'
+            'attack|invade|conquer|defeat|capture|occupy|liberate|'
+            'celebrate|commemorate|honor|honour|recognize|acknowledge'
+        )
         P.append(("generic_svo",
-            re.compile(r'^([A-Z].+?)\s+((?:produce|generate|emit|absorb|reflect|transmit|conduct|regulate|control|modulate|activate|deactivate|bind|inhibit|catalyze|catalyse|metabolize|metabolise|oxidize|oxidise|reduce|hydrolyze|hydrolyse|polymerize|polymerise|dissolve|precipitate|crystallize|crystallise|evaporate|condense|sublimate|ionize|ionise|decompose|corrode|erode)s?)\s+(.+?)\.?$', re.I),
-            lambda m: (m.group(1), m.group(2).lower().rstrip('s'), m.group(3), None),
+            re.compile(rf'^([A-Z].+?)\s+((?:{_transitive_verbs})(?:s|es|ed|d)?)\s+(.+?)\.?$', re.I),
+            lambda m: (m.group(1), m.group(2).lower().rstrip('sed').rstrip('e') or m.group(2).lower(), m.group(3), None),
             0.6))
+
+        # "{X} is {VERB}ed by {Y}" — broad passive for all transitive verbs above
+        P.append(("generic_passive",
+            re.compile(rf'^(.+?)\s+(?:is|are|was|were)\s+((?:{_transitive_verbs})(?:ed|d|t))\s+by\s+(.+?)\.?$', re.I),
+            lambda m: (m.group(1), m.group(2).lower() + "_by", m.group(3), None),
+            0.7))
 
         return P
 

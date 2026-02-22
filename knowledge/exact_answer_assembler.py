@@ -395,28 +395,93 @@ class ExactAnswerAssembler:
         # 3. Match atoms against query
         candidates = self.matcher.match(query, atoms)
 
+        # 4. Also try keyword-based matching (for HLE where questions are complex)
+        if problem_text:
+            kw_candidates = self._keyword_match(atoms, problem_text, ir_dict)
+            candidates.extend(kw_candidates)
+
         if not candidates:
             return None
 
-        # 4. Select best candidate
+        # 5. Re-sort all candidates
+        import math
+        candidates.sort(
+            key=lambda c: c.relevance_score * c.confidence * math.sqrt(len(c.support_atoms)),
+            reverse=True,
+        )
+
+        # 6. Select best candidate
         best = candidates[0]
 
-        # 5. Confidence threshold based on combined score
-        import math
+        # 7. Confidence threshold
         combined = best.relevance_score * best.confidence * math.sqrt(len(best.support_atoms))
         if combined < 0.25:
             return None
 
-        # 6. Format answer
+        # 8. Format answer
         answer = self._format_answer(best.answer, query.answer_shape)
 
         return {
             "answer": answer,
             "confidence": best.confidence,
-            "method": f"exact_assembler:{best.method}(supports={len(best.support_atoms)},rel={best.relevance_score:.2f})",
+            "method": f"exact_assembler:{best.method}(supports={len(best.support_atoms)},rel={best.relevance_score:.2f},atoms={len(atoms)})",
             "query_type": query.query_type,
             "target_slot": query.target_slot,
         }
+
+    def _keyword_match(self, atoms: List[FactAtom], problem_text: str, ir_dict: dict) -> List[AnswerCandidate]:
+        """
+        Keyword-based matching for complex HLE questions.
+        Instead of relying on query type detection, directly match
+        problem text keywords against atom subjects/objects.
+        """
+        candidates = []
+        
+        # Extract significant keywords from problem text (lowercase, >3 chars, not stop words)
+        stop = {'what','which','where','when','does','that','this','with','from',
+                'have','been','will','would','could','should','about','their',
+                'they','them','there','these','those','each','other','some',
+                'than','then','into','also','most','only','such','very',
+                'more','over','after','before','between','under','above',
+                'through','during','following','answer','question','give',
+                'find','determine','identify','name','list','describe','explain'}
+        
+        words = set(re.findall(r'[a-zA-Z]{4,}', problem_text.lower())) - stop
+        
+        # Find atoms where subject or predicate overlaps with problem keywords
+        for atom in atoms:
+            if atom.object.lower().strip() in AtomMatcher.BLOCKED:
+                continue
+            if len(atom.object) > AtomMatcher.MAX_ANSWER_LEN:
+                continue
+                
+            atom_words = set(re.findall(r'[a-zA-Z]{4,}', 
+                (atom.subject + " " + atom.predicate + " " + atom.raw_sentence).lower()))
+            
+            overlap = len(words & atom_words)
+            if overlap < 2:
+                continue
+            
+            relevance = min(overlap / max(len(words), 1) * 1.5, 1.0)
+            
+            # Prefer named entities and specific values over generic text
+            answer = atom.object
+            if atom.numeric_value is not None:
+                answer = str(int(atom.numeric_value)) if atom.numeric_value == int(atom.numeric_value) else str(atom.numeric_value)
+            
+            # Skip if answer is just a common word
+            if answer.lower() in stop or len(answer.strip()) < 2:
+                continue
+                
+            candidates.append(AnswerCandidate(
+                answer=answer,
+                confidence=atom.confidence * 0.8,  # slight penalty for keyword-only match
+                method=f"atom_kw:{atom.predicate}(overlap={overlap})",
+                support_atoms=[atom],
+                relevance_score=relevance,
+            ))
+        
+        return candidates
 
     def _format_answer(self, raw: str, shape: str) -> str:
         """Format answer according to expected shape."""
