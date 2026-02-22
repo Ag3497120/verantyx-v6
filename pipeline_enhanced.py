@@ -494,9 +494,10 @@ class VerantyxV6Enhanced:
             except Exception as _cv_e:
                 trace.append(f"step1_4_7:cross_verify_error:{_cv_e}")
 
-        # Step 1.4.9: ExactAnswerAssembler（Atom化 → query matching → 回答構成）
-        # non-MCQ問題で wiki_facts から答えを組み立てる
-        # MCQ問題はスキップ（Step 1.5以降で処理）
+        # Step 1.4.9: ExactAnswerAssembler（候補生成器）
+        # non-MCQ問題で wiki_facts から回答候補を生成
+        # 直接返さず、Cross検証を通す（Verantyx思想: 検証済みのみ採用）
+        _asm_candidate = None  # 候補をパイプライン後段でも使えるよう保持
         try:
             from executors.multiple_choice import split_stem_choices as _split_sc_149
             _stem_149, _choices_149 = _split_sc_149(problem_text)
@@ -518,21 +519,47 @@ class VerantyxV6Enhanced:
                     _asm_ans = _asm_result["answer"]
                     _asm_method = _asm_result["method"]
                     _asm_conf = _asm_result["confidence"]
-                    trace.append(f"step1_4_9:exact_assembler:{_asm_method} answer={_asm_ans} conf={_asm_conf:.2f}")
-                    self.stats["executed"] += 1
-                    if "knowledge_match" not in self.stats:
-                        self.stats["knowledge_match"] = 0
-                    self.stats["knowledge_match"] += 1
-                    status = self._validate_answer(_asm_ans, expected_answer, trace)
-                    return {
-                        "status": status,
-                        "answer": _asm_ans,
-                        "expected": expected_answer,
-                        "confidence": _asm_conf,
-                        "method": _asm_method,
-                        "ir": ir_dict,
-                        "trace": trace,
-                    }
+                    _asm_candidate = _asm_result  # 保持
+                    trace.append(f"step1_4_9:assembler_candidate:{_asm_method} answer={_asm_ans} conf={_asm_conf:.2f}")
+
+                    # Step 1.4.9.1: Cross検証（候補をCross構造で検証）
+                    _cross_verified = False
+                    if _crystal and (len(getattr(_crystal, 'relations', [])) > 0 or len(getattr(_crystal, 'fact_atoms', [])) > 0):
+                        try:
+                            from knowledge.crystal_to_cross import verify_candidate_answer
+                            _cv = verify_candidate_answer(
+                                ir_dict, _asm_ans, 
+                                getattr(_crystal, 'fact_atoms', []),
+                                getattr(_crystal, 'relations', []),
+                            )
+                            if _cv and _cv.status in ("proved", "verified"):
+                                _cross_verified = True
+                                _asm_conf = min(_asm_conf * 1.5, 0.95)
+                                trace.append(f"step1_4_9_1:cross_verified:{_cv.status} conf→{_asm_conf:.2f}")
+                            elif _cv:
+                                trace.append(f"step1_4_9_1:cross_check:{_cv.status}")
+                        except Exception as _cv_e:
+                            trace.append(f"step1_4_9_1:cross_check_error:{_cv_e}")
+
+                    # 採用判定: Cross検証通過 or 高confidence候補
+                    if _cross_verified or _asm_conf >= 0.5:
+                        _final_method = f"{'cross_' if _cross_verified else ''}{_asm_method}"
+                        self.stats["executed"] += 1
+                        if "knowledge_match" not in self.stats:
+                            self.stats["knowledge_match"] = 0
+                        self.stats["knowledge_match"] += 1
+                        status = self._validate_answer(_asm_ans, expected_answer, trace)
+                        return {
+                            "status": status,
+                            "answer": _asm_ans,
+                            "expected": expected_answer,
+                            "confidence": _asm_conf,
+                            "method": _final_method,
+                            "ir": ir_dict,
+                            "trace": trace,
+                        }
+                    else:
+                        trace.append(f"step1_4_9:assembler_proposal_held(conf={_asm_conf:.2f},cross={_cross_verified})")
                 else:
                     trace.append("step1_4_9:exact_assembler:INCONCLUSIVE")
             except Exception as _asm_e:
@@ -827,18 +854,49 @@ class VerantyxV6Enhanced:
                     )
                     if _direct_result:
                         _dir_ans, _dir_conf, _dir_method = _direct_result
-                        trace.append(f"step1_5_9_5:mcq_direct:{_dir_method} label={_dir_ans} conf={_dir_conf:.2f}")
-                        self.stats["executed"] += 1
-                        status = self._validate_answer(_dir_ans, expected_answer, trace)
-                        return {
-                            "status": status,
-                            "answer": _dir_ans,
-                            "expected": expected_answer,
-                            "confidence": _dir_conf,
-                            "method": _dir_method,
-                            "ir": ir_dict,
-                            "trace": trace,
-                        }
+                        trace.append(f"step1_5_9_5:mcq_proposal:{_dir_method} label={_dir_ans} conf={_dir_conf:.2f}")
+
+                        # Cross矛盾検査: proposalが知識と矛盾しないか確認
+                        _dir_rejected = False
+                        if _crystal and hasattr(_crystal, 'relations') and _crystal.relations:
+                            try:
+                                from knowledge.crystal_to_cross import verify_with_cross
+                                _mcq_cv = verify_with_cross(
+                                    ir_dict,
+                                    getattr(_crystal, 'fact_atoms', []),
+                                    _crystal.relations,
+                                    choices=_choices,
+                                )
+                                if _mcq_cv and _mcq_cv.status in ("proved", "verified"):
+                                    # Cross検証で別の選択肢が支持された場合
+                                    if _mcq_cv.answer and _mcq_cv.answer != _dir_ans:
+                                        trace.append(f"step1_5_9_5:cross_override:{_mcq_cv.answer}(was {_dir_ans})")
+                                        _dir_ans = _mcq_cv.answer
+                                        _dir_conf = max(_dir_conf, _mcq_cv.confidence)
+                                        _dir_method = f"cross_verified_{_dir_method}"
+                                    else:
+                                        trace.append(f"step1_5_9_5:cross_confirms:{_dir_ans}")
+                                        _dir_conf = min(_dir_conf * 1.3, 0.95)
+                                elif _mcq_cv and _mcq_cv.status == "contradicted":
+                                    trace.append(f"step1_5_9_5:cross_contradicts:{_dir_ans}→INCONCLUSIVE")
+                                    _dir_rejected = True
+                            except Exception as _mcv_e:
+                                trace.append(f"step1_5_9_5:cross_check_error:{_mcv_e}")
+
+                        if not _dir_rejected:
+                            self.stats["executed"] += 1
+                            status = self._validate_answer(_dir_ans, expected_answer, trace)
+                            return {
+                                "status": status,
+                                "answer": _dir_ans,
+                                "expected": expected_answer,
+                                "confidence": _dir_conf,
+                                "method": _dir_method,
+                                "ir": ir_dict,
+                                "trace": trace,
+                            }
+                        else:
+                            trace.append("step1_5_9_5:mcq_direct:REJECTED_BY_CROSS")
                     else:
                         trace.append("step1_5_9_5:mcq_direct:INCONCLUSIVE")
                 except Exception as _dir_e:
@@ -1063,6 +1121,29 @@ class VerantyxV6Enhanced:
 
         if pieces is None:
             trace.append("no_pieces_found")
+
+            # Last resort: use held assembler candidate if available
+            # Verantyx思想: Cross/Pieceで解けなかった場合のみ、低信頼候補を採用
+            if _asm_candidate and _asm_candidate.get("answer"):
+                _fallback_ans = _asm_candidate["answer"]
+                _fallback_conf = _asm_candidate["confidence"] * 0.7  # penalize for no cross verification
+                _fallback_method = f"assembler_fallback:{_asm_candidate['method']}"
+                trace.append(f"assembler_fallback:using_held_candidate(conf={_fallback_conf:.2f})")
+                self.stats["executed"] += 1
+                if "knowledge_match" not in self.stats:
+                    self.stats["knowledge_match"] = 0
+                self.stats["knowledge_match"] += 1
+                status = self._validate_answer(_fallback_ans, expected_answer, trace)
+                return {
+                    "status": status,
+                    "answer": _fallback_ans,
+                    "expected": expected_answer,
+                    "confidence": _fallback_conf,
+                    "method": _fallback_method,
+                    "ir": ir_dict,
+                    "trace": trace,
+                }
+
             self.stats["failed"] += 1
 
             # Create AuditBundle for failure path

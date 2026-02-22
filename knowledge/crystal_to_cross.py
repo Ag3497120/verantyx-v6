@@ -384,3 +384,86 @@ def _text_claims_positive(text_lower: str, subject: str, obj: str) -> bool:
 
     # デフォルトは肯定と仮定
     return True
+
+
+# ══════════════════════════════════════════════════════════════
+#  Candidate Answer Verification (for ExactAnswerAssembler)
+# ══════════════════════════════════════════════════════════════
+
+def verify_candidate_answer(
+    ir_dict: dict,
+    candidate_answer: str,
+    fact_atoms: list,
+    relations: list,
+) -> Optional[CrossVerificationResult]:
+    """
+    ExactAnswerAssemblerが生成した候補回答をCross構造で検証。
+    
+    検証方法:
+    1. 候補回答がfact_atomsの中に支持されるか（support count）
+    2. 候補回答がrelationsと矛盾しないか（consistency）
+    3. 支持が多く矛盾がなければ verified
+    
+    Returns:
+        CrossVerificationResult with status = proved | verified | unknown | contradicted
+    """
+    trace = []
+    candidate_lower = candidate_answer.lower().strip()
+    
+    if not candidate_lower:
+        return None
+    
+    supports = 0
+    contradicts = 0
+    
+    # Check fact_atoms for support
+    for atom in fact_atoms:
+        atom_val = getattr(atom, 'value', getattr(atom, 'object', ''))
+        if not atom_val:
+            continue
+        atom_lower = str(atom_val).lower().strip()
+        
+        # Direct match
+        if candidate_lower == atom_lower:
+            supports += 1
+            trace.append(f"support:exact_match({atom_val})")
+        # Containment match
+        elif candidate_lower in atom_lower or atom_lower in candidate_lower:
+            supports += 0.5
+            trace.append(f"support:contains({atom_val[:30]})")
+    
+    # Check relations for consistency
+    for rel in relations:
+        if not hasattr(rel, 'subject'):
+            continue
+        rel_obj = str(getattr(rel, 'object', '')).lower()
+        rel_subj = str(getattr(rel, 'subject', '')).lower()
+        negated = getattr(rel, 'negated', False)
+        
+        # If relation mentions our candidate
+        if candidate_lower in rel_obj or candidate_lower in rel_subj:
+            if negated:
+                contradicts += 1
+                trace.append(f"contradict:negated_relation({rel.subject}→{rel.object})")
+            else:
+                supports += 0.3
+    
+    # Determine status
+    if contradicts > 0 and supports == 0:
+        status = "contradicted"
+    elif supports >= 2 and contradicts == 0:
+        status = "proved"
+    elif supports >= 1 and contradicts == 0:
+        status = "verified"
+    else:
+        status = "unknown"
+    
+    conf = min(supports * 0.3, 0.9)
+    
+    return CrossVerificationResult(
+        answer=candidate_answer,
+        confidence=conf,
+        method=f"cross_verify_candidate(sup={supports:.1f},con={contradicts})",
+        status=status,
+        trace=trace,
+    )
