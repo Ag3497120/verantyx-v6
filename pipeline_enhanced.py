@@ -444,39 +444,32 @@ class VerantyxV6Enhanced:
             )
 
             # exactMatch 問題の場合、FactAtoms から直接回答を試みる
-            if ir_dict.get("answer_schema") not in ("option_label",):
-                _synth = ExactAnswerSynthesizer()
-                _exact_result = _synth.synthesize(ir_dict, _crystal)
-                if _exact_result:
-                    _ex_ans = _exact_result["answer"]
-                    _ex_conf = _exact_result["confidence"]
-                    _ex_method = _exact_result["method"]
-                    trace.append(f"step1_4_5:exact_synth:{_ex_method} answer={_ex_ans}")
-                    self.stats["executed"] += 1
-                    status = self._validate_answer(_ex_ans, expected_answer, trace)
-                    return {
-                        "status": status,
-                        "answer": _ex_ans,
-                        "expected": expected_answer,
-                        "confidence": _ex_conf,
-                        "method": _ex_method,
-                        "ir": ir_dict,
-                        "trace": trace,
-                    }
+            # ⚠️ DISABLED: exact_from_atoms は 0% accuracy + "and opposite to the charge of" バグ
+            # ENTITY_PATTERNS が re.I で小文字テキストもマッチするため誤抽出多発
+            # if ir_dict.get("answer_schema") not in ("option_label",):
+            #     _synth = ExactAnswerSynthesizer()
+            #     _exact_result = _synth.synthesize(ir_dict, _crystal)
+            #     if _exact_result: ... (disabled)
         except Exception as _cryst_e:
             trace.append(f"step1_4_5:crystallize_error:{_cryst_e}")
 
         # Step 1.4.7: Cross Verification（結晶化データ → Cross構造で検証）
-        # relations を使って MCQ/exactMatch を論理的に検証（LLM不使用）
+        # ⚠️ MCQのみ有効: exactMatch は FactAtom entity 誤抽出が多く 0% accuracy
+        # (ENTITY_PATTERNS に re.I があり小文字テキストも拾う → "and opposite to the charge of" バグ)
         if _crystal and (len(_crystal.relations) > 0 or len(_crystal.fact_atoms) > 0):
             try:
                 from knowledge.crystal_to_cross import verify_with_cross
                 from executors.multiple_choice import split_stem_choices as _split_sc
                 _cv_stem, _cv_choices = _split_sc(problem_text)
-                _cv_result = verify_with_cross(
-                    ir_dict, _crystal.fact_atoms, _crystal.relations,
-                    choices=_cv_choices if _cv_choices and len(_cv_choices) >= 2 else None,
-                )
+                # MCQ choices がある場合のみ実行（exactMatch は信頼性なし）
+                if not (_cv_choices and len(_cv_choices) >= 2):
+                    _cv_result = None
+                    trace.append("step1_4_7:cross_verify:SKIPPED(non-MCQ)")
+                else:
+                    _cv_result = verify_with_cross(
+                        ir_dict, _crystal.fact_atoms, _crystal.relations,
+                        choices=_cv_choices,
+                    )
                 if _cv_result and _cv_result.answer and _cv_result.status in ("proved", "verified"):
                     trace.append(
                         f"step1_4_7:cross_verify:{_cv_result.method} "
