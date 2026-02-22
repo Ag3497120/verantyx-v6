@@ -140,29 +140,8 @@ class KnowledgePipelineV2:
         if wiki_pieces:
             all_new_pieces.extend(wiki_pieces)
 
-        # Phase 3: LLM呼び出し（Wikipediaで不足の場合）
-        queries = self.query_builder.build(gap_report, query_prefix="kq")
-
-        for query_ir in queries:
-            llm_response = self.fetcher.fetch(query_ir)
-
-            existing_symbols = set()
-            if self.piece_db:
-                existing_symbols = getattr(self.piece_db, "all_symbols", lambda: set())()
-
-            sanitizer = KnowledgeSanitizer(
-                requested_domains=ir.get("domain_hint", []),
-                existing_symbols=existing_symbols,
-            )
-            san_result = sanitizer.sanitize(llm_response)
-            audit_builder.record_llm_query(query_ir, llm_response, san_result)
-
-            total_accepted += len(san_result.accepted)
-            total_rejected += len(san_result.rejected)
-
-            if san_result.accepted:
-                new_pieces = self.mapper.map_all(san_result.accepted)
-                all_new_pieces.extend(new_pieces)
+        # Phase 3: LLM呼び出し — DISABLED（問題文をLLMに渡さない原則）
+        # Wikipedia知識のみで回答を構成する（Phase 2の結果をそのまま使用）
 
         # Phase 4: Audit
         audit_builder.record_cross_pieces(all_new_pieces)
