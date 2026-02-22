@@ -430,6 +430,42 @@ class VerantyxV6Enhanced:
         except NameError:
             pass  # _kp_result が未定義の場合
 
+        # Step 1.4.5: Knowledge Crystallization（結晶化）
+        # facts → FactAtom + RelationPiece + CrossPiece に変換
+        _crystal = None
+        try:
+            from knowledge.knowledge_crystallizer import KnowledgeCrystallizer, ExactAnswerSynthesizer
+            _crystallizer = KnowledgeCrystallizer()
+            _crystal = _crystallizer.crystallize(ir_dict, _knowledge_facts)
+            trace.append(
+                f"step1_4_5:crystallize:atoms={len(_crystal.fact_atoms)}"
+                f",relations={len(_crystal.relations)}"
+                f",pieces={len(_crystal.cross_pieces)}"
+            )
+
+            # exactMatch 問題の場合、FactAtoms から直接回答を試みる
+            if ir_dict.get("answer_schema") not in ("option_label",):
+                _synth = ExactAnswerSynthesizer()
+                _exact_result = _synth.synthesize(ir_dict, _crystal)
+                if _exact_result:
+                    _ex_ans = _exact_result["answer"]
+                    _ex_conf = _exact_result["confidence"]
+                    _ex_method = _exact_result["method"]
+                    trace.append(f"step1_4_5:exact_synth:{_ex_method} answer={_ex_ans}")
+                    self.stats["executed"] += 1
+                    status = self._validate_answer(_ex_ans, expected_answer, trace)
+                    return {
+                        "status": status,
+                        "answer": _ex_ans,
+                        "expected": expected_answer,
+                        "confidence": _ex_conf,
+                        "method": _ex_method,
+                        "ir": ir_dict,
+                        "trace": trace,
+                    }
+        except Exception as _cryst_e:
+            trace.append(f"step1_4_5:crystallize_error:{_cryst_e}")
+
         # Step 1.5: MCQ直接解決
         # 優先順位:
         #   0. CEGIS MCQ option verification (NEW - highest priority)
@@ -487,10 +523,10 @@ class VerantyxV6Enhanced:
 
                 # 1. math_cross_sim 専門ディテクター (既存・高精度) + computation solvers (A強化)
                 # ⚠️ DISABLE_PATTERN_DETECTORS=1 でカンニング（パターンマッチ）無効化
-                if os.environ.get('DISABLE_PATTERN_DETECTORS'):
-                    trace.append("step1_5:pattern_detectors:DISABLED_BY_ENV")
-                    raise _SkipPatternDetectors()
                 try:
+                    if os.environ.get('DISABLE_PATTERN_DETECTORS'):
+                        trace.append("step1_5:pattern_detectors:DISABLED_BY_ENV")
+                        raise ImportError("pattern detectors disabled by env")
                     from puzzle.math_cross_sim import (
                         # --- パターンベース専用検出器 (既存) ---
                         _detect_trefoil_knot, _detect_graph_laplacian_degree,
@@ -623,8 +659,10 @@ class VerantyxV6Enhanced:
 
                 # 2. hle_boost_engine: 全カテゴリ専門ディテクター
                 # ⚠️ 統計的バイアス（position prior / letter bias）は使用禁止
-                # 専門ディテクターが確信を持てる場合のみ回答する
+                # ⚠️ DISABLE_PATTERN_DETECTORS=1 でカンニング無効化
                 try:
+                    if os.environ.get('DISABLE_PATTERN_DETECTORS'):
+                        raise ImportError("boost detectors disabled by env")
                     from puzzle.hle_boost_engine import solve_mcq as _boost_solve_mcq
                     _boost_result = _boost_solve_mcq(problem_text, _choices)
                     if _boost_result is not None:
@@ -647,63 +685,101 @@ class VerantyxV6Enhanced:
                 except Exception as _boost_e:
                     trace.append(f"step1_5:boost_error:{_boost_e}")
 
+                # ─── Step 1.5.8: 選択肢分解 × Wikipedia cross-matching ───
+                # 各選択肢を個別に分解→Wikipedia検索→stem_facts との cross-match
+                # LLM不使用、完全ルールベース → position bias ゼロ
+                try:
+                    from executors.mcq_cross_decompose_solver import solve_by_cross_decomposition
+                    _xd_result = solve_by_cross_decomposition(
+                        _stem, _choices, _knowledge_facts, ir_dict
+                    )
+                    if _xd_result:
+                        _xd_ans, _xd_conf, _xd_method = _xd_result
+                        trace.append(f"step1_5_8:cross_decompose:{_xd_method} label={_xd_ans} conf={_xd_conf:.2f}")
+                        self.stats["executed"] += 1
+                        status = self._validate_answer(_xd_ans, expected_answer, trace)
+                        return {
+                            "status": status,
+                            "answer": _xd_ans,
+                            "expected": expected_answer,
+                            "confidence": _xd_conf,
+                            "method": _xd_method,
+                            "ir": ir_dict,
+                            "trace": trace,
+                        }
+                    else:
+                        trace.append("step1_5_8:cross_decompose:INCONCLUSIVE")
+                except Exception as _xd_e:
+                    trace.append(f"step1_5_8:cross_decompose_error:{_xd_e}")
+
                 # ─── Step 1.5.9: レベル2 MCQ ソルバー（知識マッチング + 消去法） ───
                 # 既存ソルバーが全て失敗した場合のフォールバック
                 # 鉄の壁レベル2: IR + 選択肢 + facts のみ（問題文は渡さない）
+                trace.append(f"step1_5_9:debug:facts={len(_knowledge_facts)},choices={len(_choices) if _choices else 0}")
                 if _knowledge_facts and _choices and len(_choices) >= 2:
                     try:
-                        # 1. 知識マッチング
-                        from executors.mcq_knowledge_matcher import score_choices_against_facts
-                        _km_result = score_choices_against_facts(
+                        # 1. 知識マッチング v2（LLM confidence不要、relation分類）
+                        from executors.mcq_knowledge_matcher_v2 import score_choices_v2
+                        _km_result = score_choices_v2(
                             ir_dict, _choices, _knowledge_facts, use_llm=True
                         )
                         if _km_result:
                             _km_ans, _km_conf, _km_method = _km_result
-                            trace.append(f"step1_5_9:knowledge_match:{_km_method} label={_km_ans} conf={_km_conf:.2f}")
-                            if _km_conf >= 0.3:
-                                self.stats["executed"] += 1
-                                status = self._validate_answer(_km_ans, expected_answer, trace)
-                                return {
-                                    "status": status,
-                                    "answer": _km_ans,
-                                    "expected": expected_answer,
-                                    "confidence": _km_conf,
-                                    "method": _km_method,
-                                    "ir": ir_dict,
-                                    "trace": trace,
-                                }
+                            trace.append(f"step1_5_9:km_v2:{_km_method} label={_km_ans} conf={_km_conf:.2f}")
+                            self.stats["executed"] += 1
+                            status = self._validate_answer(_km_ans, expected_answer, trace)
+                            return {
+                                "status": status,
+                                "answer": _km_ans,
+                                "expected": expected_answer,
+                                "confidence": _km_conf,
+                                "method": _km_method,
+                                "ir": ir_dict,
+                                "trace": trace,
+                            }
+                        else:
+                            trace.append("step1_5_9:km_v2:INCONCLUSIVE")
                     except Exception as _km_e:
-                        trace.append(f"step1_5_9:knowledge_match_error:{_km_e}")
+                        trace.append(f"step1_5_9:km_v2_error:{_km_e}")
 
-                    try:
-                        # 2. 消去法
-                        from executors.mcq_elimination_solver import eliminate_choices
-                        _elim_result = eliminate_choices(
-                            ir_dict, _choices, _knowledge_facts, use_llm=True
-                        )
-                        if _elim_result:
-                            _el_ans, _el_conf, _el_method = _elim_result
-                            trace.append(f"step1_5_9:elimination:{_el_method} label={_el_ans} conf={_el_conf:.2f}")
-                            if _el_conf >= 0.3:
-                                self.stats["executed"] += 1
-                                status = self._validate_answer(_el_ans, expected_answer, trace)
-                                return {
-                                    "status": status,
-                                    "answer": _el_ans,
-                                    "expected": expected_answer,
-                                    "confidence": _el_conf,
-                                    "method": _el_method,
-                                    "ir": ir_dict,
-                                    "trace": trace,
-                                }
-                    except Exception as _el_e:
-                        trace.append(f"step1_5_9:elimination_error:{_el_e}")
+                    # 2. 消去法は km_v2 に統合済み（contradicts判定）
+                    # km_v2 が INCONCLUSIVE の場合のみここに到達
+
+                # ─── Step 1.5.9.5: MCQ 直接回答 (Qwen 7B, 鉄の壁レベル2) ───
+                # km_v2, elimination, 全ての計算ベースソルバーが失敗した場合の最終フォールバック
+                # 鉄の壁レベル2: IR + 選択肢 + facts → Qwen → 直接回答（問題文なし）
+                try:
+                    from executors.mcq_direct_solver import solve_mcq_directly
+                    _direct_result = solve_mcq_directly(
+                        ir_dict, _choices, _knowledge_facts
+                    )
+                    if _direct_result:
+                        _dir_ans, _dir_conf, _dir_method = _direct_result
+                        trace.append(f"step1_5_9_5:mcq_direct:{_dir_method} label={_dir_ans} conf={_dir_conf:.2f}")
+                        self.stats["executed"] += 1
+                        status = self._validate_answer(_dir_ans, expected_answer, trace)
+                        return {
+                            "status": status,
+                            "answer": _dir_ans,
+                            "expected": expected_answer,
+                            "confidence": _dir_conf,
+                            "method": _dir_method,
+                            "ir": ir_dict,
+                            "trace": trace,
+                        }
+                    else:
+                        trace.append("step1_5_9_5:mcq_direct:INCONCLUSIVE")
+                except Exception as _dir_e:
+                    trace.append(f"step1_5_9_5:mcq_direct_error:{_dir_e}")
 
         except Exception as _e:
             trace.append(f"step1_5:error:{_e}")
 
         # Step 1.5.10: SymPy LaTeX Executor（MCQ/exactMatch共通）
+        # ⚠️ 現状は精度0%（8/8誤答）のため無効化。式の誤抽出が原因。
         try:
+            if os.environ.get('DISABLE_PATTERN_DETECTORS'):
+                raise ImportError("sympy_latex disabled: 0% precision")
             from executors.sympy_latex_executor import extract_and_solve_latex
             _sympy_result = extract_and_solve_latex(problem_text)
             if _sympy_result:

@@ -361,6 +361,27 @@ class RuleBasedDecomposer:
             for kn in knowledge_needs
         ]
 
+        # concept_extractor_v2 で固有名詞を追加（鉄の壁: 概念名のみ）
+        try:
+            from decomposer.concept_extractor_v2 import extract_concepts_v2
+            extracted = extract_concepts_v2(problem_text)
+            seen = {m["concept"] for m in missing}
+            for ec in extracted:
+                if ec.confidence >= 0.7:
+                    concept_key = ec.name.replace(" ", "_").lower()
+                    if concept_key not in seen:
+                        missing.append({
+                            "concept": concept_key,
+                            "kind": ec.kind,
+                            "domain": ec.domain_hint,
+                            "relation": "",
+                            "scope": "concise",
+                            "context_hint": "",
+                        })
+                        seen.add(concept_key)
+        except Exception:
+            pass
+
         # IR構築（問題タイプ情報を追加）
         ir = IR(
             task=task,
