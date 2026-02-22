@@ -105,8 +105,9 @@ def match_choices_v2(
 
         analyses.append(ca)
 
-    # ── KM-2: LLM relation classification ──
-    llm_result = _llm_classify_relations(ir_dict, choices, facts)
+    # ── KM-2: Atom-based relation classification (LLM replaced) ──
+    from executors.atom_relation_classifier import classify_relations_by_atoms
+    llm_result = classify_relations_by_atoms(ir_dict, choices, facts)
     if llm_result:
         result.raw_llm_output = llm_result.get("_raw", "")
         for ca in analyses:
