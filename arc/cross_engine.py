@@ -11,7 +11,7 @@ Integrates: cross_solver (DSL), objects, nb_abstract, conditional
 
 from __future__ import annotations
 from typing import List, Tuple, Optional, Dict
-from arc.grid import Grid, grid_shape, grid_eq, most_common_color
+from arc.grid import Grid, grid_shape, grid_eq, most_common_color, grid_colors
 from arc.cross_solver import (
     solve_cross, WholeGridProgram, 
     _generate_whole_grid_candidates, verify_whole_grid,
@@ -763,6 +763,9 @@ def _add_extract_pieces(pieces: List[CrossPiece],
                         lambda inp, col=_uc, b=_bg: _apply_extract_containing(inp, col, b)
                     ))
     
+    # Try: semantic subgrid extraction (selector-based)
+    _add_semantic_extract_pieces(pieces, train_pairs, bg)
+    
     # Try multicolor object extraction
     mc_objs = detect_objects(inp0, bg, multicolor=True)
     for obj in mc_objs:
@@ -774,6 +777,106 @@ def _add_extract_pieces(pieces: List[CrossPiece],
                 f'extract_multicolor_size{obj.size}',
                 lambda inp, sz=_size, b=_bg: _apply_extract_multicolor_by_size(inp, sz, b)
             ))
+
+
+def _add_semantic_extract_pieces(pieces: List[CrossPiece],
+                                  train_pairs: List[Tuple[Grid, Grid]], bg: int):
+    """Add extraction pieces based on semantic selectors (not specific colors)"""
+    from arc.objects import detect_objects
+    from collections import Counter
+    
+    inp0, out0 = train_pairs[0]
+    ih, iw = grid_shape(inp0)
+    oh, ow = grid_shape(out0)
+    
+    if oh >= ih and ow >= iw:
+        return
+    
+    # Selector: minority/majority color bbox
+    for sel_name in ['minority', 'majority']:
+        def _make_fn(selector):
+            def fn(inp):
+                h, w = grid_shape(inp)
+                bg_local = most_common_color(inp)
+                cc = {}
+                for r in range(h):
+                    for c in range(w):
+                        v = inp[r][c]
+                        if v != bg_local:
+                            cc[v] = cc.get(v, 0) + 1
+                if not cc:
+                    return None
+                color = min(cc, key=cc.get) if selector == 'minority' else max(cc, key=cc.get)
+                return _apply_extract_color_bbox(inp, color)
+            return fn
+        pieces.append(CrossPiece(f'extract_{sel_name}_bbox', _make_fn(sel_name)))
+    
+    # Selector: Nth largest object
+    for n in range(min(5, len(detect_objects(inp0, bg)))):
+        _n = n
+        pieces.append(CrossPiece(
+            f'extract_obj_rank_{n}',
+            lambda inp, rank=_n: _extract_nth_obj(inp, rank, False)
+        ))
+    
+    # Selector: Nth largest multicolor object
+    for n in range(min(3, len(detect_objects(inp0, bg, multicolor=True)))):
+        _n = n
+        pieces.append(CrossPiece(
+            f'extract_mc_obj_rank_{n}',
+            lambda inp, rank=_n: _extract_nth_obj(inp, rank, True)
+        ))
+    
+    # Selector: unique shape object
+    pieces.append(CrossPiece('extract_unique_shape', _extract_unique_shape))
+    
+    # Selector: unique color object
+    pieces.append(CrossPiece('extract_unique_color', _extract_unique_color))
+
+
+def _extract_nth_obj(inp: Grid, n: int, multicolor: bool) -> Optional[Grid]:
+    from arc.objects import detect_objects
+    bg = most_common_color(inp)
+    objs = detect_objects(inp, bg, multicolor=multicolor)
+    if n >= len(objs):
+        return None
+    return objs[n].as_multicolor_grid(inp, bg)
+
+
+def _extract_unique_shape(inp: Grid) -> Optional[Grid]:
+    from arc.objects import detect_objects
+    from collections import Counter
+    bg = most_common_color(inp)
+    objs = detect_objects(inp, bg)
+    shape_counts = Counter(o.shape for o in objs)
+    for o in objs:
+        if shape_counts[o.shape] == 1:
+            return o.as_multicolor_grid(inp, bg)
+    return None
+
+
+def _extract_unique_color(inp: Grid) -> Optional[Grid]:
+    from arc.objects import detect_objects
+    from collections import Counter
+    bg = most_common_color(inp)
+    objs = detect_objects(inp, bg)
+    color_counts = Counter(o.color for o in objs)
+    for o in objs:
+        if color_counts[o.color] == 1:
+            return o.as_multicolor_grid(inp, bg)
+    return None
+
+
+def _apply_extract_color_bbox(inp: Grid, color: int) -> Optional[Grid]:
+    """Extract the bounding box of all cells of given color"""
+    h, w = grid_shape(inp)
+    rows = [r for r in range(h) for c in range(w) if inp[r][c] == color]
+    cols = [c for r in range(h) for c in range(w) if inp[r][c] == color]
+    if not rows:
+        return None
+    r1, r2 = min(rows), max(rows)
+    c1, c2 = min(cols), max(cols)
+    return [inp[r][c1:c2+1] for r in range(r1, r2+1)]
 
 
 def _apply_extract_by_color(inp: Grid, color: int, bg: int) -> Optional[Grid]:
