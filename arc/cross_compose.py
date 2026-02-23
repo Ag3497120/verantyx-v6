@@ -855,6 +855,12 @@ def learn_cross_program(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[CrossP
                         })
     
     if not steps:
+        # === Multi-layer Cross: decompose into sequential layers ===
+        # Try to find a 2-layer decomposition where Layer 1 is a simple
+        # add, and Layer 2 uses the result of Layer 1 as input
+        prog = _learn_multi_layer_cross(train_pairs, bg, diffs)
+        if prog is not None:
+            return prog
         return None
     
     # Final verification
@@ -865,3 +871,110 @@ def learn_cross_program(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[CrossP
             return None
     
     return prog
+
+
+def _learn_multi_layer_cross(train_pairs, bg, diffs):
+    """Learn a multi-layer Cross decomposition.
+    
+    Strategy: Find an intermediate state between input and output
+    where each layer is a simple WHERE×HOW rule.
+    
+    Layer 1: input → intermediate (subset of adds)
+    Layer 2: intermediate → output (remaining adds, using L1 result)
+    """
+    if not all(d['is_pure_add'] for d in diffs):
+        return None
+    
+    # For each pair: try splitting adds into 2 groups by output color
+    # Group A = one color, Group B = another color
+    # If Group A can be explained by a spatial condition on input,
+    # and Group B by a spatial condition on intermediate (input + Group A),
+    # we have a 2-layer decomposition.
+    
+    for pair_idx, (inp, out) in enumerate(train_pairs):
+        if pair_idx > 0:
+            break  # Learn from first pair, verify on all
+        
+        h, w = grid_shape(inp)
+        adds = diffs[0]['adds']
+        
+        # Group adds by color
+        by_color = {}
+        for r, c, color in adds:
+            by_color.setdefault(color, []).append((r, c))
+        
+        if len(by_color) < 2:
+            # Try splitting by spatial clustering instead
+            break
+        
+        # Try each color partition as Layer 1 vs Layer 2
+        colors = list(by_color.keys())
+        for i, c1 in enumerate(colors):
+            for j, c2 in enumerate(colors):
+                if i == j:
+                    continue
+                
+                layer1_pos = by_color[c1]
+                layer2_pos = [(r, c) for c_key in colors if c_key != c1 
+                              for r, c in by_color[c_key]]
+                
+                # Can Layer 1 be explained by a spatial condition on input?
+                cond1 = learn_spatial_condition(layer1_pos, inp, bg)
+                if cond1 is None:
+                    continue
+                
+                # Build intermediate: input + Layer 1 adds
+                intermediate = [row[:] for row in inp]
+                for r, c in layer1_pos:
+                    intermediate[r][c] = c1
+                
+                # Can Layer 2 be explained by a spatial condition on intermediate?
+                cond2 = learn_spatial_condition(layer2_pos, intermediate, bg)
+                if cond2 is None:
+                    continue
+                
+                # Learn value mappings for each layer
+                layer1_adds = [(r, c, c1) for r, c in layer1_pos]
+                map1 = learn_value_mapping(layer1_adds, inp, bg)
+                if map1 is None:
+                    continue
+                
+                layer2_adds = [(r, c, out[r][c]) for r, c in layer2_pos]
+                map2 = learn_value_mapping(layer2_adds, intermediate, bg)
+                if map2 is None:
+                    continue
+                
+                # Build 2-layer program
+                steps = [
+                    {
+                        'step_type': 'add_at_condition',
+                        'condition': cond1,
+                        'mapping': map1,
+                        'name': f"L1_add_{cond1['type']}_{map1['type']}",
+                    },
+                    {
+                        'step_type': 'add_at_condition',
+                        'condition': cond2,
+                        'mapping': map2,
+                        'name': f"L2_add_{cond2['type']}_{map2['type']}",
+                    },
+                ]
+                
+                prog = CrossProgram(steps)
+                
+                # Verify on ALL training pairs
+                ok = True
+                for inp2, out2 in train_pairs:
+                    result = prog.apply(inp2)
+                    if result is None or not grid_eq(result, out2):
+                        ok = False
+                        break
+                
+                if ok:
+                    return prog
+    
+    # Also try: same color but two spatial conditions (AND decomposition)
+    # Layer 1 colors everything matching cond1, Layer 2 erases non-cond2
+    # Effectively: fill at (cond1 AND cond2) = multi-layer intersection
+    
+    return None

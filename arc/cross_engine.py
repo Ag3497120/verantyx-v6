@@ -185,6 +185,9 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
     # === Module 6: Object Correspondence + Conditional Transform ===
     _add_obj_correspondence_pieces(pieces, train_pairs, bg)
     
+    # === Module 7: Per-Object Stamp Pattern ===
+    _add_per_object_stamp_pieces(pieces, train_pairs)
+    
     # === Module 5: Cross-Compose (multi-step decomposition) ===
     _add_cross_compose_pieces(pieces, train_pairs)
     
@@ -873,6 +876,20 @@ def _flood_fill_enclosed(inp: Grid) -> Grid:
     return result
 
 
+def _add_per_object_stamp_pieces(pieces: List[CrossPiece],
+                                  train_pairs: List[Tuple[Grid, Grid]]):
+    """Add per-object stamp pattern pieces"""
+    from arc.per_object_stamp import learn_per_object_stamp, apply_per_object_stamp
+    
+    rule = learn_per_object_stamp(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            f'stamp:{rule["name"]}',
+            lambda inp, r=_rule: apply_per_object_stamp(inp, r)
+        ))
+
+
 def _add_obj_correspondence_pieces(pieces: List[CrossPiece],
                                     train_pairs: List[Tuple[Grid, Grid]], bg: int):
     """Add Object Correspondence-based transform pieces"""
@@ -1198,19 +1215,24 @@ def _apply_verified(verified: List, test_inputs: List[Grid]) -> List[List[Grid]]
                 'structural_nb_r1', 'structural_nb_r2',
                 'abstract_nb_r1', 'abstract_nb_r2',
                 'count_based_nb'}
+    # High false-positive modules: treat as low-priority fallback
+    fallback_prefixes = ('stamp:', 'obj:')
     
     nb_verified = []
     non_nb_verified = []
+    fallback_verified = []
     for item in verified:
         kind, prog = item
         name = getattr(prog, 'name', '')
-        if name in nb_names or name.startswith('cross_nb') or name.startswith('structural_nb') or name.startswith('abstract_nb'):
+        if any(name.startswith(p) for p in fallback_prefixes):
+            fallback_verified.append(item)
+        elif name in nb_names or name.startswith('cross_nb') or name.startswith('structural_nb') or name.startswith('abstract_nb'):
             nb_verified.append(item)
         else:
             non_nb_verified.append(item)
     
-    # Build final candidate list: original DSL first, then NB, then cross non-NB
-    selected = non_nb_verified[:2] + nb_verified[:2]
+    # Build final candidate list: non-NB first, then NB, then fallback (stamp/obj)
+    selected = non_nb_verified[:2] + nb_verified[:2] + fallback_verified[:1]
     # Deduplicate and limit to 3
     seen = set()
     final = []
