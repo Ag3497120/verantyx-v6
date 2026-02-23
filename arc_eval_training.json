@@ -1,0 +1,23 @@
+{
+  "split": "training",
+  "score": 25,
+  "total": 1000,
+  "pct": 2.5,
+  "attempted": 25,
+  "errors": 0,
+  "elapsed_s": 0.9202258586883545,
+  "methods": {
+    "geometric:tile_flip": 1,
+    "none": 975,
+    "geometric:tile_checkerboard": 8,
+    "geometric:rotate_180": 2,
+    "structural:extract": 2,
+    "geometric:scale": 3,
+    "geometric:flip_h": 1,
+    "geometric:flip_v": 1,
+    "geometric:transpose": 2,
+    "geometric:tile": 1,
+    "color:recolor": 3,
+    "geometric:rotate_270": 1
+  }
+}
