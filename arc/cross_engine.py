@@ -832,6 +832,12 @@ def _add_semantic_extract_pieces(pieces: List[CrossPiece],
     
     # Selector: unique color object
     pieces.append(CrossPiece('extract_unique_color', _extract_unique_color))
+    
+    # Selector: multicolor region with most distinct colors
+    pieces.append(CrossPiece('extract_most_colors_mc', _extract_most_colors_mc))
+    
+    # Selector: densest object (highest fill ratio)
+    pieces.append(CrossPiece('extract_densest', _extract_densest))
 
 
 def _extract_nth_obj(inp: Grid, n: int, multicolor: bool) -> Optional[Grid]:
@@ -865,6 +871,26 @@ def _extract_unique_color(inp: Grid) -> Optional[Grid]:
         if color_counts[o.color] == 1:
             return o.as_multicolor_grid(inp, bg)
     return None
+
+
+def _extract_most_colors_mc(inp: Grid) -> Optional[Grid]:
+    from arc.objects import detect_objects
+    bg = most_common_color(inp)
+    objs = detect_objects(inp, bg, multicolor=True)
+    if not objs:
+        return None
+    best = max(objs, key=lambda o: len(set(inp[r][c] for r, c in o.cells)))
+    return best.as_multicolor_grid(inp, bg)
+
+
+def _extract_densest(inp: Grid) -> Optional[Grid]:
+    from arc.objects import detect_objects
+    bg = most_common_color(inp)
+    objs = detect_objects(inp, bg)
+    if not objs:
+        return None
+    best = max(objs, key=lambda o: o.size / max(o.height * o.width, 1))
+    return best.as_multicolor_grid(inp, bg)
 
 
 def _apply_extract_color_bbox(inp: Grid, color: int) -> Optional[Grid]:
