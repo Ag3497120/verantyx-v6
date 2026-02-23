@@ -188,6 +188,15 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
     # === Module 7: Per-Object Stamp Pattern ===
     _add_per_object_stamp_pieces(pieces, train_pairs)
     
+    # === Module 8: Object Position/Placement Transform ===
+    _add_obj_transform_pieces(pieces, train_pairs)
+    
+    # === Module 9: Patch Extraction (shrink tasks) ===
+    _add_extract_patch_pieces(pieces, train_pairs)
+    
+    # === Module 10: Tile + Transform (expand tasks) ===
+    _add_tile_transform_pieces(pieces, train_pairs)
+    
     # === Module 5: Cross-Compose (multi-step decomposition) ===
     _add_cross_compose_pieces(pieces, train_pairs)
     
@@ -876,6 +885,48 @@ def _flood_fill_enclosed(inp: Grid) -> Grid:
     return result
 
 
+def _add_tile_transform_pieces(pieces: List[CrossPiece],
+                                train_pairs: List[Tuple[Grid, Grid]]):
+    """Add tile+transform pieces for expand tasks"""
+    from arc.tile_transform import learn_tile_transform, apply_tile_transform
+    
+    rule = learn_tile_transform(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            f'tile:{rule["name"]}',
+            lambda inp, r=_rule: apply_tile_transform(inp, r)
+        ))
+
+
+def _add_extract_patch_pieces(pieces: List[CrossPiece],
+                               train_pairs: List[Tuple[Grid, Grid]]):
+    """Add patch extraction pieces for shrink tasks"""
+    from arc.extract_patch import learn_extract_rule, apply_extract_rule
+    
+    rule = learn_extract_rule(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            f'extract:{rule["name"]}',
+            lambda inp, r=_rule: apply_extract_rule(inp, r)
+        ))
+
+
+def _add_obj_transform_pieces(pieces: List[CrossPiece],
+                               train_pairs: List[Tuple[Grid, Grid]]):
+    """Add object position/placement transform pieces"""
+    from arc.obj_transform import learn_obj_transform, apply_obj_transform
+    
+    rule = learn_obj_transform(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            f'transform:{rule["name"]}',
+            lambda inp, r=_rule: apply_obj_transform(inp, r)
+        ))
+
+
 def _add_per_object_stamp_pieces(pieces: List[CrossPiece],
                                   train_pairs: List[Tuple[Grid, Grid]]):
     """Add per-object stamp pattern pieces"""
@@ -1216,7 +1267,7 @@ def _apply_verified(verified: List, test_inputs: List[Grid]) -> List[List[Grid]]
                 'abstract_nb_r1', 'abstract_nb_r2',
                 'count_based_nb'}
     # High false-positive modules: treat as low-priority fallback
-    fallback_prefixes = ('stamp:', 'obj:')
+    fallback_prefixes = ('stamp:', 'obj:', 'transform:')
     
     nb_verified = []
     non_nb_verified = []

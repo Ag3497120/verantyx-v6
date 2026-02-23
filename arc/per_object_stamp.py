@@ -120,22 +120,30 @@ def _learn_pixel_stamp(train_pairs, bg):
         if not all(obj.size == 1 for obj in objs):
             return None
     
-    # Learn stamp per color
+    # Learn stamp per color — use boundary-aware learning
     color_stamps = {}
     
     for inp, out in train_pairs:
+        h, w = grid_shape(inp)
         objs = detect_objects(inp, bg)
         per_obj = _compute_adds_per_object(inp, out, bg, objs)
         
         for idx, obj in enumerate(objs):
             adds = per_obj.get(idx, [])
             stamp = _cells_to_relative_stamp(adds, obj)
+            cr, cc = int(round(obj.center[0])), int(round(obj.center[1]))
             
             if obj.color in color_stamps:
-                if color_stamps[obj.color] != stamp:
-                    # Try: stamp may vary by position (boundary clipping)
-                    # Use "unclipped" stamp from non-boundary objects
-                    return None
+                existing = color_stamps[obj.color]
+                if existing != stamp:
+                    # Boundary clipping: keep the superset (non-boundary obj)
+                    is_boundary = cr < 3 or cr >= h-3 or cc < 3 or cc >= w-3
+                    if is_boundary and set(stamp).issubset(set(existing)):
+                        continue  # clipped version, keep existing
+                    elif not is_boundary and set(existing).issubset(set(stamp)):
+                        color_stamps[obj.color] = stamp  # upgrade
+                    else:
+                        return None
             else:
                 color_stamps[obj.color] = stamp
     
@@ -155,6 +163,7 @@ def _learn_color_to_stamp(train_pairs, bg):
     color_stamps = {}
     
     for inp, out in train_pairs:
+        h, w = grid_shape(inp)
         objs = detect_objects(inp, bg)
         if not objs:
             return None
@@ -165,20 +174,25 @@ def _learn_color_to_stamp(train_pairs, bg):
             if not adds:
                 continue
             stamp = _cells_to_relative_stamp(adds, obj)
-            
-            # Normalize: use relative color (self vs other)
             norm_stamp = _normalize_stamp_colors(stamp, obj.color)
+            cr, cc = int(round(obj.center[0])), int(round(obj.center[1]))
+            is_boundary = cr < 3 or cr >= h-3 or cc < 3 or cc >= w-3
             
             if obj.color in color_stamps:
-                if color_stamps[obj.color] != norm_stamp:
-                    return None
+                existing = color_stamps[obj.color]
+                if existing != norm_stamp:
+                    if is_boundary and set(norm_stamp).issubset(set(existing)):
+                        continue
+                    elif not is_boundary and set(existing).issubset(set(norm_stamp)):
+                        color_stamps[obj.color] = norm_stamp
+                    else:
+                        return None
             else:
                 color_stamps[obj.color] = norm_stamp
     
     if not color_stamps:
         return None
     
-    # Full verification
     for inp, out in train_pairs:
         result = _apply_stamp_rule({'type': 'color_stamp', 'color_stamps': color_stamps}, inp, bg)
         if result is None or not grid_eq(result, out):
