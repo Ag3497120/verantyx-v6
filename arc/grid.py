@@ -16,7 +16,7 @@ Grid = List[List[int]]
 
 @dataclass
 class GridInfo:
-    """Static analysis of a grid"""
+    """Static analysis of a grid — Verantyx IR for ARC"""
     height: int
     width: int
     colors: Set[int]  # unique colors present
@@ -24,6 +24,9 @@ class GridInfo:
     color_counts: dict  # color → count
     regions: List[dict] = field(default_factory=list)  # connected components
     symmetry: dict = field(default_factory=dict)  # h_sym, v_sym, rot90, rot180
+    adjacency: List[Tuple] = field(default_factory=list)  # region adjacency pairs
+    periodicity: dict = field(default_factory=dict)  # row/col periodicity
+    cell_neighbors: dict = field(default_factory=dict)  # per-cell neighbor color info
 
 
 def parse_grid(raw: List[List[int]]) -> Grid:
@@ -226,8 +229,49 @@ def check_symmetry(g: Grid) -> dict:
 
 # ── Analyze grid ──
 
+def detect_periodicity(g: Grid) -> dict:
+    """Detect row/column periodicity"""
+    h, w = grid_shape(g)
+    result = {'row_period': 0, 'col_period': 0}
+    
+    # Row periodicity: smallest p where row[i] == row[i+p] for all valid i
+    for p in range(1, h):
+        match = all(g[r] == g[r + p] for r in range(h - p))
+        if match:
+            result['row_period'] = p
+            break
+    
+    # Column periodicity
+    for p in range(1, w):
+        match = all(g[r][c] == g[r][c + p] for r in range(h) for c in range(w - p))
+        if match:
+            result['col_period'] = p
+            break
+    
+    return result
+
+
+def region_adjacency(regions: List[dict], h: int, w: int) -> List[Tuple]:
+    """Find which regions are adjacent (share a border)"""
+    # Build cell→region_idx map
+    cell_to_reg = {}
+    for idx, reg in enumerate(regions):
+        for r, c in reg['cells']:
+            cell_to_reg[(r, c)] = idx
+    
+    adj = set()
+    for (r, c), idx in cell_to_reg.items():
+        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            nr, nc = r + dr, c + dc
+            nidx = cell_to_reg.get((nr, nc))
+            if nidx is not None and nidx != idx:
+                adj.add((min(idx, nidx), max(idx, nidx)))
+    
+    return sorted(adj)
+
+
 def analyze(g: Grid) -> GridInfo:
-    """Full static analysis of grid"""
+    """Full static analysis of grid — Verantyx IR"""
     h, w = grid_shape(g)
     colors = grid_colors(g)
     counts = {}
@@ -235,6 +279,7 @@ def analyze(g: Grid) -> GridInfo:
         for c in row:
             counts[c] = counts.get(c, 0) + 1
     bg = max(counts, key=counts.get) if counts else 0
+    regions = flood_fill_regions(g)
     
     return GridInfo(
         height=h,
@@ -242,8 +287,10 @@ def analyze(g: Grid) -> GridInfo:
         colors=colors,
         bg_color=bg,
         color_counts=counts,
-        regions=flood_fill_regions(g),
+        regions=regions,
         symmetry=check_symmetry(g),
+        adjacency=region_adjacency(regions, h, w),
+        periodicity=detect_periodicity(g),
     )
 
 

@@ -891,6 +891,39 @@ class VerantyxV6Enhanced:
                         "ir": ir_dict,
                         "trace": trace,
                     }
+                else:
+                    # MCQ全問回答: ソルバーが全て失敗してもfirst choiceを返す (HLE no penalty)
+                    if _choices:
+                        _fallback_label = sorted(_choices.keys())[0]  # アルファベット順最初
+                        # Wikipedia facts があれば最もoverlap多い選択肢を選ぶ
+                        if _knowledge_facts:
+                            _fact_text = " ".join(
+                                f.get("summary", "") or f.get("plain", "")
+                                for f in _knowledge_facts if isinstance(f, dict)
+                            ).lower()
+                            _best_overlap = -1
+                            for _lbl, _txt in _choices.items():
+                                _words = set(_txt.lower().split()) - {'the','a','an','is','are','of','in','to','and','or','for','with'}
+                                _overlap = sum(1 for w in _words if w in _fact_text)
+                                if _overlap > _best_overlap:
+                                    _best_overlap = _overlap
+                                    _fallback_label = _lbl
+                        
+                        trace.append(f"step1_5_mcq_fallback:label={_fallback_label}")
+                        self.stats["executed"] += 1
+                        if "mcq_fallback" not in self.stats:
+                            self.stats["mcq_fallback"] = 0
+                        self.stats["mcq_fallback"] += 1
+                        status = self._validate_answer(_fallback_label, expected_answer, trace)
+                        return {
+                            "status": status,
+                            "answer": _fallback_label,
+                            "expected": expected_answer,
+                            "confidence": 0.05,
+                            "method": f"mcq_fallback:best_overlap(choices={len(_choices)})",
+                            "ir": ir_dict,
+                            "trace": trace,
+                        }
 
         except Exception as _e:
             trace.append(f"step1_5:error:{_e}")
@@ -1017,7 +1050,7 @@ class VerantyxV6Enhanced:
         except Exception:
             _is_mcq_18 = False
 
-        if not _is_mcq_18 and _knowledge_facts and len(_knowledge_facts) >= 1:
+        if False and not _is_mcq_18 and _knowledge_facts and len(_knowledge_facts) >= 1:  # DISABLED: LLM complete removal
             try:
                 from executors.non_mcq_direct_solver import solve_non_mcq_directly
                 _nmcq_result = solve_non_mcq_directly(

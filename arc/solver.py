@@ -55,6 +55,21 @@ def load_task(path: str) -> ArcTask:
     return ArcTask(task_id=task_id, train=train, test_inputs=test_inputs, test_outputs=test_outputs)
 
 
+def _detect_all_transforms(inp: Grid, out: Grid) -> List[TransformAtom]:
+    """Run all detectors (basic + advanced)"""
+    atoms = detect_transforms(inp, out)
+    
+    from arc.advanced_detectors import ALL_DETECTORS
+    for detect_fn, _ in ALL_DETECTORS:
+        try:
+            atoms.extend(detect_fn(inp, out))
+        except Exception:
+            continue
+    
+    atoms.sort(key=lambda a: a.confidence, reverse=True)
+    return atoms
+
+
 def apply_transform(atom: TransformAtom, inp: Grid) -> Optional[Grid]:
     """Apply a detected transform atom to a new input grid"""
     op = atom.operation
@@ -120,6 +135,16 @@ def apply_transform(atom: TransformAtom, inp: Grid) -> Optional[Grid]:
                 return extract_subgrid(inp, r1, c1, r2, c2)
         return None
     
+    # Try advanced detectors
+    from arc.advanced_detectors import ALL_DETECTORS
+    for _, apply_fn in ALL_DETECTORS:
+        try:
+            result = apply_fn(atom, inp)
+            if result is not None:
+                return result
+        except Exception:
+            continue
+    
     return None
 
 
@@ -142,22 +167,38 @@ def solve_task(task: ArcTask) -> SolveResult:
       3. Apply verified transforms to test inputs
       4. Return up to 2 attempts per test input
     """
-    # Step 1: Detect common transforms
-    common = find_common_transforms(task.train)
+    # Step 1: Detect all transforms per pair
+    per_pair = [_detect_all_transforms(inp, out) for inp, out in task.train]
     
-    # Step 2: Verify and rank
+    # Step 2: Find common operations across all pairs
+    if per_pair:
+        first_ops = {(a.category, a.operation) for a in per_pair[0]}
+        common_ops = first_ops
+        for pair_atoms in per_pair[1:]:
+            common_ops &= {(a.category, a.operation) for a in pair_atoms}
+        
+        # Collect common atoms
+        common = []
+        for cat, op in common_ops:
+            atoms = [a for a in per_pair[0] if a.category == cat and a.operation == op]
+            common.extend(atoms)
+        common.sort(key=lambda a: a.confidence, reverse=True)
+    else:
+        common = []
+    
+    # Step 3: Verify each against all training pairs
     verified = []
     for atom in common:
         if verify_transform(atom, task.train):
             verified.append(atom)
     
-    # Step 3: Also try individual transforms from each pair
+    # Step 4: If no common verified, try individual pair atoms
     if not verified:
-        for inp, out in task.train:
-            pair_atoms = detect_transforms(inp, out)
+        for pair_atoms in per_pair:
             for atom in pair_atoms:
-                if atom.confidence >= 0.8 and verify_transform(atom, task.train):
-                    verified.append(atom)
+                if atom.confidence >= 0.7 and verify_transform(atom, task.train):
+                    if atom not in verified:
+                        verified.append(atom)
             if verified:
                 break
     

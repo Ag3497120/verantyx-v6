@@ -1,23 +1,29 @@
 {
   "split": "training",
-  "score": 25,
+  "score": 36,
   "total": 1000,
-  "pct": 2.5,
-  "attempted": 25,
+  "pct": 3.6,
+  "attempted": 36,
   "errors": 0,
-  "elapsed_s": 0.9202258586883545,
+  "elapsed_s": 450.9290380477905,
   "methods": {
-    "geometric:tile_flip": 1,
-    "none": 975,
+    "geometric:tile_flip": 2,
+    "none": 964,
+    "region:extract_largest": 3,
+    "region:extract_smallest": 1,
+    "conditional:gravity_down": 1,
     "geometric:tile_checkerboard": 8,
     "geometric:rotate_180": 2,
+    "completion:complete_rot180": 2,
     "structural:extract": 2,
     "geometric:scale": 3,
+    "conditional:neighbor_fill": 2,
     "geometric:flip_h": 1,
     "geometric:flip_v": 1,
     "geometric:transpose": 2,
-    "geometric:tile": 1,
     "color:recolor": 3,
-    "geometric:rotate_270": 1
+    "count:least_frequent_color": 1,
+    "geometric:rotate_270": 1,
+    "completion:complete_v_sym": 1
   }
 }

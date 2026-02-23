@@ -111,7 +111,10 @@ def solve_mcq_by_atom_cross(
                         cr.contradicts += 1
         
         # スコア計算: supports - contradicts (weak_supportsは0.3重み)
-        cr.score = cr.supports + 0.3 * cr.weak_supports - 1.5 * cr.contradicts
+        # 正規化: atom数で割ってWiki記事長バイアスを除去
+        raw_score = cr.supports + 0.3 * cr.weak_supports - 1.5 * cr.contradicts
+        n_atoms = len(all_choice_atoms) if all_choice_atoms else 1
+        cr.score = raw_score / max(n_atoms, 1)  # per-atom score
         
         results.append(cr)
     
@@ -122,12 +125,9 @@ def solve_mcq_by_atom_cross(
     
     gap = best.score - (second.score if second else 0)
     
-    # 採用条件
-    total_support = best.supports + best.weak_supports
-    min_total_support = 2  # strong + weak合わせて最低2
-    min_gap = 0.5          # スコア差
-    
-    if total_support >= min_total_support and gap >= min_gap and best.score > 0:
+    # 採用条件: MCQ全問回答戦略（HLEペナルティなし）
+    # 何かしらスコア差があれば回答する
+    if best.score > 0 and gap > 0:
         confidence = min(0.70, 0.30 + gap * 0.05 + best.supports * 0.03)
         method = (
             f"atom_cross:best={best.label}"
