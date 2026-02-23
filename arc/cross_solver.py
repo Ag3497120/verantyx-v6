@@ -1265,6 +1265,256 @@ class WholeGridProgram:
                 result.append(row)
             return result
         
+        elif self.name == 'replace_color':
+            fr, to = self.params['from'], self.params['to']
+            return [[to if c == fr else c for c in row] for row in inp]
+        
+        elif self.name == 'erode':
+            bg = self.params['bg']
+            result = [row[:] for row in inp]
+            for r in range(h):
+                for c in range(w):
+                    if inp[r][c] != bg:
+                        for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                            nr, nc = r+dr, c+dc
+                            if nr < 0 or nr >= h or nc < 0 or nc >= w or inp[nr][nc] == bg:
+                                result[r][c] = bg; break
+            return result
+        
+        elif self.name == 'dilate':
+            bg = self.params['bg']
+            fill = self.params.get('fill', None)
+            result = [row[:] for row in inp]
+            for r in range(h):
+                for c in range(w):
+                    if inp[r][c] == bg:
+                        for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                            nr, nc = r+dr, c+dc
+                            if 0 <= nr < h and 0 <= nc < w and inp[nr][nc] != bg:
+                                result[r][c] = fill if fill is not None else inp[nr][nc]
+                                break
+            return result
+
+        elif self.name == 'majority_vote':
+            bg = self.params['bg']
+            result = [row[:] for row in inp]
+            for r in range(h):
+                for c in range(w):
+                    counts = Counter()
+                    for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                        nr, nc = r+dr, c+dc
+                        if 0 <= nr < h and 0 <= nc < w:
+                            counts[inp[nr][nc]] += 1
+                    if counts:
+                        best = counts.most_common(1)[0]
+                        if best[1] >= 3:
+                            result[r][c] = best[0]
+            return result
+        
+        elif self.name == 'reverse_rows':
+            return inp[::-1]
+        
+        elif self.name == 'reverse_cols':
+            return [row[::-1] for row in inp]
+        
+        elif self.name == 'roll_rows':
+            n = self.params['n']
+            return inp[-n:] + inp[:-n]
+        
+        elif self.name == 'roll_cols':
+            n = self.params['n']
+            return [row[-n:] + row[:-n] for row in inp]
+        
+        elif self.name == 'dedup_rows':
+            result = [inp[0]]
+            for i in range(1, h):
+                if inp[i] != inp[i-1]:
+                    result.append(inp[i])
+            return result if result else inp
+        
+        elif self.name == 'dedup_cols':
+            if not inp or not inp[0]:
+                return inp
+            result_cols = [0]
+            for c in range(1, w):
+                col_curr = [inp[r][c] for r in range(h)]
+                col_prev = [inp[r][c-1] for r in range(h)]
+                if col_curr != col_prev:
+                    result_cols.append(c)
+            return [[inp[r][c] for c in result_cols] for r in range(h)]
+        
+        elif self.name == 'extract_border':
+            bg = self.params['bg']
+            result = [[bg]*w for _ in range(h)]
+            for r in range(h):
+                for c in range(w):
+                    if inp[r][c] != bg:
+                        is_border = False
+                        for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                            nr, nc = r+dr, c+dc
+                            if nr < 0 or nr >= h or nc < 0 or nc >= w or inp[nr][nc] == bg:
+                                is_border = True; break
+                        if is_border:
+                            result[r][c] = inp[r][c]
+            return result
+        
+        elif self.name == 'fill_interior':
+            bg = self.params['bg']
+            fill = self.params.get('fill', None)
+            # BFS from edges to find exterior bg cells
+            exterior = set()
+            queue = []
+            for r in range(h):
+                for c in range(w):
+                    if (r == 0 or r == h-1 or c == 0 or c == w-1) and inp[r][c] == bg:
+                        exterior.add((r, c))
+                        queue.append((r, c))
+            qi = 0
+            while qi < len(queue):
+                r, c = queue[qi]; qi += 1
+                for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                    nr, nc = r+dr, c+dc
+                    if 0 <= nr < h and 0 <= nc < w and (nr, nc) not in exterior and inp[nr][nc] == bg:
+                        exterior.add((nr, nc))
+                        queue.append((nr, nc))
+            result = [row[:] for row in inp]
+            for r in range(h):
+                for c in range(w):
+                    if inp[r][c] == bg and (r, c) not in exterior:
+                        # Find nearest non-bg color
+                        if fill is not None:
+                            result[r][c] = fill
+                        else:
+                            for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                                nr, nc = r+dr, c+dc
+                                if 0 <= nr < h and 0 <= nc < w and inp[nr][nc] != bg:
+                                    result[r][c] = inp[nr][nc]; break
+                            else:
+                                result[r][c] = 1  # default fill
+            return result
+        
+        elif self.name == 'recolor_by_size':
+            bg = self.params['bg']
+            size_to_color = self.params['map']
+            regions = flood_fill_regions(inp)
+            result = [row[:] for row in inp]
+            for region in regions:
+                sz = region['size']
+                cells = region['cells']
+                if sz in size_to_color:
+                    new_c = size_to_color[sz]
+                    for r, c in cells:
+                        result[r][c] = new_c
+            return result
+        
+        elif self.name == 'tile_to_output':
+            oh, ow = self.params['oh'], self.params['ow']
+            return [[inp[r % h][c % w] for c in range(ow)] for r in range(oh)]
+        
+        elif self.name == 'hollow_regions':
+            bg = self.params['bg']
+            result = [row[:] for row in inp]
+            for r in range(h):
+                for c in range(w):
+                    if inp[r][c] != bg:
+                        all_same = True
+                        for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                            nr, nc = r+dr, c+dc
+                            if nr < 0 or nr >= h or nc < 0 or nc >= w or inp[nr][nc] == bg:
+                                all_same = False; break
+                        if all_same:
+                            result[r][c] = bg
+            return result
+        
+        elif self.name == 'border_fill':
+            bg = self.params['bg']
+            border_color = self.params['color']
+            result = [row[:] for row in inp]
+            for r in range(h):
+                for c in range(w):
+                    if inp[r][c] == bg:
+                        for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                            nr, nc = r+dr, c+dc
+                            if 0 <= nr < h and 0 <= nc < w and inp[nr][nc] != bg:
+                                result[r][c] = border_color
+                                break
+            return result
+        
+        elif self.name == 'mask_overlay':
+            bg = self.params['bg']
+            mask_c = self.params['mask']
+            target_c = self.params['target']
+            result_c = self.params['result']
+            result = [row[:] for row in inp]
+            for r in range(h):
+                for c in range(w):
+                    if inp[r][c] == mask_c:
+                        result[r][c] = result_c
+            return result
+        
+        elif self.name == 'max_color_per_row':
+            # Each cell becomes the most common non-bg color in its row
+            bg = self.params['bg']
+            result = [row[:] for row in inp]
+            for r in range(h):
+                counts = Counter(c for c in inp[r] if c != bg)
+                if counts:
+                    dom = counts.most_common(1)[0][0]
+                    for c in range(w):
+                        if inp[r][c] != bg:
+                            result[r][c] = dom
+            return result
+        
+        elif self.name == 'max_color_per_col':
+            bg = self.params['bg']
+            result = [row[:] for row in inp]
+            for c in range(w):
+                counts = Counter(inp[r][c] for r in range(h) if inp[r][c] != bg)
+                if counts:
+                    dom = counts.most_common(1)[0][0]
+                    for r in range(h):
+                        if inp[r][c] != bg:
+                            result[r][c] = dom
+            return result
+        
+        elif self.name == 'spread_color':
+            # Spread each non-bg cell in a direction until hitting another non-bg
+            bg = self.params['bg']
+            direction = self.params['dir']  # 'right', 'left', 'down', 'up'
+            result = [row[:] for row in inp]
+            dr, dc = {'right': (0,1), 'left': (0,-1), 'down': (1,0), 'up': (-1,0)}[direction]
+            for r in range(h):
+                for c in range(w):
+                    if inp[r][c] != bg:
+                        nr, nc = r+dr, c+dc
+                        while 0 <= nr < h and 0 <= nc < w and inp[nr][nc] == bg:
+                            result[nr][nc] = inp[r][c]
+                            nr += dr; nc += dc
+            return result
+        
+        elif self.name == 'count_colors_output':
+            # Output is 1xN or Nx1 with count of each non-bg color
+            bg = self.params['bg']
+            mode = self.params.get('mode', 'row')
+            counts = Counter(c for row in inp for c in row if c != bg)
+            if not counts:
+                return [[0]]
+            sorted_colors = sorted(counts.keys())
+            if mode == 'row':
+                return [[counts[c] for c in sorted_colors]]
+            else:
+                return [[counts[c]] for c in sorted_colors]
+        
+        elif self.name == 'crop_to_color':
+            color = self.params['color']
+            rows_with = [r for r in range(h) if any(inp[r][c] == color for c in range(w))]
+            cols_with = [c for c in range(w) if any(inp[r][c] == color for r in range(h))]
+            if not rows_with or not cols_with:
+                return inp
+            r1, r2 = min(rows_with), max(rows_with)
+            c1, c2 = min(cols_with), max(cols_with)
+            return [inp[r][c1:c2+1] for r in range(r1, r2+1)]
+        
         return None
 
 
@@ -1322,6 +1572,38 @@ def _generate_whole_grid_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> Lis
     inp0, out0 = train_pairs[0]
     ih, iw = grid_shape(inp0)
     oh, ow = grid_shape(out0)
+    bg = most_common_color(inp0)
+    all_same = all(grid_shape(i) == grid_shape(o) for i, o in train_pairs)
+    
+    # === PRIORITY: Neighborhood rule (learned from training, highest priority) ===
+    if all_same:
+        for radius in [1, 2]:
+            mapping = {}
+            consistent = True
+            for inp_t, out_t in train_pairs:
+                ht, wt = grid_shape(inp_t)
+                for r in range(ht):
+                    for c in range(wt):
+                        nb = []
+                        for dr in range(-radius, radius+1):
+                            for dc in range(-radius, radius+1):
+                                nr, nc = r+dr, c+dc
+                                nb.append(inp_t[nr][nc] if 0<=nr<ht and 0<=nc<wt else -1)
+                        key = tuple(nb)
+                        if key in mapping:
+                            if mapping[key] != out_t[r][c]:
+                                consistent = False; break
+                        else:
+                            mapping[key] = out_t[r][c]
+                    if not consistent: break
+                if not consistent: break
+            
+            if consistent and mapping:
+                has_change = any(not grid_eq(i, o) for i, o in train_pairs[:1])
+                if has_change:
+                    candidates.append(WholeGridProgram('neighborhood_rule',
+                        {'mapping': mapping, 'radius': radius}))
+                    break
     
     # Rotations (for square grids or transposed sizes)
     if ih == iw and oh == ow and ih == oh:
@@ -1339,7 +1621,6 @@ def _generate_whole_grid_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> Lis
         candidates.append(WholeGridProgram('flip_v'))
     
     # Row/col sort
-    bg = most_common_color(inp0)
     for key in ['color_count', 'color_count_desc', 'sum', 'sum_desc', 'first_nonbg']:
         candidates.append(WholeGridProgram('row_sort', {'key': key, 'bg': bg}))
     for key in ['color_count', 'color_count_desc', 'sum', 'sum_desc']:
@@ -1351,7 +1632,6 @@ def _generate_whole_grid_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> Lis
         candidates.append(WholeGridProgram('fill_enclosed_color', {'bg': bg, 'fill': fill_c}))
     
     # Colormap from all pairs (only when same size)
-    all_same = all(grid_shape(i) == grid_shape(o) for i, o in train_pairs)
     if all_same:
         cmap = {}
         consistent = True
@@ -1442,41 +1722,6 @@ def _generate_whole_grid_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> Lis
     # Fill rect between pairs
     candidates.append(WholeGridProgram('fill_rect', {'bg': bg}))
     
-    # Neighborhood rule (learned from training data)
-    all_same_size = all(grid_shape(i) == grid_shape(o) for i, o in train_pairs)
-    if all_same_size:
-        for radius in [1, 2]:
-            mapping = {}
-            consistent = True
-            for inp_t, out_t in train_pairs:
-                ht, wt = grid_shape(inp_t)
-                for r in range(ht):
-                    for c in range(wt):
-                        nb = []
-                        for dr in range(-radius, radius+1):
-                            for dc in range(-radius, radius+1):
-                                nr, nc = r+dr, c+dc
-                                nb.append(inp_t[nr][nc] if 0<=nr<ht and 0<=nc<wt else -1)
-                        key = tuple(nb)
-                        if key in mapping:
-                            if mapping[key] != out_t[r][c]:
-                                consistent = False; break
-                        else:
-                            mapping[key] = out_t[r][c]
-                    if not consistent: break
-                if not consistent: break
-            
-            if consistent and mapping:
-                # Check: does it actually change something?
-                has_change = False
-                for inp_t, out_t in train_pairs[:1]:
-                    if not grid_eq(inp_t, out_t):
-                        has_change = True
-                if has_change:
-                    candidates.append(WholeGridProgram('neighborhood_rule', 
-                        {'mapping': mapping, 'radius': radius}))
-                    break  # Use smallest working radius
-    
     # Remove color
     for c in grid_colors(inp0) - {bg}:
         candidates.append(WholeGridProgram('remove_color', {'color': c, 'bg': bg}))
@@ -1500,6 +1745,137 @@ def _generate_whole_grid_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> Lis
             candidates.append(WholeGridProgram('subgrid_diff', {
                 'sep_color': sep_c, 'bg': bg
             }))
+    
+    # === NEW DSL OPERATIONS (v18) ===
+    
+    # Replace color — only when consistent across ALL training pairs
+    # (all cells of color X map to color Y, never X→X)
+    if all_same:
+        for fr in range(10):
+            mapping_to = {}
+            valid = True
+            for inp_t, out_t in train_pairs:
+                ht, wt = grid_shape(inp_t)
+                for r in range(ht):
+                    for c in range(wt):
+                        if inp_t[r][c] == fr:
+                            oc = out_t[r][c]
+                            if fr in mapping_to:
+                                if mapping_to[fr] != oc:
+                                    valid = False; break
+                            else:
+                                mapping_to[fr] = oc
+                    if not valid: break
+                if not valid: break
+            if valid and fr in mapping_to and mapping_to[fr] != fr:
+                candidates.append(WholeGridProgram('replace_color', {'from': fr, 'to': mapping_to[fr]}))
+    
+    # Morphological operations
+    candidates.append(WholeGridProgram('erode', {'bg': bg}))
+    candidates.append(WholeGridProgram('dilate', {'bg': bg}))
+    for c in grid_colors(inp0) - {bg}:
+        candidates.append(WholeGridProgram('dilate', {'bg': bg, 'fill': c}))
+    
+    # Majority vote
+    candidates.append(WholeGridProgram('majority_vote', {'bg': bg}))
+    
+    # Reverse rows/cols
+    if (ih, iw) == (oh, ow):
+        candidates.append(WholeGridProgram('reverse_rows'))
+        candidates.append(WholeGridProgram('reverse_cols'))
+    
+    # Roll rows/cols
+    if (ih, iw) == (oh, ow):
+        for n in range(1, min(ih, 5)):
+            candidates.append(WholeGridProgram('roll_rows', {'n': n}))
+        for n in range(1, min(iw, 5)):
+            candidates.append(WholeGridProgram('roll_cols', {'n': n}))
+    
+    # Dedup rows/cols
+    candidates.append(WholeGridProgram('dedup_rows', {'bg': bg}))
+    candidates.append(WholeGridProgram('dedup_cols', {'bg': bg}))
+    
+    # Extract border / fill interior / hollow
+    if (ih, iw) == (oh, ow):
+        candidates.append(WholeGridProgram('extract_border', {'bg': bg}))
+        candidates.append(WholeGridProgram('fill_interior', {'bg': bg}))
+        for c in grid_colors(inp0) - {bg}:
+            candidates.append(WholeGridProgram('fill_interior', {'bg': bg, 'fill': c}))
+        candidates.append(WholeGridProgram('hollow_regions', {'bg': bg}))
+    
+    # Recolor by size (learn mapping from first training pair)
+    if all_same:
+        size_map = {}
+        consistent = True
+        for inp_t, out_t in train_pairs:
+            regions = flood_fill_regions(inp_t)
+            # Build mapping: for each input region, check what color it became
+            for region in regions:
+                cells = region['cells']
+                sz = region['size']
+                # Check output color at same positions
+                out_colors = set()
+                for r, c in cells:
+                    if out_t[r][c] != bg:
+                        out_colors.add(out_t[r][c])
+                if len(out_colors) == 1:
+                    oc = out_colors.pop()
+                    if sz in size_map:
+                        if size_map[sz] != oc:
+                            consistent = False; break
+                    else:
+                        size_map[sz] = oc
+            if not consistent:
+                break
+        if consistent and size_map and any(k != v for k, v in size_map.items()):
+            candidates.append(WholeGridProgram('recolor_by_size', {'bg': bg, 'map': size_map}))
+    
+    # Tile to output size
+    if oh > ih and ow > iw and oh % ih == 0 and ow % iw == 0:
+        candidates.append(WholeGridProgram('tile_to_output', {'oh': oh, 'ow': ow}))
+    elif oh > 0 and ow > 0 and (oh != ih or ow != iw):
+        candidates.append(WholeGridProgram('tile_to_output', {'oh': oh, 'ow': ow}))
+    
+    # Border fill — only colors that appear in output but not at input positions
+    if all_same:
+        out_colors = grid_colors(out0) - grid_colors(inp0)
+        for bc in out_colors:
+            candidates.append(WholeGridProgram('border_fill', {'bg': bg, 'color': bc}))
+        # Also try colors in output
+        for bc in grid_colors(out0) - {bg}:
+            candidates.append(WholeGridProgram('border_fill', {'bg': bg, 'color': bc}))
+    
+    # Mask overlay — learn result color from training data
+    nonbg = grid_colors(inp0) - {bg}
+    if len(nonbg) >= 2 and all_same:
+        c1, c2 = sorted(nonbg)[:2]
+        for mask_c, target_c in [(c1, c2), (c2, c1)]:
+            # Learn what mask cells become in output
+            rc_set = set()
+            for inp_t, out_t in train_pairs:
+                ht, wt = grid_shape(inp_t)
+                for r in range(ht):
+                    for c in range(wt):
+                        if inp_t[r][c] == mask_c:
+                            rc_set.add(out_t[r][c])
+            for result_c in rc_set:
+                if result_c != mask_c:
+                    candidates.append(WholeGridProgram('mask_overlay', {
+                        'bg': bg, 'mask': mask_c, 'target': target_c, 'result': result_c}))
+    
+    # Max color per row/col
+    if (ih, iw) == (oh, ow):
+        candidates.append(WholeGridProgram('max_color_per_row', {'bg': bg}))
+        candidates.append(WholeGridProgram('max_color_per_col', {'bg': bg}))
+    
+    # Spread color in all 4 directions
+    if (ih, iw) == (oh, ow):
+        for d in ['right', 'left', 'down', 'up']:
+            candidates.append(WholeGridProgram('spread_color', {'bg': bg, 'dir': d}))
+    
+    # Crop to color
+    for c in grid_colors(inp0) - {bg}:
+        candidates.append(WholeGridProgram('crop_to_color', {'color': c}))
     
     return candidates
 
