@@ -155,6 +155,148 @@ def learn_spatial_condition(positions: List[Tuple[int, int]],
         if (row_cells | col_cells) == pos_set:
             return {'type': 'on_obj_cross', 'obj_color': obj.color, 'obj_idx': objs.index(obj)}
     
+    # Check: diagonal-adjacent to specific color (8-connected minus 4-connected)
+    for color in range(10):
+        if color == bg:
+            continue
+        diag_adj = set()
+        for r in range(h):
+            for c in range(w):
+                if inp[r][c] == bg:
+                    for dr, dc in [(-1,-1),(-1,1),(1,-1),(1,1),(-1,0),(1,0),(0,-1),(0,1)]:
+                        nr, nc = r+dr, c+dc
+                        if 0 <= nr < h and 0 <= nc < w and inp[nr][nc] == color:
+                            diag_adj.add((r, c))
+                            break
+        if diag_adj == pos_set:
+            return {'type': 'adjacent8_to_color', 'color': color}
+    
+    # Check: enclosed bg region (not touching border)
+    visited = [[False]*w for _ in range(h)]
+    border_bg = set()
+    queue = []
+    for r in range(h):
+        for c in [0, w-1]:
+            if inp[r][c] == bg and not visited[r][c]:
+                visited[r][c] = True
+                queue.append((r,c))
+                border_bg.add((r,c))
+    for c in range(w):
+        for r in [0, h-1]:
+            if inp[r][c] == bg and not visited[r][c]:
+                visited[r][c] = True
+                queue.append((r,c))
+                border_bg.add((r,c))
+    while queue:
+        r, c = queue.pop(0)
+        for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+            nr, nc = r+dr, c+dc
+            if 0<=nr<h and 0<=nc<w and not visited[nr][nc] and inp[nr][nc]==bg:
+                visited[nr][nc] = True
+                queue.append((nr,nc))
+                border_bg.add((nr,nc))
+    
+    enclosed_bg = set()
+    for r in range(h):
+        for c in range(w):
+            if inp[r][c] == bg and (r,c) not in border_bg:
+                enclosed_bg.add((r,c))
+    if enclosed_bg == pos_set and enclosed_bg:
+        return {'type': 'enclosed_bg'}
+    
+    # Check: line extension from each non-bg cell (project in all 4 directions)
+    for color in range(10):
+        if color == bg:
+            continue
+        projected = set()
+        for r in range(h):
+            for c in range(w):
+                if inp[r][c] == color:
+                    # Project in 4 directions
+                    for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                        nr, nc = r+dr, c+dc
+                        while 0<=nr<h and 0<=nc<w:
+                            if inp[nr][nc] == bg:
+                                projected.add((nr, nc))
+                            elif inp[nr][nc] != color:
+                                break
+                            nr, nc = nr+dr, nc+dc
+        if projected == pos_set and projected:
+            return {'type': 'projection_from_color', 'color': color}
+    
+    # Check: on same row as any cell of specific color
+    for color in range(10):
+        if color == bg:
+            continue
+        color_rows = set()
+        for r in range(h):
+            for c in range(w):
+                if inp[r][c] == color:
+                    color_rows.add(r)
+        row_bg = set()
+        for r in color_rows:
+            for c in range(w):
+                if inp[r][c] == bg:
+                    row_bg.add((r,c))
+        if row_bg == pos_set and row_bg:
+            return {'type': 'on_color_rows', 'color': color}
+    
+    # Check: on same col as any cell of specific color
+    for color in range(10):
+        if color == bg:
+            continue
+        color_cols = set()
+        for r in range(h):
+            for c in range(w):
+                if inp[r][c] == color:
+                    color_cols.add(c)
+        col_bg = set()
+        for c in color_cols:
+            for r in range(h):
+                if inp[r][c] == bg:
+                    col_bg.add((r,c))
+        if col_bg == pos_set and col_bg:
+            return {'type': 'on_color_cols', 'color': color}
+    
+    # Check: intersection of row and col of specific color
+    for color in range(10):
+        if color == bg:
+            continue
+        color_rows = set()
+        color_cols = set()
+        for r in range(h):
+            for c in range(w):
+                if inp[r][c] == color:
+                    color_rows.add(r)
+                    color_cols.add(c)
+        cross_bg = set()
+        for r in color_rows:
+            for c in color_cols:
+                if inp[r][c] == bg:
+                    cross_bg.add((r,c))
+        if cross_bg == pos_set and cross_bg:
+            return {'type': 'on_color_cross', 'color': color}
+    
+    # Check: within N cells of any cell of specific color (Manhattan distance)
+    for color in range(10):
+        if color == bg:
+            continue
+        for dist in [1, 2, 3]:
+            near = set()
+            for r in range(h):
+                for c in range(w):
+                    if inp[r][c] == bg:
+                        for r2 in range(max(0,r-dist), min(h,r+dist+1)):
+                            for c2 in range(max(0,c-dist), min(w,c+dist+1)):
+                                if abs(r-r2)+abs(c-c2) <= dist and inp[r2][c2] == color:
+                                    near.add((r,c))
+                                    break
+                            else:
+                                continue
+                            break
+            if near == pos_set and near:
+                return {'type': 'within_distance', 'color': color, 'dist': dist}
+    
     return None
 
 
@@ -218,7 +360,7 @@ def apply_spatial_condition(condition: Dict, inp: Grid, bg: int) -> Set[Tuple[in
         group = [o for o in objs if o.color == color]
         if not group:
             return set()
-        obj = group[0]  # first matching object
+        obj = group[0]
         cr, cc = int(obj.center[0]), int(obj.center[1])
         result = set()
         for c in range(w):
@@ -227,6 +369,114 @@ def apply_spatial_condition(condition: Dict, inp: Grid, bg: int) -> Set[Tuple[in
         for r in range(h):
             if inp[r][cc] == bg:
                 result.add((r, cc))
+        return result
+    
+    elif ctype == 'adjacent8_to_color':
+        color = condition['color']
+        result = set()
+        for r in range(h):
+            for c in range(w):
+                if inp[r][c] == bg:
+                    for dr in range(-1, 2):
+                        for dc in range(-1, 2):
+                            if dr == 0 and dc == 0:
+                                continue
+                            nr, nc = r+dr, c+dc
+                            if 0 <= nr < h and 0 <= nc < w and inp[nr][nc] == color:
+                                result.add((r, c))
+                                break
+                        else:
+                            continue
+                        break
+        return result
+    
+    elif ctype == 'enclosed_bg':
+        visited = [[False]*w for _ in range(h)]
+        border_bg = set()
+        queue = []
+        for r in range(h):
+            for c in [0, w-1]:
+                if inp[r][c] == bg and not visited[r][c]:
+                    visited[r][c] = True
+                    queue.append((r,c))
+                    border_bg.add((r,c))
+        for c in range(w):
+            for r in [0, h-1]:
+                if inp[r][c] == bg and not visited[r][c]:
+                    visited[r][c] = True
+                    queue.append((r,c))
+                    border_bg.add((r,c))
+        while queue:
+            r, c = queue.pop(0)
+            for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                nr, nc = r+dr, c+dc
+                if 0<=nr<h and 0<=nc<w and not visited[nr][nc] and inp[nr][nc]==bg:
+                    visited[nr][nc] = True
+                    queue.append((nr,nc))
+                    border_bg.add((nr,nc))
+        return {(r,c) for r in range(h) for c in range(w) 
+                if inp[r][c] == bg and (r,c) not in border_bg}
+    
+    elif ctype == 'projection_from_color':
+        color = condition['color']
+        result = set()
+        for r in range(h):
+            for c in range(w):
+                if inp[r][c] == color:
+                    for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                        nr, nc = r+dr, c+dc
+                        while 0<=nr<h and 0<=nc<w:
+                            if inp[nr][nc] == bg:
+                                result.add((nr, nc))
+                            elif inp[nr][nc] != color:
+                                break
+                            nr, nc = nr+dr, nc+dc
+        return result
+    
+    elif ctype == 'on_color_rows':
+        color = condition['color']
+        color_rows = set()
+        for r in range(h):
+            for c in range(w):
+                if inp[r][c] == color:
+                    color_rows.add(r)
+        return {(r,c) for r in color_rows for c in range(w) if inp[r][c] == bg}
+    
+    elif ctype == 'on_color_cols':
+        color = condition['color']
+        color_cols = set()
+        for r in range(h):
+            for c in range(w):
+                if inp[r][c] == color:
+                    color_cols.add(c)
+        return {(r,c) for r in range(h) for c in color_cols if inp[r][c] == bg}
+    
+    elif ctype == 'on_color_cross':
+        color = condition['color']
+        color_rows = set()
+        color_cols = set()
+        for r in range(h):
+            for c in range(w):
+                if inp[r][c] == color:
+                    color_rows.add(r)
+                    color_cols.add(c)
+        return {(r,c) for r in color_rows for c in color_cols if inp[r][c] == bg}
+    
+    elif ctype == 'within_distance':
+        color = condition['color']
+        dist = condition['dist']
+        result = set()
+        for r in range(h):
+            for c in range(w):
+                if inp[r][c] == bg:
+                    found = False
+                    for r2 in range(max(0,r-dist), min(h,r+dist+1)):
+                        for c2 in range(max(0,c-dist), min(w,c+dist+1)):
+                            if abs(r-r2)+abs(c-c2) <= dist and inp[r2][c2] == color:
+                                found = True; break
+                        if found: break
+                    if found:
+                        result.add((r,c))
         return result
     
     return set()
@@ -275,8 +525,63 @@ def learn_value_mapping(adds: List[Tuple[int, int, int]],
         obj_color = obj.color
         all_match = all(c == obj_color for _, _, c in adds)
         if all_match:
-            # Is this the closest object to all add positions?
             return {'type': 'constant', 'color': obj_color}
+    
+    # Color = closest object's color (per cell)?
+    consistent = True
+    for r, c, out_color in adds:
+        best_dist = float('inf')
+        best_color = None
+        for obj in objs:
+            for or_, oc in obj.cells:
+                d = abs(r - or_) + abs(c - oc)
+                if d < best_dist:
+                    best_dist = d
+                    best_color = obj.color
+        if best_color != out_color:
+            consistent = False
+            break
+    if consistent and adds:
+        return {'type': 'closest_object_color'}
+    
+    # Color = color of the enclosing object (object whose bbox contains the cell)?
+    consistent = True
+    for r, c, out_color in adds:
+        found = False
+        for obj in objs:
+            r1, c1, r2, c2 = obj.bbox
+            if r1 <= r <= r2 and c1 <= c <= c2 and obj.color == out_color:
+                found = True
+                break
+        if not found:
+            consistent = False
+            break
+    if consistent and adds:
+        return {'type': 'enclosing_object_color'}
+    
+    # Color determined by row: same color as the non-bg cell in the same row?
+    consistent = True
+    for r, c, out_color in adds:
+        row_colors = [inp[r][c2] for c2 in range(w) if inp[r][c2] != bg]
+        if row_colors and row_colors[0] == out_color:
+            continue
+        else:
+            consistent = False
+            break
+    if consistent and adds:
+        return {'type': 'same_row_color'}
+    
+    # Color determined by col
+    consistent = True
+    for r, c, out_color in adds:
+        col_colors = [inp[r2][c] for r2 in range(h) if inp[r2][c] != bg]
+        if col_colors and col_colors[0] == out_color:
+            continue
+        else:
+            consistent = False
+            break
+    if consistent and adds:
+        return {'type': 'same_col_color'}
     
     return None
 
@@ -308,6 +613,42 @@ def apply_value_mapping(mapping: Dict, positions: Set[Tuple[int, int]],
                             best_dist = d
                             best_color = inp[nr][nc]
             result[r][c] = best_color
+    
+    elif mtype == 'closest_object_color':
+        objs = detect_objects(inp, bg)
+        for r, c in positions:
+            best_dist = float('inf')
+            best_color = bg
+            for obj in objs:
+                for or_, oc in obj.cells:
+                    d = abs(r - or_) + abs(c - oc)
+                    if d < best_dist:
+                        best_dist = d
+                        best_color = obj.color
+            result[r][c] = best_color
+    
+    elif mtype == 'enclosing_object_color':
+        objs = detect_objects(inp, bg)
+        for r, c in positions:
+            for obj in objs:
+                r1, c1, r2, c2 = obj.bbox
+                if r1 <= r <= r2 and c1 <= c <= c2:
+                    result[r][c] = obj.color
+                    break
+    
+    elif mtype == 'same_row_color':
+        for r, c in positions:
+            for c2 in range(w):
+                if inp[r][c2] != bg:
+                    result[r][c] = inp[r][c2]
+                    break
+    
+    elif mtype == 'same_col_color':
+        for r, c in positions:
+            for r2 in range(h):
+                if inp[r2][c] != bg:
+                    result[r][c] = inp[r2][c]
+                    break
     
     return result
 
