@@ -55,8 +55,8 @@ def solve_mcq_by_atom_cross(
 
     # Import atomizer and classifier
     try:
-        from knowledge.fact_atomizer import atomize_many
-        from executors.atom_relation_classifier import classify_relations_by_atoms
+        from knowledge.fact_atomizer import FactAtomizer
+        _atomizer = FactAtomizer()
     except ImportError as e:
         log.warning(f"atom_cross: import error: {e}")
         return None
@@ -71,7 +71,7 @@ def solve_mcq_by_atom_cross(
     
     stem_atoms = []
     for t in stem_texts:
-        stem_atoms.extend(atomize_many(t))
+        stem_atoms.extend(_atomizer.atomize(t))
     
     if not stem_atoms:
         log.debug("atom_cross: no stem atoms")
@@ -90,22 +90,19 @@ def solve_mcq_by_atom_cross(
             cr.wiki_texts = _fetch_wiki(cr.concepts)
         
         # 選択肢テキスト自体をAtom化
-        cr.choice_atoms = list(atomize_many(text))
+        cr.choice_atoms = list(_atomizer.atomize(text))
         
         # Wikipedia結果をAtom化
         for wt in cr.wiki_texts:
-            cr.wiki_atoms.extend(atomize_many(wt))
+            cr.wiki_atoms.extend(_atomizer.atomize(wt))
         
-        # ── Step 3: Cross-matching via atom classifier ──
-        # stem_atoms vs choice_wiki_atoms (stemの知識が選択肢のWiki事実を支持するか)
+        # ── Step 3: Cross-matching via atom pair comparison ──
         all_choice_atoms = cr.choice_atoms + cr.wiki_atoms
         
         if all_choice_atoms:
             for s_atom in stem_atoms:
                 for c_atom in all_choice_atoms:
-                    rel = classify_relations_by_atoms(
-                        [s_atom], [c_atom]
-                    )
+                    rel = _compare_atoms(s_atom, c_atom)
                     if rel == "supports":
                         cr.supports += 1
                     elif rel == "supports_weak":
@@ -126,10 +123,11 @@ def solve_mcq_by_atom_cross(
     gap = best.score - (second.score if second else 0)
     
     # 採用条件
-    min_supports = 2  # 最低2つのsupports
-    min_gap = 1.0     # 最低1.0のスコア差
+    total_support = best.supports + best.weak_supports
+    min_total_support = 2  # strong + weak合わせて最低2
+    min_gap = 0.5          # スコア差
     
-    if best.supports >= min_supports and gap >= min_gap and best.score > 0:
+    if total_support >= min_total_support and gap >= min_gap and best.score > 0:
         confidence = min(0.70, 0.30 + gap * 0.05 + best.supports * 0.03)
         method = (
             f"atom_cross:best={best.label}"
@@ -192,29 +190,103 @@ def _extract_concepts(text: str) -> List[str]:
     return concepts[:5]  # 最大5概念
 
 
+_ANTONYMS = {
+    'increase': 'decrease', 'high': 'low', 'large': 'small', 'true': 'false',
+    'positive': 'negative', 'active': 'inactive', 'present': 'absent',
+    'common': 'rare', 'major': 'minor', 'strong': 'weak', 'open': 'closed',
+    'north': 'south', 'east': 'west', 'up': 'down', 'left': 'right',
+    'male': 'female', 'internal': 'external', 'above': 'below',
+}
+# Bidirectional
+_ANTONYM_MAP = {}
+for k, v in _ANTONYMS.items():
+    _ANTONYM_MAP[k] = v
+    _ANTONYM_MAP[v] = k
+
+
+def _compare_atoms(atom_a, atom_b) -> str:
+    """Compare two FactAtoms: supports / supports_weak / contradicts / unknown"""
+    s_a = (getattr(atom_a, 'subject', '') or '').lower().strip()
+    p_a = (getattr(atom_a, 'predicate', '') or '').lower().strip()
+    o_a = (getattr(atom_a, 'object', '') or '').lower().strip()
+    s_b = (getattr(atom_b, 'subject', '') or '').lower().strip()
+    p_b = (getattr(atom_b, 'predicate', '') or '').lower().strip()
+    o_b = (getattr(atom_b, 'object', '') or '').lower().strip()
+
+    if not (s_a and s_b):
+        return "unknown"
+
+    # Subject overlap check
+    subj_match = (
+        s_a == s_b or s_a in s_b or s_b in s_a
+        or bool(set(s_a.split()) & set(s_b.split()) - _STOPWORDS)
+    )
+    if not subj_match:
+        # Check if object of one matches subject of other (transitive)
+        if o_a and (o_a == s_b or o_a in s_b or s_b in o_a):
+            subj_match = True
+        elif o_b and (o_b == s_a or o_b in s_a or s_a in o_b):
+            subj_match = True
+
+    if not subj_match:
+        return "unknown"
+
+    # Same predicate + same object → strong support
+    pred_match = p_a == p_b or p_a in p_b or p_b in p_a
+    obj_match = o_a and o_b and (o_a == o_b or o_a in o_b or o_b in o_a)
+
+    if pred_match and obj_match:
+        return "supports"
+
+    # Same predicate, different object → might contradict
+    if pred_match and o_a and o_b and not obj_match:
+        # Check antonyms
+        if o_a in _ANTONYM_MAP and _ANTONYM_MAP[o_a] == o_b:
+            return "contradicts"
+        # Numeric contradiction
+        try:
+            na, nb = float(o_a), float(o_b)
+            if na != nb:
+                return "contradicts"
+        except (ValueError, TypeError):
+            pass
+
+    # Keyword overlap in object/predicate → weak support
+    all_a = set(f"{p_a} {o_a}".split()) - _STOPWORDS
+    all_b = set(f"{p_b} {o_b}".split()) - _STOPWORDS
+    overlap = all_a & all_b
+    if len(overlap) >= 2:
+        return "supports_weak"
+    if len(overlap) >= 1 and (pred_match or obj_match):
+        return "supports_weak"
+
+    # Negation check
+    neg_a = 'not' in p_a or 'never' in p_a or p_a.startswith('un') or p_a.startswith('non')
+    neg_b = 'not' in p_b or 'never' in p_b or p_b.startswith('un') or p_b.startswith('non')
+    if neg_a != neg_b and (pred_match or obj_match):
+        return "contradicts"
+
+    return "unknown"
+
+
 def _fetch_wiki(concepts: List[str]) -> List[str]:
-    """概念リストからWikipedia要約を取得"""
+    """概念リストからWikipedia要約を取得 (cross_decomposeと同じfetcher)"""
     texts = []
     try:
-        from knowledge.knowledge_pipeline_v2 import fetch_wikipedia_summary
-    except ImportError:
-        try:
-            import wikipedia
-            def fetch_wikipedia_summary(query):
-                try:
-                    page = wikipedia.page(query, auto_suggest=True)
-                    return page.summary[:500]
-                except:
-                    return None
-        except ImportError:
-            return texts
-    
-    for concept in concepts[:3]:  # 最大3概念
-        try:
-            summary = fetch_wikipedia_summary(concept)
-            if summary:
-                texts.append(summary if isinstance(summary, str) else str(summary))
-        except Exception:
-            continue
-    
+        from knowledge.wiki_knowledge_fetcher_v2 import WikiKnowledgeFetcherV2
+        fetcher = WikiKnowledgeFetcherV2()
+        for concept in concepts[:3]:
+            try:
+                result = fetcher.fetch(concept)
+                if result and result.found and result.facts:
+                    for wf in result.facts[:2]:
+                        summary = (wf.summary if hasattr(wf, 'summary') else str(wf))[:500]
+                        if summary:
+                            texts.append(summary)
+                elif result and result.raw_text:
+                    texts.append(result.raw_text[:500])
+            except Exception:
+                continue
+    except Exception:
+        pass
     return texts
