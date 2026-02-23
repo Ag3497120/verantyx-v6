@@ -1244,6 +1244,27 @@ class WholeGridProgram:
                             result[r][c] = color
             return result
         
+        elif self.name == 'neighborhood_rule':
+            # Apply learned neighborhood → output mapping
+            mapping = self.params['mapping']
+            radius = self.params.get('radius', 1)
+            result = []
+            for r in range(h):
+                row = []
+                for c in range(w):
+                    nb = []
+                    for dr in range(-radius, radius+1):
+                        for dc in range(-radius, radius+1):
+                            nr, nc = r+dr, c+dc
+                            nb.append(inp[nr][nc] if 0<=nr<h and 0<=nc<w else -1)
+                    key = tuple(nb)
+                    if key in mapping:
+                        row.append(mapping[key])
+                    else:
+                        row.append(inp[r][c])  # fallback
+                result.append(row)
+            return result
+        
         return None
 
 
@@ -1420,6 +1441,41 @@ def _generate_whole_grid_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> Lis
     
     # Fill rect between pairs
     candidates.append(WholeGridProgram('fill_rect', {'bg': bg}))
+    
+    # Neighborhood rule (learned from training data)
+    all_same_size = all(grid_shape(i) == grid_shape(o) for i, o in train_pairs)
+    if all_same_size:
+        for radius in [1, 2]:
+            mapping = {}
+            consistent = True
+            for inp_t, out_t in train_pairs:
+                ht, wt = grid_shape(inp_t)
+                for r in range(ht):
+                    for c in range(wt):
+                        nb = []
+                        for dr in range(-radius, radius+1):
+                            for dc in range(-radius, radius+1):
+                                nr, nc = r+dr, c+dc
+                                nb.append(inp_t[nr][nc] if 0<=nr<ht and 0<=nc<wt else -1)
+                        key = tuple(nb)
+                        if key in mapping:
+                            if mapping[key] != out_t[r][c]:
+                                consistent = False; break
+                        else:
+                            mapping[key] = out_t[r][c]
+                    if not consistent: break
+                if not consistent: break
+            
+            if consistent and mapping:
+                # Check: does it actually change something?
+                has_change = False
+                for inp_t, out_t in train_pairs[:1]:
+                    if not grid_eq(inp_t, out_t):
+                        has_change = True
+                if has_change:
+                    candidates.append(WholeGridProgram('neighborhood_rule', 
+                        {'mapping': mapping, 'radius': radius}))
+                    break  # Use smallest working radius
     
     # Remove color
     for c in grid_colors(inp0) - {bg}:
