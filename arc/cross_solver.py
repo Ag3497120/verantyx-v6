@@ -1150,6 +1150,48 @@ class WholeGridProgram:
                                 break
             return result
         
+        elif self.name == 'corners_mirror':
+            # 2x2 mirror: TL=orig, TR=flip_h, BL=flip_v, BR=flip_hv
+            bg = self.params.get('bg', most_common_color(inp))
+            result = [[bg]*(w*2) for _ in range(h*2)]
+            for r in range(h):
+                for c in range(w):
+                    result[r][c] = inp[r][c]
+                    result[r][2*w-1-c] = inp[r][c]
+                    result[2*h-1-r][c] = inp[r][c]
+                    result[2*h-1-r][2*w-1-c] = inp[r][c]
+            return result
+        
+        elif self.name == 'diag_lines':
+            bg = self.params.get('bg', most_common_color(inp))
+            result = [list(row) for row in inp]
+            for r in range(h):
+                for c in range(w):
+                    if inp[r][c] != bg:
+                        for dr, dc in [(1,1),(1,-1),(-1,1),(-1,-1)]:
+                            nr, nc = r+dr, c+dc
+                            while 0<=nr<h and 0<=nc<w:
+                                if result[nr][nc] == bg:
+                                    result[nr][nc] = inp[r][c]
+                                nr += dr; nc += dc
+            return result
+        
+        elif self.name == 'fill_rect':
+            bg = self.params.get('bg', most_common_color(inp))
+            result = [list(row) for row in inp]
+            by_color = {}
+            for r in range(h):
+                for c in range(w):
+                    if inp[r][c] != bg:
+                        by_color.setdefault(inp[r][c], []).append((r,c))
+            for color, cells in by_color.items():
+                if len(cells) == 2:
+                    (r1,c1), (r2,c2) = cells
+                    for r in range(min(r1,r2), max(r1,r2)+1):
+                        for c in range(min(c1,c2), max(c1,c2)+1):
+                            result[r][c] = color
+            return result
+        
         return None
 
 
@@ -1310,6 +1352,16 @@ def _generate_whole_grid_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> Lis
     
     # Outline
     candidates.append(WholeGridProgram('outline', {'bg': bg}))
+    
+    # Corners mirror (2x2 mirrored tiling)
+    if oh == 2 * ih and ow == 2 * iw:
+        candidates.append(WholeGridProgram('corners_mirror', {'bg': bg}))
+    
+    # Diagonal lines
+    candidates.append(WholeGridProgram('diag_lines', {'bg': bg}))
+    
+    # Fill rect between pairs
+    candidates.append(WholeGridProgram('fill_rect', {'bg': bg}))
     
     # Remove color
     for c in grid_colors(inp0) - {bg}:
