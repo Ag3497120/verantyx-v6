@@ -1054,6 +1054,102 @@ class WholeGridProgram:
             keep = [c for c in range(w2) if any(rows[r][c] != bg for r in range(h2))]
             return [[rows[r][c] for c in keep] for r in range(h2)] if keep else None
         
+        elif self.name == 'gravity_all':
+            bg = self.params.get('bg', most_common_color(inp))
+            result = [[bg]*w for _ in range(h)]
+            for c in range(w):
+                vals = [inp[r][c] for r in range(h) if inp[r][c] != bg]
+                for i, v in enumerate(reversed(vals)):
+                    result[h-1-i][c] = v
+            return result
+        
+        elif self.name == 'gravity_up':
+            bg = self.params.get('bg', most_common_color(inp))
+            result = [[bg]*w for _ in range(h)]
+            for c in range(w):
+                vals = [inp[r][c] for r in range(h) if inp[r][c] != bg]
+                for i, v in enumerate(vals):
+                    result[i][c] = v
+            return result
+        
+        elif self.name == 'gravity_left':
+            bg = self.params.get('bg', most_common_color(inp))
+            result = [[bg]*w for _ in range(h)]
+            for r in range(h):
+                vals = [inp[r][c] for c in range(w) if inp[r][c] != bg]
+                for i, v in enumerate(vals):
+                    result[r][i] = v
+            return result
+        
+        elif self.name == 'gravity_right':
+            bg = self.params.get('bg', most_common_color(inp))
+            result = [[bg]*w for _ in range(h)]
+            for r in range(h):
+                vals = [inp[r][c] for c in range(w) if inp[r][c] != bg]
+                for i, v in enumerate(reversed(vals)):
+                    result[r][w-1-i] = v
+            return result
+        
+        elif self.name == 'connect_h':
+            bg = self.params.get('bg', most_common_color(inp))
+            result = [list(row) for row in inp]
+            for r in range(h):
+                for color in set(inp[r]) - {bg}:
+                    positions = [c for c in range(w) if inp[r][c] == color]
+                    if len(positions) >= 2:
+                        for c in range(min(positions), max(positions)+1):
+                            if result[r][c] == bg:
+                                result[r][c] = color
+            return result
+        
+        elif self.name == 'connect_v':
+            bg = self.params.get('bg', most_common_color(inp))
+            result = [list(row) for row in inp]
+            for c in range(w):
+                col_colors = set(inp[r][c] for r in range(h)) - {bg}
+                for color in col_colors:
+                    positions = [r for r in range(h) if inp[r][c] == color]
+                    if len(positions) >= 2:
+                        for r in range(min(positions), max(positions)+1):
+                            if result[r][c] == bg:
+                                result[r][c] = color
+            return result
+        
+        elif self.name == 'connect_hv':
+            bg = self.params.get('bg', most_common_color(inp))
+            # First connect_h, then connect_v
+            mid = [list(row) for row in inp]
+            for r in range(h):
+                for color in set(inp[r]) - {bg}:
+                    positions = [c for c in range(w) if inp[r][c] == color]
+                    if len(positions) >= 2:
+                        for c in range(min(positions), max(positions)+1):
+                            if mid[r][c] == bg:
+                                mid[r][c] = color
+            result = [list(row) for row in mid]
+            for c in range(w):
+                col_colors = set(mid[r][c] for r in range(h)) - {bg}
+                for color in col_colors:
+                    positions = [r for r in range(h) if mid[r][c] == color]
+                    if len(positions) >= 2:
+                        for r in range(min(positions), max(positions)+1):
+                            if result[r][c] == bg:
+                                result[r][c] = color
+            return result
+        
+        elif self.name == 'outline':
+            bg = self.params.get('bg', most_common_color(inp))
+            result = [[bg]*w for _ in range(h)]
+            for r in range(h):
+                for c in range(w):
+                    if inp[r][c] != bg:
+                        for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                            nr, nc = r+dr, c+dc
+                            if nr<0 or nr>=h or nc<0 or nc>=w or inp[nr][nc] == bg:
+                                result[r][c] = inp[r][c]
+                                break
+            return result
+        
         return None
 
 
@@ -1200,6 +1296,20 @@ def _generate_whole_grid_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> Lis
     candidates.append(WholeGridProgram('remove_empty_rows', {'bg': bg}))
     candidates.append(WholeGridProgram('remove_empty_cols', {'bg': bg}))
     candidates.append(WholeGridProgram('remove_empty_both', {'bg': bg}))
+    
+    # Gravity (all directions)
+    candidates.append(WholeGridProgram('gravity_all', {'bg': bg}))
+    candidates.append(WholeGridProgram('gravity_up', {'bg': bg}))
+    candidates.append(WholeGridProgram('gravity_left', {'bg': bg}))
+    candidates.append(WholeGridProgram('gravity_right', {'bg': bg}))
+    
+    # Connect same-color cells
+    candidates.append(WholeGridProgram('connect_h', {'bg': bg}))
+    candidates.append(WholeGridProgram('connect_v', {'bg': bg}))
+    candidates.append(WholeGridProgram('connect_hv', {'bg': bg}))
+    
+    # Outline
+    candidates.append(WholeGridProgram('outline', {'bg': bg}))
     
     # Remove color
     for c in grid_colors(inp0) - {bg}:
