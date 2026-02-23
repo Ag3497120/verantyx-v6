@@ -185,7 +185,7 @@ def match_choices_v2(
             return result
 
     # INCONCLUSIVE
-    result.reject_reason = f"no_clear_winner(supports={len(supported)},contradicts={len(contradicted)},unknown={len(unknown)})"
+    result.reject_reason = f"no_clear_winner(supports={len(strong_supported)},weak={len(weak_supported)},contradicts={len(contradicted)},unknown={len(unknown)})"
     return result
 
 

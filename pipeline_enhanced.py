@@ -784,9 +784,11 @@ class VerantyxV6Enhanced:
                 except Exception as _boost_e:
                     trace.append(f"step1_5:boost_error:{_boost_e}")
 
-                # ─── Step 1.5.8: 選択肢分解 × Wikipedia cross-matching ───
-                # 各選択肢を個別に分解→Wikipedia検索→stem_facts との cross-match
-                # LLM不使用、完全ルールベース → position bias ゼロ
+                # ─── Step 1.5.8-9: MCQ 並列ソルバー（全候補を集めて最高confを採用） ───
+                # cross_decompose, km_v2, mcq_direct を全て実行し、最もconfidenceが高い結果を採用
+                _mcq_candidates = []  # [(answer, confidence, method)]
+
+                # 1. cross_decompose (ルールベース)
                 try:
                     from executors.mcq_cross_decompose_solver import solve_by_cross_decomposition
                     _xd_result = solve_by_cross_decomposition(
@@ -795,29 +797,16 @@ class VerantyxV6Enhanced:
                     if _xd_result:
                         _xd_ans, _xd_conf, _xd_method = _xd_result
                         trace.append(f"step1_5_8:cross_decompose:{_xd_method} label={_xd_ans} conf={_xd_conf:.2f}")
-                        self.stats["executed"] += 1
-                        status = self._validate_answer(_xd_ans, expected_answer, trace)
-                        return {
-                            "status": status,
-                            "answer": _xd_ans,
-                            "expected": expected_answer,
-                            "confidence": _xd_conf,
-                            "method": _xd_method,
-                            "ir": ir_dict,
-                            "trace": trace,
-                        }
+                        _mcq_candidates.append((_xd_ans, _xd_conf, _xd_method))
                     else:
                         trace.append("step1_5_8:cross_decompose:INCONCLUSIVE")
                 except Exception as _xd_e:
                     trace.append(f"step1_5_8:cross_decompose_error:{_xd_e}")
 
-                # ─── Step 1.5.9: レベル2 MCQ ソルバー（知識マッチング + 消去法） ───
-                # 既存ソルバーが全て失敗した場合のフォールバック
-                # 鉄の壁レベル2: IR + 選択肢 + facts のみ（問題文は渡さない）
+                # 2. km_v2 (Atom-based, LLM-free)
                 trace.append(f"step1_5_9:debug:facts={len(_knowledge_facts)},choices={len(_choices) if _choices else 0}")
                 if _knowledge_facts and _choices and len(_choices) >= 2:
                     try:
-                        # 1. 知識マッチング v2（LLM confidence不要、relation分類）
                         from executors.mcq_knowledge_matcher_v2 import score_choices_v2
                         _km_result = score_choices_v2(
                             ir_dict, _choices, _knowledge_facts, use_llm=True
@@ -825,28 +814,13 @@ class VerantyxV6Enhanced:
                         if _km_result:
                             _km_ans, _km_conf, _km_method = _km_result
                             trace.append(f"step1_5_9:km_v2:{_km_method} label={_km_ans} conf={_km_conf:.2f}")
-                            self.stats["executed"] += 1
-                            status = self._validate_answer(_km_ans, expected_answer, trace)
-                            return {
-                                "status": status,
-                                "answer": _km_ans,
-                                "expected": expected_answer,
-                                "confidence": _km_conf,
-                                "method": _km_method,
-                                "ir": ir_dict,
-                                "trace": trace,
-                            }
+                            _mcq_candidates.append((_km_ans, _km_conf, _km_method))
                         else:
                             trace.append("step1_5_9:km_v2:INCONCLUSIVE")
                     except Exception as _km_e:
                         trace.append(f"step1_5_9:km_v2_error:{_km_e}")
 
-                    # 2. 消去法は km_v2 に統合済み（contradicts判定）
-                    # km_v2 が INCONCLUSIVE の場合のみここに到達
-
-                # ─── Step 1.5.9.5: MCQ 直接回答 (Qwen 7B, 鉄の壁レベル2) ───
-                # km_v2, elimination, 全ての計算ベースソルバーが失敗した場合の最終フォールバック
-                # 鉄の壁レベル2: IR + 選択肢 + facts → Qwen → 直接回答（問題文なし）
+                # 3. mcq_direct (Qwen 7B, 鉄の壁レベル2) — 最終フォールバック
                 try:
                     from executors.mcq_direct_solver import solve_mcq_directly
                     _direct_result = solve_mcq_directly(
@@ -860,7 +834,7 @@ class VerantyxV6Enhanced:
                         _dir_rejected = False
                         if _crystal and hasattr(_crystal, 'relations') and _crystal.relations:
                             try:
-                                from knowledge.crystal_to_cross import verify_with_cross
+                                from knowledge.crystal_to_cross import verify_with_cross  # noqa
                                 _mcq_cv = verify_with_cross(
                                     ir_dict,
                                     getattr(_crystal, 'fact_atoms', []),
@@ -884,23 +858,31 @@ class VerantyxV6Enhanced:
                                 trace.append(f"step1_5_9_5:cross_check_error:{_mcv_e}")
 
                         if not _dir_rejected:
-                            self.stats["executed"] += 1
-                            status = self._validate_answer(_dir_ans, expected_answer, trace)
-                            return {
-                                "status": status,
-                                "answer": _dir_ans,
-                                "expected": expected_answer,
-                                "confidence": _dir_conf,
-                                "method": _dir_method,
-                                "ir": ir_dict,
-                                "trace": trace,
-                            }
+                            _mcq_candidates.append((_dir_ans, _dir_conf, _dir_method))
                         else:
                             trace.append("step1_5_9_5:mcq_direct:REJECTED_BY_CROSS")
                     else:
                         trace.append("step1_5_9_5:mcq_direct:INCONCLUSIVE")
                 except Exception as _dir_e:
                     trace.append(f"step1_5_9_5:mcq_direct_error:{_dir_e}")
+
+                # ─── Step 1.5.10-pre: MCQ候補から最高confidence選択 ───
+                if _mcq_candidates:
+                    _mcq_candidates.sort(key=lambda x: x[1], reverse=True)
+                    _best_ans, _best_conf, _best_method = _mcq_candidates[0]
+                    _all_methods = "+".join(m for _, _, m in _mcq_candidates)
+                    trace.append(f"step1_5_mcq_vote:candidates={len(_mcq_candidates)} best={_best_ans}({_best_conf:.2f}) all=[{','.join(a for a,_,_ in _mcq_candidates)}]")
+                    self.stats["executed"] += 1
+                    status = self._validate_answer(_best_ans, expected_answer, trace)
+                    return {
+                        "status": status,
+                        "answer": _best_ans,
+                        "expected": expected_answer,
+                        "confidence": _best_conf,
+                        "method": _best_method,
+                        "ir": ir_dict,
+                        "trace": trace,
+                    }
 
         except Exception as _e:
             trace.append(f"step1_5:error:{_e}")
