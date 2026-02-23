@@ -209,6 +209,30 @@ class FactAtomizer:
             lambda m: (m.group(1), "is_a", m.group(2), None),
             0.35))  # LOW confidence — only used as last resort
 
+        # "{X} is the {ROLE/TYPE} ..." — broader is_a with "the"
+        P.append(("is_the",
+            re.compile(r'^(.+?)\s+(?:is|was|are|were)\s+the\s+(.+?)\.?$', re.I),
+            lambda m: (m.group(1), "is_a", m.group(2), None),
+            0.35))
+
+        # "{X} is one of the {TYPE}" 
+        P.append(("is_one_of",
+            re.compile(r'^(.+?)\s+(?:is|was|are|were)\s+one\s+of\s+(?:the\s+)?(.+?)\.?$', re.I),
+            lambda m: (m.group(1), "is_a", m.group(2), None),
+            0.35))
+
+        # "{X} is considered/regarded/known to be {Y}"
+        P.append(("is_considered",
+            re.compile(r'^(.+?)\s+(?:is|was|are|were)\s+(?:widely\s+)?(?:considered|regarded|known|recognized|thought|believed|understood)\s+(?:to\s+be\s+|as\s+)?(.+?)\.?$', re.I),
+            lambda m: (m.group(1), "is_a", m.group(2), None),
+            0.4))
+
+        # "{X} refers to {Y}" / "{X} denotes {Y}"
+        P.append(("refers_to",
+            re.compile(r'^(.+?)\s+(?:refers?\s+to|denotes?|means?|signifies?|represents?)\s+(.+?)\.?$', re.I),
+            lambda m: (m.group(1), "is_a", m.group(2), None),
+            0.4))
+
         # "{X} is {ADJ}" (property)
         P.append(("is_adj",
             re.compile(r'^(.+?)\s+(?:is|was|are|were)\s+((?:not\s+)?(?:\w+(?:ly|ed|ous|ive|ble|al|ic|ful|less|ent|ant|ary|ory)))\s*\.?$', re.I),

@@ -340,22 +340,21 @@ def classify_relations_by_atoms(
                     if fid not in matched_fact_ids:
                         matched_fact_ids.append(fid)
 
-        # ── 2b. Keyword fallback (no atoms matched) ──
-        if not matches:
+        # ── 2b. Keyword fallback (even if some atoms matched, augment) ──
+        if True:  # Always try keyword fallback for additional evidence
             for fi, ft_tokens in enumerate(fact_tokens_list):
                 if not ft_tokens:
                     continue
                 common = choice_tokens & ft_tokens
-                if not common:
-                    # Try synonyms
-                    for w in choice_tokens:
-                        syns = _SYNONYM_MAP.get(w, set())
-                        common |= (syns & ft_tokens)
+                # Try synonyms
+                for w in choice_tokens:
+                    syns = _SYNONYM_MAP.get(w, set())
+                    common |= (syns & ft_tokens)
                 if len(common) < 2:
                     continue
 
                 overlap = len(common) / max(len(choice_tokens), 1)
-                if overlap < 0.25:
+                if overlap < 0.15:  # Relaxed from 0.25
                     continue
 
                 fid = fact_id_map.get(fi, f"fact_{fi}")
@@ -398,12 +397,16 @@ def classify_relations_by_atoms(
                         matched_fact_ids.append(fid)
                     break  # one numeric match is enough
 
-        # ── 2d. Determine relation ──
+        # ── 2d. Determine relation (with partial support) ──
         net_score = support_score - contradict_score
-        if contradict_score >= 0.5 and contradict_score > support_score:
+        if contradict_score >= 0.4 and contradict_score > support_score:
             relation = "contradicts"
-        elif support_score >= 0.4 and support_score > contradict_score:
-            relation = "supports"
+        elif support_score >= 0.25 and support_score > contradict_score:
+            # Distinguish strong vs weak supports
+            if support_score >= 0.6:
+                relation = "supports"  # strong
+            else:
+                relation = "supports_weak"  # partial: used for tiebreak only
         else:
             relation = "unknown"
 

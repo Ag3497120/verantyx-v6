@@ -1,39 +1,39 @@
 {
-  "score": 0.0068,
-  "correct": 17,
+  "score": 0.0024,
+  "correct": 6,
   "total": 2500,
-  "done": 305,
-  "elapsed_s": 1799.8599872589111,
+  "done": 189,
+  "elapsed_s": 2657.011621952057,
   "stats": {
-    "wiki_hits": 288,
-    "knowledge_match": 1,
+    "wiki_hits": 177,
+    "knowledge_match": 6,
     "elimination": 0,
     "sympy": 0,
-    "concepts": 472,
-    "direct": 40,
-    "xdec": 29
+    "concepts": 297,
+    "direct": 2,
+    "xdec": 23
   },
   "per_problem": [
     {
       "id": "6687ffb1091058ff19128813",
       "correct": false,
-      "predicted": "and opposite to the charge of",
+      "predicted": null,
       "expected": "Rxf3, Rf1#",
-      "method": "cross_equals(y convention and this charge is=and opposite to the charge of)"
+      "method": ""
     },
     {
       "id": "668825f80a642802bdfeadfa",
-      "correct": true,
-      "predicted": "D",
+      "correct": false,
+      "predicted": null,
       "expected": "D",
-      "method": "cross_decompose:best=D(score=0.428,gap=0.114,concepts=3,wiki_facts=3,overlaps=10)"
+      "method": ""
     },
     {
       "id": "668828540a642802bdfeadfc",
       "correct": false,
-      "predicted": "and opposite to the charge of",
+      "predicted": null,
       "expected": "yeyo",
-      "method": "cross_equals(y convention and this charge is=and opposite to the charge of)"
+      "method": ""
     },
     {
       "id": "669402b41dcb3d5a1ef9e951",
@@ -45,9 +45,9 @@
     {
       "id": "6696c3734c196f1af6a16fcb",
       "correct": false,
-      "predicted": "and opposite to the charge of",
+      "predicted": null,
       "expected": "18",
-      "method": "cross_equals(y convention and this charge is=and opposite to the charge of)"
+      "method": ""
     },
     {
       "id": "66b2c7c9795022550abb176b",
@@ -59,30 +59,30 @@
     {
       "id": "66b727d367968fa27f2dddda",
       "correct": false,
-      "predicted": "and opposite to the charge of",
+      "predicted": null,
       "expected": "\\(-((d - 2k)^2) + d\\)",
-      "method": "cross_equals(y convention and this charge is=and opposite to the charge of)"
+      "method": ""
     },
     {
       "id": "66b827b9b64deaedfbb997a2",
       "correct": false,
-      "predicted": "and opposite to the charge of",
+      "predicted": null,
       "expected": "3",
-      "method": "cross_equals(y convention and this charge is=and opposite to the charge of)"
+      "method": ""
     },
     {
       "id": "66b91693d86bff9a12fc1f99",
       "correct": false,
-      "predicted": "and opposite to the charge of",
+      "predicted": null,
       "expected": "Katie kicked the knotted kite string, knowing it would take skill to unknot the tangled mess.",
-      "method": "cross_equals(y convention and this charge is=and opposite to the charge of)"
+      "method": ""
     },
     {
       "id": "66ba5510db07a3a9151be0d2",
       "correct": false,
-      "predicted": "and opposite to the charge of",
+      "predicted": null,
       "expected": "$\\mathcal{A}^{\\alpha-}(X)$, denoting $\\cap_{\\delta>0} \\mathcal{A}^{\\alpha-\\delta}(X)$",
-      "method": "cross_equals(y convention and this charge is=and opposite to the charge of)"
+      "method": ""
     },
     {
       "id": "66c5c3eae30bdd4f1da62cfc",
@@ -93,10 +93,10 @@
     },
     {
       "id": "66e4cdec11c64a7e4051b2d9",
-      "correct": true,
-      "predicted": "E",
+      "correct": false,
+      "predicted": null,
       "expected": "E",
-      "method": "mcq_direct:qwen7b(facts=8,choices=5)"
+      "method": ""
     },
     {
       "id": "66e70c75bbb9b1754c0869ce",
@@ -108,16 +108,16 @@
     {
       "id": "66e8784d70625d8c7700315a",
       "correct": false,
-      "predicted": "D",
+      "predicted": null,
       "expected": "C",
-      "method": "mcq_direct:qwen7b(facts=5,choices=7)"
+      "method": ""
     },
     {
       "id": "66e883265ab37f0a7da089be",
       "correct": false,
-      "predicted": "E",
+      "predicted": null,
       "expected": "C",
-      "method": "mcq_direct:qwen7b(facts=8,choices=5)"
+      "method": ""
     },
     {
       "id": "66e884515ab37f0a7da089bf",
@@ -131,7 +131,7 @@
       "correct": true,
       "predicted": "B",
       "expected": "B",
-      "method": "cross_decompose:best=B(score=0.207,gap=0.054,concepts=2,wiki_facts=1,overlaps=2)"
+      "method": "cross_decompose:best=B(score=0.210,gap=0.055,concepts=2,wiki_facts=1,overlaps=2)"
     },
     {
       "id": "66e8967ae99ca52dd4b94441",
@@ -150,9 +150,9 @@
     {
       "id": "66e89ebe7361982cbfbc5952",
       "correct": false,
-      "predicted": "and opposite to the charge of",
+      "predicted": null,
       "expected": "\\begin{pmatrix}8&9\\\\9&8\\end{pmatrix}",
-      "method": "cross_equals(y convention and this charge is=and opposite to the charge of)"
+      "method": ""
     },
     {
       "id": "66e8a1833aa94517d4573b0d",
@@ -171,9 +171,9 @@
     {
       "id": "66e8a3ed3aa94517d4573b14",
       "correct": false,
-      "predicted": null,
+      "predicted": "composite number",
       "expected": "\\frac{2}{7}",
-      "method": ""
+      "method": "exact_assembler:atom_kw:alias(overlap=2)(supports=1,rel=0.33,atoms=19)"
     },
     {
       "id": "66e8add1650a03361a14c6f8",
@@ -185,16 +185,16 @@
     {
       "id": "66e8ae603aa94517d4573b32",
       "correct": false,
-      "predicted": "and opposite to the charge of",
+      "predicted": null,
       "expected": "1",
-      "method": "cross_equals(y convention and this charge is=and opposite to the charge of)"
+      "method": ""
     },
     {
       "id": "66e8ae613aa94517d4573b33",
       "correct": false,
-      "predicted": "and opposite to the charge of",
+      "predicted": null,
       "expected": "Final step or Product Desorption Step, 1.4*10^-14 or 1.4E-14 (hr-1)",
-      "method": "cross_equals(y convention and this charge is=and opposite to the charge of)"
+      "method": ""
     },
     {
       "id": "66e8b0a9e5eaa390aa9fdde5",
@@ -206,9 +206,9 @@
     {
       "id": "66e8b578d0c1f7390bad120c",
       "correct": false,
-      "predicted": "E",
+      "predicted": null,
       "expected": "F",
-      "method": "mcq_direct:qwen7b(facts=8,choices=10)"
+      "method": ""
     },
     {
       "id": "66e8c151efbbc8b5a54da02b",
@@ -220,30 +220,30 @@
     {
       "id": "66e8ccc4089d1e34c84c76c0",
       "correct": false,
-      "predicted": "and opposite to the charge of",
+      "predicted": null,
       "expected": "(1,4,5), (1,3,4,5,6)",
-      "method": "cross_equals(y convention and this charge is=and opposite to the charge of)"
+      "method": ""
     },
     {
       "id": "66e8ccd402beabf885334534",
       "correct": false,
-      "predicted": "and opposite to the charge of",
+      "predicted": null,
       "expected": "min(max(0, T - z), z)",
-      "method": "cross_equals(y convention and this charge is=and opposite to the charge of)"
+      "method": ""
     },
     {
       "id": "66e8cfa03add731d7fce4352",
       "correct": false,
-      "predicted": "and opposite to the charge of",
+      "predicted": null,
       "expected": "\\frac{1-1/(\\pi+1)}{\\log(\\pi+1)}",
-      "method": "cross_equals(y convention and this charge is=and opposite to the charge of)"
+      "method": ""
     },
     {
       "id": "66e8d3ed713a83e8aeddc2f5",
       "correct": false,
       "predicted": "C",
       "expected": "J",
-      "method": "cross_decompose:best=C(score=0.225,gap=0.043,concepts=2,wiki_facts=3,overlaps=10)"
+      "method": "cross_decompose:best=C(score=0.226,gap=0.044,concepts=2,wiki_facts=3,overlaps=10)"
     },
     {
       "id": "66e8d4736299517dd7a5da8c",
@@ -264,7 +264,7 @@
       "correct": false,
       "predicted": "F",
       "expected": "C",
-      "method": "cross_decompose:best=F(score=0.243,gap=0.034,concepts=2,wiki_facts=2,overlaps=6)"
+      "method": "cross_decompose:best=F(score=0.243,gap=0.034,concepts=2,wiki_facts=3,overlaps=6)"
     },
     {
       "id": "66e8e05c8bc4119df2ce4395",
@@ -278,21 +278,21 @@
       "correct": true,
       "predicted": "B",
       "expected": "B",
-      "method": "mcq_direct:qwen7b(facts=3,choices=5)"
+      "method": "mcq_direct:qwen7b(facts=2,choices=5)"
     },
     {
       "id": "66e8e473f59e5564daf565b6",
       "correct": false,
-      "predicted": "and opposite to the charge of",
+      "predicted": null,
       "expected": "8",
-      "method": "cross_equals(y convention and this charge is=and opposite to the charge of)"
+      "method": ""
     },
     {
       "id": "66e8e6c8f59e5564daf565bd",
       "correct": false,
-      "predicted": "C",
+      "predicted": null,
       "expected": "D",
-      "method": "mcq_direct:qwen7b(facts=13,choices=5)"
+      "method": ""
     },
     {
       "id": "66e8e8864c478c24f1a7e7b8",
@@ -304,9 +304,9 @@
     {
       "id": "66e8ea4cacb34dd5dbffa298",
       "correct": false,
-      "predicted": "E",
+      "predicted": null,
       "expected": "B",
-      "method": "mcq_direct:qwen7b(facts=5,choices=5)"
+      "method": ""
     },
     {
       "id": "66e8f69b1440516dd6ab54da",
@@ -325,9 +325,9 @@
     {
       "id": "66e906f860abc895aedcf467",
       "correct": false,
-      "predicted": "D",
+      "predicted": null,
       "expected": "C",
-      "method": "mcq_direct:qwen7b(facts=4,choices=5)"
+      "method": ""
     },
     {
       "id": "66e907c51440516dd6ab54fb",
@@ -339,9 +339,9 @@
     {
       "id": "66e90adfa5b0e84a801c7660",
       "correct": false,
-      "predicted": "C",
+      "predicted": null,
       "expected": "H",
-      "method": "mcq_direct:qwen7b(facts=9,choices=9)"
+      "method": ""
     },
     {
       "id": "66e9100b48468f864f861b90",
@@ -355,7 +355,7 @@
       "correct": true,
       "predicted": "C",
       "expected": "C",
-      "method": "cross_decompose:best=C(score=0.187,gap=0.037,concepts=1,wiki_facts=2,overlaps=4)"
+      "method": "cross_decompose:best=C(score=0.180,gap=0.030,concepts=1,wiki_facts=1,overlaps=3)"
     },
     {
       "id": "66e9173256ec303aa22ccd37",
@@ -367,9 +367,9 @@
     {
       "id": "66e91bc08dd8f00467e3d5d8",
       "correct": false,
-      "predicted": "C",
+      "predicted": null,
       "expected": "D",
-      "method": "mcq_direct:qwen7b(facts=8,choices=10)"
+      "method": ""
     },
     {
       "id": "66e9249c953867e04c273db7",
@@ -388,23 +388,23 @@
     {
       "id": "66e932f00bd16d40d4bc4d81",
       "correct": false,
-      "predicted": "B",
+      "predicted": null,
       "expected": "D",
-      "method": "mcq_direct:qwen7b(facts=6,choices=6)"
+      "method": ""
     },
     {
       "id": "66e93893a3326adf2da92ef0",
       "correct": false,
       "predicted": "I",
       "expected": "A",
-      "method": "cross_decompose:best=I(score=0.679,gap=0.362,concepts=2,wiki_facts=3,overlaps=10)"
+      "method": "cross_decompose:best=I(score=0.689,gap=0.370,concepts=2,wiki_facts=3,overlaps=10)"
     },
     {
       "id": "66e939c176b5b4f3e8a369b8",
       "correct": false,
-      "predicted": null,
+      "predicted": "probability of \"tails\"",
       "expected": "0",
-      "method": ""
+      "method": "exact_assembler:atom_kw:probability(overlap=3)(supports=1,rel=0.50,atoms=6)"
     },
     {
       "id": "66e93b7099d9d12b2b824c44",
@@ -432,14 +432,14 @@
       "correct": false,
       "predicted": "B",
       "expected": "C",
-      "method": "cross_decompose:best=B(score=0.155,gap=0.095,concepts=2,wiki_facts=2,overlaps=1)"
+      "method": "cross_decompose:best=B(score=0.159,gap=0.099,concepts=2,wiki_facts=2,overlaps=1)"
     },
     {
       "id": "66e949664ea2c791558f8620",
       "correct": false,
       "predicted": "I",
       "expected": "F",
-      "method": "mcq_direct:qwen7b(facts=6,choices=9)"
+      "method": "cross_decompose:best=I(score=0.159,gap=0.042,concepts=2,wiki_facts=1,overlaps=2)"
     },
     {
       "id": "66e94a88b78e263c565b17ee",
@@ -495,7 +495,7 @@
       "correct": false,
       "predicted": "C",
       "expected": "D",
-      "method": "mcq_direct:qwen7b(facts=3,choices=5)"
+      "method": "mcq_direct:qwen7b(facts=0,choices=5)"
     },
     {
       "id": "66e98ce28056cd9dd9b1d9f6",
@@ -506,10 +506,10 @@
     },
     {
       "id": "66e991ec2dad0e536fb92ece",
-      "correct": true,
-      "predicted": "C",
+      "correct": false,
+      "predicted": null,
       "expected": "C",
-      "method": "mcq_direct:qwen7b(facts=4,choices=6)"
+      "method": ""
     },
     {
       "id": "66e996260930c00374ceaa0b",
@@ -523,7 +523,7 @@
       "correct": true,
       "predicted": "B",
       "expected": "B",
-      "method": "cross_decompose:best=B(score=0.506,gap=0.162,concepts=2,wiki_facts=1,overlaps=10)"
+      "method": "cross_decompose:best=B(score=0.512,gap=0.162,concepts=2,wiki_facts=1,overlaps=10)"
     },
     {
       "id": "66e9a436876fbf9ff158c137",
@@ -544,14 +544,14 @@
       "correct": false,
       "predicted": "F",
       "expected": "K",
-      "method": "cross_decompose:best=F(score=0.228,gap=0.119,concepts=3,wiki_facts=2,overlaps=2)"
+      "method": "cross_decompose:best=F(score=0.229,gap=0.121,concepts=3,wiki_facts=2,overlaps=2)"
     },
     {
       "id": "66e9b92578e89514d9ab6093",
       "correct": false,
-      "predicted": null,
+      "predicted": "rank of M and the nullity of M",
       "expected": "Benin and Madagascar",
-      "method": ""
+      "method": "exact_assembler:atom_kw:sum_of(overlap=3)(supports=1,rel=0.28,atoms=8)"
     },
     {
       "id": "66e9c038d2d1c2dec1f6978e",
@@ -607,14 +607,14 @@
       "correct": false,
       "predicted": "E",
       "expected": "F",
-      "method": "cross_decompose:best=E(score=0.348,gap=0.119,concepts=1,wiki_facts=2,overlaps=10)"
+      "method": "cross_decompose:best=E(score=0.346,gap=0.071,concepts=1,wiki_facts=2,overlaps=10)"
     },
     {
       "id": "66ea1dd348eb93c2aef1c735",
       "correct": false,
-      "predicted": "G",
+      "predicted": null,
       "expected": "E",
-      "method": "mcq_direct:qwen7b(facts=11,choices=16)"
+      "method": ""
     },
     {
       "id": "66ea216e142383cfe2f74fde",
@@ -628,14 +628,14 @@
       "correct": false,
       "predicted": "A",
       "expected": "C",
-      "method": "cross_decompose:best=A(score=0.165,gap=0.096,concepts=5,wiki_facts=1,overlaps=4)"
+      "method": "cross_decompose:best=A(score=0.117,gap=0.040,concepts=5,wiki_facts=1,overlaps=3)"
     },
     {
       "id": "66ea29ab7131229007ccbd9d",
       "correct": false,
       "predicted": "A",
       "expected": "I",
-      "method": "cross_decompose:best=A(score=0.185,gap=0.102,concepts=1,wiki_facts=1,overlaps=2)"
+      "method": "cross_decompose:best=A(score=0.186,gap=0.105,concepts=1,wiki_facts=1,overlaps=2)"
     },
     {
       "id": "66ea2cc3c602e2b991ae8aba",
@@ -684,7 +684,7 @@
       "correct": false,
       "predicted": "C",
       "expected": "D",
-      "method": "cross_decompose:best=C(score=0.603,gap=0.453,concepts=1,wiki_facts=1,overlaps=1)"
+      "method": "cross_decompose:best=C(score=0.300,gap=0.150,concepts=1,wiki_facts=1,overlaps=0)"
     },
     {
       "id": "66ea4076d1767539f1308fde",
@@ -703,9 +703,9 @@
     {
       "id": "66ea4881b7291c80d7f10f9d",
       "correct": false,
-      "predicted": "D",
+      "predicted": null,
       "expected": "I",
-      "method": "mcq_direct:qwen7b(facts=5,choices=15)"
+      "method": ""
     },
     {
       "id": "66ea534258a0968d95583cd8",
@@ -775,7 +775,7 @@
       "correct": false,
       "predicted": "G",
       "expected": "I",
-      "method": "cross_decompose:best=G(score=0.160,gap=0.160,concepts=2,wiki_facts=1,overlaps=2)"
+      "method": "cross_decompose:best=G(score=0.163,gap=0.163,concepts=2,wiki_facts=1,overlaps=2)"
     },
     {
       "id": "66eaa5414a8ccea7bfdf2df5",
@@ -796,14 +796,14 @@
       "correct": false,
       "predicted": "A",
       "expected": "C",
-      "method": "cross_decompose:best=A(score=0.316,gap=0.100,concepts=2,wiki_facts=4,overlaps=5)"
+      "method": "cross_decompose:best=A(score=0.317,gap=0.097,concepts=2,wiki_facts=4,overlaps=5)"
     },
     {
       "id": "66eadaf22b7de7dec0a046bd",
       "correct": false,
       "predicted": "D",
       "expected": "B",
-      "method": "cross_decompose:best=D(score=0.309,gap=0.309,concepts=1,wiki_facts=1,overlaps=1)"
+      "method": "cross_decompose:best=D(score=0.300,gap=0.300,concepts=1,wiki_facts=1,overlaps=0)"
     },
     {
       "id": "66eae4e351a34eec5d943952",
@@ -815,16 +815,16 @@
     {
       "id": "66eae565b2e7406d498f8cc9",
       "correct": false,
-      "predicted": "E",
+      "predicted": null,
       "expected": "H",
-      "method": "mcq_direct:qwen7b(facts=5,choices=11)"
+      "method": ""
     },
     {
       "id": "66eaeaa8afe364e4f477b777",
       "correct": false,
-      "predicted": "F",
+      "predicted": null,
       "expected": "A",
-      "method": "mcq_direct:qwen7b(facts=7,choices=8)"
+      "method": ""
     },
     {
       "id": "66eaed13c47c4325f612ff48",
@@ -842,10 +842,10 @@
     },
     {
       "id": "66eaf0ba5e31c19691fe73b1",
-      "correct": true,
-      "predicted": "E",
+      "correct": false,
+      "predicted": null,
       "expected": "E",
-      "method": "mcq_direct:qwen7b(facts=5,choices=5)"
+      "method": ""
     },
     {
       "id": "66eaf1f49c43656de6cf31f6",
@@ -857,9 +857,9 @@
     {
       "id": "66eaf456afe364e4f477b78f",
       "correct": false,
-      "predicted": "D",
+      "predicted": null,
       "expected": "B",
-      "method": "mcq_direct:qwen7b(facts=3,choices=5)"
+      "method": ""
     },
     {
       "id": "66eaf77aec7a1adc61bbb13e",
@@ -878,9 +878,9 @@
     {
       "id": "66eafb96b082c5e6a76a49c0",
       "correct": false,
-      "predicted": "F",
+      "predicted": null,
       "expected": "C",
-      "method": "mcq_direct:qwen7b(facts=4,choices=6)"
+      "method": ""
     },
     {
       "id": "66eb0883f3acd11c70662aff",
@@ -898,10 +898,10 @@
     },
     {
       "id": "66eb1706d3b17bc68156e3e3",
-      "correct": true,
-      "predicted": "D",
+      "correct": false,
+      "predicted": null,
       "expected": "D",
-      "method": "mcq_direct:qwen7b(facts=2,choices=5)"
+      "method": ""
     },
     {
       "id": "66eb1ad641ef9e7d6011c3be",
@@ -936,7 +936,7 @@
       "correct": false,
       "predicted": "E",
       "expected": "D",
-      "method": "cross_decompose:best=E(score=0.109,gap=0.060,concepts=2,wiki_facts=2,overlaps=3)"
+      "method": "cross_decompose:best=E(score=0.106,gap=0.057,concepts=2,wiki_facts=2,overlaps=2)"
     },
     {
       "id": "66eb36fbb38dbcd7910ceafc",
@@ -969,9 +969,9 @@
     {
       "id": "66eb894e6feeaea27b557782",
       "correct": false,
-      "predicted": "J",
+      "predicted": null,
       "expected": "G",
-      "method": "mcq_direct:qwen7b(facts=9,choices=23)"
+      "method": ""
     },
     {
       "id": "66eb968f69502893cf210115",
@@ -983,9 +983,9 @@
     {
       "id": "66eba0ac68e7d4b6c48bb022",
       "correct": false,
-      "predicted": "T",
+      "predicted": null,
       "expected": "Q",
-      "method": "mcq_direct:qwen7b(facts=4,choices=23)"
+      "method": ""
     },
     {
       "id": "66ebb1e8709fbb756c1f7b74",
@@ -1003,17 +1003,17 @@
     },
     {
       "id": "66ebefa090db075818df99a9",
-      "correct": true,
-      "predicted": "D",
+      "correct": false,
+      "predicted": "E",
       "expected": "D",
-      "method": "mcq_direct:qwen7b(facts=6,choices=5)"
+      "method": "cross_decompose:best=E(score=0.076,gap=0.025,concepts=2,wiki_facts=1,overlaps=3)"
     },
     {
       "id": "66ec02c52ec65d6153428744",
       "correct": false,
       "predicted": "C",
       "expected": "B",
-      "method": "cross_decompose:best=C(score=0.201,gap=0.042,concepts=2,wiki_facts=3,overlaps=10)"
+      "method": "cross_decompose:best=C(score=0.165,gap=0.029,concepts=2,wiki_facts=2,overlaps=10)"
     },
     {
       "id": "66ec0ed8b0ae7f67e365a163",
@@ -1025,9 +1025,9 @@
     {
       "id": "66ec11b230ba0debf40b1fec",
       "correct": false,
-      "predicted": "E",
+      "predicted": null,
       "expected": "B",
-      "method": "mcq_direct:qwen7b(facts=8,choices=5)"
+      "method": ""
     },
     {
       "id": "66ec3eb19c00ffe17adfde9f",
@@ -1074,9 +1074,9 @@
     {
       "id": "66ec8ab4b489956467209e0c",
       "correct": false,
-      "predicted": null,
+      "predicted": "composite number",
       "expected": "\\frac{32}{29}",
-      "method": ""
+      "method": "exact_assembler:atom:alias(supports=1,rel=0.60,atoms=20)"
     },
     {
       "id": "66ecb2eb54baa602e636a457",
@@ -1102,9 +1102,9 @@
     {
       "id": "66ecf59741de2844089fc54b",
       "correct": false,
-      "predicted": "D",
+      "predicted": null,
       "expected": "E",
-      "method": "mcq_direct:qwen7b(facts=4,choices=5)"
+      "method": ""
     },
     {
       "id": "66ecfd03e7478ca5fcbb7495",
@@ -1186,23 +1186,23 @@
     {
       "id": "66ed58561d24f687ee9b06bb",
       "correct": false,
-      "predicted": "C",
+      "predicted": null,
       "expected": "G",
-      "method": "mcq_direct:qwen7b(facts=3,choices=14)"
+      "method": ""
     },
     {
       "id": "66ed5e6a1d24f687ee9b06d1",
       "correct": false,
-      "predicted": null,
+      "predicted": "radius",
       "expected": "Triangle. 0 dots. Arrow is straight up.",
-      "method": ""
+      "method": "exact_assembler:atom:alias(supports=1,rel=0.45,atoms=15)"
     },
     {
       "id": "66ed5f1e85adbeda9f978022",
       "correct": true,
       "predicted": "C",
       "expected": "C",
-      "method": "cross_decompose:best=C(score=0.677,gap=0.150,concepts=3,wiki_facts=4,overlaps=10)"
+      "method": "cross_decompose:best=C(score=0.686,gap=0.155,concepts=3,wiki_facts=2,overlaps=10)"
     },
     {
       "id": "66ed80da7c4ab15ec9270e94",
@@ -1251,7 +1251,7 @@
       "correct": false,
       "predicted": "B",
       "expected": "G",
-      "method": "cross_decompose:best=B(score=0.075,gap=0.025,concepts=2,wiki_facts=2,overlaps=0)"
+      "method": "cross_decompose:best=B(score=0.085,gap=0.025,concepts=2,wiki_facts=2,overlaps=1)"
     },
     {
       "id": "66edc256d0ce7f9082f8d744",
@@ -1259,6 +1259,86 @@
       "predicted": null,
       "expected": "5904",
       "method": ""
+    },
+    {
+      "id": "66edc60801af2a724035ad4b",
+      "correct": false,
+      "predicted": "C",
+      "expected": "E",
+      "method": "cross_decompose:best=C(score=0.300,gap=0.175,concepts=1,wiki_facts=1,overlaps=0)"
+    },
+    {
+      "id": "66edd3dc1ee489494038d9eb",
+      "correct": false,
+      "predicted": null,
+      "expected": "A",
+      "method": ""
+    },
+    {
+      "id": "66edd857a0ffa4c025458242",
+      "correct": false,
+      "predicted": null,
+      "expected": "6",
+      "method": ""
+    },
+    {
+      "id": "66ede973564cb32b38cc8a4a",
+      "correct": false,
+      "predicted": null,
+      "expected": "$\\binom{k}{n}2^{n}$",
+      "method": ""
+    },
+    {
+      "id": "66edf49c46d28f04618d6498",
+      "correct": false,
+      "predicted": null,
+      "expected": "4.73",
+      "method": ""
+    },
+    {
+      "id": "66ee01a4126fac9cef29cb8b",
+      "correct": false,
+      "predicted": null,
+      "expected": "501",
+      "method": ""
+    },
+    {
+      "id": "66ee0b4d95cd6c1ce2259e50",
+      "correct": false,
+      "predicted": null,
+      "expected": "D",
+      "method": ""
+    },
+    {
+      "id": "66ee158c5db68805b7d3d27b",
+      "correct": false,
+      "predicted": null,
+      "expected": "C",
+      "method": ""
+    },
+    {
+      "id": "66ee1745f77f20ac4db1fd7b",
+      "correct": false,
+      "predicted": null,
+      "expected": "The smallest angle is about 35° and it can be achieved orienting the textile at about 17.5°.",
+      "method": ""
+    },
+    {
+      "id": "66ee386f26abf77702fa5a5d",
+      "correct": false,
+      "predicted": null,
+      "expected": "E",
+      "method": ""
+    },
+    {
+      "id": "66ee3918d7b2b78925bd20b6",
+      "correct": false,
+      "predicted": "vertex coloring",
+      "expected": "2469",
+      "method": "exact_assembler:atom:alias(supports=2,rel=0.40,atoms=13)"
+    }
+  ]
+}
     },
     {
       "id": "66edc60801af2a724035ad4b",
@@ -2148,6 +2228,2980 @@
       "predicted": null,
       "expected": "[62720,243]",
       "method": ""
-    }
-  ]
-}
+    },
+    {
+      "id": "66f583effa3f26008ed527e0",
+      "correct": false,
+      "predicted": null,
+      "expected": "Pierre Léopold Albert Marquet",
+      "method": ""
+    },
+    {
+      "id": "66f589b926268030174717bd",
+      "correct": false,
+      "predicted": null,
+      "expected": "$14+2\\sqrt{13}$",
+      "method": ""
+    },
+    {
+      "id": "66f5ac3d909b45b3b472d01f",
+      "correct": false,
+      "predicted": null,
+      "expected": "Bb3 1, Db4 1, F4 2, Bb4 4, Db5 5",
+      "method": ""
+    },
+    {
+      "id": "66f5c96b4ae309d465eeca47",
+      "correct": false,
+      "predicted": null,
+      "expected": "955",
+      "method": ""
+    },
+    {
+      "id": "66f5db356e132c6b4fd9408b",
+      "correct": false,
+      "predicted": null,
+      "expected": "G",
+      "method": ""
+    },
+    {
+      "id": "66f5e796acadd55c11fb11f5",
+      "correct": false,
+      "predicted": null,
+      "expected": "9",
+      "method": ""
+    },
+    {
+      "id": "66f5f12b7d734fba2ce800d6",
+      "correct": false,
+      "predicted": null,
+      "expected": "106",
+      "method": ""
+    },
+    {
+      "id": "66f5fa6547b598f037ec67fd",
+      "correct": false,
+      "predicted": null,
+      "expected": "7",
+      "method": ""
+    },
+    {
+      "id": "66f5fd3235147083021a66c6",
+      "correct": false,
+      "predicted": null,
+      "expected": "12",
+      "method": ""
+    },
+    {
+      "id": "66f63324376699e7c6894239",
+      "correct": false,
+      "predicted": null,
+      "expected": "7527",
+      "method": ""
+    },
+    {
+      "id": "66f647ec6b41277283a0813c",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\frac{6}{13}",
+      "method": ""
+    },
+    {
+      "id": "66f6743f2db0dfd3e0b594e7",
+      "correct": false,
+      "predicted": null,
+      "expected": "PVQ",
+      "method": ""
+    },
+    {
+      "id": "66f684db71131a41ff244fb9",
+      "correct": false,
+      "predicted": null,
+      "expected": "6",
+      "method": ""
+    },
+    {
+      "id": "66f6a78cf5f84fe0d6bbcb84",
+      "correct": false,
+      "predicted": null,
+      "expected": "6",
+      "method": ""
+    },
+    {
+      "id": "66f6b73a1b586571e550784f",
+      "correct": false,
+      "predicted": null,
+      "expected": "10",
+      "method": ""
+    },
+    {
+      "id": "66f6bffd76e8f5503a11d413",
+      "correct": false,
+      "predicted": null,
+      "expected": "$10^{980}$",
+      "method": ""
+    },
+    {
+      "id": "66f6c390489d30372dbc1816",
+      "correct": false,
+      "predicted": null,
+      "expected": "$\\pi(1-\\log 2\\pi)$",
+      "method": ""
+    },
+    {
+      "id": "66f6d6bb851e7fd5e8e5e5eb",
+      "correct": false,
+      "predicted": null,
+      "expected": "5",
+      "method": ""
+    },
+    {
+      "id": "66f6f048b40ada5ac3b91cf8",
+      "correct": false,
+      "predicted": null,
+      "expected": "$\\frac{k-1}{2}-1$",
+      "method": ""
+    },
+    {
+      "id": "66f6f494e56a5e5bc0b5a7af",
+      "correct": false,
+      "predicted": null,
+      "expected": "31",
+      "method": ""
+    },
+    {
+      "id": "66f708eec8903a7f2c03edbe",
+      "correct": false,
+      "predicted": null,
+      "expected": "126",
+      "method": ""
+    },
+    {
+      "id": "66f7218240bd9498c95bfdf3",
+      "correct": false,
+      "predicted": null,
+      "expected": "[Z, Z, 0, Z/2Z, Z/2Z, Z/3Z]",
+      "method": ""
+    },
+    {
+      "id": "66f7292f3f4622b6ce24b961",
+      "correct": false,
+      "predicted": null,
+      "expected": " \\( 2^{cardinality of R} \\)",
+      "method": ""
+    },
+    {
+      "id": "66f760ebf206a49e129c7ed9",
+      "correct": false,
+      "predicted": "A",
+      "expected": "C",
+      "method": "cross_decompose:best=A(score=0.392,gap=0.075,concepts=2,wiki_facts=3,overlaps=10)"
+    },
+    {
+      "id": "66f77487fb10531253ee7842",
+      "correct": true,
+      "predicted": "H",
+      "expected": "H",
+      "method": "mcq_direct:qwen7b(facts=7,choices=10)"
+    },
+    {
+      "id": "66f788502fd8c4ffcf2ab3fa",
+      "correct": false,
+      "predicted": null,
+      "expected": "D",
+      "method": ""
+    },
+    {
+      "id": "66f79e7259706e88d28a23b5",
+      "correct": false,
+      "predicted": "G",
+      "expected": "D",
+      "method": "mcq_direct:qwen7b(facts=3,choices=8)"
+    },
+    {
+      "id": "66f7c1bff433ef9260df6e77",
+      "correct": false,
+      "predicted": null,
+      "expected": "2.5",
+      "method": ""
+    },
+    {
+      "id": "66f7fa54fa61639b844aa420",
+      "correct": false,
+      "predicted": null,
+      "expected": "63",
+      "method": ""
+    },
+    {
+      "id": "66f820bb7ea359a842b73398",
+      "correct": false,
+      "predicted": null,
+      "expected": "1,3",
+      "method": ""
+    },
+    {
+      "id": "66f83aed0d92e99048a4ae9d",
+      "correct": false,
+      "predicted": "G",
+      "expected": "D",
+      "method": "cross_decompose:best=G(score=0.300,gap=0.095,concepts=1,wiki_facts=2,overlaps=0)"
+    },
+    {
+      "id": "66f85b33881bc7c87a8fc0e9",
+      "correct": false,
+      "predicted": null,
+      "expected": "(1) 1, 2, 2",
+      "method": ""
+    },
+    {
+      "id": "66f864c8f7c10f2d2ba396df",
+      "correct": false,
+      "predicted": null,
+      "expected": "G",
+      "method": ""
+    },
+    {
+      "id": "66f86bbb27a30cecdc2d6c7e",
+      "correct": false,
+      "predicted": "E",
+      "expected": "A",
+      "method": "cross_decompose:best=E(score=0.310,gap=0.059,concepts=3,wiki_facts=2,overlaps=3)"
+    },
+    {
+      "id": "66f87ab781a069162c8e7cd2",
+      "correct": false,
+      "predicted": null,
+      "expected": "2, 1, 0",
+      "method": ""
+    },
+    {
+      "id": "66f883265b247a255a42fba1",
+      "correct": false,
+      "predicted": null,
+      "expected": "-\\frac{2}{5}",
+      "method": ""
+    },
+    {
+      "id": "66f88d96e4deeaf4670af95d",
+      "correct": false,
+      "predicted": null,
+      "expected": "F",
+      "method": ""
+    },
+    {
+      "id": "66f8ab9c89c09a99da336b5b",
+      "correct": false,
+      "predicted": null,
+      "expected": "Scottish Gaelic, Faroese",
+      "method": ""
+    },
+    {
+      "id": "66f8bd4e140fefe7ceb34b75",
+      "correct": false,
+      "predicted": null,
+      "expected": "(a) $\\{\\}$, $\\mathbb{R}$; (b) No; (c) Yes.",
+      "method": ""
+    },
+    {
+      "id": "66f8cff8469c315e2c9ed2f6",
+      "correct": false,
+      "predicted": "E",
+      "expected": "B",
+      "method": "mcq_direct:qwen7b(facts=5,choices=5)"
+    },
+    {
+      "id": "66f8e3db469c315e2c9ed2ff",
+      "correct": false,
+      "predicted": null,
+      "expected": "8",
+      "method": ""
+    },
+    {
+      "id": "66f8f56e204cc74a525a23b8",
+      "correct": false,
+      "predicted": "C",
+      "expected": "E",
+      "method": "cross_decompose:best=C(score=0.198,gap=0.039,concepts=3,wiki_facts=3,overlaps=2)"
+    },
+    {
+      "id": "66f986e852b9d5843203d342",
+      "correct": false,
+      "predicted": null,
+      "expected": "5,6,10,11,12,13,14,15,16,18,19,20,21",
+      "method": ""
+    },
+    {
+      "id": "66f9912f9912b9571e291d0a",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\frac{5}{4}",
+      "method": ""
+    },
+    {
+      "id": "66f9a1ed4f798b651f6d3c8e",
+      "correct": false,
+      "predicted": null,
+      "expected": "(27/4,2/9)",
+      "method": ""
+    },
+    {
+      "id": "66f9a8a4e613d5c62b6c0d22",
+      "correct": false,
+      "predicted": "F",
+      "expected": "G",
+      "method": "mcq_direct:qwen7b(facts=8,choices=14)"
+    },
+    {
+      "id": "66f9aac10b5d5283ffc39014",
+      "correct": false,
+      "predicted": "E",
+      "expected": "H",
+      "method": "mcq_direct:qwen7b(facts=17,choices=8)"
+    },
+    {
+      "id": "66f9b34f57eb54e8772c53a7",
+      "correct": false,
+      "predicted": null,
+      "expected": "1.00, 1.00, 1.51, 1.45",
+      "method": ""
+    },
+    {
+      "id": "66f9e9d3e0e271cd8ae533c6",
+      "correct": false,
+      "predicted": null,
+      "expected": "BABAB",
+      "method": ""
+    },
+    {
+      "id": "66fa0dffda3403394e6b9996",
+      "correct": false,
+      "predicted": "C",
+      "expected": "E",
+      "method": "mcq_direct:qwen7b(facts=4,choices=5)"
+    },
+    {
+      "id": "66fa6641c4f1bf6c2036b745",
+      "correct": false,
+      "predicted": null,
+      "expected": "12",
+      "method": ""
+    },
+    {
+      "id": "66fa67dc29908114d8954b55",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\frac{5}{4}",
+      "method": ""
+    },
+    {
+      "id": "66fac0eca07ff774fa2219c5",
+      "correct": false,
+      "predicted": null,
+      "expected": "5",
+      "method": ""
+    },
+    {
+      "id": "66faccfb44cb2f3b0e1be0ff",
+      "correct": false,
+      "predicted": "C",
+      "expected": "H",
+      "method": "mcq_direct:qwen7b(facts=5,choices=11)"
+    },
+    {
+      "id": "66faeb7db8fca5695f011626",
+      "correct": false,
+      "predicted": null,
+      "expected": "[C,D,F]",
+      "method": ""
+    },
+    {
+      "id": "66faf88b01b2c4f27ab6c742",
+      "correct": false,
+      "predicted": null,
+      "expected": "(-0.5,0.87),(0,0),(0.37,1.37),(0.87,0.5)",
+      "method": ""
+    },
+    {
+      "id": "66faf94d44885308354a46fa",
+      "correct": false,
+      "predicted": null,
+      "expected": "A, D, E",
+      "method": ""
+    },
+    {
+      "id": "66fb066681a166feb2adc2f5",
+      "correct": false,
+      "predicted": null,
+      "expected": "(2,3), (7,8), (1,1), (1,1)",
+      "method": ""
+    },
+    {
+      "id": "66fb24e7dea0e38a195b0030",
+      "correct": false,
+      "predicted": null,
+      "expected": "40",
+      "method": ""
+    },
+    {
+      "id": "66fb417395a8e2fc57e479d7",
+      "correct": false,
+      "predicted": null,
+      "expected": "500",
+      "method": ""
+    },
+    {
+      "id": "66fb519482c7c707d50d6012",
+      "correct": false,
+      "predicted": null,
+      "expected": "6",
+      "method": ""
+    },
+    {
+      "id": "66fb60f0fce3673bfc606f35",
+      "correct": false,
+      "predicted": "L",
+      "expected": "F",
+      "method": "cross_decompose:best=L(score=0.305,gap=0.086,concepts=5,wiki_facts=3,overlaps=10)"
+    },
+    {
+      "id": "66fb75c8d83ed7a299fdd135",
+      "correct": false,
+      "predicted": null,
+      "expected": "16663878",
+      "method": ""
+    },
+    {
+      "id": "66fb75ded83ed7a299fdd136",
+      "correct": false,
+      "predicted": "G",
+      "expected": "A",
+      "method": "mcq_direct:qwen7b(facts=2,choices=11)"
+    },
+    {
+      "id": "66fb8135483861eb2d0252a3",
+      "correct": false,
+      "predicted": null,
+      "expected": "15/16",
+      "method": ""
+    },
+    {
+      "id": "66fb931a089552943999ce86",
+      "correct": false,
+      "predicted": "C",
+      "expected": "F",
+      "method": "mcq_direct:qwen7b(facts=4,choices=7)"
+    },
+    {
+      "id": "66fbbe8cb6f8564117792b00",
+      "correct": true,
+      "predicted": "E",
+      "expected": "E",
+      "method": "mcq_direct:qwen7b(facts=6,choices=7)"
+    },
+    {
+      "id": "66fbc8ca51f7e5e714c6c4b1",
+      "correct": false,
+      "predicted": null,
+      "expected": "7",
+      "method": ""
+    },
+    {
+      "id": "66fbcca4a177ae967e470415",
+      "correct": false,
+      "predicted": null,
+      "expected": "CADMIUM, COBALT, COPPER, GOLD, IRIDIUM, IRON, LEAD, MAGNESIUM, MANGANESE, MERCURY, NICKEL, PLATINUM",
+      "method": ""
+    },
+    {
+      "id": "66fbd5aca177ae967e47041b",
+      "correct": false,
+      "predicted": null,
+      "expected": "1, 6, 28, 120",
+      "method": ""
+    },
+    {
+      "id": "66fbe64df560b62458a7b6a1",
+      "correct": false,
+      "predicted": null,
+      "expected": "A, D",
+      "method": ""
+    },
+    {
+      "id": "66fc006ad058f160ec5a48a1",
+      "correct": false,
+      "predicted": "G",
+      "expected": "E",
+      "method": "mcq_direct:qwen7b(facts=5,choices=7)"
+    },
+    {
+      "id": "66fc1a0ea7be4edbe85cf15c",
+      "correct": false,
+      "predicted": null,
+      "expected": "Nationalgalerie Berlin-Ost",
+      "method": ""
+    },
+    {
+      "id": "66fc1cc8c935ad838247482b",
+      "correct": false,
+      "predicted": null,
+      "expected": "The presence of peristome teeth.",
+      "method": ""
+    },
+    {
+      "id": "66fc1d71418b50634438f3f1",
+      "correct": false,
+      "predicted": null,
+      "expected": "3623878683",
+      "method": ""
+    },
+    {
+      "id": "66fc2282b7609fc1d8099125",
+      "correct": true,
+      "predicted": "D",
+      "expected": "D",
+      "method": "cross_decompose:best=D(score=0.654,gap=0.262,concepts=3,wiki_facts=2,overlaps=10)"
+    },
+    {
+      "id": "66fc23cfa7be4edbe85cf177",
+      "correct": false,
+      "predicted": null,
+      "expected": "22.572",
+      "method": ""
+    },
+    {
+      "id": "66fc2559876b283872e52acc",
+      "correct": false,
+      "predicted": "C",
+      "expected": "D",
+      "method": "mcq_direct:qwen7b(facts=2,choices=5)"
+    },
+    {
+      "id": "66fc2689b72463921f6c40e8",
+      "correct": false,
+      "predicted": "N",
+      "expected": "T",
+      "method": "mcq_direct:qwen7b(facts=7,choices=26)"
+    },
+    {
+      "id": "66fc2b7dbdebe91c66389e50",
+      "correct": false,
+      "predicted": null,
+      "expected": "135 cc/hr",
+      "method": ""
+    },
+    {
+      "id": "66fc2bf8b7405dff90941948",
+      "correct": false,
+      "predicted": null,
+      "expected": "D",
+      "method": ""
+    },
+    {
+      "id": "66fc2df0b72463921f6c40f2",
+      "correct": false,
+      "predicted": null,
+      "expected": "Glycine-Serine-Glycine-Glycine-linker",
+      "method": ""
+    },
+    {
+      "id": "66fc3273b7405dff90941955",
+      "correct": false,
+      "predicted": null,
+      "expected": "$-\\arctan(-\\sqrt{24}\\frac{699}{1024})$",
+      "method": ""
+    },
+    {
+      "id": "66fc35ef3d06493836155397",
+      "correct": false,
+      "predicted": null,
+      "expected": "D",
+      "method": ""
+    },
+    {
+      "id": "66fc41489546a49018698bed",
+      "correct": false,
+      "predicted": null,
+      "expected": "B",
+      "method": ""
+    },
+    {
+      "id": "66fc43322198db684765b90a",
+      "correct": false,
+      "predicted": null,
+      "expected": "S100B binds more strongly to the VC1 domain of RAGE than the V domain and, due to its low specificity, can be used as an adjunct marker.",
+      "method": ""
+    },
+    {
+      "id": "66fc45034293a9638d7e0f47",
+      "correct": false,
+      "predicted": null,
+      "expected": "108",
+      "method": ""
+    },
+    {
+      "id": "66fc462f9546a49018698bf6",
+      "correct": true,
+      "predicted": "F",
+      "expected": "F",
+      "method": "mcq_direct:qwen7b(facts=7,choices=6)"
+    },
+    {
+      "id": "66fc49ef5067ff35e6302b7f",
+      "correct": false,
+      "predicted": null,
+      "expected": "55.43",
+      "method": ""
+    },
+    {
+      "id": "66fc4d3a9a78ab495d9f2aba",
+      "correct": false,
+      "predicted": null,
+      "expected": "35.9 micro Tesla",
+      "method": ""
+    },
+    {
+      "id": "66fc4dc04293a9638d7e0f65",
+      "correct": false,
+      "predicted": null,
+      "expected": "No separating equilibrium exists",
+      "method": ""
+    },
+    {
+      "id": "66fc539cfb0c1cf50794a0e2",
+      "correct": false,
+      "predicted": null,
+      "expected": "36",
+      "method": ""
+    },
+    {
+      "id": "66fc550fd90ebe461bfd0c94",
+      "correct": false,
+      "predicted": null,
+      "expected": "7",
+      "method": ""
+    },
+    {
+      "id": "66fc564eae059175d7cc3244",
+      "correct": false,
+      "predicted": null,
+      "expected": "3",
+      "method": ""
+    },
+    {
+      "id": "66fc56f5d90ebe461bfd0c9c",
+      "correct": false,
+      "predicted": null,
+      "expected": "2.2",
+      "method": ""
+    },
+    {
+      "id": "66fc57b2efe6ee63db94967a",
+      "correct": false,
+      "predicted": null,
+      "expected": "(Z)-1-chloro-2-(3-phenylallyl)benzene",
+      "method": ""
+    },
+    {
+      "id": "66fc5b54ffa390c4af01820f",
+      "correct": false,
+      "predicted": null,
+      "expected": "(R)-2-((1R,3S)-3-methyl-2-methylenecyclopentyl)-N-((S)-1-phenylethyl)propanamide",
+      "method": ""
+    },
+    {
+      "id": "66fc5d63d90ebe461bfd0cab",
+      "correct": false,
+      "predicted": "D",
+      "expected": "C",
+      "method": "mcq_direct:qwen7b(facts=5,choices=7)"
+    },
+    {
+      "id": "66fc5e611f5f3f3b48ae9566",
+      "correct": false,
+      "predicted": null,
+      "expected": "B",
+      "method": ""
+    },
+    {
+      "id": "66fc5e8f98a7264ef58309b9",
+      "correct": false,
+      "predicted": null,
+      "expected": "(2S,3aR)-2-((tert-butyldimethylsilyl)oxy)-6,6-dimethyl-2,3,3a,5,5a,6,8a,8b-octahydro-as-indacen-4(1H)-one",
+      "method": ""
+    },
+    {
+      "id": "66fc5ed440e3b3e56869687f",
+      "correct": false,
+      "predicted": null,
+      "expected": "0.0062",
+      "method": ""
+    },
+    {
+      "id": "66fc62d80fdbeffcd143e87c",
+      "correct": false,
+      "predicted": null,
+      "expected": "6",
+      "method": ""
+    },
+    {
+      "id": "66fc633698a7264ef58309c0",
+      "correct": false,
+      "predicted": null,
+      "expected": "1/200",
+      "method": ""
+    },
+    {
+      "id": "66fc698fd90ebe461bfd0cc4",
+      "correct": false,
+      "predicted": null,
+      "expected": "DDSSDS",
+      "method": ""
+    },
+    {
+      "id": "66fc6a20d90ebe461bfd0cc7",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\frac{3g^4}{64\\pi E^2}",
+      "method": ""
+    },
+    {
+      "id": "66fc7aff818e0b579ee95856",
+      "correct": false,
+      "predicted": null,
+      "expected": "B",
+      "method": ""
+    },
+    {
+      "id": "66fc7c4c1d39fbf6d8bcdcdc",
+      "correct": false,
+      "predicted": null,
+      "expected": "The optimal reactive power injection required is $Q_{\\text{opt}} = 12.43 \\, \\text{MVAR}$",
+      "method": ""
+    },
+    {
+      "id": "67aacfd513ec9e1a16359d51",
+      "correct": false,
+      "predicted": null,
+      "expected": "O(1), m=1",
+      "method": ""
+    },
+    {
+      "id": "66fc7ed699d3b5d0fbbad745",
+      "correct": false,
+      "predicted": null,
+      "expected": "The total reactive power compensation required is $5.03 \\, \\text{MVAR}$.",
+      "method": ""
+    },
+    {
+      "id": "66fc7efd5b5cf30b0e009669",
+      "correct": false,
+      "predicted": null,
+      "expected": "30.0%, 133.33%",
+      "method": ""
+    },
+    {
+      "id": "66fc82b2bb24336da864daef",
+      "correct": false,
+      "predicted": null,
+      "expected": "0.08",
+      "method": ""
+    },
+    {
+      "id": "66fc8353c9752085eff2c8c0",
+      "correct": false,
+      "predicted": null,
+      "expected": "21",
+      "method": ""
+    },
+    {
+      "id": "66fc89ce455038a48ed359e4",
+      "correct": false,
+      "predicted": "H",
+      "expected": "D",
+      "method": "mcq_direct:qwen7b(facts=8,choices=16)"
+    },
+    {
+      "id": "66fc8b271d39fbf6d8bcdd0c",
+      "correct": false,
+      "predicted": null,
+      "expected": "0.3",
+      "method": ""
+    },
+    {
+      "id": "66fc8c821d39fbf6d8bcdd11",
+      "correct": false,
+      "predicted": null,
+      "expected": "5",
+      "method": ""
+    },
+    {
+      "id": "66fc8d96b315bda762372081",
+      "correct": false,
+      "predicted": null,
+      "expected": "E",
+      "method": ""
+    },
+    {
+      "id": "66fc8f1b8a73f859d8fa1608",
+      "correct": false,
+      "predicted": null,
+      "expected": "2010",
+      "method": ""
+    },
+    {
+      "id": "66fc9bdb1dbb3f522c0ee579",
+      "correct": false,
+      "predicted": null,
+      "expected": "73",
+      "method": ""
+    },
+    {
+      "id": "66fcbb1e2c2f679cc795985f",
+      "correct": false,
+      "predicted": null,
+      "expected": "yes radial direction is considered.",
+      "method": ""
+    },
+    {
+      "id": "66fcbc3e2c2f679cc7959864",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\(\\eta^{\\prime} \\sqrt{N}\\)",
+      "method": ""
+    },
+    {
+      "id": "66fcbe5b68476a89da553c97",
+      "correct": false,
+      "predicted": null,
+      "expected": "2",
+      "method": ""
+    },
+    {
+      "id": "66fcbff58d68a0bf3cafb696",
+      "correct": false,
+      "predicted": "D",
+      "expected": "F",
+      "method": "mcq_direct:qwen7b(facts=12,choices=7)"
+    },
+    {
+      "id": "66fcc286eab6d512704d96af",
+      "correct": false,
+      "predicted": "D",
+      "expected": "C",
+      "method": "cross_decompose:best=D(score=0.111,gap=0.059,concepts=5,wiki_facts=2,overlaps=7)"
+    },
+    {
+      "id": "66fccb32baca958eff49a086",
+      "correct": false,
+      "predicted": null,
+      "expected": "honesta mors turpi vita potior",
+      "method": ""
+    },
+    {
+      "id": "66fcde117e54294eb4a8fbba",
+      "correct": false,
+      "predicted": null,
+      "expected": "E",
+      "method": ""
+    },
+    {
+      "id": "66fce56c8585e7734661a9c7",
+      "correct": false,
+      "predicted": null,
+      "expected": "1",
+      "method": ""
+    },
+    {
+      "id": "66fce79d5dc8a9560304265b",
+      "correct": false,
+      "predicted": null,
+      "expected": "Switch to progestin-only pill",
+      "method": ""
+    },
+    {
+      "id": "66fcf077c494ec3fe0ed5635",
+      "correct": false,
+      "predicted": "D",
+      "expected": "I",
+      "method": "mcq_direct:qwen7b(facts=3,choices=9)"
+    },
+    {
+      "id": "66fcf48f6da31bbbe3d17e72",
+      "correct": true,
+      "predicted": "E",
+      "expected": "E",
+      "method": "mcq_direct:qwen7b(facts=3,choices=5)"
+    },
+    {
+      "id": "66fcf81e8a146dd80cfb2296",
+      "correct": false,
+      "predicted": "E",
+      "expected": "D",
+      "method": "cross_decompose:best=E(score=0.245,gap=0.025,concepts=4,wiki_facts=4,overlaps=3)"
+    },
+    {
+      "id": "66fcfe789608881c6aecde88",
+      "correct": false,
+      "predicted": "A",
+      "expected": "D",
+      "method": "mcq_direct:qwen7b(facts=3,choices=5)"
+    },
+    {
+      "id": "66fcff257870c26149f4615d",
+      "correct": false,
+      "predicted": null,
+      "expected": "(r-1)!^d",
+      "method": ""
+    },
+    {
+      "id": "66fd08fb8a146dd80cfb22c0",
+      "correct": false,
+      "predicted": null,
+      "expected": "142550893797972739664870582906490524117043564169034167276752220620",
+      "method": ""
+    },
+    {
+      "id": "66fd166eda2dbed1f5cc240b",
+      "correct": false,
+      "predicted": null,
+      "expected": "89057",
+      "method": ""
+    },
+    {
+      "id": "66fd4055654e577c714fb716",
+      "correct": false,
+      "predicted": null,
+      "expected": "(0,-1,1)",
+      "method": ""
+    },
+    {
+      "id": "66fd442c654e577c714fb724",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\mu_{0}\\log\\left(  1-\\Gamma\\right)  \\mathbf{Q}(\\mu_{0})",
+      "method": ""
+    },
+    {
+      "id": "66fd469e7a33ca69ccc69729",
+      "correct": false,
+      "predicted": "A",
+      "expected": "C",
+      "method": "km_v2:sole_support(supports=1,contradicts=3,facts=4,evidence=1,lex=0.50)"
+    },
+    {
+      "id": "66fd4b01b5c28915c8897f6f",
+      "correct": false,
+      "predicted": null,
+      "expected": "$x(1)$ does not exist.",
+      "method": ""
+    },
+    {
+      "id": "66fd5050c58a30160cbc0978",
+      "correct": false,
+      "predicted": null,
+      "expected": "2",
+      "method": ""
+    },
+    {
+      "id": "66fd596216bd2158748fda21",
+      "correct": false,
+      "predicted": null,
+      "expected": "1",
+      "method": ""
+    },
+    {
+      "id": "66fd60ea6be05c0b608861d5",
+      "correct": false,
+      "predicted": null,
+      "expected": "Cut off of LFC > 4 in contaminated samples",
+      "method": ""
+    },
+    {
+      "id": "66fd6e4007a5eeb48898d67b",
+      "correct": false,
+      "predicted": null,
+      "expected": "$\\mathbf{S}_c$ with diversity order of 4",
+      "method": ""
+    },
+    {
+      "id": "66fd758e29f96fd9d054df43",
+      "correct": false,
+      "predicted": null,
+      "expected": "Time Slot 1:Antenna 1: $0.8 \\times (-1-j) \\times e^{j(7\\pi/24)}$Antenna 2: $$0.8 \\times (1-j) \\times e^{j(7\\pi/24)}$$Time Slot 2:Antenna 1: $0.8 \\times (1+j) \\times e^{j(7\\pi/24)}$Antenna 2: $$0.8 \\times (-1-j) \\times e^{j(7\\pi/24)}$$",
+      "method": ""
+    },
+    {
+      "id": "66fd89bd8c7969267538ba86",
+      "correct": false,
+      "predicted": null,
+      "expected": "6",
+      "method": ""
+    },
+    {
+      "id": "66fd961ff9a32c6d2bd295df",
+      "correct": false,
+      "predicted": null,
+      "expected": "F(x,y,z)=x, G(y,x,y)=y, H(z,y,x)=z",
+      "method": ""
+    },
+    {
+      "id": "66fda7a057cea4445778e88a",
+      "correct": false,
+      "predicted": null,
+      "expected": "A",
+      "method": ""
+    },
+    {
+      "id": "66fdaf20d1e0bb15b8fc1eb6",
+      "correct": false,
+      "predicted": "B",
+      "expected": "E",
+      "method": "mcq_direct:qwen7b(facts=5,choices=5)"
+    },
+    {
+      "id": "66fdb31a57cea4445778e8ab",
+      "correct": false,
+      "predicted": null,
+      "expected": "D",
+      "method": ""
+    },
+    {
+      "id": "66fdb51b903727942c52222f",
+      "correct": false,
+      "predicted": null,
+      "expected": "$\\frac{21}{4}.$",
+      "method": ""
+    },
+    {
+      "id": "66fdbcc4127bbd403ef13582",
+      "correct": false,
+      "predicted": "C",
+      "expected": "D",
+      "method": "mcq_direct:qwen7b(facts=6,choices=5)"
+    },
+    {
+      "id": "66fddfcfb3108418b8a5566a",
+      "correct": false,
+      "predicted": null,
+      "expected": "(a) $S_a = 1, S_b = 2, S_c = 2$ , (b) $S_b$ and $S_c$",
+      "method": ""
+    },
+    {
+      "id": "66fde2de0b21f205c121aca7",
+      "correct": false,
+      "predicted": "F",
+      "expected": "G",
+      "method": "mcq_direct:qwen7b(facts=2,choices=7)"
+    },
+    {
+      "id": "66fde5a291664bba6e391cb5",
+      "correct": false,
+      "predicted": null,
+      "expected": "$\\frac{87}{4}$.",
+      "method": ""
+    },
+    {
+      "id": "66fde7f40b21f205c121acab",
+      "correct": false,
+      "predicted": null,
+      "expected": "350",
+      "method": ""
+    },
+    {
+      "id": "66fdecea0cc5d4963e81bb93",
+      "correct": false,
+      "predicted": null,
+      "expected": " β0 = 500, β1 = -5, and β2 = -1.",
+      "method": ""
+    },
+    {
+      "id": "66fded1fbc6d46a25c41ee8d",
+      "correct": false,
+      "predicted": null,
+      "expected": "D",
+      "method": ""
+    },
+    {
+      "id": "66fe16f4762ab58b937863b8",
+      "correct": false,
+      "predicted": "F",
+      "expected": "G",
+      "method": "mcq_direct:qwen7b(facts=4,choices=14)"
+    },
+    {
+      "id": "66fe3e4d6a914e1ed9d8c32e",
+      "correct": false,
+      "predicted": null,
+      "expected": "4",
+      "method": ""
+    },
+    {
+      "id": "66fe596c0eeb4521791d31ef",
+      "correct": false,
+      "predicted": "A",
+      "expected": "D",
+      "method": "cross_decompose:best=A(score=0.103,gap=0.025,concepts=1,wiki_facts=1,overlaps=1)"
+    },
+    {
+      "id": "66fe75a349254a4aef6f5f25",
+      "correct": false,
+      "predicted": null,
+      "expected": " \\frac{\\pi + 3 \\sqrt{3} - 3}{6}",
+      "method": ""
+    },
+    {
+      "id": "66fe75c0c12cbe6aeaa26e60",
+      "correct": false,
+      "predicted": null,
+      "expected": "9",
+      "method": ""
+    },
+    {
+      "id": "66fe796bc12cbe6aeaa26e69",
+      "correct": false,
+      "predicted": null,
+      "expected": "Infinite regress and circularity.",
+      "method": ""
+    },
+    {
+      "id": "66fe817115bdbb176f2e3bbd",
+      "correct": false,
+      "predicted": "E",
+      "expected": "A",
+      "method": "mcq_direct:qwen7b(facts=3,choices=5)"
+    },
+    {
+      "id": "66fe96c857c85bf9caa1766a",
+      "correct": false,
+      "predicted": null,
+      "expected": "12-fold rotational symmetry",
+      "method": ""
+    },
+    {
+      "id": "66fe97540fe93ab7e9405c9b",
+      "correct": false,
+      "predicted": null,
+      "expected": "C5H6=CH-CH2-CO-CH2-CHO",
+      "method": ""
+    },
+    {
+      "id": "66fe998c6a6869f258841e99",
+      "correct": true,
+      "predicted": "E",
+      "expected": "E",
+      "method": "mcq_direct:qwen7b(facts=6,choices=5)"
+    },
+    {
+      "id": "66fea05ccb66b0e85c55ee51",
+      "correct": false,
+      "predicted": null,
+      "expected": "8.06963",
+      "method": ""
+    },
+    {
+      "id": "66fea0c4cb66b0e85c55ee52",
+      "correct": false,
+      "predicted": null,
+      "expected": "2",
+      "method": ""
+    },
+    {
+      "id": "66fea77b5f1bc2f5916a4171",
+      "correct": false,
+      "predicted": "G",
+      "expected": "P",
+      "method": "mcq_direct:qwen7b(facts=5,choices=16)"
+    },
+    {
+      "id": "66feaaa369901fcf62a010dc",
+      "correct": false,
+      "predicted": null,
+      "expected": "Methylcyclopropane",
+      "method": ""
+    },
+    {
+      "id": "66feaec49c469dbc1c0c4ed2",
+      "correct": false,
+      "predicted": null,
+      "expected": "175",
+      "method": ""
+    },
+    {
+      "id": "66febb7d2cb8fd8d04bcce70",
+      "correct": false,
+      "predicted": null,
+      "expected": "F",
+      "method": ""
+    },
+    {
+      "id": "66fec5fbe0072219a732f0e2",
+      "correct": false,
+      "predicted": null,
+      "expected": "$\\frac{1}{2}(N_1M_1 + N_1M_2 + N_2M_2)$",
+      "method": ""
+    },
+    {
+      "id": "66fec7825e6051260840e060",
+      "correct": false,
+      "predicted": null,
+      "expected": "Fe + 2FeCl3 = 3FeCl2",
+      "method": ""
+    },
+    {
+      "id": "66fecbff69d5712b5401553e",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\(Z = 4.61\\), \\(\\langle k\\rangle=1.66\\)",
+      "method": ""
+    },
+    {
+      "id": "66fecc707183fdf40d11cb48",
+      "correct": false,
+      "predicted": null,
+      "expected": "5",
+      "method": ""
+    },
+    {
+      "id": "66fedc469c638aee1c0b6db1",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\frac{1}{2\\pi r C (1 + \\sqrt{3})}",
+      "method": ""
+    },
+    {
+      "id": "66fee1187183fdf40d11cb69",
+      "correct": false,
+      "predicted": null,
+      "expected": "ADEFGHIKMNO",
+      "method": ""
+    },
+    {
+      "id": "66fee6c39e4f456a6d2941b5",
+      "correct": false,
+      "predicted": null,
+      "expected": "1 hour",
+      "method": ""
+    },
+    {
+      "id": "66feef700e977ac289068c27",
+      "correct": false,
+      "predicted": null,
+      "expected": "$y(0)<\\sqrt{2x(0)+1-3x^{\\frac{3}{2}}(0)}$.",
+      "method": ""
+    },
+    {
+      "id": "66fefa971ca108e6e888e9a1",
+      "correct": false,
+      "predicted": null,
+      "expected": "Decreases cytokine release",
+      "method": ""
+    },
+    {
+      "id": "66ff063787bfb80443d02df6",
+      "correct": false,
+      "predicted": "D",
+      "expected": "C",
+      "method": "mcq_direct:qwen7b(facts=7,choices=5)"
+    },
+    {
+      "id": "66ff0a666dc4b2ab76a19db9",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\(4\\pi\\alpha\\)",
+      "method": ""
+    },
+    {
+      "id": "66ff1bba3046dadaa8fd8a15",
+      "correct": false,
+      "predicted": null,
+      "expected": "Decrease by enhancing negative selection",
+      "method": ""
+    },
+    {
+      "id": "66ff2d1ccee52e636551df01",
+      "correct": false,
+      "predicted": null,
+      "expected": "15 moves",
+      "method": ""
+    },
+    {
+      "id": "66ff31e8c604a3a87b0cdf62",
+      "correct": false,
+      "predicted": null,
+      "expected": "Yes",
+      "method": ""
+    },
+    {
+      "id": "66ff35926045e9e64bbc5720",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\(5.57\\text{ mol/m}^3\\)",
+      "method": ""
+    },
+    {
+      "id": "66ff44de2cfec1499ea021dd",
+      "correct": false,
+      "predicted": null,
+      "expected": "(9,-3)",
+      "method": ""
+    },
+    {
+      "id": "66ff63baefbb8fab439cda6d",
+      "correct": false,
+      "predicted": null,
+      "expected": "tmesis",
+      "method": ""
+    },
+    {
+      "id": "66ff679163f0dbcc8b9941dd",
+      "correct": false,
+      "predicted": null,
+      "expected": "μεγάλων",
+      "method": ""
+    },
+    {
+      "id": "66ff68bec7e8ec38a6188f9c",
+      "correct": false,
+      "predicted": null,
+      "expected": "3",
+      "method": ""
+    },
+    {
+      "id": "66ffaae1068d942d32104650",
+      "correct": true,
+      "predicted": "B",
+      "expected": "B",
+      "method": "mcq_direct:qwen7b(facts=6,choices=5)"
+    },
+    {
+      "id": "66ffcfa0864258b2f971a80c",
+      "correct": false,
+      "predicted": "C",
+      "expected": "D",
+      "method": "mcq_direct:qwen7b(facts=7,choices=7)"
+    },
+    {
+      "id": "670010ff77983eff561814b2",
+      "correct": false,
+      "predicted": "A",
+      "expected": "C",
+      "method": "mcq_direct:qwen7b(facts=3,choices=5)"
+    },
+    {
+      "id": "670013827794cc36bc974f27",
+      "correct": false,
+      "predicted": "C",
+      "expected": "B",
+      "method": "mcq_direct:qwen7b(facts=19,choices=7)"
+    },
+    {
+      "id": "67001b2537deff035b73927b",
+      "correct": false,
+      "predicted": null,
+      "expected": "Oganesson",
+      "method": ""
+    },
+    {
+      "id": "670043f1cc1f72ec327be033",
+      "correct": false,
+      "predicted": null,
+      "expected": "0.84",
+      "method": ""
+    },
+    {
+      "id": "6700497e7c6e32185d473d3e",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\(\\left(0.59,0.96,1.15,0.297,0\\right)\\)",
+      "method": ""
+    },
+    {
+      "id": "670064edbeb5458b701e58b9",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\(\\left(4.99,15.0\\right)\\text{ qeV}\\)",
+      "method": ""
+    },
+    {
+      "id": "670066b12b1a0263d6a3a79b",
+      "correct": false,
+      "predicted": null,
+      "expected": "6 * \\sqrt{2}",
+      "method": ""
+    },
+    {
+      "id": "670079cb5587080e1cf67dce",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\(\\frac{2E_h\\alpha^2}{135}\\)",
+      "method": ""
+    },
+    {
+      "id": "67008a05ad0fee7d7b4efb3c",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\( \\langle n \\rangle\\approx 0.424 \\)",
+      "method": ""
+    },
+    {
+      "id": "67008bcea2dd0155efb53f1c",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\(\\Delta E= 0.0423\\text{ eV}\\)",
+      "method": ""
+    },
+    {
+      "id": "67008f17fc2c0a4040f1d352",
+      "correct": false,
+      "predicted": "L",
+      "expected": "G",
+      "method": "mcq_direct:qwen7b(facts=8,choices=12)"
+    },
+    {
+      "id": "67008f2afc2c0a4040f1d353",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\(\\left(690.51, 158.55, 12)\\right)\\)",
+      "method": ""
+    },
+    {
+      "id": "670097e2d8f693f97c36c13f",
+      "correct": false,
+      "predicted": null,
+      "expected": "2, 4, 6, 8, 10",
+      "method": ""
+    },
+    {
+      "id": "67009ad56c339d61ecccb85c",
+      "correct": false,
+      "predicted": null,
+      "expected": "1081.6",
+      "method": ""
+    },
+    {
+      "id": "6700a5676c339d61ecccb86d",
+      "correct": false,
+      "predicted": null,
+      "expected": "40",
+      "method": ""
+    },
+    {
+      "id": "6700a5f67899925724a8fa81",
+      "correct": false,
+      "predicted": null,
+      "expected": "pterodactylane",
+      "method": ""
+    },
+    {
+      "id": "6700aa576c5c0e0d48330ad1",
+      "correct": false,
+      "predicted": null,
+      "expected": "$21.46 \\text{ cm}^2$.",
+      "method": ""
+    },
+    {
+      "id": "6700ab4bfa64315ed5204e4d",
+      "correct": false,
+      "predicted": null,
+      "expected": "2, 3, 5, 6, 7, 8, 9, 10, 12",
+      "method": ""
+    },
+    {
+      "id": "6700ad650f36eb474047ca29",
+      "correct": false,
+      "predicted": null,
+      "expected": "No",
+      "method": ""
+    },
+    {
+      "id": "6700b20cfa64315ed5204e5d",
+      "correct": false,
+      "predicted": null,
+      "expected": "BD",
+      "method": ""
+    },
+    {
+      "id": "6700b2f1fa64315ed5204e61",
+      "correct": false,
+      "predicted": null,
+      "expected": "2357947691",
+      "method": ""
+    },
+    {
+      "id": "6700b9b6d9849868aa3fb1f9",
+      "correct": false,
+      "predicted": null,
+      "expected": "4",
+      "method": ""
+    },
+    {
+      "id": "6700bb8d01cdb8b38460e401",
+      "correct": false,
+      "predicted": null,
+      "expected": "3, 1, 1, infinity",
+      "method": ""
+    },
+    {
+      "id": "6700bde8fa64315ed5204e74",
+      "correct": false,
+      "predicted": null,
+      "expected": "Fairy bees, 2016",
+      "method": ""
+    },
+    {
+      "id": "6700c57848d1e47d3d2f74c6",
+      "correct": false,
+      "predicted": "G",
+      "expected": "E",
+      "method": "mcq_direct:qwen7b(facts=6,choices=7)"
+    },
+    {
+      "id": "670130313d571f9c39e1bea1",
+      "correct": false,
+      "predicted": null,
+      "expected": "11",
+      "method": ""
+    },
+    {
+      "id": "670147f7dc193e3fa8260419",
+      "correct": false,
+      "predicted": null,
+      "expected": "3",
+      "method": ""
+    },
+    {
+      "id": "67015a7f6a2b21f149f3aaba",
+      "correct": false,
+      "predicted": null,
+      "expected": "LSS SL SL LL SSL SS",
+      "method": ""
+    },
+    {
+      "id": "67015d62777a275ca50eb18b",
+      "correct": false,
+      "predicted": "A",
+      "expected": "C",
+      "method": "cross_decompose:best=A(score=0.225,gap=0.025,concepts=2,wiki_facts=2,overlaps=1)"
+    },
+    {
+      "id": "6701638aed23f06e44f0e6b8",
+      "correct": false,
+      "predicted": null,
+      "expected": "Yes",
+      "method": ""
+    },
+    {
+      "id": "67016793aafba5949df10067",
+      "correct": false,
+      "predicted": null,
+      "expected": "Myrtilus",
+      "method": ""
+    },
+    {
+      "id": "67016d95a2a4300e274de8be",
+      "correct": false,
+      "predicted": null,
+      "expected": "6.63 \\times 10^{-6} \\text{e}",
+      "method": ""
+    },
+    {
+      "id": "670170d616077208cedb9627",
+      "correct": false,
+      "predicted": null,
+      "expected": "Petronius (Agamemnon)",
+      "method": ""
+    },
+    {
+      "id": "67018145e8c125b41caa9ee3",
+      "correct": true,
+      "predicted": "D",
+      "expected": "D",
+      "method": "cross_decompose:best=D(score=0.300,gap=0.134,concepts=1,wiki_facts=1,overlaps=0)"
+    },
+    {
+      "id": "67019de83ec0066dfb992223",
+      "correct": false,
+      "predicted": null,
+      "expected": "C",
+      "method": ""
+    },
+    {
+      "id": "6701a951f96e98d9d4df3e02",
+      "correct": false,
+      "predicted": "D",
+      "expected": "B",
+      "method": "mcq_direct:qwen7b(facts=5,choices=5)"
+    },
+    {
+      "id": "6701c34caf50fa52ed36ff06",
+      "correct": false,
+      "predicted": null,
+      "expected": "cover",
+      "method": ""
+    },
+    {
+      "id": "6701c3cb38b706939b30cb0b",
+      "correct": false,
+      "predicted": null,
+      "expected": "10mg is 647 and 20mg is 648",
+      "method": ""
+    },
+    {
+      "id": "6701ca6bb773dec162bde23c",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\theta - \\mu",
+      "method": ""
+    },
+    {
+      "id": "6701d2675f6691877f264511",
+      "correct": false,
+      "predicted": null,
+      "expected": "7",
+      "method": ""
+    },
+    {
+      "id": "6701d869aee3881b852d40a0",
+      "correct": false,
+      "predicted": null,
+      "expected": "u(t)(v_i(t) + \\rho)",
+      "method": ""
+    },
+    {
+      "id": "6701de16d9e4cd1aa812414b",
+      "correct": false,
+      "predicted": "C",
+      "expected": "M",
+      "method": "mcq_direct:qwen7b(facts=4,choices=19)"
+    },
+    {
+      "id": "670205330fb89862bc1d87d2",
+      "correct": false,
+      "predicted": null,
+      "expected": "3",
+      "method": ""
+    },
+    {
+      "id": "6702731e2e96c956d9863f14",
+      "correct": false,
+      "predicted": null,
+      "expected": "A = NH2NH2, and B = CH3CH2CH2NH2",
+      "method": ""
+    },
+    {
+      "id": "6702780d39fbddbbfdaffdf0",
+      "correct": false,
+      "predicted": null,
+      "expected": "81",
+      "method": ""
+    },
+    {
+      "id": "670285bc39fbddbbfdaffdfe",
+      "correct": false,
+      "predicted": "D",
+      "expected": "B",
+      "method": "mcq_direct:qwen7b(facts=6,choices=5)"
+    },
+    {
+      "id": "670288dacacd044c115f0156",
+      "correct": false,
+      "predicted": null,
+      "expected": "NYNYYNN",
+      "method": ""
+    },
+    {
+      "id": "67028faea970bf7474de7db9",
+      "correct": false,
+      "predicted": null,
+      "expected": "V65/V with a lowered 9th (The f)",
+      "method": ""
+    },
+    {
+      "id": "67029d8de7ea2ce5def2f39f",
+      "correct": false,
+      "predicted": null,
+      "expected": "Dominique Appia",
+      "method": ""
+    },
+    {
+      "id": "6702b8bebb1c7fc12ef340a6",
+      "correct": false,
+      "predicted": "A",
+      "expected": "D",
+      "method": "cross_decompose:best=A(score=0.185,gap=0.035,concepts=2,wiki_facts=2,overlaps=3)"
+    },
+    {
+      "id": "6702bc770065c2f50235a34e",
+      "correct": false,
+      "predicted": "N",
+      "expected": "M",
+      "method": "mcq_executor_verified:sum_verified:16.0"
+    },
+    {
+      "id": "6702c6251454b2a5a3a4b0a9",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\pi/2",
+      "method": ""
+    },
+    {
+      "id": "6702d00cabe0b372f85108c7",
+      "correct": false,
+      "predicted": null,
+      "expected": "8/3+sqrt(3)/pi",
+      "method": ""
+    },
+    {
+      "id": "6702db18a423c5b9f9c1c49c",
+      "correct": false,
+      "predicted": null,
+      "expected": "no",
+      "method": ""
+    },
+    {
+      "id": "6702df0bf9b93417fbae272c",
+      "correct": false,
+      "predicted": null,
+      "expected": "0.71",
+      "method": ""
+    },
+    {
+      "id": "67035991b36b22d6c2f535bc",
+      "correct": false,
+      "predicted": null,
+      "expected": "1301",
+      "method": ""
+    },
+    {
+      "id": "67036eec810cc41df802051d",
+      "correct": false,
+      "predicted": null,
+      "expected": "$\\frac{c(1 + \\sqrt{3})}{2}$",
+      "method": ""
+    },
+    {
+      "id": "6703798585e4a42e6ff10916",
+      "correct": false,
+      "predicted": null,
+      "expected": "P",
+      "method": ""
+    },
+    {
+      "id": "67038476397cc8defc4de8ff",
+      "correct": false,
+      "predicted": "C",
+      "expected": "F",
+      "method": "cross_decompose:best=C(score=0.300,gap=0.190,concepts=0,wiki_facts=0,overlaps=2)"
+    },
+    {
+      "id": "6703a3c04a760324b0e15a30",
+      "correct": false,
+      "predicted": null,
+      "expected": "$3m-1$",
+      "method": ""
+    },
+    {
+      "id": "670402f0bae67686d8aef3e8",
+      "correct": false,
+      "predicted": null,
+      "expected": "F(x) = 3E(0) x / (n\\ell)^2",
+      "method": ""
+    },
+    {
+      "id": "67041442aa877e548ccdc28d",
+      "correct": false,
+      "predicted": null,
+      "expected": "$2F_nF_{n-1}$",
+      "method": ""
+    },
+    {
+      "id": "670417b84f1cdb9711ec68d6",
+      "correct": false,
+      "predicted": null,
+      "expected": "{10009 \\choose 10}",
+      "method": ""
+    },
+    {
+      "id": "67041871905f1ae093e7ac69",
+      "correct": false,
+      "predicted": null,
+      "expected": "$58\\choose 22$",
+      "method": ""
+    },
+    {
+      "id": "67042519cf3319115ca0c555",
+      "correct": false,
+      "predicted": null,
+      "expected": "$2r \\theta \\cot(\\theta)$",
+      "method": ""
+    },
+    {
+      "id": "670426b4d831bdf30d3c03cb",
+      "correct": false,
+      "predicted": null,
+      "expected": "126",
+      "method": ""
+    },
+    {
+      "id": "6704465caf0a436d92c65160",
+      "correct": false,
+      "predicted": null,
+      "expected": "6",
+      "method": ""
+    },
+    {
+      "id": "6704486baf0a436d92c65161",
+      "correct": false,
+      "predicted": null,
+      "expected": "diltiazem, chlorthalidone, spironolactone",
+      "method": ""
+    },
+    {
+      "id": "670477044580e464f8bff2a3",
+      "correct": false,
+      "predicted": null,
+      "expected": "Tulu and Korean",
+      "method": ""
+    },
+    {
+      "id": "67047b0e4580e464f8bff2aa",
+      "correct": false,
+      "predicted": null,
+      "expected": "79.23",
+      "method": ""
+    },
+    {
+      "id": "67048697ca361120eef4ae56",
+      "correct": false,
+      "predicted": null,
+      "expected": "B",
+      "method": ""
+    },
+    {
+      "id": "670489fcedc6951c9585de8f",
+      "correct": false,
+      "predicted": null,
+      "expected": "2/3 \\sqrt{3} \\coth^{-1}(\\sqrt{3})",
+      "method": ""
+    },
+    {
+      "id": "6704ba2101d8c58fba562885",
+      "correct": false,
+      "predicted": null,
+      "expected": "14:11:11:858",
+      "method": ""
+    },
+    {
+      "id": "6704c05a8e878e59e57c7167",
+      "correct": false,
+      "predicted": null,
+      "expected": "829[cylinder r=6, h=16]",
+      "method": ""
+    },
+    {
+      "id": "6704d297f486e216becd613f",
+      "correct": false,
+      "predicted": null,
+      "expected": "50",
+      "method": ""
+    },
+    {
+      "id": "6705022feb89a47d12541a36",
+      "correct": false,
+      "predicted": null,
+      "expected": "One component",
+      "method": ""
+    },
+    {
+      "id": "67050ddbf6e4beb1922a29b2",
+      "correct": false,
+      "predicted": null,
+      "expected": "0.54",
+      "method": ""
+    },
+    {
+      "id": "670524fec62c9a55b8503379",
+      "correct": false,
+      "predicted": null,
+      "expected": "0.15",
+      "method": ""
+    },
+    {
+      "id": "67053981f8ad2742675478b4",
+      "correct": false,
+      "predicted": null,
+      "expected": "3/5",
+      "method": ""
+    },
+    {
+      "id": "67055b15222ba55ab0b88431",
+      "correct": false,
+      "predicted": null,
+      "expected": "Pedicare",
+      "method": ""
+    },
+    {
+      "id": "6705610417b54abf9a949f33",
+      "correct": false,
+      "predicted": null,
+      "expected": "[S,s,irr,33] [S,s,irr,3] [A,uc,6]",
+      "method": ""
+    },
+    {
+      "id": "6705b23880154ff607a205b5",
+      "correct": false,
+      "predicted": null,
+      "expected": "Abortionist",
+      "method": ""
+    },
+    {
+      "id": "6705b383652e52e4bf7ee416",
+      "correct": false,
+      "predicted": null,
+      "expected": "73",
+      "method": ""
+    },
+    {
+      "id": "6705b7c94ae9f2994dfaca33",
+      "correct": false,
+      "predicted": null,
+      "expected": "000200,011100,111111",
+      "method": ""
+    },
+    {
+      "id": "6705cd5f1a7f538792ca73ee",
+      "correct": false,
+      "predicted": null,
+      "expected": "B",
+      "method": ""
+    },
+    {
+      "id": "6705cf04905b3d0e4113372b",
+      "correct": false,
+      "predicted": "A",
+      "expected": "B",
+      "method": "mcq_direct:qwen7b(facts=5,choices=5)"
+    },
+    {
+      "id": "6706033749b90b396d2cb207",
+      "correct": false,
+      "predicted": null,
+      "expected": "$n \\geq 1$",
+      "method": ""
+    },
+    {
+      "id": "67061eb7f88d4fc2d2f8402a",
+      "correct": false,
+      "predicted": null,
+      "expected": "3",
+      "method": ""
+    },
+    {
+      "id": "670620323fd82754d2f4cc7c",
+      "correct": false,
+      "predicted": null,
+      "expected": "[J,1]",
+      "method": ""
+    },
+    {
+      "id": "6706295df10a8c2ca9a9c288",
+      "correct": false,
+      "predicted": null,
+      "expected": "2067",
+      "method": ""
+    },
+    {
+      "id": "67065070b3df24f51a3e2914",
+      "correct": false,
+      "predicted": null,
+      "expected": "C18H16O3",
+      "method": ""
+    },
+    {
+      "id": "670663d687c53b9e6fa1dc8f",
+      "correct": false,
+      "predicted": null,
+      "expected": "1",
+      "method": ""
+    },
+    {
+      "id": "6706671e0ae45a43cc2b8e8f",
+      "correct": false,
+      "predicted": null,
+      "expected": "96",
+      "method": ""
+    },
+    {
+      "id": "6706bda4cdc5e37f6814fc00",
+      "correct": false,
+      "predicted": "A",
+      "expected": "C",
+      "method": "cross_decompose:best=A(score=0.185,gap=0.130,concepts=1,wiki_facts=1,overlaps=6)"
+    },
+    {
+      "id": "6706c88503718618700edfbc",
+      "correct": false,
+      "predicted": "E",
+      "expected": "D",
+      "method": "cross_decompose:best=E(score=0.158,gap=0.050,concepts=1,wiki_facts=2,overlaps=2)"
+    },
+    {
+      "id": "6706f8e219290a54d9b5b56e",
+      "correct": false,
+      "predicted": "D",
+      "expected": "C",
+      "method": "mcq_direct:qwen7b(facts=8,choices=5)"
+    },
+    {
+      "id": "67073a60c033e34a5d675f2e",
+      "correct": false,
+      "predicted": null,
+      "expected": "22168",
+      "method": ""
+    },
+    {
+      "id": "67073b43de74df1472536be3",
+      "correct": false,
+      "predicted": null,
+      "expected": "C_3, C_5",
+      "method": ""
+    },
+    {
+      "id": "6707425209b8f334446ed3e2",
+      "correct": false,
+      "predicted": null,
+      "expected": "15",
+      "method": ""
+    },
+    {
+      "id": "670777536ce55102ae56fa2c",
+      "correct": false,
+      "predicted": null,
+      "expected": "2",
+      "method": ""
+    },
+    {
+      "id": "6707791ed9cad1c3863ce734",
+      "correct": false,
+      "predicted": "C",
+      "expected": "E",
+      "method": "mcq_direct:qwen7b(facts=7,choices=5)"
+    },
+    {
+      "id": "67079b3aeb66f588bd3789ec",
+      "correct": false,
+      "predicted": null,
+      "expected": "10^{5 + 5\\sqrt{5}} + 10^{5 - 5\\sqrt{5}}",
+      "method": ""
+    },
+    {
+      "id": "6707b8b6700263d6945e7b18",
+      "correct": false,
+      "predicted": null,
+      "expected": "0.96",
+      "method": ""
+    },
+    {
+      "id": "6707b9264ea1e7c28b6169bc",
+      "correct": false,
+      "predicted": null,
+      "expected": "Akhenaten",
+      "method": ""
+    },
+    {
+      "id": "6707d229ce18c3c60d66c712",
+      "correct": false,
+      "predicted": null,
+      "expected": "1, 2, 2",
+      "method": ""
+    },
+    {
+      "id": "67082afe09cbab4e7c6f62aa",
+      "correct": false,
+      "predicted": "B",
+      "expected": "D",
+      "method": "mcq_direct:qwen7b(facts=7,choices=5)"
+    },
+    {
+      "id": "6708336666bc940886b27312",
+      "correct": false,
+      "predicted": "J",
+      "expected": "B",
+      "method": "cross_decompose:best=J(score=0.308,gap=0.308,concepts=2,wiki_facts=2,overlaps=2)"
+    },
+    {
+      "id": "67083574e919041d86ac83d0",
+      "correct": false,
+      "predicted": null,
+      "expected": "Developing gemmae",
+      "method": ""
+    },
+    {
+      "id": "67083d00236665f36be9e56c",
+      "correct": false,
+      "predicted": null,
+      "expected": "Neckera",
+      "method": ""
+    },
+    {
+      "id": "67085c82e22de5e37e883351",
+      "correct": false,
+      "predicted": "A",
+      "expected": "C",
+      "method": "km_v2:sole_support(supports=1,contradicts=1,facts=4,evidence=1,lex=0.50)"
+    },
+    {
+      "id": "67086f244c1d38378da9f60a",
+      "correct": false,
+      "predicted": null,
+      "expected": "$\\log(\\frac{ae^{a-1}+(a-1)e^{-a}}{2a-1})$",
+      "method": ""
+    },
+    {
+      "id": "670872c2f1b4c3641356feb0",
+      "correct": false,
+      "predicted": null,
+      "expected": "1,1':3',1''-terphenyl",
+      "method": ""
+    },
+    {
+      "id": "6708736b4c1d38378da9f614",
+      "correct": false,
+      "predicted": null,
+      "expected": "$\\frac{289\\cdot(24-7\\pi)}{7}\\approx82.937$",
+      "method": ""
+    },
+    {
+      "id": "67087a6a972755fe392d782e",
+      "correct": false,
+      "predicted": null,
+      "expected": "thiocyanatobenzene",
+      "method": ""
+    },
+    {
+      "id": "670880520ed68fbdc467064e",
+      "correct": false,
+      "predicted": null,
+      "expected": "5-methylhex-4-enal",
+      "method": ""
+    },
+    {
+      "id": "6708862963c4d58d76c98746",
+      "correct": false,
+      "predicted": null,
+      "expected": "$2^{81}$",
+      "method": ""
+    },
+    {
+      "id": "67089c013b511a575fc306de",
+      "correct": true,
+      "predicted": "C",
+      "expected": "C",
+      "method": "cross_decompose:best=C(score=0.195,gap=0.049,concepts=1,wiki_facts=2,overlaps=8)"
+    },
+    {
+      "id": "6708c1dc2f33698babc6479d",
+      "correct": false,
+      "predicted": null,
+      "expected": "MV Celtic Horizon",
+      "method": ""
+    },
+    {
+      "id": "67090fa5356700b5af622ae8",
+      "correct": false,
+      "predicted": null,
+      "expected": "δσ/σ ~ -1/k2l(1/ντ-1/ √Dτϕ)",
+      "method": ""
+    },
+    {
+      "id": "6709255fd7d58adb84aa5ffb",
+      "correct": false,
+      "predicted": null,
+      "expected": "(E1)min=5/2Eg",
+      "method": ""
+    },
+    {
+      "id": "67092d14202802a1391f0d46",
+      "correct": false,
+      "predicted": null,
+      "expected": "1924",
+      "method": ""
+    },
+    {
+      "id": "67093e6ace7cd85981783949",
+      "correct": false,
+      "predicted": null,
+      "expected": "~5 cm^-3",
+      "method": ""
+    },
+    {
+      "id": "670944a7da01179cfbd24ef8",
+      "correct": false,
+      "predicted": null,
+      "expected": "Gustav Kirchhoff's lectures on Mechanics",
+      "method": ""
+    },
+    {
+      "id": "67095af56022f900e8e76028",
+      "correct": false,
+      "predicted": null,
+      "expected": "Strawberry Fields Forever",
+      "method": ""
+    },
+    {
+      "id": "670980821053a19619c30869",
+      "correct": false,
+      "predicted": null,
+      "expected": "510",
+      "method": ""
+    },
+    {
+      "id": "6709986e9a83b4ea926a3036",
+      "correct": false,
+      "predicted": null,
+      "expected": "329/150",
+      "method": ""
+    },
+    {
+      "id": "67099b940109535a956a14ab",
+      "correct": false,
+      "predicted": null,
+      "expected": "8",
+      "method": ""
+    },
+    {
+      "id": "6709a557139851f6bbbd7a5a",
+      "correct": false,
+      "predicted": "B",
+      "expected": "E",
+      "method": "cross_decompose:best=B(score=0.169,gap=0.040,concepts=4,wiki_facts=3,overlaps=1)"
+    },
+    {
+      "id": "6709c89f2d7ed3720d4b2b61",
+      "correct": false,
+      "predicted": null,
+      "expected": "Guadeloupe",
+      "method": ""
+    },
+    {
+      "id": "6709df4c3c2174379ffee04b",
+      "correct": false,
+      "predicted": null,
+      "expected": "Bonaldo Giaiotti",
+      "method": ""
+    },
+    {
+      "id": "6709e5af41a8c7cc16f75d2a",
+      "correct": false,
+      "predicted": null,
+      "expected": "$d=u-u^2$.",
+      "method": ""
+    },
+    {
+      "id": "670a2a076973040cfd5994a7",
+      "correct": false,
+      "predicted": null,
+      "expected": "Beer shampoo",
+      "method": ""
+    },
+    {
+      "id": "670a45a0e9cd3ee2e2e3932e",
+      "correct": false,
+      "predicted": null,
+      "expected": "\\frac{\\ln(5){\\ln(14) - \\ln(3)}",
+      "method": ""
+    },
+    {
+      "id": "670a6b32b3f67b11c0799489",
+      "correct": false,
+      "predicted": null,
+      "expected": "Gen",
+      "method": ""
+    },
+    {
+      "id": "670a7e542e97a7e436a3d951",
+      "correct": false,
+      "predicted": null,
+      "expected": "[18,36,43]",
+      "method": ""
+    },
+    {
+      "id": "670aa3e255f3b29ec899f979",
+      "correct": false,
+      "predicted": "A",
+      "expected": "D",
+      "method": "cross_decompose:best=A(score=0.060,gap=0.060,concepts=0,wiki_facts=0,overlaps=1)"
+    },
+    {
+      "id": "670ac833100f122e792a23af",
+      "correct": false,
+      "predicted": null,
+      "expected": "50, 58, 114, 122, 178, 186, 242, 250",
+      "method": ""
+    },
+    {
+      "id": "670ad3408b8d4b3af783d31a",
+      "correct": false,
+      "predicted": null,
+      "expected": "[1, 1, 2, 3, 3, 2, 1, 1]",
+      "method": ""
+    },
+    {
+      "id": "670ad4fbb4aea214feb705d3",
+      "correct": false,
+      "predicted": "D",
+      "expected": "B",
+      "method": "cross_decompose:best=D(score=0.165,gap=0.086,concepts=2,wiki_facts=2,overlaps=4)"
+    },
+    {
+      "id": "670adb93478162075e9ffcd3",
+      "correct": false,
+      "predicted": null,
+      "expected": "289/36",
+      "method": ""
+    },
+    {
+      "id": "670b02d5560fcdf78354fad0",
+      "correct": false,
+      "predicted": null,
+      "expected": "log(1/\\epsilon)/log((1+\\delta)/(1-\\delta))",
+      "method": ""
+    },
+    {
+      "id": "670b2be8daac77037b0e67ba",
+      "correct": false,
+      "predicted": null,
+      "expected": "4π conrotatory, 6π disrotatory",
+      "method": ""
+    },
+    {
+      "id": "670b307567eb710437409184",
+      "correct": false,
+      "predicted": null,
+      "expected": "1460",
+      "method": ""
+    },
+    {
+      "id": "670b9646e9662f03066275a7",
+      "correct": false,
+      "predicted": null,
+      "expected": "Tris(2,6-dimethoxyphenyl)methylium ion",
+      "method": ""
+    },
+    {
+      "id": "670bab0c65db6a314e14cec5",
+      "correct": false,
+      "predicted": null,
+      "expected": "3/2",
+      "method": ""
+    },
+    {
+      "id": "670bcb222407af9de8866eda",
+      "correct": false,
+      "predicted": null,
+      "expected": "F",
+      "method": ""
+    },
+    {
+      "id": "670c064227c257620553cc04",
+      "correct": false,
+      "predicted": null,
+      "expected": "N^{1 / \\Omega(\\log \\log n)}",
+      "method": ""
+    },
+    {
+      "id": "670c1a137d9abe2d345031d4",
+      "correct": false,
+      "predicted": null,
+      "expected": "96497666192130",
+      "method": ""
+    },
+    {
+      "id": "670c1e0e47efd46fbe476752",
+      "correct": false,
+      "predicted": null,
+      "expected": "Space Monster",
+      "method": ""
+    },
+    {
+      "id": "670c23124d86f843dc5efa7e",
+      "correct": false,
+      "predicted": "A",
+      "expected": "E",
+      "method": "cross_decompose:best=A(score=0.185,gap=0.100,concepts=1,wiki_facts=1,overlaps=2)"
+    },
+    {
+      "id": "670c23a63dac8d8a9563c206",
+      "correct": false,
+      "predicted": null,
+      "expected": "[2s+2s], 4π disrotatory electrocyclization",
+      "method": ""
+    },
+    {
+      "id": "670c2a003aa4e3c3bc4aae8e",
+      "correct": false,
+      "predicted": null,
+      "expected": "(R), (S), (S), (S)",
+      "method": ""
+    },
+    {
+      "id": "670c2d61886695e43e7c18b3",
+      "correct": false,
+      "predicted": null,
+      "expected": "26682",
+      "method": ""
+    },
+    {
+      "id": "670c47e5a1a7d61748daa200",
+      "correct": false,
+      "predicted": null,
+      "expected": "1+75h+2680h^2+60670h^3+975895h^4",
+      "method": ""
+    },
+    {
+      "id": "670c48975b505e10c0277cee",
+      "correct": false,
+      "predicted": null,
+      "expected": "2490840000",
+      "method": ""
+    },
+    {
+      "id": "670c775842b25f65425c86c2",
+      "correct": false,
+      "predicted": null,
+      "expected": "A",
+      "method": ""
+    },
+    {
+      "id": "670c83ba4aece479236947cb",
+      "correct": false,
+      "predicted": "C",
+      "expected": "A",
+      "method": "mcq_direct:qwen7b(facts=8,choices=6)"
+    },
+    {
+      "id": "670c8b10148f2a113537c8f6",
+      "correct": false,
+      "predicted": null,
+      "expected": "C",
+      "method": ""
+    },
+    {
+      "id": "670ca1456731aa001b9ba021",
+      "correct": false,
+      "predicted": null,
+      "expected": "$\\frac{E(1+g) - d}{q}\\]$",
+      "method": ""
+    },
+    {
+      "id": "670cbeb582bde986ee078420",
+      "correct": false,
+      "predicted": null,
+      "expected": "1/2",
+      "method": ""
+    },
+    {
+      "id": "670cfd37787b413636ae1e57",
+      "correct": false,
+      "predicted": null,
+      "expected": "0.286",
+      "method": ""
+    },
+    {
+      "id": "670d51eaa783dd0bc83b1da7",
+      "correct": false,
+      "predicted": null,
+      "expected": " exp(\\Delta/2)*\\Sigma*exp(\\Delta/2)^T",
+      "method": ""
+    },
+    {
+      "id": "670d5ce6d57c80b4d4090cb4",
+      "correct": false,
+      "predicted": "N",
+      "expected": "D",
+      "method": "mcq_direct:qwen7b(facts=9,choices=15)"
+    },
+    {
+      "id": "670d72c4940c45ae0e301c02",
+      "correct": true,
+      "predicted": "C",
+      "expected": "C",
+      "method": "mcq_direct:qwen7b(facts=7,choices=5)"
+    },
+    {
+      "id": "670d85d1a2a7f62c1a339bc7",
+      "correct": false,
+      "predicted": null,
+      "expected": "(0,0,0,2,2,2)",
+      "method": ""
+    },
+    {
+      "id": "670d86ec56f489221087dc67",
+      "correct": false,
+      "predicted": null,
+      "expected": "Last Action Hero",
+      "method": ""
+    },
+    {
+      "id": "670d91a9ac55362ddccabea1",
+      "correct": false,
+      "predicted": null,
+      "expected": "1",
+      "method": ""
+    },
+    {
+      "id": "670d933ad54037c51abbe3ca",
+      "correct": false,
+      "predicted": null,
+      "expected": "(-\\frac{\\rho}{\\phi}-\\mu)(\\tau_u+\\tau_v)",
+      "method": ""
+    },
+    {
+      "id": "670daa682c5d078fa33fba12",
+      "correct": false,
+      "predicted": null,
+      "expected": "Boston",
+      "method": ""
+    },
+    {
+      "id": "670dab3f29ad02fff2ae1d9a",
+      "correct": false,
+      "predicted": null,
+      "expected": "$\\max(t_H,t_G)+k-1$",
+      "method": ""
+    },
+    {
+      "id": "670db60f6f63b774df6f4daa",
+      "correct": false,
+      "predicted": "E",
+      "expected": "C",
+      "method": "cross_decompose:best=E(score=0.306,gap=0.240,concepts=1,wiki_facts=1,overlaps=2)"
+    },
+    {
+      "id": "670dbfc042e55f85b247ba49",
+      "correct": false,
+      "predicted": null,
+      "expected": "84",
+      "method": ""
+    },
+    {
+      "id": "670dc30acfd3fc87a109a91e",
+      "correct": false,
+      "predicted": null,
+      "expected": "2",
+      "method": ""
+    },
+    {
+      "id": "670dc5bf47457fb431224bbc",
+      "correct": false,
+      "predicted": null,
+      "expected": "Yes",
+      "method": ""
+    },
+    {
+      "id": "670dc75dcfd3fc87a109a929",
+      "correct": false,
+      "predicted": null,
+      "expected": "No",
+      "method": ""
+    },
+    {
+      "id": "670df2a72f80209631f57fc2",
+      "correct": false,
+      "predicted": null,
+      "expected": "132",
+      "method": ""
+    },
+    {
+      "id": "670df2e172288739ca35e0e1",
+      "correct": false,
+      "predicted": null,
+      "expected": "9",
+      "method": ""
+    },
+    {
+      "id": "670e00c1289a73b5d2b75215",
+      "correct": false,
+      "predicted": null,
+      "expected": "6",
+      "method": ""
+    },
+    {
+      "id": "670e050d857d9fb8d0e70fde",
+      "correct": false,
+      "predicted": null,
+      "expected": "$2-\\frac{\\sqrt{n^2-n+1}(4n-2)-2n+2}{n^2}$",
+      "method": ""
+    },
+    {
+      "id": "670e5c2720bb63b6da63b879",
+      "correct": true,
+      "predicted": "A",
+      "expected": "A",
+      "method": "cross_decompose:best=A(score=0.200,gap=0.135,concepts=2,wiki_facts=4,overlaps=10)"
+    },
+    {
+      "id": "670e76dbfb3b4f650fe86113",
+      "correct": false,
+      "predicted": "B",
+      "expected": "C",
+      "method": "cross_decompose:best=B(score=0.150,gap=0.150,concepts=1,wiki_facts=1,overlaps=0)"
+    },
+    {
+      "id": "670e87009fd2a94b93cec307",
+      "correct": false,
+      "predicted": null,
+      "expected": "27",
+      "method": ""
+    },
+    {
+      "id": "670e88d674a7c40e93dd1a5c",
+      "correct": false,
+      "predicted": null,
+      "expected": "It would decrease.",
+      "method": ""
+    },
+    {
+      "id": "670e92583011a5b80bfb6c60",
+      "correct": false,
+      "predicted": "D",
+      "expected": "B",
+      "method": "mcq_direct:qwen7b(facts=7,choices=8)"
+    },
+    {
+      "id": "670e9b885d472377f6c572a2",
+      "correct": false,
+      "predicted": null,
+      "expected": "No",
+      "method": ""
+    },
+    {
+      "id": "670e9d6f5c8f745d79e8d8d1",
+      "correct": false,
+      "predicted": null,
+      "expected": "tan(\\pi/n)/2tan(\\pi/2n)",
+      "method": ""
+    },
+    {
+      "id": "670eb085078b44f4766922a9",
+      "correct": false,
+      "predicted": null,
+      "expected": "$ \\frac{4b^2 -(n+3)2b + 6}{1-b^2}$",
+      "method": ""
+    },
+    {
+      "id": "670eb1e2d2f45b1198c87764",
+      "correct": false,
+      "predicted": null,
+      "expected": "1/3",
+      "method": ""
+    },
+    {
+      "id": "670eb27fd2f45b1198c87766",
+      "correct": false,
+      "predicted": null,
+      "expected": "C = (Vm*Cm + Vf*Cf*A)*(Vm*I + Vf*<A>)^{-1}",
+      "method": ""
+    },
+    {
+      "id": "670ebf7239f1dc9b447a9143",
+      "correct": false,
+      "predicted": "E",
+      "expected": "K",
+      "method": "cross_decompose:best=E(score=0.193,gap=0.060,concepts=2,wiki_facts=3,overlaps=9)"
+    },
+    {
+      "id": "670ecbd2db2399d5b657405a",
+      "correct": false,
+      "predicted": null,
+      "expected": "D",
+      "method": ""
+    },
+    {
+      "id": "670ed43a812a31dfae9bf344",
+      "correct": false,
+      "predicted": null,
+      "expected": "(2,8), (2,7), (6,8), (6,7)",
+      "method": ""
+    },
+    {
+      "id": "670edc9dbddc0cfe673272c8",
+      "correct": false,
+      "predicted": "A",
+      "expected": "B",
+      "method": "cross_decompose:best=A(score=0.115,gap=0.025,concepts=3,wiki_facts=2,overlaps=4)"
+    },
+    {
+      "id": "670edd52bddc0cfe673272cb",
+      "correct": false,
+      "predicted": null,
+      "expected": "1,2,3,4,0",
+      "method": ""
+    },
+    {
+      "id": "670ee20c997568ed42988705",
+      "correct": false,
+      "predicted": "E",
+      "expected": "A",
+      "method": "mcq_direct:qwen7b(facts=4,choices=5)"
+    },
+    {
+      "id": "670eeb9c997568ed4298871e",
+      "correct": false,
+      "predicted": null,
+      "expected": "-(-1)^n s(|AB|)a_nb_n-\\sum_{i<=n-1}a_ib_i",
+      "method": ""
+    },
+    {
+      "id": "670f00dc79750a6c73259f4d",
+      "correct": true,
+      "predicted": "E",
+      "expected": "E",
+      "method": "mcq_direct:qwen7b(facts=4,choices=5)"
+    },
+    {
+      "id": "670f069bf0a2db734f219dc7",
+      "correct": false,
+      "predicted": null,
+      "expected": "x’ = x + (c_2*e^{k_1*t} +c_3)*\\epsilon",
+      "method": ""
+    },
+    {
+      "id": "670f241acb7ead88385e0ca0",
+      "correct": false,
+      "predicted": "F",
+      "expected": "B",
+      "method": "cross_decompose:best=F(score=0.150,gap=0.150,concepts=2,wiki_facts=2,overlaps=0)"
+    },
+    {
+      "id": "670f289fb671096a201efee4",
+      "correct": false,
+      "predicted": "A",
+      "expected": "D",
+      "method": "cross_decompose:best=A(score=0.306,gap=0.025,concepts=2,wiki_facts=2,overlaps=2)"
+    },
+    {
+      "id": "670f2b7eeab97e29672ae77f",
+      "correct": false,
+      "predicted": null,
+      "expected": "A",
+      "method": ""
+    },
+    {
+      "id": "670f378873968d8e1b612745",
+      "correct": false,
+      "predicted": "A",
+      "expected": "B",
+      "method": "km_v2:multi_support_lexical(gap=0.500,supports=2)"
+    },
+    {
+      "id": "670f39dc1dcaeb830ff6231f",
+      "correct": false,
+      "predicted": "D",
+      "expected": "A",
+      "method": "mcq_direct:qwen7b(facts=3,choices=8)"
+    },
+    {
+      "id": "670f3cc6df04c6b73aa7b5df",
+      "correct": false,
+      "predicted": null,
+      "expected": "1",
+      "method": ""
+    },
+    {
+      "id": "670f41ad793c2cc1e973ff70",
+      "correct": false,
+      "predicted": null,
+      "expected": "10",
+      "method": ""
+    },
+    {
+      "id": "670f4501dfe615f3d2f7436e",
+      "correct": false,
+      "predicted": null,
+      "expected": "2",
+      "method": ""
+    },
+    {
+      "id": "670f511063b765ce8edde772",
+      "correct": false,
+      "predicted": null,
+      "expected": "7",
+      "method": ""
+    },
+    {
+      "id": "670f72aea9f4a4bebca02b4a",
+      "correct": false,
+      "predicted": "E",
+      "expected": "G",
+      "method": "mcq_direct:qwen7b(facts=5,choices=9)"
+    },
+    {
+      "id": "670f83926933cc6600d3185d",
+      "correct": false,
+      "predicted": null,
+      "expected": "Nosepokes",
+      "method": ""
+    },
+    {
+      "id": "670f8518ffa4ea9fb0cc5fea",
+      "correct": false,
+      "predicted": null,
+      "expected": "C",
+      "method": ""
+    },
+    {
+      "id": "670f87f6f1e1079f950014e4",
+      "correct": false,
+      "predicted": "D",
+      "expected": "E",
+      "method": "mcq_direct:qwen7b(facts=9,choices=5)"
+    },
+    {
+      "id": "670f9916451a882595c8f434",
+      "correct": false,
+      "predicted": null,
+      "expected": "2",
+      "method": ""
+    },
+    {
+      "id": "670faed07ddb2771c2d214ea",
+      "correct": false,
+      "predicted": null,
+      "expected": "Parquet floor",
+      "method": ""
+    },
+    {
+      "id": "670fb58f2ca6bea76e9354a7",
+      "correct": false,
+      "predicted": "K",
+      "expected": "H",
+      "method": "mcq_direct:qwen7b(facts=4,choices=12)"
+    },
+    {
+      "id": "670fc6e308c7aaef3bd745e2",
+      "correct": false,
+      "predicted": null,
+      "expected": "[-1, 0; -1, 1]",
+      "method": ""
+    },
+    {
+      "id": "670fca712395d9134a27030e",
+      "correct": false,
+      "predicted": null,
+      "expected": "N = [2-s, -s; 1, 1], D = [-s, s-1; 1, s-1]",
+      "method": ""
+    },
+    {
+      "id": "670fce9a2395d9134a270314",
+      "correct": false,
+      "predicted": null,
+      "expected": "F = [-0.5, -0.5; 0, -1.5]",
+      "method": ""
+    },
+    {
+      "id": "670fd2a6232fc20b4433c4d7",
+      "correct": false,
+      "predicted": null,
+      "expected": "[-2 1; -1 2; -4 -1; 2 -1]",
+      "method": ""
+    },
+    {
+      "id": "670fe01af99389b3c7942185",
+      "correct": false,
+      "predicted": null,
+      "expected": "24",
+      "method": ""
+    },
+    {
+      "id": "670fe03ef99389b3c7942186",
+      "correct": false,
+      "predicted": null,
+      "expected": "1,1.41,1.73,2,2.24,2.65,2.74,2.83,3",
+      "method": ""
+    },
+    {
+      "id": "670fe86a7e294dc6ad20c1ba",
+      "correct": false,
+      "predicted": null,
+      "expected": "1, 5",
+      "method": ""
+    },
+    {
+      "id": "670ffefcdf4931d858723e36",
+      "correct": false,
+      "predicted": null,
+      "expected": "976251475791861661945371",
+      "method": ""
+    },
+    {
+      "id": "6710017a946969cdfd9a302c",
+      "correct": false,
+      "predicted": null,
+      "expected": "3/9/4",
+      "method": ""
+    },
+    {
+      "id": "6710210bc47b9b50a333dba8",
+      "correct": false,
+      "predicted": null,
+      "expected": "2",
+      "method": ""
+    },
+    {
+      "id": "671021ffd741deec4ddbfc48",
+      "correct": false,
+      "predicted": null,
+      "expected": "p(1-p)/(1+N-p)",
+      "method": ""
+    },
+    {
+      "id": "6710229bd8d5eea22faea867",
+      "correct": false,
+      "predicted": null,
+      "expected": "Touching the lizard on the cathedral door",
+      "method": ""
+    },
+    {
+      "id": "6710251d73c9583c25138ff0",
+      "correct": false,
+      "predicted": "A",
+      "expected": "L",
+      "method": "cross_decompose:best=A(score=0.108,gap=0.108,concepts=2,wiki_facts=2,overlaps=3)"
+    },
+    {
+      "id": "6710b2cbd1af6b4823c090d4",
+      "correct": false,
+      "predicted": null,
+      "expected": "231",
+      "method": ""
+    },
+    {
+      "id": "6710be76f85b27716ff1c4ba",
+      "correct": false,
+      "predicted": null,
+      "expected": "San Carlos Presidio",
+      "method": ""
+    },
+    {
+      "id": "6710f26eaa2039046e5aea6e",
+      "correct": false,
+      "predicted": null,
+      "expected": "65/58",
+      "method": ""
+    },
+    {
+      "id": "6711410d39fb87be5f2f165d",
+      "correct": false,
+      "predicted": "G",
+      "expected": "E",
+      "method": "mcq_direct:qwen7b(facts=7,choices=8)"
+    },
+    {
+      "id": "67114acc95aeb4d1c92426a5",
+      "correct": false,
+      "predicted": null,
+      "expected": "C, A, B",
+      "method": ""
+    },
+    

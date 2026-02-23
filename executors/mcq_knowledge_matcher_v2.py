@@ -119,22 +119,22 @@ def match_choices_v2(
     # ── KM-3: Rule-based decision ──
     result.analyses = analyses
 
-    # 1. contradicts が多いものを除去
+    # 1. Categorize relations (with supports_weak as new tier)
     contradicted = [ca for ca in analyses if ca.relation == "contradicts"]
-    supported = [ca for ca in analyses if ca.relation == "supports"]
-    unknown = [ca for ca in analyses if ca.relation == "unknown"]
+    strong_supported = [ca for ca in analyses if ca.relation == "supports"]
+    weak_supported = [ca for ca in analyses if ca.relation == "supports_weak"]
+    all_supported = strong_supported + weak_supported
+    unknown = [ca for ca in analyses if ca.relation in ("unknown",)]
 
     survivors = [ca for ca in analyses if ca.relation != "contradicts"]
     result.survivors = [ca.label for ca in survivors]
 
-    # 2. supports が1つだけ → 採用（fact_idsありかつ lexical cross-validation）
-    if len(supported) == 1:
-        winner = supported[0]
+    # 2. Strong supports が1つだけ → 採用
+    if len(strong_supported) == 1:
+        winner = strong_supported[0]
         n_contradicted = len(contradicted)
         has_evidence = bool(winner.fact_ids)
-        # fact_ids 必須（evidence がないsupportsは信頼できない）
         if has_evidence:
-            # lexical cross-validation: winner の lexical_score が最低ではないことを確認
             all_scores = [ca.lexical_score for ca in analyses]
             min_score = min(all_scores) if all_scores else 0
             if winner.lexical_score > min_score or n_contradicted >= 2:
@@ -144,27 +144,45 @@ def match_choices_v2(
                 return result
 
     # 3. supports が0で、contradicts で1つだけ残った場合 → 採用
-    if len(supported) == 0 and len(survivors) == 1:
+    if len(all_supported) == 0 and len(survivors) == 1:
         winner = survivors[0]
         result.answer = winner.label
         result.confidence = 0.6
         result.method = f"km_v2:last_standing(contradicts={len(contradicted)},facts={len(facts)})"
         return result
 
-    # 4. supports が複数 → lexical_score で決着
-    if len(supported) >= 2:
-        supported.sort(key=lambda ca: ca.lexical_score, reverse=True)
-        best = supported[0]
-        second = supported[1]
+    # 4. Strong supports が複数 → lexical_score で決着
+    if len(strong_supported) >= 2:
+        strong_supported.sort(key=lambda ca: ca.lexical_score, reverse=True)
+        best = strong_supported[0]
+        second = strong_supported[1]
         gap = best.lexical_score - second.lexical_score
         if gap >= 0.05:
             result.answer = best.label
             result.confidence = min(0.5 + gap, 0.8)
-            result.method = f"km_v2:multi_support_lexical(gap={gap:.3f},supports={len(supported)})"
+            result.method = f"km_v2:multi_support_lexical(gap={gap:.3f},supports={len(strong_supported)})"
             return result
 
-    # 5. LLM tiebreak 廃止（position bias で常に A を返す、0/3 正解）
-    # → INCONCLUSIVE に落とす
+    # 5. Weak supports only: 1つだけ weak_supported → 採用（低confidence）
+    if len(strong_supported) == 0 and len(weak_supported) == 1:
+        winner = weak_supported[0]
+        if winner.fact_ids:
+            result.answer = winner.label
+            result.confidence = 0.45
+            result.method = f"km_v2:sole_weak_support(weak=1,contradicts={len(contradicted)},facts={len(facts)})"
+            return result
+
+    # 6. Weak supports 複数 → lexical tiebreak
+    if len(strong_supported) == 0 and len(weak_supported) >= 2:
+        weak_supported.sort(key=lambda ca: ca.lexical_score, reverse=True)
+        best = weak_supported[0]
+        second = weak_supported[1]
+        gap = best.lexical_score - second.lexical_score
+        if gap >= 0.10:  # Stricter gap for weak supports
+            result.answer = best.label
+            result.confidence = 0.40
+            result.method = f"km_v2:weak_support_lexical(gap={gap:.3f},weak={len(weak_supported)})"
+            return result
 
     # INCONCLUSIVE
     result.reject_reason = f"no_clear_winner(supports={len(supported)},contradicts={len(contradicted)},unknown={len(unknown)})"
