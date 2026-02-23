@@ -786,6 +786,32 @@ class WholeGridProgram:
             mapping = self.params['map']
             return [[mapping.get(c, c) for c in row] for row in inp]
         
+        elif self.name == 'fill_enclosed_color':
+            bg = self.params.get('bg', most_common_color(inp))
+            fill_c = self.params['fill']
+            # Find enclosed bg cells
+            reachable = set()
+            queue = []
+            for r in range(h):
+                for c in range(w):
+                    if (r == 0 or r == h-1 or c == 0 or c == w-1) and inp[r][c] == bg:
+                        reachable.add((r, c))
+                        queue.append((r, c))
+            while queue:
+                cr, cc = queue.pop(0)
+                for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                    nr, nc = cr+dr, cc+dc
+                    if 0 <= nr < h and 0 <= nc < w and (nr, nc) not in reachable and inp[nr][nc] == bg:
+                        reachable.add((nr, nc))
+                        queue.append((nr, nc))
+            enclosed = {(r,c) for r in range(h) for c in range(w) if inp[r][c] == bg and (r,c) not in reachable}
+            if not enclosed:
+                return None
+            result = [list(row) for row in inp]
+            for r, c in enclosed:
+                result[r][c] = fill_c
+            return result
+        
         elif self.name == 'fill_enclosed_auto':
             bg = most_common_color(inp)
             # Find enclosed bg cells and fill with the most common non-bg neighbor color
@@ -1028,6 +1054,32 @@ class WholeGridProgram:
             smallest = min(regs, key=lambda r: r['size'])
             r1, c1, r2, c2 = smallest['bbox']
             return [row[c1:c2+1] for row in inp[r1:r2+1]]
+        
+        elif self.name == 'extract_unique_subgrid':
+            # Find the unique oh x ow subgrid in input
+            target_h = self.params['oh']
+            target_w = self.params['ow']
+            bg = self.params.get('bg', most_common_color(inp))
+            
+            candidates_sub = []
+            for r0 in range(h - target_h + 1):
+                for c0 in range(w - target_w + 1):
+                    sub = tuple(tuple(inp[r][c0:c0+target_w]) for r in range(r0, r0+target_h))
+                    candidates_sub.append((r0, c0, sub))
+            
+            # Find unique subgrids (appear only once)
+            from collections import Counter as Cnt
+            sub_counts = Cnt(s for _, _, s in candidates_sub)
+            unique = [(r0, c0, s) for r0, c0, s in candidates_sub if sub_counts[s] == 1]
+            
+            if len(unique) == 1:
+                return [list(row) for row in unique[0][2]]
+            
+            # If multiple unique, pick the one with most non-bg cells
+            if unique:
+                unique.sort(key=lambda x: sum(1 for row in x[2] for c in row if c != bg), reverse=True)
+                return [list(row) for row in unique[0][2]]
+            return None
         
         elif self.name == 'stack_v':
             return inp + inp
@@ -1272,8 +1324,10 @@ def _generate_whole_grid_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> Lis
     for key in ['color_count', 'color_count_desc', 'sum', 'sum_desc']:
         candidates.append(WholeGridProgram('col_sort', {'key': key, 'bg': bg}))
     
-    # Fill enclosed (whole-grid version, works with variable sizes)
-    candidates.append(WholeGridProgram('fill_enclosed_auto'))
+    # Fill enclosed with various colors
+    for fill_c in range(10):
+        if fill_c == bg: continue
+        candidates.append(WholeGridProgram('fill_enclosed_color', {'bg': bg, 'fill': fill_c}))
     
     # Colormap from all pairs (only when same size)
     all_same = all(grid_shape(i) == grid_shape(o) for i, o in train_pairs)
@@ -1325,6 +1379,10 @@ def _generate_whole_grid_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> Lis
     
     # Extract smallest region
     candidates.append(WholeGridProgram('extract_smallest_region', {'bg': bg}))
+    
+    # Extract unique subgrid (output size from first pair)
+    if oh < ih or ow < iw:
+        candidates.append(WholeGridProgram('extract_unique_subgrid', {'oh': oh, 'ow': ow, 'bg': bg}))
     
     # Stack operations
     if oh == 2 * ih and ow == iw:
@@ -1422,21 +1480,30 @@ def solve_cross(train_pairs: List[Tuple[Grid, Grid]], test_inputs: List[Grid]) -
     # Step 4: 2-step composition (if nothing found yet)
     if len(verified) < 2:
         wg_all = _generate_whole_grid_candidates(train_pairs)
-        # Fast pre-filter: only try compositions where step1 changes something
-        # and step2 applied to step1's output gives expected
+        exp_shapes = [grid_shape(o) for _, o in train_pairs]
+        
         for p1 in wg_all:
             if len(verified) >= 2:
                 break
-            # Quick test: does p1 produce valid intermediate grids?
+            # Quick filter: compute p1 on first input
             mid0 = p1.apply(train_pairs[0][0])
             if mid0 is None:
                 continue
+            # Skip if p1 doesn't change anything
+            if grid_eq(mid0, train_pairs[0][0]):
+                continue
+            
             for p2 in wg_all:
                 if p1.name == p2.name and p1.params == p2.params:
-                    continue  # skip identity composition
+                    continue
+                # Quick check on first pair only
+                res0 = p2.apply(mid0)
+                if res0 is None or not grid_eq(res0, train_pairs[0][1]):
+                    continue
+                # Full verify
                 comp = CompositeProgram(p1, p2)
                 ok = True
-                for inp, exp in train_pairs:
+                for inp, exp in train_pairs[1:]:
                     res = comp.apply(inp)
                     if res is None or not grid_eq(res, exp):
                         ok = False
