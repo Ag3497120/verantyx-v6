@@ -173,6 +173,14 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
         
         # Try: object-level transforms (Selector × Transformer × Composer)
         _add_object_transform_pieces(pieces, train_pairs, bg)
+        
+        # Try: draw lines between same-color objects
+        pieces.append(CrossPiece('draw_lines_same_color',
+            lambda inp: _draw_lines_same_color(inp)))
+        
+        # Try: flood fill enclosed bg regions
+        pieces.append(CrossPiece('flood_fill_enclosed',
+            lambda inp: _flood_fill_enclosed(inp)))
     
     # === Module 4: Grid partition transforms ===
     _add_partition_pieces(pieces, train_pairs)
@@ -780,6 +788,83 @@ def _add_extract_pieces(pieces: List[CrossPiece],
                 f'extract_multicolor_size{obj.size}',
                 lambda inp, sz=_size, b=_bg: _apply_extract_multicolor_by_size(inp, sz, b)
             ))
+
+
+def _draw_lines_same_color(inp: Grid) -> Grid:
+    """Draw horizontal/vertical lines between same-color objects"""
+    from arc.objects import detect_objects
+    bg = most_common_color(inp)
+    h, w = grid_shape(inp)
+    objs = detect_objects(inp, bg)
+    result = [row[:] for row in inp]
+    
+    by_color = {}
+    for o in objs:
+        by_color.setdefault(o.color, []).append(o)
+    
+    for color, group in by_color.items():
+        if len(group) < 2:
+            continue
+        for i in range(len(group)):
+            for j in range(i + 1, len(group)):
+                cr1 = int(group[i].center[0])
+                cc1 = int(group[i].center[1])
+                cr2 = int(group[j].center[0])
+                cc2 = int(group[j].center[1])
+                if cr1 == cr2:
+                    for c in range(min(cc1, cc2), max(cc1, cc2) + 1):
+                        if result[cr1][c] == bg:
+                            result[cr1][c] = color
+                elif cc1 == cc2:
+                    for r in range(min(cr1, cr2), max(cr1, cr2) + 1):
+                        if result[r][cc1] == bg:
+                            result[r][cc1] = color
+    return result
+
+
+def _flood_fill_enclosed(inp: Grid) -> Grid:
+    """Fill enclosed bg regions with the surrounding non-bg color"""
+    bg = most_common_color(inp)
+    h, w = grid_shape(inp)
+    
+    visited = [[False] * w for _ in range(h)]
+    result = [row[:] for row in inp]
+    
+    # BFS from border to mark all border-connected bg
+    border_bg = set()
+    queue = []
+    for r in range(h):
+        for c in [0, w - 1]:
+            if inp[r][c] == bg and not visited[r][c]:
+                visited[r][c] = True
+                queue.append((r, c))
+                border_bg.add((r, c))
+    for c in range(w):
+        for r in [0, h - 1]:
+            if inp[r][c] == bg and not visited[r][c]:
+                visited[r][c] = True
+                queue.append((r, c))
+                border_bg.add((r, c))
+    
+    while queue:
+        r, c = queue.pop(0)
+        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < h and 0 <= nc < w and not visited[nr][nc] and inp[nr][nc] == bg:
+                visited[nr][nc] = True
+                queue.append((nr, nc))
+                border_bg.add((nr, nc))
+    
+    # Fill interior bg
+    for r in range(h):
+        for c in range(w):
+            if inp[r][c] == bg and (r, c) not in border_bg:
+                for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                    nr, nc = r + dr, c + dc
+                    if 0 <= nr < h and 0 <= nc < w and inp[nr][nc] != bg:
+                        result[r][c] = inp[nr][nc]
+                        break
+    return result
 
 
 def _add_partition_pieces(pieces: List[CrossPiece],
