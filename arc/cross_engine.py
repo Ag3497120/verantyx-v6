@@ -1,0 +1,502 @@
+"""
+arc/cross_engine.py — Cross-Structure Engine for ARC-AGI-2
+
+Full Verantyx Cross architecture:
+1. Decompose task into structural pieces
+2. Cross-Simulator: verify piece combinations against constraints
+3. Puzzle reasoning: CEGIS with backtracking
+
+Integrates: cross_solver (DSL), objects, nb_abstract, conditional
+"""
+
+from __future__ import annotations
+from typing import List, Tuple, Optional, Dict
+from arc.grid import Grid, grid_shape, grid_eq, most_common_color
+from arc.cross_solver import (
+    solve_cross, WholeGridProgram, 
+    _generate_whole_grid_candidates, verify_whole_grid,
+    generate_candidates, verify_program, CompositeProgram,
+)
+from arc.nb_abstract import (
+    learn_abstract_nb_rule, apply_abstract_nb_rule,
+    learn_count_based_rule, apply_count_based_rule,
+)
+from arc.conditional import (
+    learn_conditional_color_rule, apply_conditional_color_rule,
+    learn_region_property_rule, apply_region_property_rule,
+)
+from arc.objects import detect_objects, find_matching_objects, object_transform_type
+
+
+class CrossPiece:
+    """A piece in the Cross structure — an atomic transformation"""
+    def __init__(self, name: str, apply_fn, params: dict = None):
+        self.name = name
+        self.apply_fn = apply_fn
+        self.params = params or {}
+    
+    def apply(self, inp: Grid) -> Optional[Grid]:
+        try:
+            return self.apply_fn(inp, **self.params)
+        except Exception:
+            return None
+    
+    def __repr__(self):
+        return f"CrossPiece({self.name})"
+
+
+class CrossSimulator:
+    """Verify pieces against training constraints (small-world verification)"""
+    
+    @staticmethod
+    def verify(piece: CrossPiece, train_pairs: List[Tuple[Grid, Grid]]) -> bool:
+        """CEGIS: verify piece against ALL training pairs"""
+        for inp, expected in train_pairs:
+            result = piece.apply(inp)
+            if result is None or not grid_eq(result, expected):
+                return False
+        return True
+    
+    @staticmethod
+    def partial_verify(piece: CrossPiece, train_pairs: List[Tuple[Grid, Grid]]) -> float:
+        """Partial match score (0.0 to 1.0) — for puzzle reasoning"""
+        if not train_pairs:
+            return 0.0
+        
+        total_cells = 0
+        matching_cells = 0
+        
+        for inp, expected in train_pairs:
+            result = piece.apply(inp)
+            if result is None:
+                return 0.0
+            
+            h, w = grid_shape(expected)
+            rh, rw = grid_shape(result)
+            if (h, w) != (rh, rw):
+                return 0.0
+            
+            for r in range(h):
+                for c in range(w):
+                    total_cells += 1
+                    if result[r][c] == expected[r][c]:
+                        matching_cells += 1
+        
+        return matching_cells / total_cells if total_cells > 0 else 0.0
+
+
+def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPiece]:
+    """Generate all candidate pieces from all modules"""
+    pieces = []
+    
+    # === Module 1: Abstract Neighborhood Rules (Wall 2) ===
+    for radius in [1, 2]:
+        rule = learn_abstract_nb_rule(train_pairs, radius)
+        if rule is not None:
+            r = rule  # capture
+            pieces.append(CrossPiece(
+                f'abstract_nb_r{radius}',
+                lambda inp, _r=r: apply_abstract_nb_rule(inp, _r)
+            ))
+            break  # prefer smaller radius
+    
+    # Count-based rule
+    rule = learn_count_based_rule(train_pairs)
+    if rule is not None:
+        r = rule
+        pieces.append(CrossPiece(
+            'count_based_nb',
+            lambda inp, _r=r: apply_count_based_rule(inp, _r)
+        ))
+    
+    # === Module 2: Conditional Rules (Wall 3) ===
+    rule = learn_conditional_color_rule(train_pairs)
+    if rule is not None:
+        r = rule
+        pieces.append(CrossPiece(
+            'conditional_color',
+            lambda inp, _r=r: apply_conditional_color_rule(inp, _r)
+        ))
+    
+    rule = learn_region_property_rule(train_pairs)
+    if rule is not None:
+        r = rule
+        if 'shape_map' in r:
+            pieces.append(CrossPiece(
+                'region_shape_recolor',
+                lambda inp, _r=r: apply_region_property_rule(inp, _r)
+            ))
+        if 'size_map' in r:
+            pieces.append(CrossPiece(
+                'region_size_recolor',
+                lambda inp, _r=r: apply_region_property_rule(inp, _r)
+            ))
+    
+    # === Module 3: Object-level operations (Wall 1) ===
+    bg = most_common_color(train_pairs[0][0])
+    all_same = all(grid_shape(i) == grid_shape(o) for i, o in train_pairs)
+    
+    if all_same:
+        # Try: move all objects by learned offset
+        _add_object_move_pieces(pieces, train_pairs, bg)
+        
+        # Try: recolor objects by some property
+        _add_object_recolor_pieces(pieces, train_pairs, bg)
+        
+        # Try: stamp pattern at marker positions
+        _add_stamp_pieces(pieces, train_pairs, bg)
+    
+    # Try: extract specific object
+    _add_extract_pieces(pieces, train_pairs, bg)
+    
+    return pieces
+
+
+def _add_object_move_pieces(pieces: List[CrossPiece], 
+                            train_pairs: List[Tuple[Grid, Grid]], bg: int):
+    """Try to learn object movement patterns"""
+    # Check if all objects move by same delta
+    for color in range(10):
+        if color == bg:
+            continue
+        
+        deltas = []
+        consistent = True
+        
+        for inp, out in train_pairs:
+            objs_in = [o for o in detect_objects(inp, bg) if o.color == color]
+            objs_out = [o for o in detect_objects(out, bg) if o.color == color]
+            
+            if len(objs_in) != len(objs_out):
+                consistent = False
+                break
+            
+            for oi, oo in zip(
+                sorted(objs_in, key=lambda o: o.bbox),
+                sorted(objs_out, key=lambda o: o.bbox)
+            ):
+                if oi.shape != oo.shape:
+                    consistent = False
+                    break
+                dr = oo.bbox[0] - oi.bbox[0]
+                dc = oo.bbox[1] - oi.bbox[1]
+                deltas.append((dr, dc))
+            if not consistent:
+                break
+        
+        if consistent and deltas and len(set(deltas)) == 1:
+            dr, dc = deltas[0]
+            if dr != 0 or dc != 0:
+                _color = color
+                _dr, _dc = dr, dc
+                _bg = bg
+                pieces.append(CrossPiece(
+                    f'move_color_{color}_by_{dr}_{dc}',
+                    lambda inp, c=_color, ddr=_dr, ddc=_dc, b=_bg: _apply_move_color(inp, c, ddr, ddc, b)
+                ))
+
+
+def _apply_move_color(inp: Grid, color: int, dr: int, dc: int, bg: int) -> Grid:
+    """Move all objects of a specific color by (dr, dc)"""
+    from arc.objects import detect_objects, move_object
+    result = [row[:] for row in inp]
+    objs = [o for o in detect_objects(inp, bg) if o.color == color]
+    # Clear old positions
+    for obj in objs:
+        for r, c in obj.cells:
+            result[r][c] = bg
+    # Place at new positions
+    h, w = grid_shape(inp)
+    for obj in objs:
+        for r, c in obj.cells:
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < h and 0 <= nc < w:
+                result[nr][nc] = color
+    return result
+
+
+def _add_object_recolor_pieces(pieces: List[CrossPiece],
+                               train_pairs: List[Tuple[Grid, Grid]], bg: int):
+    """Try to learn object recoloring patterns"""
+    from arc.objects import detect_objects
+    
+    # Learn: smallest object gets color X, largest gets color Y
+    for sort_key in ['size', 'height', 'width']:
+        rank_colors = {}
+        consistent = True
+        
+        for inp, out in train_pairs:
+            objs = detect_objects(inp, bg)
+            if not objs:
+                consistent = False
+                break
+            
+            if sort_key == 'size':
+                sorted_objs = sorted(objs, key=lambda o: o.size)
+            elif sort_key == 'height':
+                sorted_objs = sorted(objs, key=lambda o: o.height)
+            else:
+                sorted_objs = sorted(objs, key=lambda o: o.width)
+            
+            for rank, obj in enumerate(sorted_objs):
+                out_cs = set(out[r][c] for r, c in obj.cells if out[r][c] != bg)
+                if len(out_cs) == 1:
+                    oc = out_cs.pop()
+                    if rank in rank_colors:
+                        if rank_colors[rank] != oc:
+                            consistent = False
+                            break
+                    else:
+                        rank_colors[rank] = oc
+            if not consistent:
+                break
+        
+        if consistent and rank_colors:
+            _rc = rank_colors
+            _sk = sort_key
+            _bg = bg
+            pieces.append(CrossPiece(
+                f'recolor_by_{sort_key}_rank',
+                lambda inp, rc=_rc, sk=_sk, b=_bg: _apply_rank_recolor(inp, rc, sk, b)
+            ))
+
+
+def _apply_rank_recolor(inp: Grid, rank_colors: Dict, sort_key: str, bg: int) -> Grid:
+    from arc.objects import detect_objects
+    objs = detect_objects(inp, bg)
+    if sort_key == 'size':
+        sorted_objs = sorted(objs, key=lambda o: o.size)
+    elif sort_key == 'height':
+        sorted_objs = sorted(objs, key=lambda o: o.height)
+    else:
+        sorted_objs = sorted(objs, key=lambda o: o.width)
+    
+    result = [row[:] for row in inp]
+    for rank, obj in enumerate(sorted_objs):
+        if rank in rank_colors:
+            for r, c in obj.cells:
+                result[r][c] = rank_colors[rank]
+    return result
+
+
+def _add_stamp_pieces(pieces: List[CrossPiece],
+                      train_pairs: List[Tuple[Grid, Grid]], bg: int):
+    """Try: find marker dots in input, stamp pattern at each"""
+    from arc.objects import detect_objects
+    
+    inp0, out0 = train_pairs[0]
+    h, w = grid_shape(inp0)
+    
+    # Find single-cell objects (dots/markers)
+    objs = detect_objects(inp0, bg)
+    dot_objs = [o for o in objs if o.size == 1]
+    
+    if not dot_objs or len(dot_objs) < 2:
+        return
+    
+    # Check if all dots are same color
+    dot_colors = set(o.color for o in dot_objs)
+    if len(dot_colors) != 1:
+        return
+    
+    dot_color = dot_colors.pop()
+    
+    # Find what pattern appears around dots in output
+    # Use first dot to extract pattern
+    dr0, dc0 = dot_objs[0].cells[0]
+    
+    # Try different pattern sizes
+    for ps in [3, 5, 7]:
+        pr = ps // 2
+        r1, c1 = dr0 - pr, dc0 - pr
+        if r1 < 0 or c1 < 0 or r1 + ps > h or c1 + ps > w:
+            continue
+        
+        pattern = [out0[r][c1:c1+ps] for r in range(r1, r1+ps)]
+        
+        # Verify all dots have same pattern in output
+        ok = True
+        for dot in dot_objs[1:]:
+            dr, dc = dot.cells[0]
+            rr, cc = dr - pr, dc - pr
+            if rr < 0 or cc < 0 or rr + ps > h or cc + ps > w:
+                ok = False
+                break
+            actual = [out0[r][cc:cc+ps] for r in range(rr, rr+ps)]
+            if actual != pattern:
+                ok = False
+                break
+        
+        if ok:
+            _pattern = pattern
+            _dot_color = dot_color
+            _bg = bg
+            _ps = ps
+            pieces.append(CrossPiece(
+                f'stamp_at_dots_{dot_color}_size{ps}',
+                lambda inp, p=_pattern, dc=_dot_color, b=_bg, s=_ps: _apply_stamp(inp, p, dc, b, s)
+            ))
+            break
+
+
+def _apply_stamp(inp: Grid, pattern: Grid, dot_color: int, bg: int, ps: int) -> Grid:
+    h, w = grid_shape(inp)
+    pr = ps // 2
+    result = [row[:] for row in inp]
+    for r in range(h):
+        for c in range(w):
+            if inp[r][c] == dot_color:
+                for dr in range(ps):
+                    for dc in range(ps):
+                        nr, nc = r - pr + dr, c - pr + dc
+                        if 0 <= nr < h and 0 <= nc < w:
+                            if pattern[dr][dc] != bg:
+                                result[nr][nc] = pattern[dr][dc]
+    return result
+
+
+def _add_extract_pieces(pieces: List[CrossPiece],
+                        train_pairs: List[Tuple[Grid, Grid]], bg: int):
+    """Try: extract a specific object as output"""
+    from arc.objects import detect_objects
+    
+    inp0, out0 = train_pairs[0]
+    oh, ow = grid_shape(out0)
+    
+    objs = detect_objects(inp0, bg)
+    
+    for obj in objs:
+        if obj.height == oh and obj.width == ow:
+            grid = obj.as_multicolor_grid(inp0)
+            if grid_eq(grid, out0):
+                _color = obj.color
+                _bg = bg
+                pieces.append(CrossPiece(
+                    f'extract_object_color_{obj.color}',
+                    lambda inp, col=_color, b=_bg: _apply_extract_by_color(inp, col, b)
+                ))
+
+
+def _apply_extract_by_color(inp: Grid, color: int, bg: int) -> Optional[Grid]:
+    from arc.objects import detect_objects
+    objs = [o for o in detect_objects(inp, bg) if o.color == color]
+    if not objs:
+        return None
+    obj = max(objs, key=lambda o: o.size)
+    return obj.as_multicolor_grid(inp)
+
+
+def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]], 
+                       test_inputs: List[Grid]) -> Tuple[List[List[Grid]], List]:
+    """
+    Full Cross-Structure solver with puzzle reasoning.
+    
+    Phase 1: Try original cross_solver (existing DSL)
+    Phase 2: Try cross pieces (abstract NB, conditional, objects)
+    Phase 3: Try 2-step composition of cross pieces
+    Phase 4: Puzzle reasoning — partial match + refinement
+    """
+    sim = CrossSimulator()
+    verified = []
+    
+    # === Phase 1: Original solver (DSL + NB rule) ===
+    orig_predictions, orig_verified = solve_cross(train_pairs, test_inputs)
+    verified.extend(orig_verified)
+    
+    if len(verified) >= 2:
+        return _apply_verified(verified, test_inputs), verified
+    
+    # === Phase 2: Cross pieces ===
+    cross_pieces = _generate_cross_pieces(train_pairs)
+    
+    for piece in cross_pieces:
+        if sim.verify(piece, train_pairs):
+            verified.append(('cross', piece))
+            if len(verified) >= 2:
+                return _apply_verified(verified, test_inputs), verified
+    
+    # === Phase 3: Composition of cross pieces with WG programs ===
+    if len(verified) < 2 and cross_pieces:
+        wg_cands = _generate_whole_grid_candidates(train_pairs)
+        
+        # Try: cross_piece + WG
+        for cp in cross_pieces:
+            if len(verified) >= 2:
+                break
+            mid0 = cp.apply(train_pairs[0][0])
+            if mid0 is None:
+                continue
+            
+            for wg in wg_cands:
+                res0 = wg.apply(mid0)
+                if res0 is None or not grid_eq(res0, train_pairs[0][1]):
+                    continue
+                
+                # Full verify
+                ok = True
+                for inp, exp in train_pairs[1:]:
+                    mid = cp.apply(inp)
+                    if mid is None:
+                        ok = False; break
+                    res = wg.apply(mid)
+                    if res is None or not grid_eq(res, exp):
+                        ok = False; break
+                if ok:
+                    verified.append(('cross_compose', (cp, wg)))
+                    if len(verified) >= 2:
+                        break
+        
+        # Try: WG + cross_piece
+        if len(verified) < 2:
+            for wg in wg_cands:
+                if len(verified) >= 2:
+                    break
+                mid0 = wg.apply(train_pairs[0][0])
+                if mid0 is None:
+                    continue
+                
+                for cp in cross_pieces:
+                    res0 = cp.apply(mid0)
+                    if res0 is None or not grid_eq(res0, train_pairs[0][1]):
+                        continue
+                    
+                    ok = True
+                    for inp, exp in train_pairs[1:]:
+                        mid = wg.apply(inp)
+                        if mid is None:
+                            ok = False; break
+                        res = cp.apply(mid)
+                        if res is None or not grid_eq(res, exp):
+                            ok = False; break
+                    if ok:
+                        verified.append(('cross_compose', (wg, cp)))
+                        if len(verified) >= 2:
+                            break
+    
+    return _apply_verified(verified, test_inputs), verified
+
+
+def _apply_verified(verified: List, test_inputs: List[Grid]) -> List[List[Grid]]:
+    """Apply verified programs to test inputs"""
+    predictions = []
+    for test_inp in test_inputs:
+        attempts = []
+        for kind, prog in verified[:2]:
+            if kind in ('cell', 'whole'):
+                result = prog.apply(test_inp)
+            elif kind == 'composite':
+                result = prog.apply(test_inp)
+            elif kind == 'cross':
+                result = prog.apply(test_inp)
+            elif kind == 'cross_compose':
+                p1, p2 = prog
+                mid = p1.apply(test_inp) if hasattr(p1, 'apply') else None
+                result = p2.apply(mid) if mid is not None else None
+            else:
+                result = None
+            
+            if result is not None:
+                attempts.append(result)
+        predictions.append(attempts)
+    
+    return predictions
