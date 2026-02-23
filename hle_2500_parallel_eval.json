@@ -2,8 +2,8 @@
   "score": 0.0268,
   "correct": 67,
   "total": 2500,
-  "done": 3820,
-  "elapsed_s": 1520.8829009532928,
+  "done": 5000,
+  "elapsed_s": 0.015573978424072266,
   "stats": {
     "wiki_hits": 1235,
     "knowledge_match": 125,

@@ -827,20 +827,16 @@ class VerantyxV6Enhanced:
                     except Exception as _km_e:
                         trace.append(f"step1_5_9:km_v2_error:{_km_e}")
 
-                # 3. mcq_direct (Qwen 7B, 鉄の壁レベル2) — facts≥1のみ (facts=0: 14% precision → suppress)
-                _has_facts_for_direct = bool(_knowledge_facts and len(_knowledge_facts) >= 1)
+                # 3. atom_cross (Atom構造マッチング、LLMなし) — mcq_directの代替
                 try:
-                    if not _has_facts_for_direct:
-                        trace.append("step1_5_9_5:mcq_direct:SKIPPED_NO_FACTS")
-                        _direct_result = None
-                    else:
-                        from executors.mcq_direct_solver import solve_mcq_directly
-                        _direct_result = solve_mcq_directly(
-                            ir_dict, _choices, _knowledge_facts
-                        )
+                    from executors.mcq_atom_cross_solver import solve_mcq_by_atom_cross
+                    _direct_result = solve_mcq_by_atom_cross(
+                        _stem if '_stem' in dir() else problem_text,
+                        _choices, _knowledge_facts, ir_dict
+                    )
                     if _direct_result:
                         _dir_ans, _dir_conf, _dir_method = _direct_result
-                        trace.append(f"step1_5_9_5:mcq_proposal:{_dir_method} label={_dir_ans} conf={_dir_conf:.2f}")
+                        trace.append(f"step1_5_9_5:atom_cross_proposal:{_dir_method} label={_dir_ans} conf={_dir_conf:.2f}")
 
                         # Cross矛盾検査: proposalが知識と矛盾しないか確認
                         _dir_rejected = False
@@ -872,11 +868,11 @@ class VerantyxV6Enhanced:
                         if not _dir_rejected:
                             _mcq_candidates.append((_dir_ans, _dir_conf, _dir_method))
                         else:
-                            trace.append("step1_5_9_5:mcq_direct:REJECTED_BY_CROSS")
+                            trace.append("step1_5_9_5:atom_cross:REJECTED_BY_CROSS")
                     else:
-                        trace.append("step1_5_9_5:mcq_direct:INCONCLUSIVE")
+                        trace.append("step1_5_9_5:atom_cross:INCONCLUSIVE")
                 except Exception as _dir_e:
-                    trace.append(f"step1_5_9_5:mcq_direct_error:{_dir_e}")
+                    trace.append(f"step1_5_9_5:atom_cross_error:{_dir_e}")
 
                 # ─── Step 1.5.10-pre: MCQ候補から最高confidence選択 ───
                 if _mcq_candidates:
