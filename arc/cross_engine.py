@@ -170,6 +170,9 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
         
         # Try: stamp pattern at marker positions
         _add_stamp_pieces(pieces, train_pairs, bg)
+        
+        # Try: object-level transforms (Selector × Transformer × Composer)
+        _add_object_transform_pieces(pieces, train_pairs, bg)
     
     # Try: extract specific object
     _add_extract_pieces(pieces, train_pairs, bg)
@@ -380,6 +383,310 @@ def _apply_stamp(inp: Grid, pattern: Grid, dot_color: int, bg: int, ps: int) -> 
     return result
 
 
+def _add_object_transform_pieces(pieces: List[CrossPiece],
+                                 train_pairs: List[Tuple[Grid, Grid]], bg: int):
+    """Object-level DSL: Selector × Transformer × Composer
+    
+    Learn per-object transforms from training pairs using correspondence.
+    """
+    from arc.objects import detect_objects, find_matching_objects
+    
+    # Only for same-size grids
+    if not all(grid_shape(i) == grid_shape(o) for i, o in train_pairs):
+        return
+    
+    inp0, out0 = train_pairs[0]
+    ih, iw = grid_shape(inp0)
+    
+    in_objs0 = detect_objects(inp0, bg)
+    out_objs0 = detect_objects(out0, bg)
+    
+    if not in_objs0 or not out_objs0:
+        return
+    
+    # === Strategy 1: Object-color mapping (most common pattern) ===
+    # Each object keeps its shape/position but changes color based on a property
+    
+    # Build correspondence via position
+    matches0 = find_matching_objects(in_objs0, out_objs0)
+    if len(matches0) < 2:
+        return
+    
+    # Check: recolor by neighbor count
+    _try_recolor_by_neighbor_count(pieces, train_pairs, bg)
+    
+    # Check: recolor by enclosed/border property  
+    _try_recolor_by_enclosure(pieces, train_pairs, bg)
+    
+    # Check: selective deletion (remove objects matching a condition)
+    _try_selective_deletion(pieces, train_pairs, bg)
+    
+    # Check: fill object interiors
+    _try_fill_object_interior(pieces, train_pairs, bg)
+
+
+def _try_recolor_by_neighbor_count(pieces: List[CrossPiece],
+                                    train_pairs: List[Tuple[Grid, Grid]], bg: int):
+    """Recolor objects based on how many other objects they touch"""
+    from arc.objects import detect_objects, find_matching_objects
+    
+    for pair_idx, (inp, out) in enumerate(train_pairs):
+        h, w = grid_shape(inp)
+        in_objs = detect_objects(inp, bg)
+        out_objs = detect_objects(out, bg)
+        matches = find_matching_objects(in_objs, out_objs)
+        
+        if len(matches) < 2:
+            return
+        
+        # Count adjacent objects for each object
+        adj_count_to_color = {}
+        for obj_in, obj_out in matches:
+            # Count neighbors: objects whose bbox is within 2 cells
+            adj = 0
+            for other in in_objs:
+                if other is obj_in:
+                    continue
+                # Check if adjacent (bboxes within 1 cell)
+                r1, c1, r2, c2 = obj_in.bbox
+                or1, oc1, or2, oc2 = other.bbox
+                if (r1 - 1 <= or2 and or1 <= r2 + 1 and 
+                    c1 - 1 <= oc2 and oc1 <= c2 + 1):
+                    adj += 1
+            
+            new_color = obj_out.color
+            if adj in adj_count_to_color:
+                if adj_count_to_color[adj] != new_color:
+                    return  # inconsistent
+            else:
+                adj_count_to_color[adj] = new_color
+        
+        if pair_idx == 0:
+            first_map = adj_count_to_color.copy()
+        else:
+            if adj_count_to_color != first_map:
+                return
+    
+    if first_map:
+        _map = first_map
+        _bg = bg
+        pieces.append(CrossPiece(
+            'recolor_by_adj_count',
+            lambda inp, m=_map, b=_bg: _apply_recolor_by_adj_count(inp, m, b)
+        ))
+
+
+def _apply_recolor_by_adj_count(inp: Grid, adj_map: Dict, bg: int) -> Grid:
+    from arc.objects import detect_objects, recolor_object
+    objs = detect_objects(inp, bg)
+    result = [row[:] for row in inp]
+    for obj in objs:
+        adj = 0
+        for other in objs:
+            if other is obj:
+                continue
+            r1, c1, r2, c2 = obj.bbox
+            or1, oc1, or2, oc2 = other.bbox
+            if (r1 - 1 <= or2 and or1 <= r2 + 1 and 
+                c1 - 1 <= oc2 and oc1 <= c2 + 1):
+                adj += 1
+        if adj in adj_map:
+            for r, c in obj.cells:
+                result[r][c] = adj_map[adj]
+    return result
+
+
+def _try_recolor_by_enclosure(pieces: List[CrossPiece],
+                               train_pairs: List[Tuple[Grid, Grid]], bg: int):
+    """Recolor objects based on whether they are enclosed by another object"""
+    from arc.objects import detect_objects, find_matching_objects
+    
+    enclosed_color = None
+    free_color = None
+    
+    for inp, out in train_pairs:
+        h, w = grid_shape(inp)
+        in_objs = detect_objects(inp, bg)
+        out_objs = detect_objects(out, bg)
+        matches = find_matching_objects(in_objs, out_objs)
+        
+        for obj_in, obj_out in matches:
+            if obj_in.color == obj_out.color:
+                continue
+            
+            # Check if obj_in is enclosed (surrounded by another object's cells)
+            r1, c1, r2, c2 = obj_in.bbox
+            is_enclosed = True
+            
+            # Check if there's a larger object surrounding this one
+            for border_r in range(max(0, r1-1), min(h, r2+2)):
+                for border_c in range(max(0, c1-1), min(w, c2+2)):
+                    if (border_r, border_c) not in set(obj_in.cells):
+                        if border_r in (r1-1, r2+1) or border_c in (c1-1, c2+1):
+                            if inp[border_r][border_c] == bg:
+                                is_enclosed = False
+                                break
+                if not is_enclosed:
+                    break
+            
+            if is_enclosed:
+                if enclosed_color is not None and enclosed_color != obj_out.color:
+                    return
+                enclosed_color = obj_out.color
+            else:
+                if free_color is not None and free_color != obj_out.color:
+                    return
+                free_color = obj_out.color
+    
+    if enclosed_color is not None or free_color is not None:
+        _ec = enclosed_color
+        _fc = free_color
+        _bg = bg
+        pieces.append(CrossPiece(
+            'recolor_by_enclosure',
+            lambda inp, ec=_ec, fc=_fc, b=_bg: _apply_recolor_by_enclosure(inp, ec, fc, b)
+        ))
+
+
+def _apply_recolor_by_enclosure(inp: Grid, enclosed_color, free_color, bg: int) -> Grid:
+    from arc.objects import detect_objects
+    h, w = grid_shape(inp)
+    objs = detect_objects(inp, bg)
+    result = [row[:] for row in inp]
+    for obj in objs:
+        r1, c1, r2, c2 = obj.bbox
+        is_enclosed = True
+        for border_r in range(max(0, r1-1), min(h, r2+2)):
+            for border_c in range(max(0, c1-1), min(w, c2+2)):
+                if (border_r, border_c) not in set(obj.cells):
+                    if border_r in (r1-1, r2+1) or border_c in (c1-1, c2+1):
+                        if inp[border_r][border_c] == bg:
+                            is_enclosed = False
+                            break
+            if not is_enclosed:
+                break
+        
+        new_color = enclosed_color if is_enclosed else free_color
+        if new_color is not None:
+            for r, c in obj.cells:
+                result[r][c] = new_color
+    return result
+
+
+def _try_selective_deletion(pieces: List[CrossPiece],
+                            train_pairs: List[Tuple[Grid, Grid]], bg: int):
+    """Delete objects matching a condition (size, color, shape)"""
+    from arc.objects import detect_objects
+    
+    # Check: delete objects of specific size
+    for selector in ['smallest', 'largest', 'by_color']:
+        consistent = True
+        delete_param = None
+        
+        for inp, out in train_pairs:
+            in_objs = detect_objects(inp, bg)
+            out_objs = detect_objects(out, bg)
+            
+            deleted_shapes = set()
+            for obj in in_objs:
+                # Check if this object is gone in output
+                cells = set(obj.cells)
+                still_there = False
+                for oo in out_objs:
+                    if set(oo.cells) & cells:
+                        still_there = True
+                        break
+                if not still_there:
+                    deleted_shapes.add(obj.size)
+            
+            if not deleted_shapes:
+                consistent = False
+                break
+            
+            if selector == 'smallest':
+                min_size = min(o.size for o in in_objs)
+                if deleted_shapes != {min_size}:
+                    consistent = False; break
+            elif selector == 'largest':
+                max_size = max(o.size for o in in_objs)
+                if deleted_shapes != {max_size}:
+                    consistent = False; break
+        
+        if consistent and selector in ['smallest', 'largest']:
+            _sel = selector
+            _bg = bg
+            pieces.append(CrossPiece(
+                f'delete_{selector}_objects',
+                lambda inp, sel=_sel, b=_bg: _apply_delete_by_selector(inp, sel, b)
+            ))
+
+
+def _apply_delete_by_selector(inp: Grid, selector: str, bg: int) -> Grid:
+    from arc.objects import detect_objects
+    objs = detect_objects(inp, bg)
+    if not objs:
+        return inp
+    
+    result = [row[:] for row in inp]
+    if selector == 'smallest':
+        target_size = min(o.size for o in objs)
+    elif selector == 'largest':
+        target_size = max(o.size for o in objs)
+    else:
+        return inp
+    
+    for obj in objs:
+        if obj.size == target_size:
+            for r, c in obj.cells:
+                result[r][c] = bg
+    return result
+
+
+def _try_fill_object_interior(pieces: List[CrossPiece],
+                               train_pairs: List[Tuple[Grid, Grid]], bg: int):
+    """Fill hollow objects' interiors with their color"""
+    from arc.objects import detect_objects
+    
+    consistent = True
+    for inp, out in train_pairs:
+        h, w = grid_shape(inp)
+        in_objs = detect_objects(inp, bg)
+        
+        test_result = [row[:] for row in inp]
+        for obj in in_objs:
+            r1, c1, r2, c2 = obj.bbox
+            # Fill bbox interior with object color where bg exists
+            for r in range(r1, r2+1):
+                for c in range(c1, c2+1):
+                    if inp[r][c] == bg:
+                        # Check if surrounded by object cells (simple: within bbox)
+                        test_result[r][c] = obj.color
+        
+        if not grid_eq(test_result, out):
+            consistent = False
+            break
+    
+    if consistent:
+        _bg = bg
+        pieces.append(CrossPiece(
+            'fill_object_bbox_interior',
+            lambda inp, b=_bg: _apply_fill_interior(inp, b)
+        ))
+
+
+def _apply_fill_interior(inp: Grid, bg: int) -> Grid:
+    from arc.objects import detect_objects
+    objs = detect_objects(inp, bg)
+    result = [row[:] for row in inp]
+    for obj in objs:
+        r1, c1, r2, c2 = obj.bbox
+        for r in range(r1, r2+1):
+            for c in range(c1, c2+1):
+                if result[r][c] == bg:
+                    result[r][c] = obj.color
+    return result
+
+
 def _add_extract_pieces(pieces: List[CrossPiece],
                         train_pairs: List[Tuple[Grid, Grid]], bg: int):
     """Try: extract a specific object as output"""
@@ -539,28 +846,19 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     orig_predictions, orig_verified = solve_cross(train_pairs, test_inputs)
     verified.extend(orig_verified)
     
-    # If original solver found NB rule, also try cross_nb as extra candidate
-    has_nb = any(getattr(p, 'name', '') == 'neighborhood_rule' 
-                 for _, p in orig_verified)
-    if has_nb:
-        cross_pieces_early = _generate_cross_pieces(train_pairs)
-        for piece in cross_pieces_early:
-            if piece.name.startswith('cross_nb_'):
-                if sim.verify(piece, train_pairs):
-                    verified.append(('cross', piece))
-                    break
-    
-    if len(verified) >= 2:
-        return _apply_verified(verified, test_inputs), verified
-    
-    # === Phase 2: Cross pieces ===
+    # Always try cross pieces (even if Phase 1 found 2+ candidates)
+    # This allows cross_nb and object DSL to be fallback candidates
     cross_pieces = _generate_cross_pieces(train_pairs)
     
     for piece in cross_pieces:
         if sim.verify(piece, train_pairs):
-            verified.append(('cross', piece))
-            if len(verified) >= 2:
-                return _apply_verified(verified, test_inputs), verified
+            # Avoid duplicates by name
+            existing_names = {getattr(p, 'name', '') for _, p in verified}
+            if piece.name not in existing_names:
+                verified.append(('cross', piece))
+    
+    if len(verified) >= 2:
+        return _apply_verified(verified, test_inputs), verified
     
     # === Phase 3: Composition of cross pieces with WG programs ===
     if len(verified) < 2 and cross_pieces:
@@ -624,11 +922,54 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
 
 
 def _apply_verified(verified: List, test_inputs: List[Grid]) -> List[List[Grid]]:
-    """Apply verified programs to test inputs"""
+    """Apply verified programs to test inputs.
+    
+    Selects up to 3 diverse candidates:
+    - Up to 2 from Phase 1 (original solver)
+    - At least 1 non-NB cross piece if available
+    """
+    # Prioritize diversity: separate NB-like from non-NB candidates
+    nb_names = {'neighborhood_rule', 'cross_nb_r1', 'cross_nb_r2', 
+                'structural_nb_r1', 'structural_nb_r2',
+                'abstract_nb_r1', 'abstract_nb_r2',
+                'count_based_nb'}
+    
+    nb_verified = []
+    non_nb_verified = []
+    for item in verified:
+        kind, prog = item
+        name = getattr(prog, 'name', '')
+        if name in nb_names or name.startswith('cross_nb') or name.startswith('structural_nb') or name.startswith('abstract_nb'):
+            nb_verified.append(item)
+        else:
+            non_nb_verified.append(item)
+    
+    # Build final candidate list: original DSL first, then NB, then cross non-NB
+    selected = non_nb_verified[:2] + nb_verified[:2]
+    # Deduplicate and limit to 3
+    seen = set()
+    final = []
+    for item in selected:
+        name = getattr(item[1], 'name', id(item[1]))
+        if name not in seen:
+            seen.add(name)
+            final.append(item)
+        if len(final) >= 3:
+            break
+    
+    # If < 3, add remaining
+    for item in verified:
+        name = getattr(item[1], 'name', id(item[1]))
+        if name not in seen:
+            seen.add(name)
+            final.append(item)
+        if len(final) >= 3:
+            break
+    
     predictions = []
     for test_inp in test_inputs:
         attempts = []
-        for kind, prog in verified[:3]:
+        for kind, prog in final:
             if kind in ('cell', 'whole'):
                 result = prog.apply(test_inp)
             elif kind == 'composite':
@@ -643,7 +984,9 @@ def _apply_verified(verified: List, test_inputs: List[Grid]) -> List[List[Grid]]
                 result = None
             
             if result is not None:
-                attempts.append(result)
+                # Deduplicate identical predictions
+                if not any(grid_eq(result, a) for a in attempts):
+                    attempts.append(result)
         predictions.append(attempts)
     
     return predictions
