@@ -1244,6 +1244,10 @@ class WholeGridProgram:
                             result[r][c] = color
             return result
         
+        elif self.name == 'cross_nb_rule':
+            from arc.nb_abstract import apply_cross_nb_rule
+            return apply_cross_nb_rule(inp, self.params['cross_rule'])
+        
         elif self.name == 'neighborhood_rule':
             # Apply learned neighborhood → output mapping
             mapping = self.params['mapping']

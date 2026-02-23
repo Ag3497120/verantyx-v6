@@ -20,6 +20,8 @@ from arc.cross_solver import (
 from arc.nb_abstract import (
     learn_abstract_nb_rule, apply_abstract_nb_rule,
     learn_count_based_rule, apply_count_based_rule,
+    learn_structural_nb_rule, apply_structural_nb_rule,
+    learn_cross_nb_rule, apply_cross_nb_rule,
 )
 from arc.conditional import (
     learn_conditional_color_rule, apply_conditional_color_rule,
@@ -89,16 +91,39 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
     """Generate all candidate pieces from all modules"""
     pieces = []
     
-    # === Module 1: Abstract Neighborhood Rules (Wall 2) ===
+    # === Module 1: Neighborhood Rules (Wall 2) ===
+    # Priority 1: Cross NB (structural pattern + const colors + role-based output)
+    for radius in [1, 2]:
+        rule = learn_cross_nb_rule(train_pairs, radius)
+        if rule is not None:
+            r = rule
+            pieces.insert(0, CrossPiece(
+                f'cross_nb_r{radius}',
+                lambda inp, _r=r: apply_cross_nb_rule(inp, _r)
+            ))
+            break
+    
+    # Priority 2: Structural NB (exact + structural fallback)
+    for radius in [1, 2]:
+        rule = learn_structural_nb_rule(train_pairs, radius)
+        if rule is not None:
+            r = rule
+            pieces.append(CrossPiece(
+                f'structural_nb_r{radius}',
+                lambda inp, _r=r: apply_structural_nb_rule(inp, _r)
+            ))
+            break
+    
+    # Priority 3: Abstract NB
     for radius in [1, 2]:
         rule = learn_abstract_nb_rule(train_pairs, radius)
         if rule is not None:
-            r = rule  # capture
+            r = rule
             pieces.append(CrossPiece(
                 f'abstract_nb_r{radius}',
                 lambda inp, _r=r: apply_abstract_nb_rule(inp, _r)
             ))
-            break  # prefer smaller radius
+            break
     
     # Count-based rule
     rule = learn_count_based_rule(train_pairs)
@@ -362,9 +387,14 @@ def _add_extract_pieces(pieces: List[CrossPiece],
     
     inp0, out0 = train_pairs[0]
     oh, ow = grid_shape(out0)
+    ih, iw = grid_shape(inp0)
+    
+    if oh >= ih and ow >= iw:
+        return  # output is not smaller, skip extraction
     
     objs = detect_objects(inp0, bg)
     
+    # Try extracting each object that matches output size
     for obj in objs:
         if obj.height == oh and obj.width == ow:
             grid = obj.as_multicolor_grid(inp0)
@@ -375,6 +405,68 @@ def _add_extract_pieces(pieces: List[CrossPiece],
                     f'extract_object_color_{obj.color}',
                     lambda inp, col=_color, b=_bg: _apply_extract_by_color(inp, col, b)
                 ))
+    
+    # Try extracting by rank within same color (e.g., 3rd largest object of color 8)
+    by_color = {}
+    for obj in objs:
+        by_color.setdefault(obj.color, []).append(obj)
+    
+    for color, color_objs in by_color.items():
+        sorted_objs = sorted(color_objs, key=lambda o: o.size, reverse=True)
+        for rank, obj in enumerate(sorted_objs):
+            if obj.height == oh and obj.width == ow:
+                grid = obj.as_multicolor_grid(inp0)
+                if grid_eq(grid, out0):
+                    _color = color
+                    _rank = rank
+                    _bg = bg
+                    pieces.append(CrossPiece(
+                        f'extract_color{color}_rank{rank}',
+                        lambda inp, col=_color, rnk=_rank, b=_bg: _apply_extract_by_rank(inp, col, rnk, b)
+                    ))
+    
+    # Try extracting object that contains a unique color
+    for obj in objs:
+        grid = obj.as_multicolor_grid(inp0)
+        gh, gw = grid_shape(grid)
+        if gh == oh and gw == ow and grid_eq(grid, out0):
+            # Find what makes this object unique
+            obj_colors = set()
+            for r, c in obj.cells:
+                obj_colors.add(inp0[r][c])
+            
+            for uc in obj_colors:
+                # Check if this color only appears in this object's bbox
+                unique_to_obj = True
+                for r in range(ih):
+                    for c in range(iw):
+                        if inp0[r][c] == uc:
+                            if not (obj.bbox[0] <= r <= obj.bbox[2] and 
+                                    obj.bbox[1] <= c <= obj.bbox[3]):
+                                unique_to_obj = False
+                                break
+                    if not unique_to_obj:
+                        break
+                
+                if unique_to_obj and uc != bg:
+                    _uc = uc
+                    _bg = bg
+                    pieces.append(CrossPiece(
+                        f'extract_containing_color_{uc}',
+                        lambda inp, col=_uc, b=_bg: _apply_extract_containing(inp, col, b)
+                    ))
+    
+    # Try multicolor object extraction
+    mc_objs = detect_objects(inp0, bg, multicolor=True)
+    for obj in mc_objs:
+        grid = obj.as_multicolor_grid(inp0)
+        if grid_shape(grid) == (oh, ow) and grid_eq(grid, out0):
+            _size = obj.size
+            _bg = bg
+            pieces.append(CrossPiece(
+                f'extract_multicolor_size{obj.size}',
+                lambda inp, sz=_size, b=_bg: _apply_extract_multicolor_by_size(inp, sz, b)
+            ))
 
 
 def _apply_extract_by_color(inp: Grid, color: int, bg: int) -> Optional[Grid]:
@@ -384,6 +476,50 @@ def _apply_extract_by_color(inp: Grid, color: int, bg: int) -> Optional[Grid]:
         return None
     obj = max(objs, key=lambda o: o.size)
     return obj.as_multicolor_grid(inp)
+
+
+def _apply_extract_by_rank(inp: Grid, color: int, rank: int, bg: int) -> Optional[Grid]:
+    from arc.objects import detect_objects
+    objs = [o for o in detect_objects(inp, bg) if o.color == color]
+    objs = sorted(objs, key=lambda o: o.size, reverse=True)
+    if rank >= len(objs):
+        return None
+    return objs[rank].as_multicolor_grid(inp)
+
+
+def _apply_extract_containing(inp: Grid, unique_color: int, bg: int) -> Optional[Grid]:
+    from arc.objects import detect_objects
+    objs = detect_objects(inp, bg, multicolor=True)
+    for obj in objs:
+        h, w = grid_shape(inp)
+        r1, c1, r2, c2 = obj.bbox
+        has_color = False
+        for r in range(r1, r2+1):
+            for c in range(c1, c2+1):
+                if inp[r][c] == unique_color:
+                    has_color = True
+                    break
+            if has_color:
+                break
+        if has_color:
+            return obj.as_multicolor_grid(inp)
+    return None
+
+
+def _apply_extract_multicolor_by_size(inp: Grid, target_size: int, bg: int) -> Optional[Grid]:
+    from arc.objects import detect_objects
+    objs = detect_objects(inp, bg, multicolor=True)
+    # Find object closest in size
+    best = None
+    best_diff = float('inf')
+    for obj in objs:
+        diff = abs(obj.size - target_size)
+        if diff < best_diff:
+            best_diff = diff
+            best = obj
+    if best is None:
+        return None
+    return best.as_multicolor_grid(inp)
 
 
 def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]], 
@@ -402,6 +538,17 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     # === Phase 1: Original solver (DSL + NB rule) ===
     orig_predictions, orig_verified = solve_cross(train_pairs, test_inputs)
     verified.extend(orig_verified)
+    
+    # If original solver found NB rule, also try cross_nb as extra candidate
+    has_nb = any(getattr(p, 'name', '') == 'neighborhood_rule' 
+                 for _, p in orig_verified)
+    if has_nb:
+        cross_pieces_early = _generate_cross_pieces(train_pairs)
+        for piece in cross_pieces_early:
+            if piece.name.startswith('cross_nb_'):
+                if sim.verify(piece, train_pairs):
+                    verified.append(('cross', piece))
+                    break
     
     if len(verified) >= 2:
         return _apply_verified(verified, test_inputs), verified
@@ -481,7 +628,7 @@ def _apply_verified(verified: List, test_inputs: List[Grid]) -> List[List[Grid]]
     predictions = []
     for test_inp in test_inputs:
         attempts = []
-        for kind, prog in verified[:2]:
+        for kind, prog in verified[:3]:
             if kind in ('cell', 'whole'):
                 result = prog.apply(test_inp)
             elif kind == 'composite':
