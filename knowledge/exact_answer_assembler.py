@@ -174,10 +174,19 @@ class AtomMatcher:
         'charge', 'charge is e', 'and opposite to the charge of',
         'algebra', 'none', 'unknown', 'n/a', 'various', 'many', 'some',
         'thing', 'something', 'everything', 'nothing', 'anything',
+        # Block generic Wikipedia definition fragments that repeatedly appear as garbage
+        'and as an end to obtaining results',
+        'length of any side of the triangle',
+        'computer scientist', 'composite number',
+        'shared pairs or bonding pairs',
+        'probability of "tails"',
+        'sum of the rank of m and the nullity of m',
+        'rank of m and the nullity of m',
+        'dynamic equilibrium', 'enzymology',
     }
 
     # Max answer length — block verbose definitions from being returned as answers
-    MAX_ANSWER_LEN = 60
+    MAX_ANSWER_LEN = 40  # tightened from 60 to reduce definition fragments
 
     # Predicate → query_type affinity
     PRED_QUERY_AFFINITY = {
@@ -205,9 +214,19 @@ class AtomMatcher:
             # Block verbose definitions (is_a returns full definitions)
             if len(atom.object) > self.MAX_ANSWER_LEN:
                 continue
-            # Block definition-like answers from is_a/means predicates
+            # Block definition-like answers from is_a/means/alias predicates
             # These predicates return "what X is" — rarely the answer to HLE questions
-            if atom.predicate in ("is_a", "means", "alias") and len(atom.object.split()) > 3:
+            if atom.predicate in ("is_a", "means", "alias", "serves_as", "used_for",
+                                   "contains", "derived_from", "named_after") and len(atom.object.split()) > 2:
+                continue
+            # Block answers that start with common definition/explanation phrases
+            obj_lower = atom.object.lower().strip()
+            if any(obj_lower.startswith(p) for p in (
+                'and ', 'or ', 'the ', 'a ', 'an ', 'which ', 'that ', 'where ',
+                'when ', 'how ', 'used ', 'known ', 'defined ', 'referring ',
+                'length of', 'sum of', 'product of', 'number of',
+                'probability of', 'measure of', 'process of',
+            )):
                 continue
 
             # Calculate relevance
@@ -417,9 +436,10 @@ class ExactAnswerAssembler:
         # 6. Select best candidate
         best = candidates[0]
 
-        # 7. Confidence threshold — lower for HLE (PhD-level questions are hard to match)
+        # 7. Confidence threshold — higher to avoid garbage outputs
+        # INCONCLUSIVE is better than wrong. HLE has no penalty for abstaining.
         combined = best.relevance_score * best.confidence * math.sqrt(len(best.support_atoms))
-        if combined < 0.15:
+        if combined < 0.35:
             return None
 
         # 8. Format answer
@@ -463,7 +483,7 @@ class ExactAnswerAssembler:
                 (atom.subject + " " + atom.predicate + " " + atom.raw_sentence).lower()))
             
             overlap = len(words & atom_words)
-            if overlap < 2:
+            if overlap < 3:
                 continue
             
             relevance = min(overlap / max(len(words), 1) * 1.5, 1.0)

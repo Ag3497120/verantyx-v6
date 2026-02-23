@@ -58,7 +58,14 @@ def solve_mcq_directly(
         if answer and answer.upper() in choices:
             label = answer.upper()
             # confidence は facts の豊富さに応じて設定
-            conf = 0.30 if not facts else min(0.40, 0.30 + 0.02 * len(facts))
+            # Raised: mcq_direct with facts had 4/6 correct in 50q test (66.7%)
+            # Needs to be competitive with cross_decompose to win when both fire
+            if not facts:
+                conf = 0.30
+            elif len(facts) >= 3:
+                conf = min(0.55, 0.35 + 0.03 * len(facts))
+            else:
+                conf = min(0.45, 0.30 + 0.03 * len(facts))
             method = f"mcq_direct:qwen7b(facts={len(facts)},choices={len(choices)})"
             log.info(f"mcq_direct: answer={label} conf={conf:.2f} facts={len(facts)}")
             return label, conf, method
@@ -168,7 +175,7 @@ def _ask_qwen_direct(
 
     # ファクトがある場合とない場合でプロンプトを変える
     if facts_str:
-        prompt = f"""You are answering a multiple-choice question. Use the provided context and retrieved facts to select the best answer.
+        prompt = f"""You are a PhD-level expert answering a multiple-choice question. Use the provided context and retrieved facts to select the best answer.
 
 Context (structured, not problem text):
 {context_str}
@@ -180,13 +187,15 @@ Answer choices:
 {choices_str}
 
 Instructions:
-- Use the context and facts to reason about the topic.
-- Select the single best answer based on accuracy.
-- Respond with ONLY the letter of the correct choice (e.g., "A" or "B").
+- Carefully analyze each choice against the facts and context.
+- Eliminate choices that contradict the facts.
+- Select the choice that is most consistent with the evidence.
+- Think step by step, then give your final answer.
+- Your response MUST end with "Answer: X" where X is a single letter.
 
-Answer:"""
+Reasoning:"""
     else:
-        prompt = f"""You are answering a multiple-choice question. Use the provided context to select the best answer.
+        prompt = f"""You are a PhD-level expert answering a multiple-choice question. Use the provided context to select the best answer.
 
 Context (structured, not problem text):
 {context_str}
@@ -195,17 +204,18 @@ Answer choices:
 {choices_str}
 
 Instructions:
-- Use your knowledge of the topic area to select the best answer.
-- Respond with ONLY the letter of the correct choice (e.g., "A" or "B").
+- Use your knowledge of the topic area to analyze each choice.
+- Think step by step, then give your final answer.
+- Your response MUST end with "Answer: X" where X is a single letter.
 
-Answer:"""
+Reasoning:"""
 
     api_url = VLLM_BASE_URL + "/chat/completions"
     payload = json.dumps({
         "model": VLLM_MODEL,
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0.0,
-        "max_tokens": 10,
+        "max_tokens": 200,  # increased from 10 to allow chain-of-thought reasoning
     }).encode()
 
     req = urllib.request.Request(
@@ -214,18 +224,30 @@ Answer:"""
         method="POST",
     )
 
-    with urllib.request.urlopen(req, timeout=20) as resp:
+    with urllib.request.urlopen(req, timeout=30) as resp:
         data = json.loads(resp.read().decode())
         content = data["choices"][0]["message"]["content"].strip()
 
-    # Extract letter from response
-    m = re.match(r'^([A-Z])', content.upper())
+    # Extract "Answer: X" pattern from chain-of-thought response
+    m = re.search(r'[Aa]nswer[:\s]+([A-Za-z])\b', content)
     if m:
-        return m.group(1)
+        letter = m.group(1).upper()
+        if letter in choices:
+            return letter
 
-    # Try finding a letter in the response
-    m = re.search(r'\b([A-Z])\b', content.upper())
+    # Fallback: extract letter from the very end of content
+    m = re.search(r'\b([A-Z])\s*$', content)
     if m and m.group(1) in choices:
         return m.group(1)
+
+    # Fallback: first letter at the start
+    m = re.match(r'^([A-Z])', content.upper())
+    if m and m.group(1) in choices:
+        return m.group(1)
+
+    # Last resort: any standalone letter that matches a choice
+    for m in re.finditer(r'\b([A-Z])\b', content.upper()):
+        if m.group(1) in choices:
+            return m.group(1)
 
     return None

@@ -80,6 +80,16 @@ class WikiKnowledgeFetcherV2:
         self.follow_links = follow_links
         self.source_lang = source_lang  # "auto" | "en" | "ja" etc.
 
+        # SSL context: macOS Python のデフォルト証明書パスが壊れている問題に対応
+        import ssl
+        try:
+            import certifi
+            self._ssl_ctx = ssl.create_default_context(cafile=certifi.where())
+        except ImportError:
+            self._ssl_ctx = ssl.create_default_context()
+            self._ssl_ctx.check_hostname = False
+            self._ssl_ctx.verify_mode = ssl.CERT_NONE
+
     def fetch(self, concept: str, domain: str = "", kind: str = "definition") -> WikiKnowledgeResponseV2:
         """概念名からWikipedia知識を深く取得する"""
         search_term = self._concept_to_search_term(concept, domain)
@@ -162,7 +172,7 @@ class WikiKnowledgeFetcherV2:
                 "User-Agent": "Verantyx/2.0 (knowledge extraction)",
                 "Accept": "application/json",
             })
-            with urllib.request.urlopen(req, timeout=8) as resp:
+            with urllib.request.urlopen(req, timeout=8, context=self._ssl_ctx) as resp:
                 data = json.loads(resp.read().decode())
                 if data.get("extract") and len(data["extract"]) > 30:
                     return data.get("titles", {}).get("canonical", search_term)
@@ -177,7 +187,7 @@ class WikiKnowledgeFetcherV2:
             })
             url = f"{self.WIKI_SEARCH_API}?{params}"
             req = urllib.request.Request(url, headers={"User-Agent": "Verantyx/2.0"})
-            with urllib.request.urlopen(req, timeout=8) as resp:
+            with urllib.request.urlopen(req, timeout=8, context=self._ssl_ctx) as resp:
                 data = json.loads(resp.read().decode())
                 results = data.get("query", {}).get("search", [])
                 if results:
@@ -194,7 +204,7 @@ class WikiKnowledgeFetcherV2:
             req = urllib.request.Request(url, headers={
                 "User-Agent": "Verantyx/2.0", "Accept": "application/json",
             })
-            with urllib.request.urlopen(req, timeout=8) as resp:
+            with urllib.request.urlopen(req, timeout=8, context=self._ssl_ctx) as resp:
                 data = json.loads(resp.read().decode())
                 return data.get("extract", "")
         except Exception:
@@ -216,7 +226,7 @@ class WikiKnowledgeFetcherV2:
             })
             url = f"{self.WIKI_PARSE_API}?{params}"
             req = urllib.request.Request(url, headers={"User-Agent": "Verantyx/2.0"})
-            with urllib.request.urlopen(req, timeout=12) as resp:
+            with urllib.request.urlopen(req, timeout=12, context=self._ssl_ctx) as resp:
                 data = json.loads(resp.read().decode())
                 parse = data.get("parse", {})
 
@@ -415,7 +425,7 @@ class WikiKnowledgeFetcherV2:
             })
             url = f"{self.WIKI_JP_SEARCH_API}?{params}"
             req = urllib.request.Request(url, headers={"User-Agent": "Verantyx/2.0"})
-            with urllib.request.urlopen(req, timeout=8) as resp:
+            with urllib.request.urlopen(req, timeout=8, context=self._ssl_ctx) as resp:
                 data = json.loads(resp.read().decode())
                 results = data.get("query", {}).get("search", [])
                 if results:
@@ -426,7 +436,7 @@ class WikiKnowledgeFetcherV2:
                     req2 = urllib.request.Request(sum_url, headers={
                         "User-Agent": "Verantyx/2.0", "Accept": "application/json",
                     })
-                    with urllib.request.urlopen(req2, timeout=8) as resp2:
+                    with urllib.request.urlopen(req2, timeout=8, context=self._ssl_ctx) as resp2:
                         sdata = json.loads(resp2.read().decode())
                         extract = sdata.get("extract", "")
                         if extract and len(extract) > 20:

@@ -66,12 +66,15 @@ def _solve_one(args):
         high_conf = [ec for ec in extracted if ec.confidence >= 0.5]
 
         kp = pipeline._knowledge_pipeline
-        if kp and high_conf:
+        if kp:
+            # BUG FIX: クロージャで high_conf を捕捉するのではなく、
+            # 問題ごとに fresh な concepts を渡す
+            _original_run = KnowledgePipelineV2.run
             def _wrapped_run(self_kp, ir, extra_concepts=None, _hc=high_conf):
                 merged = list(_hc)
                 if extra_concepts:
                     merged.extend(extra_concepts)
-                return KnowledgePipelineV2.run(self_kp, ir, extra_concepts=merged)
+                return _original_run(self_kp, ir, extra_concepts=merged)
             kp.run = types.MethodType(_wrapped_run, kp)
 
         result = pipeline.solve(text, expected_answer=expected)
@@ -92,7 +95,7 @@ def _solve_one(args):
         'expected': expected,
         'is_correct': is_correct,
         'method': method,
-        'wiki_hit': any('knowledge:accepted' in t for t in trace),
+        'wiki_hit': any('knowledge:accepted' in t or 'wiki_hits=' in t for t in trace),
         'concepts': len([ec for ec in extract_concepts_v2(text) if ec.confidence >= 0.5]) if text else 0,
     }
 

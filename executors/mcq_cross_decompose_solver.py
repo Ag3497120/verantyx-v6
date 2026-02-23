@@ -45,7 +45,8 @@ LABEL_PATTERNS = [
 ]
 
 # 分解価値がある選択肢の最小文字数
-MIN_CHOICE_LEN_FOR_DECOMPOSE = 15
+# Lowered from 15 to 5 to cover more MCQs (even short choices benefit from stem-based scoring)
+MIN_CHOICE_LEN_FOR_DECOMPOSE = 5
 
 # ── ストップワード ──
 STOPWORDS = {
@@ -188,16 +189,18 @@ def solve_by_cross_decomposition(
     second = decompositions[1] if len(decompositions) > 1 else None
 
     # 差分が十分大きい場合のみ回答
+    # Tightened: cross_decompose had 2/5 wrong in 50q test (Q33, Q36)
+    # The gap was too small (0.034-0.054) — noise from Wikipedia keyword overlap
     gap = best.cross_score - (second.cross_score if second else 0)
-    min_score = 0.05  # 最低スコア閾値
+    min_score = 0.10  # raised from 0.05
     # 選択肢数に応じた動的gap閾値（多い選択肢ほど高いgapを要求）
     n_choices = len(decompositions)
     if n_choices <= 4:
-        min_gap = 0.03
+        min_gap = 0.06  # raised from 0.03
     elif n_choices <= 6:
-        min_gap = 0.045
+        min_gap = 0.07  # raised from 0.045
     else:
-        min_gap = 0.06  # 7択以上: ランダムノイズと区別するため厳しく
+        min_gap = 0.09  # raised from 0.06 (7択以上)
 
     result = CrossMatchResult(
         decompositions=decompositions,

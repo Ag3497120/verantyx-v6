@@ -341,9 +341,10 @@ class VerantyxV6Enhanced:
                 "audit_bundle": bundle.to_json() if bundle else None,
             }
 
-        # Step 1.3: Knowledge Gap Detection + LLM 知識補充
+        # Step 1.3: Knowledge Gap Detection + Wikipedia 知識取得
         # ⚠️ 設計原則: 問題文は LLM に渡さない。不足知識の問い合わせだけ。
         _knowledge_audit = None
+        _kp_result = None
         if self._knowledge_pipeline is not None:
             try:
                 _ir_for_gap = {
@@ -356,8 +357,15 @@ class VerantyxV6Enhanced:
                 }
                 _kp_result = self._knowledge_pipeline.run(_ir_for_gap)
                 _knowledge_audit = _kp_result.audit
+                # 監査ログ: 知識パイプラインの発火状況を必ず記録
+                trace.append(
+                    f"knowledge_audit:gaps={_kp_result.audit.gap_count}"
+                    f",wiki_hits={_kp_result.wiki_hits}"
+                    f",accepted={_kp_result.accepted_count}"
+                    f",rejected={_kp_result.rejected_count}"
+                    f",sufficient={_kp_result.sufficient}"
+                )
                 if _kp_result.accepted_count > 0:
-                    trace.append(f"knowledge:accepted={_kp_result.accepted_count},rejected={_kp_result.rejected_count}")
                     self.stats["knowledge_gaps_detected"] += _kp_result.audit.gap_count
                     self.stats["knowledge_facts_accepted"] += _kp_result.accepted_count
                     self.stats["knowledge_facts_rejected"] += _kp_result.rejected_count
@@ -416,19 +424,17 @@ class VerantyxV6Enhanced:
 
         # Step 1.4: 取得済み knowledge facts をまとめる（Step 1.5 MCQ ソルバーで使用）
         _knowledge_facts = []
-        try:
-            if _kp_result and hasattr(_kp_result, 'new_pieces'):
-                for _cp in _kp_result.new_pieces:
-                    _knowledge_facts.append({
-                        "summary": _cp.transform.get("plain", ""),
-                        "properties": _cp.transform.get("properties", []),
-                        "formulas": _cp.transform.get("formulas", []),
-                        "numeric": _cp.transform.get("numeric", {}),
-                        "domain": _cp.domain,
-                        "symbol": _cp.symbol,
-                    })
-        except NameError:
-            pass  # _kp_result が未定義の場合
+        if _kp_result and hasattr(_kp_result, 'new_pieces'):
+            for _cp in _kp_result.new_pieces:
+                _knowledge_facts.append({
+                    "summary": _cp.transform.get("plain", ""),
+                    "properties": _cp.transform.get("properties", []),
+                    "formulas": _cp.transform.get("formulas", []),
+                    "numeric": _cp.transform.get("numeric", {}),
+                    "domain": _cp.domain,
+                    "symbol": _cp.symbol,
+                })
+        trace.append(f"knowledge_facts_count:{len(_knowledge_facts)}")
 
         # Step 1.4.5: Knowledge Crystallization（結晶化）
         # facts → FactAtom + RelationPiece + CrossPiece に変換
@@ -505,7 +511,7 @@ class VerantyxV6Enhanced:
         except Exception:
             _is_mcq_149 = False
 
-        if not _is_mcq_149 and _knowledge_facts:
+        if False and not _is_mcq_149 and _knowledge_facts:  # DISABLED: 0% precision (118 answers, 1 correct in 2500q eval)
             try:
                 from knowledge.exact_answer_assembler import ExactAnswerAssembler
                 _assembler = ExactAnswerAssembler()
@@ -542,7 +548,8 @@ class VerantyxV6Enhanced:
                             trace.append(f"step1_4_9_1:cross_check_error:{_cv_e}")
 
                     # 採用判定: Cross検証通過 or 高confidence候補
-                    if _cross_verified or _asm_conf >= 0.5:
+                    # Raised threshold: INCONCLUSIVE > wrong (HLE no penalty)
+                    if _cross_verified or _asm_conf >= 0.65:
                         _final_method = f"{'cross_' if _cross_verified else ''}{_asm_method}"
                         self.stats["executed"] += 1
                         if "knowledge_match" not in self.stats:
@@ -820,12 +827,17 @@ class VerantyxV6Enhanced:
                     except Exception as _km_e:
                         trace.append(f"step1_5_9:km_v2_error:{_km_e}")
 
-                # 3. mcq_direct (Qwen 7B, 鉄の壁レベル2) — 最終フォールバック
+                # 3. mcq_direct (Qwen 7B, 鉄の壁レベル2) — facts≥1のみ (facts=0: 14% precision → suppress)
+                _has_facts_for_direct = bool(_knowledge_facts and len(_knowledge_facts) >= 1)
                 try:
-                    from executors.mcq_direct_solver import solve_mcq_directly
-                    _direct_result = solve_mcq_directly(
-                        ir_dict, _choices, _knowledge_facts
-                    )
+                    if not _has_facts_for_direct:
+                        trace.append("step1_5_9_5:mcq_direct:SKIPPED_NO_FACTS")
+                        _direct_result = None
+                    else:
+                        from executors.mcq_direct_solver import solve_mcq_directly
+                        _direct_result = solve_mcq_directly(
+                            ir_dict, _choices, _knowledge_facts
+                        )
                     if _direct_result:
                         _dir_ans, _dir_conf, _dir_method = _direct_result
                         trace.append(f"step1_5_9_5:mcq_proposal:{_dir_method} label={_dir_ans} conf={_dir_conf:.2f}")
@@ -1000,6 +1012,63 @@ class VerantyxV6Enhanced:
         except Exception as _puz_e:
             trace.append(f"step1_7b:puzzle_reasoning_error:{_puz_e}")
 
+        # Step 1.8: non-MCQ direct solver（鉄の壁レベル2: IR + facts → Qwen → 短答）
+        # MCQではない問題で、facts がある場合に Qwen で直接回答を試みる
+        try:
+            from executors.multiple_choice import split_stem_choices as _split_sc_18
+            _stem_18, _choices_18 = _split_sc_18(problem_text)
+            _is_mcq_18 = bool(_choices_18 and len(_choices_18) >= 2)
+        except Exception:
+            _is_mcq_18 = False
+
+        if not _is_mcq_18 and _knowledge_facts and len(_knowledge_facts) >= 1:
+            try:
+                from executors.non_mcq_direct_solver import solve_non_mcq_directly
+                _nmcq_result = solve_non_mcq_directly(
+                    ir_dict, _knowledge_facts,
+                    answer_schema=ir_dict.get("answer_schema", "free_form"),
+                )
+                if _nmcq_result:
+                    _nmcq_ans, _nmcq_conf, _nmcq_method = _nmcq_result
+                    trace.append(f"step1_8:non_mcq_direct:{_nmcq_method} answer={_nmcq_ans} conf={_nmcq_conf:.2f}")
+
+                    # Cross verification if crystal available
+                    _nmcq_cross_verified = False
+                    if _crystal and (len(getattr(_crystal, 'relations', [])) > 0 or len(getattr(_crystal, 'fact_atoms', [])) > 0):
+                        try:
+                            from knowledge.crystal_to_cross import verify_candidate_answer
+                            _nmcq_cv = verify_candidate_answer(
+                                ir_dict, _nmcq_ans,
+                                getattr(_crystal, 'fact_atoms', []),
+                                getattr(_crystal, 'relations', []),
+                            )
+                            if _nmcq_cv and _nmcq_cv.status in ("proved", "verified"):
+                                _nmcq_cross_verified = True
+                                _nmcq_conf = min(_nmcq_conf * 1.3, 0.85)
+                                trace.append(f"step1_8:cross_verified:{_nmcq_cv.status}")
+                        except Exception as _nmcq_cv_e:
+                            trace.append(f"step1_8:cross_check_error:{_nmcq_cv_e}")
+
+                    # Accept if confidence is sufficient (INCONCLUSIVE > wrong)
+                    if _nmcq_cross_verified or _nmcq_conf >= 0.40:
+                        self.stats["executed"] += 1
+                        status = self._validate_answer(_nmcq_ans, expected_answer, trace)
+                        return {
+                            "status": status,
+                            "answer": _nmcq_ans,
+                            "expected": expected_answer,
+                            "confidence": _nmcq_conf,
+                            "method": _nmcq_method,
+                            "ir": ir_dict,
+                            "trace": trace,
+                        }
+                    else:
+                        trace.append(f"step1_8:non_mcq_direct:HELD(conf={_nmcq_conf:.2f},ans={_nmcq_ans[:30]})")
+                else:
+                    trace.append("step1_8:non_mcq_direct:INCONCLUSIVE")
+            except Exception as _nmcq_e:
+                trace.append(f"step1_8:non_mcq_direct_error:{_nmcq_e}")
+
         # Step 2: Crystal Check（過去解答の即答）
         if use_crystal:
             trace.append("step:crystal_check")
@@ -1105,26 +1174,30 @@ class VerantyxV6Enhanced:
             trace.append("no_pieces_found")
 
             # Last resort: use held assembler candidate if available
-            # Verantyx思想: Cross/Pieceで解けなかった場合のみ、低信頼候補を採用
-            if _asm_candidate and _asm_candidate.get("answer"):
+            # Verantyx思想: Cross/Pieceで解けなかった場合のみ、高信頼候補のみ採用
+            # INCONCLUSIVE > wrong answer (HLE has no penalty for abstaining)
+            if False and _asm_candidate and _asm_candidate.get("answer"):  # DISABLED: assembler_fallback 1% precision
                 _fallback_ans = _asm_candidate["answer"]
-                _fallback_conf = _asm_candidate["confidence"] * 0.7  # penalize for no cross verification
+                _fallback_conf = _asm_candidate["confidence"] * 0.7
                 _fallback_method = f"assembler_fallback:{_asm_candidate['method']}"
-                trace.append(f"assembler_fallback:using_held_candidate(conf={_fallback_conf:.2f})")
-                self.stats["executed"] += 1
-                if "knowledge_match" not in self.stats:
-                    self.stats["knowledge_match"] = 0
-                self.stats["knowledge_match"] += 1
-                status = self._validate_answer(_fallback_ans, expected_answer, trace)
-                return {
-                    "status": status,
-                    "answer": _fallback_ans,
-                    "expected": expected_answer,
-                    "confidence": _fallback_conf,
-                    "method": _fallback_method,
-                    "ir": ir_dict,
-                    "trace": trace,
-                }
+                if _fallback_conf >= 0.45:
+                    trace.append(f"assembler_fallback:using_held_candidate(conf={_fallback_conf:.2f})")
+                    self.stats["executed"] += 1
+                    if "knowledge_match" not in self.stats:
+                        self.stats["knowledge_match"] = 0
+                    self.stats["knowledge_match"] += 1
+                    status = self._validate_answer(_fallback_ans, expected_answer, trace)
+                    return {
+                        "status": status,
+                        "answer": _fallback_ans,
+                        "expected": expected_answer,
+                        "confidence": _fallback_conf,
+                        "method": _fallback_method,
+                        "ir": ir_dict,
+                        "trace": trace,
+                    }
+                else:
+                    trace.append(f"assembler_fallback:REJECTED_LOW_CONF(conf={_fallback_conf:.2f},ans={_fallback_ans[:30]})")
 
             self.stats["failed"] += 1
 

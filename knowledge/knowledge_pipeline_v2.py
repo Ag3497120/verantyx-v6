@@ -67,7 +67,9 @@ class KnowledgePipelineV2:
         gap_report = self.gap_detector.detect(ir)
         audit_builder.record_gap(gap_report)
 
-        if gap_report.sufficient:
+        # BUG FIX (2026-02-23): extra_concepts がある場合は早期リターンしない
+        # 旧コードでは gap_report.sufficient=True → 即リターン → extra_concepts 未処理
+        if gap_report.sufficient and not extra_concepts:
             return KnowledgePipelineResult(
                 new_pieces=[], audit=audit_builder.build(),
                 sufficient=True,
@@ -134,8 +136,10 @@ class KnowledgePipelineV2:
                             wiki_pieces.append(cp)
                             wiki_sections += 1
                             total_accepted += 1
-            except Exception:
-                pass
+            except Exception as _wiki_e:
+                total_rejected += 1
+                import logging
+                logging.getLogger(__name__).debug(f"wiki_fetch_error: {gap.symbol}: {_wiki_e}")
 
         if wiki_pieces:
             all_new_pieces.extend(wiki_pieces)
