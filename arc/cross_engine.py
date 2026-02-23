@@ -182,6 +182,9 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
         pieces.append(CrossPiece('flood_fill_enclosed',
             lambda inp: _flood_fill_enclosed(inp)))
     
+    # === Module 5: Cross-Compose (multi-step decomposition) ===
+    _add_cross_compose_pieces(pieces, train_pairs)
+    
     # === Module 4: Grid partition transforms ===
     _add_partition_pieces(pieces, train_pairs)
     
@@ -865,6 +868,20 @@ def _flood_fill_enclosed(inp: Grid) -> Grid:
                         result[r][c] = inp[nr][nc]
                         break
     return result
+
+
+def _add_cross_compose_pieces(pieces: List[CrossPiece],
+                               train_pairs: List[Tuple[Grid, Grid]]):
+    """Add Cross-Structure multi-step programs"""
+    from arc.cross_compose import learn_cross_program
+    
+    prog = learn_cross_program(train_pairs)
+    if prog is not None:
+        _prog = prog
+        pieces.append(CrossPiece(
+            f'cross_compose:{prog.name}',
+            lambda inp, p=_prog: p.apply(inp)
+        ))
 
 
 def _add_partition_pieces(pieces: List[CrossPiece],
