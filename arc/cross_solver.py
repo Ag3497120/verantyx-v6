@@ -22,10 +22,12 @@ DSL (Domain Specific Language) for cell rules:
 from __future__ import annotations
 import json
 from typing import List, Optional, Tuple, Dict, Callable
+from collections import Counter
 from dataclasses import dataclass, field
 from arc.grid import (
     Grid, grid_shape, grid_eq, grid_colors,
     most_common_color, flood_fill_regions,
+    rotate_90, rotate_180, rotate_270, transpose,
 )
 
 
@@ -170,19 +172,19 @@ class CellRule:
             return bg
         
         elif self.name == 'fill_enclosed':
-            # Fill bg cells enclosed by a wall color with fill_color
+            # Fill bg cells enclosed by wall color — only cells surrounded by wall on all 4-connected paths
             wall = self.params['wall']
             fill_c = self.params['fill']
             bg = self.params['bg']
             if 0 <= r < ih and 0 <= c < iw:
                 if inp[r][c] != bg:
                     return inp[r][c]
-                # Check if enclosed: BFS from this cell, if it doesn't reach border → enclosed
-                enclosed = self.params.get('_enclosed_cache')
+                # Use cached enclosed regions per input grid (keyed by id)
+                cache_key = '_enc_' + str(id(inp))
+                enclosed = self.params.get(cache_key)
                 if enclosed is None:
-                    # Compute enclosed cells
-                    enclosed = _compute_enclosed(inp, bg, wall)
-                    self.params['_enclosed_cache'] = enclosed
+                    enclosed = _compute_enclosed_by_wall(inp, bg, wall)
+                    self.params[cache_key] = enclosed
                 if (r, c) in enclosed:
                     return fill_c
                 return inp[r][c]
@@ -207,12 +209,29 @@ class CellRule:
             return 0
         
         elif self.name == 'diagonal_tile':
-            # Fill grid with repeating diagonal pattern from non-bg cells
-            colors = self.params['colors']  # list of colors in diagonal order
-            n = len(colors)
-            if n > 0:
+            # Fill grid with repeating diagonal pattern extracted from input's non-bg cells
+            bg = self.params.get('bg', 0)
+            n = self.params.get('n', 3)
+            # Extract color mapping: for each (r+c)%n, find the non-bg color in input
+            cache_key = '_dtcache_' + str(id(inp))
+            colors = self.params.get(cache_key)
+            if colors is None:
+                pattern = {}
+                for rr in range(ih):
+                    for cc in range(iw):
+                        if inp[rr][cc] != bg:
+                            key = (rr + cc) % n
+                            if key not in pattern:
+                                pattern[key] = inp[rr][cc]
+                if len(pattern) == n:
+                    colors = [pattern[i] for i in range(n)]
+                    self.params[cache_key] = colors
+                else:
+                    self.params[cache_key] = []
+                    return None
+            if colors:
                 return colors[(r + c) % n]
-            return 0
+            return None
         
         elif self.name == 'move_object':
             # Move object of move_color toward anchor_color
@@ -304,6 +323,36 @@ class SynthesizedProgram:
         return oh, ow
 
 
+def _compute_enclosed_by_wall(g: Grid, bg: int, wall: int) -> set:
+    """Find bg cells that are completely enclosed by wall-colored cells (not just unreachable from border)"""
+    h, w = grid_shape(g)
+    # BFS from all border bg cells, but ONLY through bg cells (wall blocks passage)
+    reachable = set()
+    queue = []
+    for r in range(h):
+        for c in range(w):
+            if (r == 0 or r == h-1 or c == 0 or c == w-1) and g[r][c] == bg:
+                reachable.add((r, c))
+                queue.append((r, c))
+    
+    while queue:
+        cr, cc = queue.pop(0)
+        for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+            nr, nc = cr+dr, cc+dc
+            if 0 <= nr < h and 0 <= nc < w and (nr, nc) not in reachable:
+                if g[nr][nc] == bg:  # can only pass through bg, wall blocks
+                    reachable.add((nr, nc))
+                    queue.append((nr, nc))
+    
+    # Enclosed = ALL bg cells NOT reachable from border
+    enclosed = set()
+    for r in range(h):
+        for c in range(w):
+            if g[r][c] == bg and (r, c) not in reachable:
+                enclosed.add((r, c))
+    return enclosed
+
+
 def _compute_enclosed(g: Grid, bg: int, wall: int) -> set:
     """Find bg cells enclosed by wall color (can't reach grid border via bg)"""
     h, w = grid_shape(g)
@@ -366,8 +415,13 @@ def generate_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> List[Synthesize
             rh, rw = ratios.pop()
             if rh == int(rh) and rw == int(rw):
                 oh_rel, ow_rel = int(rh), int(rw)
-                # Scaling or tiling
-                if oh_rel > 1 and ow_rel > 1:
+                if oh_rel == 1 and ow_rel == 1:
+                    # Same size but variable input dimensions
+                    _add_same_size_candidates(candidates, train_pairs, ih, iw)
+                    _add_fill_enclosed_candidates(candidates, train_pairs, ih, iw)
+                    _add_diagonal_candidates(candidates, train_pairs, ih, iw)
+                    _add_move_candidates(candidates, train_pairs, ih, iw)
+                elif oh_rel > 1 and ow_rel > 1:
                     _add_tiling_candidates(candidates, train_pairs, oh_rel, ow_rel)
                     _add_scaling_candidates(candidates, train_pairs, oh_rel)
             size_consistent = True  # We handle it via relative sizing
@@ -441,19 +495,23 @@ def _add_same_size_candidates(candidates, train_pairs, h, w):
     candidates.append(SynthesizedProgram(-1, -1, CellRule('mirror_v')))
     candidates.append(SynthesizedProgram(-1, -1, CellRule('mirror_hv')))
     
-    # Color mapping: infer from first pair
+    # Color mapping: infer from ALL train pairs
     cmap = {}
     consistent = True
-    for r in range(h):
-        for c in range(w):
-            ic = inp0[r][c]
-            oc = out0[r][c]
-            if ic in cmap:
-                if cmap[ic] != oc:
-                    consistent = False
-                    break
-            else:
-                cmap[ic] = oc
+    for inp_i, out_i in train_pairs:
+        hi, wi = grid_shape(inp_i)
+        for r in range(hi):
+            for c in range(wi):
+                ic = inp_i[r][c]
+                oc = out_i[r][c]
+                if ic in cmap:
+                    if cmap[ic] != oc:
+                        consistent = False
+                        break
+                else:
+                    cmap[ic] = oc
+            if not consistent:
+                break
         if not consistent:
             break
     
@@ -559,52 +617,29 @@ def _add_fill_enclosed_candidates(candidates, train_pairs, h, w):
 
 
 def _add_diagonal_candidates(candidates, train_pairs, h, w):
-    """Detect diagonal repeating patterns"""
+    """Detect diagonal repeating patterns — colors extracted from input at runtime"""
     inp0, out0 = train_pairs[0]
-    bg = most_common_color(inp0)
     
     # Check if output has diagonal pattern: out[r][c] depends on (r+c) % n
-    for n in range(2, 6):
-        pattern = {}
-        consistent = True
-        for r in range(h):
-            for c in range(w):
-                key = (r + c) % n
-                if key in pattern:
-                    if pattern[key] != out0[r][c]:
-                        consistent = False
-                        break
-                else:
-                    pattern[key] = out0[r][c]
-            if not consistent:
-                break
-        
-        if consistent and pattern:
-            colors = [pattern[i] for i in range(n)]
-            candidates.append(SynthesizedProgram(-1, -1,
-                CellRule('diagonal_tile', {'colors': colors})))
-    
-    # Also check anti-diagonal: (r - c) % n
-    for n in range(2, 6):
-        pattern = {}
-        consistent = True
-        for r in range(h):
-            for c in range(w):
-                key = (r - c) % n
-                if key in pattern:
-                    if pattern[key] != out0[r][c]:
-                        consistent = False
-                        break
-                else:
-                    pattern[key] = out0[r][c]
-            if not consistent:
-                break
-        
-        if consistent and pattern:
-            colors = [pattern[i] for i in range(n)]
-            # Use negative n to indicate anti-diagonal
-            candidates.append(SynthesizedProgram(-1, -1,
-                CellRule('diagonal_tile', {'colors': colors})))
+    for bg_c in grid_colors(inp0):
+        for n in range(2, 6):
+            pattern = {}
+            consistent = True
+            for r in range(h):
+                for c in range(w):
+                    key = (r + c) % n
+                    if key in pattern:
+                        if pattern[key] != out0[r][c]:
+                            consistent = False
+                            break
+                    else:
+                        pattern[key] = out0[r][c]
+                if not consistent:
+                    break
+            
+            if consistent and pattern:
+                candidates.append(SynthesizedProgram(-1, -1,
+                    CellRule('diagonal_tile', {'bg': bg_c, 'n': n})))
 
 
 def _add_move_candidates(candidates, train_pairs, h, w):
@@ -684,6 +719,306 @@ def _add_periodic_extend_candidates(candidates, train_pairs, ih, iw, oh, ow):
                         })))
 
 
+@dataclass
+class CompositeProgram:
+    """Two-step pipeline: apply step1, then step2 to the result"""
+    step1: SynthesizedProgram
+    step2: SynthesizedProgram
+    
+    def apply(self, inp: Grid) -> Optional[Grid]:
+        mid = self.step1.apply(inp)
+        if mid is None:
+            return None
+        return self.step2.apply(mid)
+
+
+@dataclass
+class WholeGridProgram:
+    """Program that operates on the whole grid (not cell-by-cell)"""
+    name: str
+    params: dict = field(default_factory=dict)
+    
+    def apply(self, inp: Grid) -> Optional[Grid]:
+        h, w = grid_shape(inp)
+        
+        if self.name == 'row_sort':
+            key = self.params.get('key', 'color_count')
+            bg = self.params.get('bg', 0)
+            rows = list(inp)
+            if key == 'color_count':
+                rows.sort(key=lambda row: sum(1 for x in row if x != bg))
+            elif key == 'color_count_desc':
+                rows.sort(key=lambda row: sum(1 for x in row if x != bg), reverse=True)
+            elif key == 'first_nonbg':
+                rows.sort(key=lambda row: next((c for c in row if c != bg), 0))
+            elif key == 'sum':
+                rows.sort(key=sum)
+            elif key == 'sum_desc':
+                rows.sort(key=sum, reverse=True)
+            return rows
+        
+        elif self.name == 'col_sort':
+            key = self.params.get('key', 'color_count')
+            bg = self.params.get('bg', 0)
+            cols = [[inp[r][c] for r in range(h)] for c in range(w)]
+            if key == 'color_count':
+                cols.sort(key=lambda col: sum(1 for x in col if x != bg))
+            elif key == 'color_count_desc':
+                cols.sort(key=lambda col: sum(1 for x in col if x != bg), reverse=True)
+            elif key == 'sum':
+                cols.sort(key=sum)
+            elif key == 'sum_desc':
+                cols.sort(key=sum, reverse=True)
+            result = [[cols[c][r] for c in range(w)] for r in range(h)]
+            return result
+        
+        elif self.name == 'rotate_90':
+            return rotate_90(inp)
+        elif self.name == 'rotate_180':
+            return rotate_180(inp)
+        elif self.name == 'rotate_270':
+            return rotate_270(inp)
+        elif self.name == 'transpose':
+            return transpose(inp)
+        
+        elif self.name == 'colormap':
+            mapping = self.params['map']
+            return [[mapping.get(c, c) for c in row] for row in inp]
+        
+        elif self.name == 'fill_enclosed_auto':
+            bg = most_common_color(inp)
+            # Find enclosed bg cells and fill with the most common non-bg neighbor color
+            enclosed = set()
+            reachable = set()
+            queue = []
+            for r in range(h):
+                for c in range(w):
+                    if (r == 0 or r == h-1 or c == 0 or c == w-1) and inp[r][c] == bg:
+                        reachable.add((r, c))
+                        queue.append((r, c))
+            while queue:
+                cr, cc = queue.pop(0)
+                for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                    nr, nc = cr+dr, cc+dc
+                    if 0 <= nr < h and 0 <= nc < w and (nr, nc) not in reachable and inp[nr][nc] == bg:
+                        reachable.add((nr, nc))
+                        queue.append((nr, nc))
+            
+            enclosed = {(r,c) for r in range(h) for c in range(w) if inp[r][c] == bg and (r,c) not in reachable}
+            if not enclosed:
+                return None
+            
+            # Group enclosed cells into connected components
+            visited = set()
+            result = [list(row) for row in inp]
+            for er, ec in enclosed:
+                if (er, ec) in visited:
+                    continue
+                # BFS to find component
+                comp = set()
+                q = [(er, ec)]
+                while q:
+                    cr, cc = q.pop(0)
+                    if (cr, cc) in comp:
+                        continue
+                    comp.add((cr, cc))
+                    visited.add((cr, cc))
+                    for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                        nr, nc = cr+dr, cc+dc
+                        if (nr, nc) in enclosed and (nr, nc) not in comp:
+                            q.append((nr, nc))
+                
+                # Find surrounding non-bg colors
+                neighbor_colors = Counter()
+                for cr, cc in comp:
+                    for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                        nr, nc = cr+dr, cc+dc
+                        if 0 <= nr < h and 0 <= nc < w and inp[nr][nc] != bg:
+                            neighbor_colors[inp[nr][nc]] += 1
+                
+                # Fill with... we need to figure out fill color from training
+                # For now, use a fixed fill approach
+                fill_c = neighbor_colors.most_common(1)[0][0] + 1 if neighbor_colors else bg
+                # This is too heuristic, skip
+            return None
+        
+        elif self.name == 'gravity_down':
+            color = self.params['color']
+            bg = self.params['bg']
+            result = [list(row) for row in inp]
+            for c in range(w):
+                # Collect non-bg cells of this color
+                cells = [r for r in range(h) if inp[r][c] == color]
+                if not cells:
+                    continue
+                # Clear old positions
+                for r in cells:
+                    result[r][c] = bg
+                # Place at bottom
+                for i, r in enumerate(range(h - 1, h - 1 - len(cells), -1)):
+                    result[r][c] = color
+            return result
+        
+        elif self.name == 'symmetry_fill':
+            bg = self.params['bg']
+            axis = self.params['axis']
+            result = [list(row) for row in inp]
+            for r in range(h):
+                for c in range(w):
+                    if result[r][c] == bg:
+                        if axis == 'h' or axis == 'hv':
+                            mc = w - 1 - c
+                            if 0 <= mc < w and inp[r][mc] != bg:
+                                result[r][c] = inp[r][mc]
+                        if result[r][c] == bg and (axis == 'v' or axis == 'hv'):
+                            mr = h - 1 - r
+                            if 0 <= mr < h and inp[mr][c] != bg:
+                                result[r][c] = inp[mr][c]
+                        if result[r][c] == bg and axis == 'hv':
+                            mr, mc = h - 1 - r, w - 1 - c
+                            if 0 <= mr < h and 0 <= mc < w and inp[mr][mc] != bg:
+                                result[r][c] = inp[mr][mc]
+            return result
+        
+        elif self.name == 'crop_bbox':
+            bg = self.params.get('bg', most_common_color(inp))
+            r1, r2, c1, c2 = h, 0, w, 0
+            for r in range(h):
+                for c in range(w):
+                    if inp[r][c] != bg:
+                        r1=min(r1,r); r2=max(r2,r); c1=min(c1,c); c2=max(c2,c)
+            if r1 > r2:
+                return None
+            return [row[c1:c2+1] for row in inp[r1:r2+1]]
+        
+        elif self.name == 'subgrid_select':
+            # Split grid by separator lines, select the subgrid matching criteria
+            sep_c = self.params['sep_color']
+            select = self.params['select']  # 'largest_nonbg', 'smallest_nonbg', 'most_colors', 'least_colors', 'unique', index
+            subgrids = _split_by_separators(inp, sep_c)
+            if not subgrids:
+                return None
+            bg = self.params.get('bg', 0)
+            
+            if select == 'largest_nonbg':
+                subgrids.sort(key=lambda g: sum(1 for row in g for c in row if c != bg), reverse=True)
+                return subgrids[0]
+            elif select == 'smallest_nonbg':
+                nonbg = [(sum(1 for row in g for c in row if c != bg), g) for g in subgrids]
+                nonbg = [(n, g) for n, g in nonbg if n > 0]
+                if nonbg:
+                    nonbg.sort()
+                    return nonbg[0][1]
+            elif select == 'most_colors':
+                subgrids.sort(key=lambda g: len(set(c for row in g for c in row) - {bg}), reverse=True)
+                return subgrids[0]
+            elif select == 'unique':
+                # Find the subgrid that appears only once
+                for i, g in enumerate(subgrids):
+                    count = sum(1 for g2 in subgrids if grid_eq(g, g2))
+                    if count == 1:
+                        return g
+            elif select == 'majority':
+                # Find the most common subgrid
+                from collections import Counter as Cnt
+                for i, g in enumerate(subgrids):
+                    count = sum(1 for g2 in subgrids if grid_eq(g, g2))
+                    if count > len(subgrids) // 2:
+                        return g
+            elif isinstance(select, int) and 0 <= select < len(subgrids):
+                return subgrids[select]
+            return None
+        
+        elif self.name == 'subgrid_overlay':
+            # Split by separators, overlay subgrids (OR/AND/XOR)
+            sep_c = self.params['sep_color']
+            mode = self.params.get('mode', 'or')  # or, and, xor
+            subgrids = _split_by_separators(inp, sep_c)
+            if len(subgrids) < 2:
+                return None
+            bg = self.params.get('bg', 0)
+            sh, sw = grid_shape(subgrids[0])
+            if not all(grid_shape(g) == (sh, sw) for g in subgrids):
+                return None
+            result = [[bg]*sw for _ in range(sh)]
+            if mode == 'or':
+                for g in subgrids:
+                    for r in range(sh):
+                        for c in range(sw):
+                            if g[r][c] != bg:
+                                result[r][c] = g[r][c]
+            elif mode == 'and':
+                for r in range(sh):
+                    for c in range(sw):
+                        if all(g[r][c] != bg for g in subgrids):
+                            result[r][c] = subgrids[0][r][c]
+            elif mode == 'xor':
+                for r in range(sh):
+                    for c in range(sw):
+                        nonbg = [g[r][c] for g in subgrids if g[r][c] != bg]
+                        if len(nonbg) == 1:
+                            result[r][c] = nonbg[0]
+            return result
+        
+        elif self.name == 'subgrid_diff':
+            # Find diff between two subgrids
+            sep_c = self.params['sep_color']
+            subgrids = _split_by_separators(inp, sep_c)
+            if len(subgrids) != 2:
+                return None
+            bg = self.params.get('bg', 0)
+            g1, g2 = subgrids
+            sh, sw = grid_shape(g1)
+            if grid_shape(g2) != (sh, sw):
+                return None
+            result = [[bg]*sw for _ in range(sh)]
+            for r in range(sh):
+                for c in range(sw):
+                    if g1[r][c] != g2[r][c]:
+                        result[r][c] = g1[r][c] if g1[r][c] != bg else g2[r][c]
+            return result
+        
+        elif self.name == 'remove_color':
+            color = self.params['color']
+            bg = self.params.get('bg', 0)
+            return [[bg if c == color else c for c in row] for row in inp]
+        
+        return None
+
+
+def _split_by_separators(g: Grid, sep_color: int) -> List[Grid]:
+    """Split grid into subgrids using separator rows/columns"""
+    h, w = grid_shape(g)
+    
+    sep_rows = [r for r in range(h) if all(g[r][c] == sep_color for c in range(w))]
+    sep_cols = [c for c in range(w) if all(g[r][c] == sep_color for r in range(h))]
+    
+    # Build row and column boundaries
+    row_bounds = [-1] + sep_rows + [h]
+    col_bounds = [-1] + sep_cols + [w]
+    
+    subgrids = []
+    for i in range(len(row_bounds) - 1):
+        for j in range(len(col_bounds) - 1):
+            r1 = row_bounds[i] + 1
+            r2 = row_bounds[i + 1]
+            c1 = col_bounds[j] + 1
+            c2 = col_bounds[j + 1]
+            if r1 < r2 and c1 < c2:
+                sub = [g[r][c1:c2] for r in range(r1, r2)]
+                subgrids.append(sub)
+    
+    return subgrids
+
+
+def verify_whole_grid(prog: WholeGridProgram, train_pairs: List[Tuple[Grid, Grid]]) -> bool:
+    for inp, expected in train_pairs:
+        result = prog.apply(inp)
+        if result is None or not grid_eq(result, expected):
+            return False
+    return True
+
+
 def verify_program(prog: SynthesizedProgram, train_pairs: List[Tuple[Grid, Grid]]) -> bool:
     """
     CEGIS verification: does program produce correct output for ALL training pairs?
@@ -695,6 +1030,95 @@ def verify_program(prog: SynthesizedProgram, train_pairs: List[Tuple[Grid, Grid]
     return True
 
 
+def _generate_whole_grid_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> List[WholeGridProgram]:
+    """Generate WholeGridProgram candidates"""
+    candidates = []
+    
+    if not train_pairs:
+        return candidates
+    
+    inp0, out0 = train_pairs[0]
+    ih, iw = grid_shape(inp0)
+    oh, ow = grid_shape(out0)
+    
+    # Rotations (for square grids or transposed sizes)
+    if ih == iw and oh == ow and ih == oh:
+        candidates.append(WholeGridProgram('rotate_90'))
+        candidates.append(WholeGridProgram('rotate_180'))
+        candidates.append(WholeGridProgram('rotate_270'))
+    
+    # Transpose
+    if (oh, ow) == (iw, ih):
+        candidates.append(WholeGridProgram('transpose'))
+    
+    # Row/col sort
+    bg = most_common_color(inp0)
+    for key in ['color_count', 'color_count_desc', 'sum', 'sum_desc', 'first_nonbg']:
+        candidates.append(WholeGridProgram('row_sort', {'key': key, 'bg': bg}))
+    for key in ['color_count', 'color_count_desc', 'sum', 'sum_desc']:
+        candidates.append(WholeGridProgram('col_sort', {'key': key, 'bg': bg}))
+    
+    # Fill enclosed (whole-grid version, works with variable sizes)
+    candidates.append(WholeGridProgram('fill_enclosed_auto'))
+    
+    # Colormap from all pairs (only when same size)
+    all_same = all(grid_shape(i) == grid_shape(o) for i, o in train_pairs)
+    if all_same:
+        cmap = {}
+        consistent = True
+        for inp_i, out_i in train_pairs:
+            hi, wi = grid_shape(inp_i)
+            for r in range(hi):
+                for c in range(wi):
+                    ic, oc = inp_i[r][c], out_i[r][c]
+                    if ic in cmap:
+                        if cmap[ic] != oc: consistent = False; break
+                    else: cmap[ic] = oc
+                if not consistent: break
+            if not consistent: break
+        if consistent and any(k!=v for k,v in cmap.items()):
+            candidates.append(WholeGridProgram('colormap', {'map': cmap}))
+    
+    # Gravity down (per color)
+    for color in range(10):
+        candidates.append(WholeGridProgram('gravity_down', {'color': color, 'bg': bg}))
+    
+    # Symmetry fill (whole grid)
+    for axis in ['h', 'v', 'hv']:
+        candidates.append(WholeGridProgram('symmetry_fill', {'bg': bg, 'axis': axis}))
+    
+    # Crop to bounding box
+    candidates.append(WholeGridProgram('crop_bbox', {'bg': bg}))
+    for c in grid_colors(inp0) - {bg}:
+        candidates.append(WholeGridProgram('crop_bbox', {'bg': c}))
+    
+    # Remove color
+    for c in grid_colors(inp0) - {bg}:
+        candidates.append(WholeGridProgram('remove_color', {'color': c, 'bg': bg}))
+    
+    # Subgrid operations (detect separators)
+    for sep_c in grid_colors(inp0) - {bg}:
+        subs = _split_by_separators(inp0, sep_c)
+        if len(subs) >= 2:
+            for select in ['largest_nonbg', 'smallest_nonbg', 'most_colors', 'unique', 'majority']:
+                candidates.append(WholeGridProgram('subgrid_select', {
+                    'sep_color': sep_c, 'select': select, 'bg': bg
+                }))
+            for idx in range(min(len(subs), 6)):
+                candidates.append(WholeGridProgram('subgrid_select', {
+                    'sep_color': sep_c, 'select': idx, 'bg': bg
+                }))
+            for mode in ['or', 'and', 'xor']:
+                candidates.append(WholeGridProgram('subgrid_overlay', {
+                    'sep_color': sep_c, 'mode': mode, 'bg': bg
+                }))
+            candidates.append(WholeGridProgram('subgrid_diff', {
+                'sep_color': sep_c, 'bg': bg
+            }))
+    
+    return candidates
+
+
 def solve_cross(train_pairs: List[Tuple[Grid, Grid]], test_inputs: List[Grid]) -> List[List[Grid]]:
     """
     Solve ARC task using Cross-structure synthesis + CEGIS verification.
@@ -704,22 +1128,52 @@ def solve_cross(train_pairs: List[Tuple[Grid, Grid]], test_inputs: List[Grid]) -
     3. Apply verified programs to test inputs
     4. Return up to 2 attempts per test input
     """
-    # Step 1: Generate candidates
+    # Step 1: Generate cell-rule candidates
     candidates = generate_candidates(train_pairs)
     
-    # Step 2: CEGIS verification
+    # Step 2: CEGIS verification (cell rules)
     verified = []
     for prog in candidates:
         if verify_program(prog, train_pairs):
-            verified.append(prog)
-            if len(verified) >= 2:  # ARC allows pass@2
+            verified.append(('cell', prog))
+            if len(verified) >= 2:
                 break
     
-    # Step 3: Apply to test inputs
+    # Step 3: Whole-grid candidates
+    if len(verified) < 2:
+        wg_cands = _generate_whole_grid_candidates(train_pairs)
+        for wg in wg_cands:
+            if verify_whole_grid(wg, train_pairs):
+                verified.append(('whole', wg))
+                if len(verified) >= 2:
+                    break
+    
+    # Step 4: 2-step composition (if nothing found yet)
+    if len(verified) < 2:
+        wg_all = _generate_whole_grid_candidates(train_pairs)
+        cell_all = candidates
+        # Try WG + WG compositions
+        for p1 in wg_all:
+            if len(verified) >= 2:
+                break
+            for p2 in wg_all:
+                comp = CompositeProgram(p1, p2)
+                ok = True
+                for inp, exp in train_pairs:
+                    res = comp.apply(inp)
+                    if res is None or not grid_eq(res, exp):
+                        ok = False
+                        break
+                if ok:
+                    verified.append(('composite', comp))
+                    if len(verified) >= 2:
+                        break
+    
+    # Step 5: Apply to test inputs
     predictions = []
     for test_inp in test_inputs:
         attempts = []
-        for prog in verified[:2]:
+        for kind, prog in verified[:2]:
             result = prog.apply(test_inp)
             if result is not None:
                 attempts.append(result)
@@ -752,7 +1206,20 @@ def solve_task_cross(task_path: str) -> dict:
         if not any(grid_eq(p, expected) for p in preds):
             correct = False
     
-    method = verified[0].rule.name if verified else 'none'
+    if verified:
+        kind, prog = verified[0]
+        if kind == 'cell':
+            method = prog.rule.name
+            rule_str = str(prog.rule)
+        elif kind == 'composite':
+            method = f"composite({prog.step1.name}+{prog.step2.name})"
+            rule_str = method
+        else:
+            method = prog.name
+            rule_str = f"{prog.name}({prog.params})"
+    else:
+        method = 'none'
+        rule_str = 'none'
     
     return {
         'correct': correct and attempted,
@@ -760,5 +1227,5 @@ def solve_task_cross(task_path: str) -> dict:
         'method': method,
         'n_candidates': len(generate_candidates(train)),
         'n_verified': len(verified),
-        'rule': str(verified[0].rule) if verified else 'none',
+        'rule': rule_str,
     }
