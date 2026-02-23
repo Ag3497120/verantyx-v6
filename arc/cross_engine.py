@@ -206,6 +206,12 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
     # Try: extract specific object
     _add_extract_pieces(pieces, train_pairs, bg)
     
+    # === Module 11: Grid-to-Summary (block classifier, fold, count) ===
+    _add_grid_summary_pieces(pieces, train_pairs)
+    
+    # === Module 12: Line drawing / connection ===
+    _add_line_connect_pieces(pieces, train_pairs)
+    
     return pieces
 
 
@@ -983,6 +989,90 @@ def _add_partition_pieces(pieces: List[CrossPiece],
         ))
 
 
+def _add_grid_summary_pieces(pieces: List[CrossPiece],
+                             train_pairs: List[Tuple[Grid, Grid]]):
+    """Add grid-to-summary pieces (block classifier, fold, count)"""
+    from arc.grid_summarize import (
+        learn_block_classifier, apply_block_classifier,
+        learn_fold_rule, apply_fold_rule,
+        learn_count_summary, apply_count_summary,
+    )
+    
+    # Block classifier (e.g., 11x11 → 3x3)
+    rule = learn_block_classifier(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            f'block_classify:{rule["classifier"]}',
+            lambda inp, r=_rule: apply_block_classifier(r, inp)
+        ))
+    
+    # Fold rule (e.g., 8x9 → 8x2 by folding column groups)
+    rule = learn_fold_rule(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            f'fold:{rule["type"]}:{rule["op"]}',
+            lambda inp, r=_rule: apply_fold_rule(r, inp)
+        ))
+    
+    # Count summary (e.g., NxM → Kx1)
+    rule = learn_count_summary(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            f'count:{rule["type"]}',
+            lambda inp, r=_rule: apply_count_summary(r, inp)
+        ))
+
+
+def _add_line_connect_pieces(pieces: List[CrossPiece],
+                             train_pairs: List[Tuple[Grid, Grid]]):
+    """Add line drawing/connection pieces"""
+    from arc.line_connect import (
+        learn_l_connect, apply_l_connect,
+        learn_cross_projection, apply_cross_projection,
+        learn_line_extension, apply_line_extension,
+        learn_connect_objects, apply_connect_objects,
+    )
+    
+    # L-shape connection
+    rule = learn_l_connect(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            f'l_connect:{rule["order"]}',
+            lambda inp, r=_rule: apply_l_connect(r, inp)
+        ))
+    
+    # Cross projection from dots
+    rule = learn_cross_projection(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            f'cross_project:{rule["strategy"]}',
+            lambda inp, r=_rule: apply_cross_projection(r, inp)
+        ))
+    
+    # Line extension to border
+    rule = learn_line_extension(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            f'line_extend:{rule["type"]}',
+            lambda inp, r=_rule: apply_line_extension(r, inp)
+        ))
+    
+    # Connect same-color objects
+    rule = learn_connect_objects(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            f'connect_objs:{rule["connect"]}',
+            lambda inp, r=_rule: apply_connect_objects(r, inp)
+        ))
+
+
 def _add_semantic_extract_pieces(pieces: List[CrossPiece],
                                   train_pairs: List[Tuple[Grid, Grid]], bg: int):
     """Add extraction pieces based on semantic selectors (not specific colors)"""
@@ -1194,6 +1284,8 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
         return _apply_verified(verified, test_inputs), verified
     
     # === Phase 3: Composition of cross pieces with WG programs ===
+    wg_cands = None
+    midpoints = {}
     if len(verified) < 2 and cross_pieces:
         wg_cands = _generate_whole_grid_candidates(train_pairs)
         
@@ -1250,6 +1342,117 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
                         verified.append(('cross_compose', (wg, cp)))
                         if len(verified) >= 2:
                             break
+    
+    # === Phase 3b: cross_piece → cross_piece composition ===
+    if len(verified) < 2 and cross_pieces:
+        # Pre-compute intermediate results for first train pair to prune
+        inp0, out0 = train_pairs[0]
+        midpoints = {}  # cp_idx -> intermediate grid
+        for i, cp in enumerate(cross_pieces):
+            mid = cp.apply(inp0)
+            if mid is not None and not grid_eq(mid, inp0):  # skip identity
+                midpoints[i] = mid
+        
+        for i, mid0 in midpoints.items():
+            if len(verified) >= 2:
+                break
+            for j, cp2 in enumerate(cross_pieces):
+                if i == j:
+                    continue
+                res0 = cp2.apply(mid0)
+                if res0 is None or not grid_eq(res0, out0):
+                    continue
+                # Full verify
+                ok = True
+                for inp, exp in train_pairs[1:]:
+                    mid = cross_pieces[i].apply(inp)
+                    if mid is None:
+                        ok = False; break
+                    res = cp2.apply(mid)
+                    if res is None or not grid_eq(res, exp):
+                        ok = False; break
+                if ok:
+                    verified.append(('cross_compose', (cross_pieces[i], cp2)))
+                    if len(verified) >= 2:
+                        break
+    
+    # === Phase 3c: 3-step composition ===
+    if len(verified) < 2 and cross_pieces:
+        inp0, out0 = train_pairs[0]
+        # Build midpoints if not already done
+        if not midpoints:
+            midpoints = {}
+            for i, cp in enumerate(cross_pieces):
+                mid = cp.apply(inp0)
+                if mid is not None and not grid_eq(mid, inp0):
+                    midpoints[i] = mid
+        
+        # Limit search: only try top-scoring mid1 candidates (partial match > 0.3)
+        scored_mid1 = []
+        for i, mid1 in midpoints.items():
+            score = CrossSimulator.partial_verify(cross_pieces[i], train_pairs)
+            if score > 0.3:
+                scored_mid1.append((score, i, mid1))
+        scored_mid1.sort(reverse=True)
+        scored_mid1 = scored_mid1[:10]  # top 10
+        
+        for _, i, mid1 in scored_mid1:
+            if len(verified) >= 2:
+                break
+            # mid1 → cross_piece → cross_piece/WG
+            mid2_map = {}
+            for j, cp2 in enumerate(cross_pieces):
+                if j == i:
+                    continue
+                mid2 = cp2.apply(mid1)
+                if mid2 is not None and not grid_eq(mid2, mid1):
+                    mid2_map[j] = mid2
+            
+            # 3-step: cp[i] → cp[j] → cp[k]
+            for j, mid2 in mid2_map.items():
+                if len(verified) >= 2:
+                    break
+                for k, cp3 in enumerate(cross_pieces):
+                    if k == i or k == j:
+                        continue
+                    res0 = cp3.apply(mid2)
+                    if res0 is None or not grid_eq(res0, out0):
+                        continue
+                    ok = True
+                    for inp, exp in train_pairs[1:]:
+                        m1 = cross_pieces[i].apply(inp)
+                        if m1 is None: ok = False; break
+                        m2 = cross_pieces[j].apply(m1)
+                        if m2 is None: ok = False; break
+                        r = cp3.apply(m2)
+                        if r is None or not grid_eq(r, exp): ok = False; break
+                    if ok:
+                        verified.append(('cross_compose_3', (cross_pieces[i], cross_pieces[j], cp3)))
+                        if len(verified) >= 2:
+                            break
+            
+            # 3-step: cp[i] → cp[j] → WG
+            if len(verified) < 2:
+                wg_cands_local = wg_cands if wg_cands is not None else _generate_whole_grid_candidates(train_pairs)
+                for j, mid2 in mid2_map.items():
+                    if len(verified) >= 2:
+                        break
+                    for wg in wg_cands_local:
+                        res0 = wg.apply(mid2)
+                        if res0 is None or not grid_eq(res0, out0):
+                            continue
+                        ok = True
+                        for inp, exp in train_pairs[1:]:
+                            m1 = cross_pieces[i].apply(inp)
+                            if m1 is None: ok = False; break
+                            m2 = cross_pieces[j].apply(m1)
+                            if m2 is None: ok = False; break
+                            r = wg.apply(m2)
+                            if r is None or not grid_eq(r, exp): ok = False; break
+                        if ok:
+                            verified.append(('cross_compose_3', (cross_pieces[i], cross_pieces[j], wg)))
+                            if len(verified) >= 2:
+                                break
     
     return _apply_verified(verified, test_inputs), verified
 
@@ -1318,6 +1521,11 @@ def _apply_verified(verified: List, test_inputs: List[Grid]) -> List[List[Grid]]
                 p1, p2 = prog
                 mid = p1.apply(test_inp) if hasattr(p1, 'apply') else None
                 result = p2.apply(mid) if mid is not None else None
+            elif kind == 'cross_compose_3':
+                p1, p2, p3 = prog
+                m1 = p1.apply(test_inp) if hasattr(p1, 'apply') else None
+                m2 = p2.apply(m1) if m1 is not None else None
+                result = p3.apply(m2) if m2 is not None else None
             else:
                 result = None
             
