@@ -174,6 +174,9 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
         # Try: object-level transforms (Selector × Transformer × Composer)
         _add_object_transform_pieces(pieces, train_pairs, bg)
     
+    # === Module 4: Grid partition transforms ===
+    _add_partition_pieces(pieces, train_pairs)
+    
     # Try: extract specific object
     _add_extract_pieces(pieces, train_pairs, bg)
     
@@ -777,6 +780,20 @@ def _add_extract_pieces(pieces: List[CrossPiece],
                 f'extract_multicolor_size{obj.size}',
                 lambda inp, sz=_size, b=_bg: _apply_extract_multicolor_by_size(inp, sz, b)
             ))
+
+
+def _add_partition_pieces(pieces: List[CrossPiece],
+                          train_pairs: List[Tuple[Grid, Grid]]):
+    """Add grid partition-based transform pieces"""
+    from arc.grid_partition import learn_panel_transform, apply_panel_transform
+    
+    rule = learn_panel_transform(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            f'panel_{rule["type"]}',
+            lambda inp, r=_rule: apply_panel_transform(inp, r)
+        ))
 
 
 def _add_semantic_extract_pieces(pieces: List[CrossPiece],
