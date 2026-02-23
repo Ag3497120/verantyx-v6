@@ -27,6 +27,7 @@ from dataclasses import dataclass, field
 from arc.grid import (
     Grid, grid_shape, grid_eq, grid_colors,
     most_common_color, flood_fill_regions,
+    flip_h, flip_v,
     rotate_90, rotate_180, rotate_270, transpose,
 )
 
@@ -983,6 +984,42 @@ class WholeGridProgram:
             bg = self.params.get('bg', 0)
             return [[bg if c == color else c for c in row] for row in inp]
         
+        elif self.name == 'extract_largest_region':
+            bg = self.params.get('bg', 0)
+            regs = flood_fill_regions(inp)
+            regs = [r for r in regs if r['color'] != bg]
+            if not regs:
+                return None
+            largest = max(regs, key=lambda r: r['size'])
+            r1, c1, r2, c2 = largest['bbox']
+            return [row[c1:c2+1] for row in inp[r1:r2+1]]
+        
+        elif self.name == 'downscale':
+            fh, fw = self.params['fh'], self.params['fw']
+            oh2, ow2 = h // fh, w // fw
+            result = []
+            for r in range(oh2):
+                row = []
+                for c in range(ow2):
+                    block = [inp[r*fh+dr][c*fw+dc] for dr in range(fh) for dc in range(fw)]
+                    row.append(max(set(block), key=block.count))
+                result.append(row)
+            return result
+        
+        elif self.name == 'upscale':
+            fh, fw = self.params['fh'], self.params['fw']
+            return [[inp[r//fh][c//fw] for c in range(w*fw)] for r in range(h*fh)]
+        
+        elif self.name == 'keep_one_color':
+            color = self.params['color']
+            bg = self.params.get('bg', 0)
+            return [[c if c == color else bg for c in row] for row in inp]
+        
+        elif self.name == 'flip_h':
+            return flip_h(inp)
+        elif self.name == 'flip_v':
+            return flip_v(inp)
+        
         return None
 
 
@@ -1051,6 +1088,11 @@ def _generate_whole_grid_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> Lis
     if (oh, ow) == (iw, ih):
         candidates.append(WholeGridProgram('transpose'))
     
+    # Flips
+    if (ih, iw) == (oh, ow):
+        candidates.append(WholeGridProgram('flip_h'))
+        candidates.append(WholeGridProgram('flip_v'))
+    
     # Row/col sort
     bg = most_common_color(inp0)
     for key in ['color_count', 'color_count_desc', 'sum', 'sum_desc', 'first_nonbg']:
@@ -1091,6 +1133,23 @@ def _generate_whole_grid_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> Lis
     candidates.append(WholeGridProgram('crop_bbox', {'bg': bg}))
     for c in grid_colors(inp0) - {bg}:
         candidates.append(WholeGridProgram('crop_bbox', {'bg': c}))
+    
+    # Extract largest region
+    candidates.append(WholeGridProgram('extract_largest_region', {'bg': bg}))
+    
+    # Downscale
+    if oh < ih and ow < iw and ih > 0 and iw > 0 and oh > 0 and ow > 0:
+        if ih % oh == 0 and iw % ow == 0:
+            candidates.append(WholeGridProgram('downscale', {'fh': ih//oh, 'fw': iw//ow}))
+    
+    # Upscale 
+    if oh > ih and ow > iw and ih > 0 and iw > 0:
+        if oh % ih == 0 and ow % iw == 0:
+            candidates.append(WholeGridProgram('upscale', {'fh': oh//ih, 'fw': ow//iw}))
+    
+    # Keep one color
+    for c in grid_colors(inp0) - {bg}:
+        candidates.append(WholeGridProgram('keep_one_color', {'color': c, 'bg': bg}))
     
     # Remove color
     for c in grid_colors(inp0) - {bg}:
@@ -1151,12 +1210,18 @@ def solve_cross(train_pairs: List[Tuple[Grid, Grid]], test_inputs: List[Grid]) -
     # Step 4: 2-step composition (if nothing found yet)
     if len(verified) < 2:
         wg_all = _generate_whole_grid_candidates(train_pairs)
-        cell_all = candidates
-        # Try WG + WG compositions
+        # Fast pre-filter: only try compositions where step1 changes something
+        # and step2 applied to step1's output gives expected
         for p1 in wg_all:
             if len(verified) >= 2:
                 break
+            # Quick test: does p1 produce valid intermediate grids?
+            mid0 = p1.apply(train_pairs[0][0])
+            if mid0 is None:
+                continue
             for p2 in wg_all:
+                if p1.name == p2.name and p1.params == p2.params:
+                    continue  # skip identity composition
                 comp = CompositeProgram(p1, p2)
                 ok = True
                 for inp, exp in train_pairs:
