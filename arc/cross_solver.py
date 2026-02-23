@@ -149,11 +149,110 @@ class CellRule:
                 return inp[r][c]
         
         elif self.name == 'extract_at':
-            # Extract subgrid starting at (sr, sc)
             sr, sc = self.params['sr'], self.params['sc']
             ir, ic = sr + r, sc + c
             if 0 <= ir < ih and 0 <= ic < iw:
                 return inp[ir][ic]
+        
+        elif self.name == 'self_tile':
+            # Input as its own tiling mask: out[r][c] = non_bg if BOTH input[r%h][c%w] and input[r//h][c//w] are non_bg
+            bg = self.params['bg']
+            non_bg = self.params.get('non_bg', None)
+            sr, sc = r % ih, c % iw     # position within tile
+            br, bc = r // ih, c // iw   # which block
+            if 0 <= br < ih and 0 <= bc < iw:
+                tile_val = inp[sr][sc]
+                mask_val = inp[br][bc]
+                if tile_val != bg and mask_val != bg:
+                    return tile_val if non_bg is None else non_bg
+                else:
+                    return bg
+            return bg
+        
+        elif self.name == 'fill_enclosed':
+            # Fill bg cells enclosed by a wall color with fill_color
+            wall = self.params['wall']
+            fill_c = self.params['fill']
+            bg = self.params['bg']
+            if 0 <= r < ih and 0 <= c < iw:
+                if inp[r][c] != bg:
+                    return inp[r][c]
+                # Check if enclosed: BFS from this cell, if it doesn't reach border → enclosed
+                enclosed = self.params.get('_enclosed_cache')
+                if enclosed is None:
+                    # Compute enclosed cells
+                    enclosed = _compute_enclosed(inp, bg, wall)
+                    self.params['_enclosed_cache'] = enclosed
+                if (r, c) in enclosed:
+                    return fill_c
+                return inp[r][c]
+        
+        elif self.name == 'periodic_extend':
+            # Extend input pattern periodically to larger output
+            period_h = self.params.get('period_h', ih)
+            period_w = self.params.get('period_w', iw)
+            sr, sc = r % period_h, c % period_w
+            if 0 <= sr < ih and 0 <= sc < iw:
+                return inp[sr][sc]
+            return 0
+        
+        elif self.name == 'periodic_extend_recolor':
+            # Extend + recolor
+            period_h = self.params.get('period_h', ih)
+            period_w = self.params.get('period_w', iw)
+            cmap = self.params['map']
+            sr, sc = r % period_h, c % period_w
+            if 0 <= sr < ih and 0 <= sc < iw:
+                return cmap.get(inp[sr][sc], inp[sr][sc])
+            return 0
+        
+        elif self.name == 'diagonal_tile':
+            # Fill grid with repeating diagonal pattern from non-bg cells
+            colors = self.params['colors']  # list of colors in diagonal order
+            n = len(colors)
+            if n > 0:
+                return colors[(r + c) % n]
+            return 0
+        
+        elif self.name == 'move_object':
+            # Move object of move_color toward anchor_color
+            move_c = self.params['move_color']
+            anchor_c = self.params['anchor_color']
+            bg = self.params['bg']
+            dx, dy = self.params['dx'], self.params['dy']
+            if 0 <= r < ih and 0 <= c < iw:
+                # If this cell is anchor, keep
+                if inp[r][c] == anchor_c:
+                    return anchor_c
+                # If source cell (before move) had move_color
+                sr, sc = r - dy, c - dx
+                if 0 <= sr < ih and 0 <= sc < iw and inp[sr][sc] == move_c:
+                    return move_c
+                # If original position had move_color but object moved away
+                if inp[r][c] == move_c:
+                    return bg
+                return inp[r][c]
+        
+        elif self.name == 'border_color':
+            # Color cells on the border of regions
+            bg = self.params['bg']
+            border_c = self.params['color']
+            if 0 <= r < ih and 0 <= c < iw:
+                if inp[r][c] == bg:
+                    return bg
+                # Check if any neighbor is bg
+                for dr2, dc2 in [(-1,0),(1,0),(0,-1),(0,1)]:
+                    nr, nc = r+dr2, c+dc2
+                    if nr < 0 or nr >= ih or nc < 0 or nc >= iw or inp[nr][nc] == bg:
+                        return border_c
+                return inp[r][c]
+        
+        elif self.name == 'flood_color':
+            # Change all cells of one connected region to a new color
+            old_c = self.params['old']
+            new_c = self.params['new']
+            if 0 <= r < ih and 0 <= c < iw:
+                return new_c if inp[r][c] == old_c else inp[r][c]
         
         return None
     
@@ -203,6 +302,35 @@ class SynthesizedProgram:
         if self.out_w == -2:
             ow = ih
         return oh, ow
+
+
+def _compute_enclosed(g: Grid, bg: int, wall: int) -> set:
+    """Find bg cells enclosed by wall color (can't reach grid border via bg)"""
+    h, w = grid_shape(g)
+    # BFS from all border bg cells
+    reachable = set()
+    queue = []
+    for r in range(h):
+        for c in range(w):
+            if (r == 0 or r == h-1 or c == 0 or c == w-1) and g[r][c] == bg:
+                reachable.add((r, c))
+                queue.append((r, c))
+    
+    while queue:
+        cr, cc = queue.pop(0)
+        for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+            nr, nc = cr+dr, cc+dc
+            if 0 <= nr < h and 0 <= nc < w and (nr, nc) not in reachable and g[nr][nc] == bg:
+                reachable.add((nr, nc))
+                queue.append((nr, nc))
+    
+    # Enclosed = bg cells NOT reachable from border
+    enclosed = set()
+    for r in range(h):
+        for c in range(w):
+            if g[r][c] == bg and (r, c) not in reachable:
+                enclosed.add((r, c))
+    return enclosed
 
 
 def generate_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> List[SynthesizedProgram]:
@@ -266,6 +394,37 @@ def generate_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> List[Synthesize
             _add_tiling_candidates(candidates, train_pairs, rh, rw)
             if rh == rw and rh > 1:
                 _add_scaling_candidates(candidates, train_pairs, rh)
+    
+    # ── Self-tile (input as mask for its own tiling) ──
+    if ih > 0 and iw > 0 and oh % ih == 0 and ow % iw == 0:
+        rh, rw = oh // ih, ow // iw
+        if rh == ih and rw == iw:  # output is input_h * input_h
+            for bg_c in grid_colors(inp0):
+                candidates.append(SynthesizedProgram(oh, ow, CellRule('self_tile', {'bg': bg_c})))
+    
+    # ── Fill enclosed regions ──
+    if (ih, iw) == (oh, ow):
+        _add_fill_enclosed_candidates(candidates, train_pairs, ih, iw)
+    
+    # ── Diagonal tile ──
+    if (ih, iw) == (oh, ow):
+        _add_diagonal_candidates(candidates, train_pairs, ih, iw)
+    
+    # ── Move object ──
+    if (ih, iw) == (oh, ow):
+        _add_move_candidates(candidates, train_pairs, ih, iw)
+    
+    # ── Periodic extend (different sizes) ──
+    if oh != ih or ow != iw:
+        _add_periodic_extend_candidates(candidates, train_pairs, ih, iw, oh, ow)
+    
+    # ── Border color ──
+    if (ih, iw) == (oh, ow):
+        bg = most_common_color(inp0)
+        for color in range(10):
+            if color != bg:
+                candidates.append(SynthesizedProgram(-1, -1,
+                    CellRule('border_color', {'bg': bg, 'color': color})))
     
     return candidates
 
@@ -377,6 +536,152 @@ def _add_extraction_candidates(candidates, train_pairs, ih, iw, oh, ow):
                 oh, ow,
                 CellRule('extract_at', {'sr': r1, 'sc': c1})
             ))
+
+
+def _add_fill_enclosed_candidates(candidates, train_pairs, h, w):
+    """Fill bg cells enclosed by walls"""
+    inp0, out0 = train_pairs[0]
+    bg = most_common_color(inp0)
+    
+    # Find what color was filled in
+    for r in range(h):
+        for c in range(w):
+            if inp0[r][c] == bg and out0[r][c] != bg:
+                fill_c = out0[r][c]
+                # Find the wall color (neighbors of changed cells)
+                for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                    nr, nc = r+dr, c+dc
+                    if 0 <= nr < h and 0 <= nc < w and inp0[nr][nc] != bg:
+                        wall_c = inp0[nr][nc]
+                        candidates.append(SynthesizedProgram(-1, -1,
+                            CellRule('fill_enclosed', {'wall': wall_c, 'fill': fill_c, 'bg': bg})))
+                        return  # One candidate per fill color
+
+
+def _add_diagonal_candidates(candidates, train_pairs, h, w):
+    """Detect diagonal repeating patterns"""
+    inp0, out0 = train_pairs[0]
+    bg = most_common_color(inp0)
+    
+    # Check if output has diagonal pattern: out[r][c] depends on (r+c) % n
+    for n in range(2, 6):
+        pattern = {}
+        consistent = True
+        for r in range(h):
+            for c in range(w):
+                key = (r + c) % n
+                if key in pattern:
+                    if pattern[key] != out0[r][c]:
+                        consistent = False
+                        break
+                else:
+                    pattern[key] = out0[r][c]
+            if not consistent:
+                break
+        
+        if consistent and pattern:
+            colors = [pattern[i] for i in range(n)]
+            candidates.append(SynthesizedProgram(-1, -1,
+                CellRule('diagonal_tile', {'colors': colors})))
+    
+    # Also check anti-diagonal: (r - c) % n
+    for n in range(2, 6):
+        pattern = {}
+        consistent = True
+        for r in range(h):
+            for c in range(w):
+                key = (r - c) % n
+                if key in pattern:
+                    if pattern[key] != out0[r][c]:
+                        consistent = False
+                        break
+                else:
+                    pattern[key] = out0[r][c]
+            if not consistent:
+                break
+        
+        if consistent and pattern:
+            colors = [pattern[i] for i in range(n)]
+            # Use negative n to indicate anti-diagonal
+            candidates.append(SynthesizedProgram(-1, -1,
+                CellRule('diagonal_tile', {'colors': colors})))
+
+
+def _add_move_candidates(candidates, train_pairs, h, w):
+    """Detect object movement"""
+    inp0, out0 = train_pairs[0]
+    bg = most_common_color(inp0)
+    colors = grid_colors(inp0) - {bg}
+    
+    if len(colors) != 2:
+        return
+    
+    colors = list(colors)
+    for move_c, anchor_c in [(colors[0], colors[1]), (colors[1], colors[0])]:
+        # Find center of mass of move_color in input and output
+        in_cells = [(r, c) for r in range(h) for c in range(w) if inp0[r][c] == move_c]
+        out_cells = [(r, c) for r in range(h) for c in range(w) if out0[r][c] == move_c]
+        
+        if in_cells and out_cells and len(in_cells) == len(out_cells):
+            # Compute displacement
+            in_cr = sum(r for r, c in in_cells) / len(in_cells)
+            in_cc = sum(c for r, c in in_cells) / len(in_cells)
+            out_cr = sum(r for r, c in out_cells) / len(out_cells)
+            out_cc = sum(c for r, c in out_cells) / len(out_cells)
+            
+            dy = round(out_cr - in_cr)
+            dx = round(out_cc - in_cc)
+            
+            if dx != 0 or dy != 0:
+                candidates.append(SynthesizedProgram(-1, -1,
+                    CellRule('move_object', {
+                        'move_color': move_c, 'anchor_color': anchor_c,
+                        'bg': bg, 'dx': dx, 'dy': dy
+                    })))
+
+
+def _add_periodic_extend_candidates(candidates, train_pairs, ih, iw, oh, ow):
+    """Periodic extension to different sizes"""
+    inp0, out0 = train_pairs[0]
+    
+    # Try various period sizes
+    for ph in range(1, ih + 1):
+        if oh % ph == 0 or ph == ih:
+            for pw in range(1, iw + 1):
+                if ow % pw == 0 or pw == iw:
+                    candidates.append(SynthesizedProgram(oh, ow,
+                        CellRule('periodic_extend', {'period_h': ph, 'period_w': pw})))
+    
+    # Periodic extend with recolor
+    bg = most_common_color(inp0)
+    in_colors = grid_colors(inp0) - {bg}
+    out_colors = grid_colors(out0) - {bg if bg in grid_colors(out0) else -1}
+    
+    if len(in_colors) == len(out_colors) and in_colors != out_colors:
+        # Try to infer color mapping
+        cmap = {}
+        for r in range(min(ih, oh)):
+            for c in range(min(iw, ow)):
+                if inp0[r][c] != bg:
+                    ic = inp0[r][c]
+                    oc = out0[r][c]
+                    if ic in cmap:
+                        if cmap[ic] != oc:
+                            cmap = None
+                            break
+                    else:
+                        cmap[ic] = oc
+            if cmap is None:
+                break
+        
+        if cmap:
+            cmap[bg] = bg
+            for ph in [ih]:
+                for pw in [iw]:
+                    candidates.append(SynthesizedProgram(oh, ow,
+                        CellRule('periodic_extend_recolor', {
+                            'period_h': ph, 'period_w': pw, 'map': cmap
+                        })))
 
 
 def verify_program(prog: SynthesizedProgram, train_pairs: List[Tuple[Grid, Grid]]) -> bool:
