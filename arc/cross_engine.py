@@ -182,6 +182,9 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
         pieces.append(CrossPiece('flood_fill_enclosed',
             lambda inp: _flood_fill_enclosed(inp)))
     
+    # === Module 6: Object Correspondence + Conditional Transform ===
+    _add_obj_correspondence_pieces(pieces, train_pairs, bg)
+    
     # === Module 5: Cross-Compose (multi-step decomposition) ===
     _add_cross_compose_pieces(pieces, train_pairs)
     
@@ -868,6 +871,20 @@ def _flood_fill_enclosed(inp: Grid) -> Grid:
                         result[r][c] = inp[nr][nc]
                         break
     return result
+
+
+def _add_obj_correspondence_pieces(pieces: List[CrossPiece],
+                                    train_pairs: List[Tuple[Grid, Grid]], bg: int):
+    """Add Object Correspondence-based transform pieces"""
+    from arc.obj_correspondence import learn_object_program, apply_object_program
+    
+    prog = learn_object_program(train_pairs)
+    if prog is not None:
+        _prog = prog
+        pieces.append(CrossPiece(
+            f'obj:{prog["name"]}',
+            lambda inp, p=_prog: apply_object_program(inp, p)
+        ))
 
 
 def _add_cross_compose_pieces(pieces: List[CrossPiece],
