@@ -1020,6 +1020,40 @@ class WholeGridProgram:
         elif self.name == 'flip_v':
             return flip_v(inp)
         
+        elif self.name == 'extract_smallest_region':
+            bg = self.params.get('bg', most_common_color(inp))
+            regs = flood_fill_regions(inp)
+            regs = [r for r in regs if r['color'] != bg]
+            if not regs: return None
+            smallest = min(regs, key=lambda r: r['size'])
+            r1, c1, r2, c2 = smallest['bbox']
+            return [row[c1:c2+1] for row in inp[r1:r2+1]]
+        
+        elif self.name == 'stack_v':
+            return inp + inp
+        elif self.name == 'stack_v_flip':
+            return inp + flip_v(inp)
+        elif self.name == 'stack_h':
+            return [r + r for r in inp]
+        elif self.name == 'stack_h_flip':
+            return [r + list(reversed(r)) for r in inp]
+        
+        elif self.name == 'remove_empty_rows':
+            bg = self.params.get('bg', most_common_color(inp))
+            result = [row for row in inp if any(c != bg for c in row)]
+            return result if result else None
+        elif self.name == 'remove_empty_cols':
+            bg = self.params.get('bg', most_common_color(inp))
+            keep = [c for c in range(w) if any(inp[r][c] != bg for r in range(h))]
+            return [[inp[r][c] for c in keep] for r in range(h)] if keep else None
+        elif self.name == 'remove_empty_both':
+            bg = self.params.get('bg', most_common_color(inp))
+            rows = [row for row in inp if any(c != bg for c in row)]
+            if not rows: return None
+            h2, w2 = len(rows), len(rows[0])
+            keep = [c for c in range(w2) if any(rows[r][c] != bg for r in range(h2))]
+            return [[rows[r][c] for c in keep] for r in range(h2)] if keep else None
+        
         return None
 
 
@@ -1150,6 +1184,22 @@ def _generate_whole_grid_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> Lis
     # Keep one color
     for c in grid_colors(inp0) - {bg}:
         candidates.append(WholeGridProgram('keep_one_color', {'color': c, 'bg': bg}))
+    
+    # Extract smallest region
+    candidates.append(WholeGridProgram('extract_smallest_region', {'bg': bg}))
+    
+    # Stack operations
+    if oh == 2 * ih and ow == iw:
+        candidates.append(WholeGridProgram('stack_v'))
+        candidates.append(WholeGridProgram('stack_v_flip'))
+    if oh == ih and ow == 2 * iw:
+        candidates.append(WholeGridProgram('stack_h'))
+        candidates.append(WholeGridProgram('stack_h_flip'))
+    
+    # Remove empty rows/cols
+    candidates.append(WholeGridProgram('remove_empty_rows', {'bg': bg}))
+    candidates.append(WholeGridProgram('remove_empty_cols', {'bg': bg}))
+    candidates.append(WholeGridProgram('remove_empty_both', {'bg': bg}))
     
     # Remove color
     for c in grid_colors(inp0) - {bg}:
