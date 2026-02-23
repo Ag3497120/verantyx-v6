@@ -205,6 +205,10 @@ class AtomMatcher:
             # Block verbose definitions (is_a returns full definitions)
             if len(atom.object) > self.MAX_ANSWER_LEN:
                 continue
+            # Block definition-like answers from is_a/means predicates
+            # These predicates return "what X is" — rarely the answer to HLE questions
+            if atom.predicate in ("is_a", "means", "alias") and len(atom.object.split()) > 3:
+                continue
 
             # Calculate relevance
             relevance = self._relevance(query, atom)

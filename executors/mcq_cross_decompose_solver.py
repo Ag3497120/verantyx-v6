@@ -190,7 +190,14 @@ def solve_by_cross_decomposition(
     # 差分が十分大きい場合のみ回答
     gap = best.cross_score - (second.cross_score if second else 0)
     min_score = 0.05  # 最低スコア閾値
-    min_gap = 0.02    # 最低差分閾値
+    # 選択肢数に応じた動的gap閾値（多い選択肢ほど高いgapを要求）
+    n_choices = len(decompositions)
+    if n_choices <= 4:
+        min_gap = 0.03
+    elif n_choices <= 6:
+        min_gap = 0.045
+    else:
+        min_gap = 0.06  # 7択以上: ランダムノイズと区別するため厳しく
 
     result = CrossMatchResult(
         decompositions=decompositions,
