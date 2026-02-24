@@ -740,6 +740,12 @@ class WholeGridProgram:
     params: dict = field(default_factory=dict)
     
     def apply(self, inp: Grid) -> Optional[Grid]:
+        try:
+            return self._apply_inner(inp)
+        except (TypeError, ValueError):
+            return None
+    
+    def _apply_inner(self, inp: Grid) -> Optional[Grid]:
         h, w = grid_shape(inp)
         
         if self.name == 'row_sort':

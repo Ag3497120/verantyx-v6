@@ -404,10 +404,209 @@ def apply_multipass_copy_rule(inp: Grid, rule: Dict) -> Grid:
     return current
 
 
+def learn_split_combine_rule(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[Dict]:
+    """Learn: split grid into two equal halves, combine with XOR/OR/AND logic.
+    The output marks cells where the logical operation on both halves is true.
+    """
+    if not train_pairs:
+        return None
+    
+    inp0, out0 = train_pairs[0]
+    h, w = grid_shape(inp0)
+    bg = most_common_color(inp0)
+    
+    for split_mode in ['h_equal', 'v_equal']:
+        if split_mode == 'h_equal':
+            if h % 2 != 0:
+                continue
+            half = h // 2
+            exp_out = (half, w)
+        else:
+            if w % 2 != 0:
+                continue
+            half = w // 2
+            exp_out = (h, half)
+        
+        for op in ['xor', 'or', 'and']:
+            ok = True
+            out_color = None
+            
+            for inp, out in train_pairs:
+                if grid_shape(out) != exp_out or grid_shape(inp) != (h, w):
+                    ok = False; break
+                
+                if split_mode == 'h_equal':
+                    A = [[inp[r][c] for c in range(w)] for r in range(half)]
+                    B = [[inp[r][c] for c in range(w)] for r in range(half, h)]
+                    ah, aw = half, w
+                else:
+                    A = [[inp[r][c] for c in range(half)] for r in range(h)]
+                    B = [[inp[r][c] for c in range(half, w)] for r in range(h)]
+                    ah, aw = h, half
+                
+                for r in range(ah):
+                    for c in range(aw):
+                        a_nb = A[r][c] != bg
+                        b_nb = B[r][c] != bg
+                        if op == 'xor': mark = a_nb != b_nb
+                        elif op == 'or': mark = a_nb or b_nb
+                        else: mark = a_nb and b_nb
+                        
+                        ov = out[r][c]
+                        if mark:
+                            if out_color is None:
+                                out_color = ov
+                            elif out_color != ov:
+                                ok = False; break
+                        else:
+                            if ov != bg:
+                                ok = False; break
+                    if not ok: break
+                if not ok: break
+            
+            if ok and out_color is not None:
+                return {
+                    'type': 'split_combine',
+                    'split': split_mode,
+                    'op': op,
+                    'color': out_color,
+                    'bg': bg,
+                    'h': h, 'w': w,
+                }
+    
+    return None
+
+
+def apply_split_combine_rule(inp: Grid, rule: Dict) -> Optional[Grid]:
+    h, w = grid_shape(inp)
+    bg = rule['bg']
+    split = rule['split']
+    op = rule['op']
+    color = rule['color']
+    
+    if split == 'h_equal':
+        if h % 2 != 0:
+            return None
+        half = h // 2
+        A = [[inp[r][c] for c in range(w)] for r in range(half)]
+        B = [[inp[r][c] for c in range(w)] for r in range(half, h)]
+        result = [[bg]*w for _ in range(half)]
+        for r in range(half):
+            for c in range(w):
+                a_nb = A[r][c] != bg
+                b_nb = B[r][c] != bg
+                if op == 'xor': mark = a_nb != b_nb
+                elif op == 'or': mark = a_nb or b_nb
+                else: mark = a_nb and b_nb
+                if mark:
+                    result[r][c] = color
+    else:
+        if w % 2 != 0:
+            return None
+        half = w // 2
+        A = [[inp[r][c] for c in range(half)] for r in range(h)]
+        B = [[inp[r][c] for c in range(half, w)] for r in range(h)]
+        result = [[bg]*half for _ in range(h)]
+        for r in range(h):
+            for c in range(half):
+                a_nb = A[r][c] != bg
+                b_nb = B[r][c] != bg
+                if op == 'xor': mark = a_nb != b_nb
+                elif op == 'or': mark = a_nb or b_nb
+                else: mark = a_nb and b_nb
+                if mark:
+                    result[r][c] = color
+    
+    return result
+
+
+def _find_sep_in_grid(inp: Grid, bg: int):
+    """Find any color that forms full rows or cols (separator lines).
+    Returns (sep_color, full_rows, full_cols) or (None, [], [])."""
+    h, w = grid_shape(inp)
+    for color in range(10):
+        if color == bg:
+            continue
+        fr = [r for r in range(h) if all(inp[r][c] == color for c in range(w))]
+        fc = [c for c in range(w) if all(inp[r][c] == color for r in range(h))]
+        if fr or fc:
+            return color, fr, fc
+    return None, [], []
+
+
+def learn_panel_extract_unique(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[Dict]:
+    """Grid divided by separator lines (any full-row/col color).
+    Extract the panel containing exactly 1 unique non-bg, non-sep cell.
+    Sep color can vary across training pairs (flexible detection).
+    """
+    if not train_pairs:
+        return None
+    
+    for inp, out in train_pairs:
+        bg = most_common_color(inp)  # per-pair bg
+        h, w = grid_shape(inp)
+        sep_color, fr, fc = _find_sep_in_grid(inp, bg)
+        if sep_color is None:
+            return None
+        
+        rb = sorted(set([-1] + fr + [h]))
+        cb = sorted(set([-1] + fc + [w]))
+        
+        matched = False
+        for i in range(len(rb)-1):
+            r1, r2 = rb[i]+1, rb[i+1]-1
+            if r1 > r2: continue
+            for j in range(len(cb)-1):
+                c1, c2 = cb[j]+1, cb[j+1]-1
+                if c1 > c2: continue
+                non_bg = [(r, c) for r in range(r1, r2+1) for c in range(c1, c2+1)
+                          if inp[r][c] != bg and inp[r][c] != sep_color]
+                if len(non_bg) == 1:
+                    extracted = [[inp[r][c] for c in range(c1, c2+1)]
+                                 for r in range(r1, r2+1)]
+                    if grid_eq(extracted, out):
+                        matched = True
+                        break
+            if matched: break
+        
+        if not matched:
+            return None
+    
+    return {'type': 'panel_extract_unique'}  # bg computed per-pair in apply
+
+
+def apply_panel_extract_unique(inp: Grid, rule: Dict) -> Optional[Grid]:
+    bg = most_common_color(inp)  # dynamic per-input
+    h, w = grid_shape(inp)
+    
+    # Dynamically find separator in this input
+    sep_color, full_rows, full_cols = _find_sep_in_grid(inp, bg)
+    if sep_color is None:
+        return None
+    
+    row_bounds = sorted(set([-1] + full_rows + [h]))
+    col_bounds = sorted(set([-1] + full_cols + [w]))
+    
+    for i in range(len(row_bounds)-1):
+        r1, r2 = row_bounds[i]+1, row_bounds[i+1]-1
+        if r1 > r2: continue
+        for j in range(len(col_bounds)-1):
+            c1, c2 = col_bounds[j]+1, col_bounds[j+1]-1
+            if c1 > c2: continue
+            non_bg = [(r, c) for r in range(r1, r2+1) for c in range(c1, c2+1)
+                      if inp[r][c] != bg and inp[r][c] != sep_color]
+            if len(non_bg) == 1:
+                return [[inp[r][c] for c in range(c1, c2+1)]
+                        for r in range(r1, r2+1)]
+    return None
+
+
 # All extended NB learners
 ALL_EXTENDED_NB = [
     ('count_nb', learn_count_nb_rule, apply_count_nb_rule),
     ('between_fill', learn_between_fill_rule, apply_between_fill_rule),
     ('multipass_nb', learn_multipass_nb_rule, apply_multipass_nb_rule),
     ('multipass_copy', learn_multipass_copy_rule, apply_multipass_copy_rule),
+    ('split_combine', learn_split_combine_rule, apply_split_combine_rule),
+    ('panel_extract_unique', learn_panel_extract_unique, apply_panel_extract_unique),
 ]
