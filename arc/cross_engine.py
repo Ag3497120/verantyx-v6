@@ -1871,6 +1871,33 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
         except Exception:
             pass
     
+    # === Phase 7: Puzzle Reasoning Language ===
+    if len(verified) < 2:
+        try:
+            from arc.puzzle_lang import solve_with_puzzle_lang
+            # Test on all training pairs first, then apply
+            test_result = solve_with_puzzle_lang(train_pairs, test_inputs[0])
+            if test_result is not None:
+                # Verify it actually works on all train pairs
+                from arc.puzzle_lang import synthesize_programs
+                progs = synthesize_programs(train_pairs)
+                for prog in progs:
+                    try:
+                        valid = True
+                        for inp, out in train_pairs:
+                            r = prog.apply_fn(inp)
+                            if r is None or not grid_eq(r, out):
+                                valid = False; break
+                        if valid:
+                            verified.append(('cross', 
+                                CrossPiece(f'puzzle:{prog.name}', prog.apply_fn)))
+                            if len(verified) >= 2:
+                                break
+                    except Exception:
+                        continue
+        except Exception:
+            pass
+    
     return _apply_verified(verified, test_inputs), verified
 
 
