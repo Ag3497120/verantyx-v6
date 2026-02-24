@@ -1138,6 +1138,144 @@ def synthesize_programs(train_pairs: List[Tuple[Grid, Grid]]) -> List[PuzzleProg
                     ))
                     break
 
+    # === Pattern 9_grid_pattern: All-bg input → grid/checkerboard/lattice ===
+    if all(inp0[r][c] == inp0[0][0] for r in range(ih) for c in range(iw)):
+        out_vals = set(out0[r][c] for r in range(oh) for c in range(ow))
+        if len(out_vals) == 2:
+            ov = list(out_vals)
+            # Try multiple parity patterns
+            for mark_gp, bg_gp in [(ov[0], ov[1]), (ov[1], ov[0])]:
+                for pat_name, pat_fn in [
+                    ('checkerboard', lambda r,c: (r+c)%2==0),
+                    ('grid_lattice', lambda r,c: not (r%2==1 and c%2==1)),
+                    ('grid_inv', lambda r,c: (r%2==1 and c%2==1)),
+                    ('even_rows', lambda r,c: r%2==0),
+                    ('odd_rows', lambda r,c: r%2==1),
+                    ('even_cols', lambda r,c: c%2==0),
+                    ('odd_cols', lambda r,c: c%2==1),
+                ]:
+                    is_match = True
+                    for r in range(oh):
+                        for c in range(ow):
+                            expected = mark_gp if pat_fn(r,c) else bg_gp
+                            if out0[r][c] != expected:
+                                is_match = False; break
+                        if not is_match: break
+                    if is_match:
+                        def make_grid_pat(mk, bk, pf):
+                            def fn(g):
+                                h, w = grid_shape(g)
+                                return [[mk if pf(r,c) else bk for c in range(w)] for r in range(h)]
+                            return fn
+                        gp_fn = make_grid_pat(mark_gp, bg_gp, pat_fn)
+                        if all(grid_eq(gp_fn(inp), out) for inp, out in train_pairs):
+                            programs.append(PuzzleProgram(
+                                name=f"grid_pattern_{pat_name}_{mark_gp}",
+                                apply_fn=gp_fn,
+                                description=f"FILL {pat_name}: {mark_gp}/{bg_gp}"
+                            ))
+                        break
+                if any(p.name.startswith('grid_pattern') for p in programs):
+                    break
+
+    # === Pattern 9_antidiag: Left column + anti-diagonal line + bottom row fill ===
+    if (oh,ow) == (ih,iw) and ih == iw:
+        bg_ad = most_common_color(inp0)
+        # Check: left column is non-bg, rest is bg
+        left_col = set(inp0[r][0] for r in range(ih))
+        rest_bg = all(inp0[r][c] == bg_ad for r in range(ih) for c in range(1, iw))
+        if len(left_col) == 1 and left_col.pop() != bg_ad and rest_bg:
+            # Check output: anti-diagonal (color 2) + bottom row (color 4)
+            left_c = inp0[0][0]
+            # Detect anti-diag color and bottom row color
+            anti_c = out0[0][iw-1] if out0[0][iw-1] != bg_ad and out0[0][iw-1] != left_c else None
+            bot_c = out0[ih-1][1] if ih>1 and out0[ih-1][1] != bg_ad and out0[ih-1][1] != left_c else None
+            if anti_c and bot_c:
+                def make_antidiag(lc, ac, bc, bg_v):
+                    def fn(g):
+                        h, w = grid_shape(g)
+                        if h != w: return None
+                        bg2 = most_common_color(g)
+                        lcolor = g[0][0]
+                        result = [[bg2]*w for _ in range(h)]
+                        # Left column
+                        for r in range(h):
+                            result[r][0] = lcolor
+                        # Anti-diagonal (from top-right to bottom-left, excluding col 0)
+                        for r in range(h-1):
+                            c = w - 1 - r
+                            if c > 0:
+                                result[r][c] = ac
+                        # Bottom row (non-col-0)
+                        for c in range(1, w):
+                            result[h-1][c] = bc
+                        return result
+                    return fn
+                ad_fn = make_antidiag(left_c, anti_c, bot_c, bg_ad)
+                if all(grid_eq(ad_fn(inp), out) for inp, out in train_pairs):
+                    programs.append(PuzzleProgram(
+                        name="antidiag_fill",
+                        apply_fn=ad_fn,
+                        description=f"DRAW anti-diagonal ({anti_c}) + fill bottom row ({bot_c})"
+                    ))
+
+    # === Pattern 9_latin_square: Complete a Latin square (each row/col has all colors) ===
+    if (oh,ow) == (ih,iw) and ih == iw:
+        # Check if output is a Latin square (each row/col contains 1..N exactly once)
+        N = ih
+        is_latin = True
+        out_vals_set = set()
+        for r in range(N):
+            row_vals = set(out0[r])
+            out_vals_set |= row_vals
+            if len(row_vals) != N:
+                is_latin = False; break
+        if is_latin:
+            for c in range(N):
+                col_vals = set(out0[r][c] for r in range(N))
+                if len(col_vals) != N:
+                    is_latin = False; break
+        if is_latin and len(out_vals_set) == N:
+            # It IS a Latin square! Try to solve by constraint propagation
+            def solve_latin(g):
+                h, w = grid_shape(g)
+                if h != w: return None
+                N2 = h
+                bg2 = most_common_color(g)
+                # Find the set of values used
+                vals = set(g[r][c] for r in range(N2) for c in range(N2) if g[r][c] != bg2)
+                if len(vals) < N2 - 1: return None  # not enough clues
+                all_vals = vals | {bg2}  # bg might be a real value
+                # Actually need to figure out the full value set from output
+                # Use the values that appear in out0
+                target_vals = out_vals_set
+                
+                result = [row[:] for row in g]
+                changed = True
+                while changed:
+                    changed = False
+                    for r in range(N2):
+                        for c in range(N2):
+                            if result[r][c] == bg2:
+                                row_vals = set(result[r][cc] for cc in range(N2) if result[r][cc] != bg2)
+                                col_vals = set(result[rr][c] for rr in range(N2) if result[rr][c] != bg2)
+                                possible = target_vals - row_vals - col_vals
+                                if len(possible) == 1:
+                                    result[r][c] = possible.pop()
+                                    changed = True
+                                elif len(possible) == 0:
+                                    return None
+                # Check if complete
+                if any(result[r][c] == bg2 for r in range(N2) for c in range(N2)):
+                    return None
+                return result
+            if all(grid_eq(solve_latin(inp), out) for inp, out in train_pairs):
+                programs.append(PuzzleProgram(
+                    name="latin_square",
+                    apply_fn=solve_latin,
+                    description="COMPLETE Latin square (each row/col has all values)"
+                ))
+
     # === Pattern 9_col_color_map: Each row has 1 fg cell; map its column to output color ===
     if (oh, ow) == (ih, iw):
         ccmap_cc = {}
