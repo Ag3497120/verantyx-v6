@@ -54,15 +54,16 @@ def learn_fill_between_same_color(train_pairs: List[Tuple[Grid, Grid]]) -> Optio
     """Learn: fill gaps between same-color cells along rows, cols, or both.
     
     Only fills with the SAME color as the endpoints.
-    Tries multiple bg candidates.
+    Tries multiple bg candidates + auto-bg.
     """
-    bgs = _get_candidate_bgs(train_pairs)
+    bgs = _get_candidate_bgs(train_pairs) + ['auto']
     
     for bg in bgs:
         for mode in ['h', 'v', 'both']:
             ok = True
             for inp, out in train_pairs:
-                result = _apply_fill_between(inp, bg, mode)
+                pair_bg = most_common_color(inp) if bg == 'auto' else bg
+                result = _apply_fill_between(inp, pair_bg, mode)
                 if not grid_eq(result, out):
                     ok = False; break
             if ok:
@@ -101,7 +102,8 @@ def _apply_fill_between(inp: Grid, bg: int, mode: str) -> Grid:
 
 
 def apply_fill_between(inp: Grid, params: Dict) -> Optional[Grid]:
-    return _apply_fill_between(inp, params['bg'], params['mode'])
+    bg = most_common_color(inp) if params.get('bg') == 'auto' else params['bg']
+    return _apply_fill_between(inp, bg, params['mode'])
 
 
 def learn_project_rows_or_cols(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[Dict]:
@@ -369,88 +371,82 @@ def learn_residual(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[Tuple[str, 
 
 
 def learn_cross_with_marker(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[Dict]:
-    """Learn: draw cross from dots, replace dot with marker color, add diag color."""
-    # Try both fixed bg and per-pair most-common bg
-    bgs = _get_candidate_bgs(train_pairs) + ['auto']
+    """Learn: draw cross from dots, replace dot with marker color, add diag color.
+    Uses auto-bg (most common color per pair) to handle varying backgrounds."""
+    ok = True
+    marker_color = None
+    diag_color = None
+    dot_color = None
     
-    for bg in bgs:
-        ok = True
-        marker_color = None
-        diag_color = None
-        dot_color = None
+    for inp, out in train_pairs:
+        h, w = grid_shape(inp)
+        if grid_shape(out) != (h, w):
+            return None
         
-        for inp, out in train_pairs:
-            h, w = grid_shape(inp)
-            if grid_shape(out) != (h, w):
-                ok = False; break
+        bg = most_common_color(inp)
+        dots = [(r, c) for r in range(h) for c in range(w) if inp[r][c] != bg]
+        if not dots:
+            return None
+        
+        dc = inp[dots[0][0]][dots[0][1]]
+        if dot_color is None:
+            dot_color = dc
+        elif dot_color != dc:
+            return None
+        
+        # Build expected result: draw crosses
+        result = [row[:] for row in inp]
+        for dr, dcc in dots:
+            for r in range(h):
+                if result[r][dcc] == bg:
+                    result[r][dcc] = dot_color
+            for c in range(w):
+                if result[dr][c] == bg:
+                    result[dr][c] = dot_color
+        
+        # Detect marker and diag from output
+        for dr, dcc in dots:
+            mc = out[dr][dcc]
+            if mc != dot_color:
+                if marker_color is None:
+                    marker_color = mc
+                elif marker_color != mc:
+                    return None
             
-            pair_bg = most_common_color(inp) if bg == 'auto' else bg
-            dots = [(r, c) for r in range(h) for c in range(w) if inp[r][c] != pair_bg]
-            if not dots:
-                ok = False; break
-            
-            dc = inp[dots[0][0]][dots[0][1]]
-            if dot_color is None:
-                dot_color = dc
-            elif dot_color != dc:
-                ok = False; break
-            
-            # Build expected result
-            result = [row[:] for row in inp]
-            for dr, dcc in dots:
-                for r in range(h):
-                    if result[r][dcc] == bg:
-                        result[r][dcc] = dot_color
-                for c in range(w):
-                    if result[dr][c] == bg:
-                        result[dr][c] = dot_color
-            
-            # Detect marker and diag from output
-            for dr, dcc in dots:
-                mc = out[dr][dcc]
-                if mc != dot_color:
-                    if marker_color is None:
-                        marker_color = mc
-                    elif marker_color != mc:
-                        ok = False; break
-                
-                for ddr, ddcc in [(-1,-1),(-1,1),(1,-1),(1,1)]:
-                    nr, nc = dr+ddr, dcc+ddcc
-                    if 0 <= nr < h and 0 <= nc < w:
-                        ov = out[nr][nc]
-                        if ov != dot_color and ov != bg and ov != marker_color:
-                            if diag_color is None:
-                                diag_color = ov
-                            elif diag_color != ov:
-                                ok = False; break
-                if not ok: break
-            if not ok: break
-            
-            # Apply marker + diag
-            for dr, dcc in dots:
-                if marker_color:
-                    result[dr][dcc] = marker_color
+            for ddr, ddcc in [(-1,-1),(-1,1),(1,-1),(1,1)]:
+                nr, nc = dr+ddr, dcc+ddcc
+                if 0 <= nr < h and 0 <= nc < w:
+                    ov = out[nr][nc]
+                    if ov != dot_color and ov != bg and ov != (marker_color or -1):
+                        if diag_color is None:
+                            diag_color = ov
+                        elif diag_color != ov:
+                            return None
+        
+        # Apply marker + diag
+        for dr, dcc in dots:
+            if marker_color:
+                result[dr][dcc] = marker_color
+            if diag_color:
                 for ddr, ddcc in [(-1,-1),(-1,1),(1,-1),(1,1)]:
                     nr, nc = dr+ddr, dcc+ddcc
                     if 0 <= nr < h and 0 <= nc < w and result[nr][nc] == bg:
-                        if diag_color:
-                            result[nr][nc] = diag_color
-            
-            if not grid_eq(result, out):
-                ok = False; break
+                        result[nr][nc] = diag_color
         
-        if ok and dot_color is not None:
-            return {'type': 'cross_marker', 'bg': bg, 'dot_color': dot_color,
-                    'marker_color': marker_color, 'diag_color': diag_color}
+        if not grid_eq(result, out):
+            return None
     
-    return None
+    if dot_color is None:
+        return None
+    return {'type': 'cross_marker', 'bg': 'auto', 'dot_color': dot_color,
+            'marker_color': marker_color, 'diag_color': diag_color}
 
 
 def apply_cross_with_marker(inp: Grid, params: Dict) -> Optional[Grid]:
-    bg = params['bg']
     dot_color = params['dot_color']
     marker_color = params.get('marker_color')
     diag_color = params.get('diag_color')
+    bg = most_common_color(inp) if params.get('bg') == 'auto' else params.get('bg', 0)
     
     h, w = grid_shape(inp)
     dots = [(r, c) for r in range(h) for c in range(w) if inp[r][c] == dot_color]
