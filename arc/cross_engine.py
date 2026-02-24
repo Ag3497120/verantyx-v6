@@ -1648,6 +1648,28 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
     
+    # === Phase 7 (early): Puzzle Reasoning Language ===
+    # Run early because puzzle_lang programs are high-confidence declarative rules
+    try:
+        from arc.puzzle_lang import synthesize_programs as _synth_puzzle
+        _puzzle_progs = _synth_puzzle(train_pairs)
+        for _pp in _puzzle_progs:
+            try:
+                _pvalid = True
+                for _pinp, _pout in train_pairs:
+                    _pr = _pp.apply_fn(_pinp)
+                    if _pr is None or not grid_eq(_pr, _pout):
+                        _pvalid = False; break
+                if _pvalid:
+                    _ptr = _pp.apply_fn(test_inputs[0])
+                    if _ptr is not None:
+                        verified.insert(0, ('cross',
+                            CrossPiece(f'puzzle:{_pp.name}', _pp.apply_fn)))
+            except Exception:
+                continue
+    except Exception:
+        pass
+    
     if len(verified) >= 2:
         return _apply_verified(verified, test_inputs), verified
     
@@ -1871,32 +1893,7 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
         except Exception:
             pass
     
-    # === Phase 7: Puzzle Reasoning Language ===
-    if len(verified) < 2:
-        try:
-            from arc.puzzle_lang import solve_with_puzzle_lang
-            # Test on all training pairs first, then apply
-            test_result = solve_with_puzzle_lang(train_pairs, test_inputs[0])
-            if test_result is not None:
-                # Verify it actually works on all train pairs
-                from arc.puzzle_lang import synthesize_programs
-                progs = synthesize_programs(train_pairs)
-                for prog in progs:
-                    try:
-                        valid = True
-                        for inp, out in train_pairs:
-                            r = prog.apply_fn(inp)
-                            if r is None or not grid_eq(r, out):
-                                valid = False; break
-                        if valid:
-                            verified.append(('cross', 
-                                CrossPiece(f'puzzle:{prog.name}', prog.apply_fn)))
-                            if len(verified) >= 2:
-                                break
-                    except Exception:
-                        continue
-        except Exception:
-            pass
+    # Phase 7 now runs early (before Phase 3) for priority
     
     return _apply_verified(verified, test_inputs), verified
 
@@ -2050,8 +2047,12 @@ def _apply_verified(verified: List, test_inputs: List[Grid]) -> List[List[Grid]]
         else:
             non_nb_verified.append(item)
     
-    # Build final candidate list: non-NB first, then NB, then fallback (stamp/obj)
-    selected = non_nb_verified[:2] + nb_verified[:2] + fallback_verified[:1]
+    # Puzzle-lang programs are highest confidence — always first
+    puzzle_verified = [item for item in non_nb_verified if getattr(item[1], 'name', '').startswith('puzzle:')]
+    other_non_nb = [item for item in non_nb_verified if not getattr(item[1], 'name', '').startswith('puzzle:')]
+    
+    # Build final candidate list: puzzle first, then other non-NB, then NB, then fallback
+    selected = puzzle_verified[:2] + other_non_nb[:2] + nb_verified[:2] + fallback_verified[:1]
     # Deduplicate and limit to 3
     seen = set()
     final = []

@@ -462,6 +462,83 @@ def pattern_count_per_region(grid: Grid, bg: int, out_shape: Tuple[int, int]) ->
     return result
 
 
+def _connect_same_color(grid: Grid) -> Optional[Grid]:
+    """EACH color → draw straight lines connecting all cells of that color"""
+    bg = most_common_color(grid)
+    h, w = grid_shape(grid)
+    result = [row[:] for row in grid]
+    colors = set(grid[r][c] for r in range(h) for c in range(w)) - {bg}
+    for color in colors:
+        pts = sorted([(r, c) for r in range(h) for c in range(w) if grid[r][c] == color])
+        if len(pts) < 2:
+            continue
+        for i in range(len(pts) - 1):
+            r1, c1 = pts[i]
+            r2, c2 = pts[i + 1]
+            dr = 0 if r2 == r1 else (1 if r2 > r1 else -1)
+            dc = 0 if c2 == c1 else (1 if c2 > c1 else -1)
+            r, c = r1, c1
+            while True:
+                result[r][c] = color
+                if r == r2 and c == c2:
+                    break
+                r += dr
+                c += dc
+    return result
+
+
+def _fill_intersection_gap(grid: Grid) -> Optional[Grid]:
+    """WHERE full-row meets partial-col (or full-col meets partial-row):
+    the intersection cell gets the color of the partial line."""
+    bg = most_common_color(grid)
+    h, w = grid_shape(grid)
+    result = [row[:] for row in grid]
+    
+    # Find full rows (uniform non-bg color)
+    full_rows = {}
+    for r in range(h):
+        vals = set(grid[r][c] for c in range(w))
+        if len(vals) == 1 and grid[r][0] != bg:
+            full_rows[r] = grid[r][0]
+    
+    # For each column, find dominant color; fill cells where full_row color "interrupted" the col
+    for c in range(w):
+        col_colors = Counter(
+            grid[r][c] for r in range(h)
+            if grid[r][c] != bg and grid[r][c] not in full_rows.values()
+        )
+        if not col_colors:
+            continue
+        dom = col_colors.most_common(1)[0][0]
+        for r in full_rows:
+            if grid[r][c] == full_rows[r] and full_rows[r] != dom:
+                if sum(1 for rr in range(h) if rr != r and grid[rr][c] == dom) >= 1:
+                    result[r][c] = dom
+    
+    # Find full cols
+    full_cols = {}
+    for c in range(w):
+        vals = set(grid[r][c] for r in range(h))
+        if len(vals) == 1 and grid[0][c] != bg:
+            full_cols[c] = grid[0][c]
+    
+    # For each row, fill intersections where full_col interrupted the row
+    for r in range(h):
+        row_colors = Counter(
+            grid[r][c] for c in range(w)
+            if grid[r][c] != bg and grid[r][c] not in full_cols.values()
+        )
+        if not row_colors:
+            continue
+        dom = row_colors.most_common(1)[0][0]
+        for c in full_cols:
+            if grid[r][c] == full_cols[c] and full_cols[c] != dom:
+                if sum(1 for cc in range(w) if cc != c and grid[r][cc] == dom) >= 1:
+                    result[r][c] = dom
+    
+    return result
+
+
 def pattern_draw_cross_and_fill(grid: Grid, bg: int) -> Optional[Grid]:
     """2点を通る十字線 + 囲まれた矩形をfill"""
     objects = select_objects(grid, bg)
@@ -750,6 +827,22 @@ def synthesize_programs(train_pairs: List[Tuple[Grid, Grid]]) -> List[PuzzleProg
                     apply_fn=make_split_fn(frozen),
                     description=f"SPLIT {split} → {op_name.upper()} → FILL WITH {out_color}"
                 ))
+    
+    # === Pattern 9b: Connect same-color cells with lines ===
+    programs.append(PuzzleProgram(
+        name="connect_same_color",
+        apply_fn=lambda g: _connect_same_color(g),
+        description="EACH color → CONNECT all cells of that color with straight lines"
+    ))
+    
+    # === Pattern 9c: Fill intersection gap ===
+    # Where a full row and a partial col (or full col + partial row) intersect,
+    # the cell at intersection gets filled with the "expected" color of the partial line.
+    programs.append(PuzzleProgram(
+        name="fill_intersection_gap",
+        apply_fn=lambda g: _fill_intersection_gap(g),
+        description="FIND full-row/full-col + partial line → FILL gap at intersection"
+    ))
     
     # === Pattern 9: Most frequent color → center of empty region ===
     # "ABOVE separator → COUNT colors → MOST_FREQUENT → WRITE AT center of below"
