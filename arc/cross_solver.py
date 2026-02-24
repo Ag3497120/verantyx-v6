@@ -1271,7 +1271,26 @@ class WholeGridProgram:
                     if key in mapping:
                         row.append(mapping[key])
                     else:
-                        row.append(inp[r][c])  # fallback
+                        # Wildcard fallback: match ignoring -1 positions in key
+                        # (boundary cells that weren't seen in training)
+                        matched = None
+                        oob = [i for i, v in enumerate(key) if v == -1]
+                        if oob:
+                            for mkey, mval in mapping.items():
+                                ok = True
+                                for i, (a, b) in enumerate(zip(key, mkey)):
+                                    if i in oob:
+                                        continue  # skip out-of-bounds positions
+                                    if a != b:
+                                        ok = False
+                                        break
+                                if ok:
+                                    if matched is None:
+                                        matched = mval
+                                    elif matched != mval:
+                                        matched = None  # ambiguous
+                                        break
+                        row.append(matched if matched is not None else inp[r][c])
                 result.append(row)
             return result
         
