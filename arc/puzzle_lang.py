@@ -887,6 +887,103 @@ def synthesize_programs(train_pairs: List[Tuple[Grid, Grid]]) -> List[PuzzleProg
                     description=f"SPLIT {split} → {op_name.upper()} → FILL WITH {out_color}"
                 ))
     
+    # === Pattern 9_rot: Whole-grid transformations (fallback for missing transforms) ===
+    # Rotate 180° — whole grid AND content-only reflected to opposite corner
+    programs.append(PuzzleProgram(
+        name="rotate_180",
+        apply_fn=lambda g: [row[::-1] for row in reversed(g)],
+        description="ROTATE grid 180°"
+    ))
+    # Rotate content 180° around grid center (content-bbox rot + reflection)
+    def rot180_content_around_center(g):
+        h, w = grid_shape(g)
+        bg = most_common_color(g)
+        # Find bounding box of non-bg content
+        rows_nz = [r for r in range(h) if any(g[r][c] != bg for c in range(w))]
+        cols_nz = [c for c in range(w) if any(g[r][c] != bg for r in range(h))]
+        if not rows_nz or not cols_nz:
+            return None
+        r1, r2 = min(rows_nz), max(rows_nz)
+        c1, c2 = min(cols_nz), max(cols_nz)
+        # Extract and rotate bbox 180°
+        bbox = [[g[r][c] for c in range(c1, c2+1)] for r in range(r1, r2+1)]
+        rotated = [row[::-1] for row in reversed(bbox)]
+        bh, bw = len(bbox), len(bbox[0])
+        # Reflect bbox position around grid center
+        # Grid center: ((h-1)/2, (w-1)/2)
+        # Content center: ((r1+r2)/2, (c1+c2)/2)
+        # Reflected center: (h-1 - (r1+r2)/2, w-1 - (c1+c2)/2)
+        new_r1 = (h - 1) - r2  # = h-1-r2
+        new_c1 = (w - 1) - c2  # = w-1-c2
+        # Place rotated content at new position
+        result = [[bg] * w for _ in range(h)]
+        for dr in range(bh):
+            for dc in range(bw):
+                nr = new_r1 + dr
+                nc = new_c1 + dc
+                if 0 <= nr < h and 0 <= nc < w:
+                    result[nr][nc] = rotated[dr][dc]
+        return result
+    programs.append(PuzzleProgram(
+        name="rotate_180_content",
+        apply_fn=rot180_content_around_center,
+        description="ROTATE content bbox 180° and reflect to opposite grid corner"
+    ))
+    # Complement tile 2x2 (for 2-color grids)
+    if len(set(inp0[r][c] for r in range(ih) for c in range(iw))) == 2:
+        colors_2 = set(inp0[r][c] for r in range(ih) for c in range(iw))
+        c1_tile, c2_tile = list(colors_2)
+        def make_comp_tile_2x2(ca, cb):
+            def fn(g):
+                h, w = grid_shape(g)
+                cs = set(g[r][c] for r in range(h) for c in range(w))
+                if len(cs) != 2: return None
+                ca2, cb2 = sorted(cs)
+                # comp: swap the two colors
+                comp = [[cb2 if g[r][c] == ca2 else ca2 for c in range(w)] for r in range(h)]
+                # Tile 2x2
+                result = []
+                for r in range(h * 2):
+                    row = []
+                    for c in range(w * 2):
+                        row.append(comp[r % h][c % w])
+                    result.append(row)
+                return result
+            return fn
+        programs.append(PuzzleProgram(
+            name="comp_tile_2x2",
+            apply_fn=make_comp_tile_2x2(c1_tile, c2_tile),
+            description="COMPLEMENT the 2-color grid then TILE 2x2"
+        ))
+    # Staircase grow: 1-row input → triangle pattern
+    # The fg is the color that STARTS from left; bg fills the right tail
+    if ih == 1:
+        def staircase_grow(g):
+            h, w = grid_shape(g)
+            if h != 1: return None
+            # The "fg" is the left-aligned color, "bg" is the right-side filler
+            fg_color = g[0][0]  # leftmost color
+            bg_color = g[0][-1]  # rightmost color (the filler)
+            if fg_color == bg_color: return None
+            # Count how many fg cells are in input (contiguous from left)
+            n_fg = 0
+            for c in range(w):
+                if g[0][c] == fg_color: n_fg += 1
+                else: break
+            n_rows = w // 2
+            if n_rows < 1: return None
+            result = []
+            for row_idx in range(n_rows):
+                n_this_row = min(n_fg + row_idx, w)
+                row = [fg_color] * n_this_row + [bg_color] * (w - n_this_row)
+                result.append(row)
+            return result
+        programs.append(PuzzleProgram(
+            name="staircase_grow",
+            apply_fn=staircase_grow,
+            description="1-row input → grow fg count by 1 each row (staircase)"
+        ))
+    
     # === Pattern 9_sd: Scale-down (NxN blocks → single cell, all-same aggregation) ===
     for N_sd in [2, 3, 4, 5]:
         if ih % N_sd != 0 or iw % N_sd != 0:
