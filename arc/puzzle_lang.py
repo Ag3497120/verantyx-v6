@@ -1138,6 +1138,91 @@ def synthesize_programs(train_pairs: List[Tuple[Grid, Grid]]) -> List[PuzzleProg
                     ))
                     break
 
+    # === Pattern 9_col_color_map: Each row has 1 fg cell; map its column to output color ===
+    if (oh, ow) == (ih, iw):
+        ccmap_cc = {}
+        valid_ccmap = True
+        for inp_cc, out_cc in train_pairs:
+            h2, w2 = grid_shape(inp_cc)
+            bg2 = most_common_color(inp_cc)
+            for r in range(h2):
+                fg_c = [c for c in range(w2) if inp_cc[r][c] != bg2]
+                out_vals = set(out_cc[r])
+                if len(fg_c) == 1 and len(out_vals) == 1:
+                    col = fg_c[0]
+                    oc2 = out_cc[r][0]
+                    if col in ccmap_cc and ccmap_cc[col] != oc2:
+                        valid_ccmap = False; break
+                    ccmap_cc[col] = oc2
+                elif fg_c:  # more than 1 fg cell or no fg → not this pattern
+                    valid_ccmap = False; break
+            if not valid_ccmap: break
+        if valid_ccmap and ccmap_cc:
+            def make_ccmap_fn(cm):
+                def fn(g):
+                    h, w = grid_shape(g)
+                    bg2 = most_common_color(g)
+                    result = []
+                    for r in range(h):
+                        fg_c = [c for c in range(w) if g[r][c] != bg2]
+                        if len(fg_c) == 1 and fg_c[0] in cm:
+                            result.append([cm[fg_c[0]]] * w)
+                        else:
+                            return None
+                    return result
+                return fn
+            programs.append(PuzzleProgram(
+                name=f"col_color_map",
+                apply_fn=make_ccmap_fn(dict(ccmap_cc)),
+                description=f"MAP column position → output row color {ccmap_cc}"
+            ))
+
+    # === Pattern 9_sep_and: Vertical separator splits L/R; AND fg → mark ===
+    if oh == ih:
+        bg_out_sep = most_common_color(out0)
+        out_colors_sep = set(out0[r][c] for r in range(oh) for c in range(ow)) - {bg_out_sep}
+        if out_colors_sep:
+            mark_sep = next(iter(out_colors_sep))
+            # Find separator column
+            for col_sep in range(iw):
+                sep_c_set = set(inp0[r][col_sep] for r in range(ih))
+                if len(sep_c_set) != 1: continue
+                sc = sep_c_set.pop()
+                if sc == bg_out_sep: continue  # separator must be different from output bg
+                left_w = col_sep
+                right_w = iw - col_sep - 1
+                if left_w != right_w or left_w != ow: continue
+                def make_sep_and(mk, bk):
+                    def fn(g):
+                        h, w = grid_shape(g)
+                        # Find separator (uniform non-bg column in center)
+                        sep_col = -1
+                        for c2 in range(1, w-1):
+                            cs = set(g[r][c2] for r in range(h))
+                            if len(cs)==1 and cs.pop()!=bk:
+                                lw2 = c2; rw2 = w-c2-1
+                                if lw2 == rw2:
+                                    sep_col = c2; break
+                        if sep_col < 0: return None
+                        result = []
+                        for r in range(h):
+                            row = []
+                            for c in range(sep_col):
+                                lv = g[r][c]
+                                rv = g[r][sep_col+1+c]
+                                row.append(mk if lv!=bk and rv!=bk else bk)
+                            result.append(row)
+                        return result
+                    return fn
+                sep_fn = make_sep_and(mark_sep, bg_out_sep)
+                if all(grid_eq(sep_fn(inp), out) for inp, out in train_pairs):
+                    programs.append(PuzzleProgram(
+                        name="split_vsep_and",
+                        apply_fn=sep_fn,
+                        description=f"SPLIT at vertical separator, AND fg → mark {mark_sep}"
+                    ))
+                    break
+
     # === Pattern 9_shift: Shift content by 1 step and recolor ===
     if (oh, ow) == (ih, iw):
         # Detect fg and output color from first pair
