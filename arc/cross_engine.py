@@ -233,6 +233,9 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
     # === Module 19: Residual learners (fill between, project, cross dots, etc.) ===
     _add_residual_pieces(pieces, train_pairs)
     
+    # Note: Module 20 primitives are generated separately in _generate_cross_pieces_fast
+    # for beam search. Adding them here would slow down Phase 3 composition (O(N²)).
+    
     return pieces
 
 
@@ -1447,6 +1450,133 @@ def _add_residual_pieces(pieces: List[CrossPiece],
             pass
 
 
+def _add_primitive_pieces(pieces: List[CrossPiece],
+                          train_pairs: List[Tuple[Grid, Grid]]):
+    """Module 20: Parameterless primitives from primitives.py.
+    
+    These are simple atomic transforms (flip, rotate, fill, draw, etc.)
+    that serve as building blocks for beam search composition.
+    Only add primitives that produce a different output than input on train[0].
+    """
+    try:
+        from arc.primitives import PARAMETERLESS_PRIMITIVES, get_color_primitives
+    except ImportError:
+        return
+    
+    inp0, out0 = train_pairs[0]
+    h0, w0 = grid_shape(inp0)
+    
+    # Parameterless primitives
+    for name, fn in PARAMETERLESS_PRIMITIVES:
+        try:
+            result = fn(inp0)
+            if result is None:
+                continue
+            rh, rw = grid_shape(result)
+            # Only add if it actually changes something
+            if (rh, rw) == (h0, w0) and grid_eq(result, inp0):
+                continue
+            pieces.append(CrossPiece(name, lambda inp, _fn=fn: _fn(inp)))
+        except Exception:
+            pass
+    
+    # Color-parameterized primitives  
+    try:
+        color_prims = get_color_primitives(inp0)
+        for name, fn in color_prims:
+            try:
+                result = fn(inp0)
+                if result is None:
+                    continue
+                rh, rw = grid_shape(result)
+                if (rh, rw) == (h0, w0) and grid_eq(result, inp0):
+                    continue
+                pieces.append(CrossPiece(name, lambda inp, _fn=fn: _fn(inp)))
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+
+def _generate_cross_pieces_fast(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPiece]:
+    """Lightweight piece generator for beam search — only fast primitives.
+    
+    Excludes slow learned rules (NB, object detection, etc.)
+    Includes only parameterless primitives + residual learners.
+    """
+    pieces = []
+    
+    try:
+        from arc.primitives import PARAMETERLESS_PRIMITIVES, get_color_primitives
+    except ImportError:
+        return pieces
+    
+    inp0 = train_pairs[0][0]
+    h0, w0 = grid_shape(inp0)
+    
+    # Only add primitives that change the grid AND preserve output size
+    # (for beam search, size changes are only useful at the last step)
+    out0 = train_pairs[0][1]
+    oh, ow = grid_shape(out0)
+    same_size = (h0, w0) == (oh, ow)
+    
+    for name, fn in PARAMETERLESS_PRIMITIVES:
+        try:
+            result = fn(inp0)
+            if result is None:
+                continue
+            rh, rw = grid_shape(result)
+            # For same-size tasks, only keep same-size transforms
+            if same_size and (rh, rw) != (h0, w0):
+                continue
+            if (rh, rw) == (h0, w0) and grid_eq(result, inp0):
+                continue
+            pieces.append(CrossPiece(name, lambda inp, _fn=fn: _fn(inp)))
+        except Exception:
+            pass
+    
+    # Limited color primitives (only remove and keep, skip swaps to reduce count)
+    try:
+        color_prims = get_color_primitives(inp0)
+        for name, fn in color_prims:
+            if not (name.startswith('remove_c') or name.startswith('keep_c')):
+                continue  # skip swaps and recolor in beam search
+            try:
+                result = fn(inp0)
+                if result is None:
+                    continue
+                rh, rw = grid_shape(result)
+                if same_size and (rh, rw) != (h0, w0):
+                    continue
+                if (rh, rw) == (h0, w0) and grid_eq(result, inp0):
+                    continue
+                pieces.append(CrossPiece(name, lambda inp, _fn=fn: _fn(inp)))
+            except Exception:
+                pass
+    except Exception:
+        pass
+    
+    # Also add residual learners (fast)
+    try:
+        from arc.residual_learner import ALL_LEARNERS
+        for rname, rlearn, rapply in ALL_LEARNERS:
+            try:
+                rule = rlearn(train_pairs)
+                if rule is not None:
+                    _r = rule
+                    _ra = rapply
+                    pieces.insert(0, CrossPiece(
+                        f'res:{rname}',
+                        lambda inp, r=_r, fn=_ra: fn(inp, r)
+                    ))
+            except Exception:
+                pass
+    except Exception:
+        pass
+    
+    return pieces
+
+
 def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]], 
                        test_inputs: List[Grid]) -> Tuple[List[List[Grid]], List]:
     """
@@ -1661,6 +1791,54 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
             if len(verified) >= 2:
                 break
     
+    # === Phase 4.5: Standalone primitives (fast O(N) check) ===
+    if len(verified) < 2:
+        try:
+            from arc.primitives import PARAMETERLESS_PRIMITIVES, get_color_primitives
+            inp0, out0 = train_pairs[0]
+            all_prims = list(PARAMETERLESS_PRIMITIVES) + get_color_primitives(inp0)
+            for pname, pfn in all_prims:
+                try:
+                    # Quick check on first pair
+                    r0 = pfn(inp0)
+                    if r0 is None or not grid_eq(r0, out0):
+                        continue
+                    # Full verify on all pairs
+                    ok = True
+                    for inp, exp in train_pairs[1:]:
+                        r = pfn(inp)
+                        if r is None or not grid_eq(r, exp):
+                            ok = False; break
+                    if ok:
+                        verified.append(('cross', CrossPiece(pname, lambda inp, _fn=pfn: _fn(inp))))
+                        if len(verified) >= 2:
+                            break
+                except Exception:
+                    pass
+        except Exception:
+            pass
+    
+    # === Phase 5: Multi-Arm Beam Search ===
+    # Generalized beam search: N-step chains with top-K beam width
+    # Only run if no solution found yet and grid is manageable
+    if len(verified) < 2 and _max_cells <= 400:
+        try:
+            from arc.beam_search import beam_search_with_residual_learners
+            beam_results = beam_search_with_residual_learners(
+                train_pairs,
+                _generate_cross_pieces_fast,
+                max_depth=3,
+                beam_width=5,
+                time_limit=2.0
+            )
+            for br in beam_results:
+                kind, chain = br
+                verified.append((kind, chain))
+                if len(verified) >= 2:
+                    break
+        except Exception:
+            pass
+    
     return _apply_verified(verified, test_inputs), verified
 
 
@@ -1863,6 +2041,15 @@ def _apply_verified(verified: List, test_inputs: List[Grid]) -> List[List[Grid]]
                 m1 = p1.apply(test_inp)
                 m2 = p2.apply(m1) if m1 is not None else None
                 result = p3.apply(m2) if m2 is not None else None
+            elif kind.startswith('beam_depth_'):
+                # Multi-arm beam search: chain of N pieces
+                chain = prog
+                x = test_inp
+                for piece in chain:
+                    x = piece.apply(x)
+                    if x is None:
+                        break
+                result = x
             else:
                 result = None
             
