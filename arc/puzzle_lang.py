@@ -1664,6 +1664,192 @@ def synthesize_programs(train_pairs: List[Tuple[Grid, Grid]]) -> List[PuzzleProg
                         continue
                     break
     
+    # === Pattern 12: Separator XOR/diff with new mark color ===
+    # Handles: sep splits grid into two halves, compare non-bg cells, mark differences
+    # Supports both h-sep and v-sep, output may be smaller (half size)
+    # Output mark color may be NEW (not in input)
+    for sep_c_try in range(10):
+        if sep_c_try == bg:
+            continue
+        # Horizontal separator
+        h_seps = [r for r in range(ih) if all(inp0[r][c] == sep_c_try for c in range(iw))]
+        if len(h_seps) == 1:
+            sr = h_seps[0]
+            top_h, bot_h = sr, ih - sr - 1
+            if top_h > 0 and bot_h > 0:
+                # Determine which comparison produces the output
+                for out_bg_try in set(out0[r][c] for r in range(oh) for c in range(ow)):
+                    mark_cs = set(out0[r][c] for r in range(oh) for c in range(ow)) - {out_bg_try}
+                    if len(mark_cs) != 1:
+                        continue
+                    mark_c = mark_cs.pop()
+                    # Try: output = top_h x iw or bot_h x iw
+                    for out_h, use_top_for_A in [(top_h, True), (bot_h, False)]:
+                        if (oh, ow) != (out_h, iw):
+                            continue
+                        for op_name in ['xor', 'diff_ab', 'diff_ba', 'nor', 'and', 'or']:
+                            frozen_sep = {'sep_c': sep_c_try, 'mark': mark_c, 'out_bg': out_bg_try,
+                                          'op': op_name, 'use_top_A': use_top_for_A}
+                            def make_sep_xor_h(p):
+                                def fn(g):
+                                    h2, w2 = grid_shape(g)
+                                    sr2 = None
+                                    for r in range(h2):
+                                        if all(g[r][c2] == p['sep_c'] for c2 in range(w2)):
+                                            sr2 = r; break
+                                    if sr2 is None: return None
+                                    th, bh = sr2, h2 - sr2 - 1
+                                    if p['use_top_A']:
+                                        A = g[:th]; B = g[sr2+1:sr2+1+th]
+                                        out_h2 = th
+                                    else:
+                                        A = g[sr2+1:sr2+1+bh]; B = g[:bh]
+                                        out_h2 = bh
+                                    if len(A) != out_h2 or len(B) != out_h2: return None
+                                    bg2 = p['out_bg']
+                                    result = []
+                                    for r in range(out_h2):
+                                        row = []
+                                        for c in range(w2):
+                                            a_fg = A[r][c] != bg2 and A[r][c] != p['sep_c']
+                                            b_fg = B[r][c] != bg2 and B[r][c] != p['sep_c']
+                                            if p['op'] == 'xor': m = a_fg != b_fg
+                                            elif p['op'] == 'diff_ab': m = a_fg and not b_fg
+                                            elif p['op'] == 'diff_ba': m = b_fg and not a_fg
+                                            elif p['op'] == 'nor': m = not a_fg and not b_fg
+                                            elif p['op'] == 'and': m = a_fg and b_fg
+                                            else: m = a_fg or b_fg  # or
+                                            row.append(p['mark'] if m else bg2)
+                                        result.append(row)
+                                    return result
+                                return fn
+                            sx_fn = make_sep_xor_h(frozen_sep)
+                            if all(grid_eq(sx_fn(inp_t), out_t) for inp_t, out_t in train_pairs):
+                                programs.append(PuzzleProgram(
+                                    name=f"sep_h_{op_name}_mark{mark_c}",
+                                    apply_fn=sx_fn,
+                                    description=f"H-sep → {op_name} → mark {mark_c} (bg={out_bg_try})"
+                                ))
+                                break
+                        else:
+                            continue
+                        break
+
+        # Vertical separator
+        v_seps = [c for c in range(iw) if all(inp0[r][c] == sep_c_try for r in range(ih))]
+        if len(v_seps) == 1:
+            sc = v_seps[0]
+            left_w, right_w = sc, iw - sc - 1
+            if left_w > 0 and right_w > 0:
+                for out_bg_try in set(out0[r][c] for r in range(oh) for c in range(ow)):
+                    mark_cs = set(out0[r][c] for r in range(oh) for c in range(ow)) - {out_bg_try}
+                    if len(mark_cs) != 1:
+                        continue
+                    mark_c = mark_cs.pop()
+                    for out_w, use_left_A in [(left_w, True), (right_w, False)]:
+                        if (oh, ow) != (ih, out_w):
+                            continue
+                        for op_name in ['xor', 'diff_ab', 'diff_ba', 'nor', 'and', 'or']:
+                            frozen_sep_v = {'sep_c': sep_c_try, 'mark': mark_c, 'out_bg': out_bg_try,
+                                            'op': op_name, 'use_left_A': use_left_A}
+                            def make_sep_xor_v(p):
+                                def fn(g):
+                                    h2, w2 = grid_shape(g)
+                                    sc2 = None
+                                    for c in range(w2):
+                                        if all(g[r2][c] == p['sep_c'] for r2 in range(h2)):
+                                            sc2 = c; break
+                                    if sc2 is None: return None
+                                    lw, rw = sc2, w2 - sc2 - 1
+                                    if p['use_left_A']:
+                                        A = [row[:lw] for row in g]; B = [row[sc2+1:sc2+1+lw] for row in g]
+                                        out_w2 = lw
+                                    else:
+                                        A = [row[sc2+1:sc2+1+rw] for row in g]; B = [row[:rw] for row in g]
+                                        out_w2 = rw
+                                    bg2 = p['out_bg']
+                                    result = []
+                                    for r in range(h2):
+                                        row = []
+                                        for c in range(out_w2):
+                                            a_fg = A[r][c] != bg2 and A[r][c] != p['sep_c']
+                                            b_fg = B[r][c] != bg2 and B[r][c] != p['sep_c']
+                                            if p['op'] == 'xor': m = a_fg != b_fg
+                                            elif p['op'] == 'diff_ab': m = a_fg and not b_fg
+                                            elif p['op'] == 'diff_ba': m = b_fg and not a_fg
+                                            elif p['op'] == 'nor': m = not a_fg and not b_fg
+                                            elif p['op'] == 'and': m = a_fg and b_fg
+                                            else: m = a_fg or b_fg
+                                            row.append(p['mark'] if m else bg2)
+                                        result.append(row)
+                                    return result
+                                return fn
+                            sx_fn_v = make_sep_xor_v(frozen_sep_v)
+                            if all(grid_eq(sx_fn_v(inp_t), out_t) for inp_t, out_t in train_pairs):
+                                programs.append(PuzzleProgram(
+                                    name=f"sep_v_{op_name}_mark{mark_c}",
+                                    apply_fn=sx_fn_v,
+                                    description=f"V-sep → {op_name} → mark {mark_c} (bg={out_bg_try})"
+                                ))
+                                break
+                        else:
+                            continue
+                        break
+
+    # === Pattern 13: Object move by own width/height ===
+    if (oh, ow) == (ih, iw):
+        objs_in = select_objects(inp0, bg)
+        objs_out = select_objects(out0, bg)
+        if len(objs_in) >= 1 and len(objs_in) == len(objs_out):
+            # Sort both by size desc then position
+            objs_in_s = sorted(objs_in, key=lambda o: (-o.size, o.center))
+            objs_out_s = sorted(objs_out, key=lambda o: (-o.size, o.center))
+            # Check: each object moves by its own width (right) or height (down)
+            for move_type in ['width_right', 'width_left', 'height_down', 'height_up']:
+                match = True
+                for oi, oo in zip(objs_in_s, objs_out_s):
+                    if oi.size != oo.size:
+                        match = False; break
+                    dc = oo.center[1] - oi.center[1]
+                    dr = oo.center[0] - oi.center[0]
+                    if move_type == 'width_right' and (dc != oi.width or dr != 0):
+                        match = False; break
+                    elif move_type == 'width_left' and (dc != -oi.width or dr != 0):
+                        match = False; break
+                    elif move_type == 'height_down' and (dr != oi.height or dc != 0):
+                        match = False; break
+                    elif move_type == 'height_up' and (dr != -oi.height or dc != 0):
+                        match = False; break
+                if match:
+                    def make_obj_self_move(mt):
+                        def fn(g):
+                            bg2 = most_common_color(g)
+                            h2, w2 = grid_shape(g)
+                            objs2 = select_objects(g, bg2)
+                            if not objs2: return None
+                            result = [[bg2]*w2 for _ in range(h2)]
+                            for o in objs2:
+                                if mt == 'width_right': dr2, dc2 = 0, o.width
+                                elif mt == 'width_left': dr2, dc2 = 0, -o.width
+                                elif mt == 'height_down': dr2, dc2 = o.height, 0
+                                else: dr2, dc2 = -o.height, 0
+                                for r, c in o.cells:
+                                    nr, nc = r + dr2, c + dc2
+                                    if 0 <= nr < h2 and 0 <= nc < w2:
+                                        result[nr][nc] = g[r][c]
+                                    else:
+                                        return None
+                            return result
+                        return fn
+                    mv_fn = make_obj_self_move(move_type)
+                    if all(grid_eq(mv_fn(inp_t), out_t) for inp_t, out_t in train_pairs):
+                        programs.append(PuzzleProgram(
+                            name=f"move_obj_by_{move_type}",
+                            apply_fn=mv_fn,
+                            description=f"EACH object → MOVE by own {move_type}"
+                        ))
+                    break
+
     return programs
 
 
