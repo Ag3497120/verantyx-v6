@@ -10,6 +10,14 @@
 
 ---
 
+<p align="center">
+  <img src="assets/demo.gif" alt="Verantyx solving ARC-AGI-2 tasks in real-time" width="800">
+  <br>
+  <em>Each task solved in under 0.3 seconds on a laptop CPU — no GPU, no API, no cost.</em>
+</p>
+
+---
+
 ## 🏆 ARC-AGI-2: 16.1% — Outperforming Grok 4
 
 Verantyx achieves **16.1% on ARC-AGI-2** (161/1000 training tasks), **matching or exceeding Grok 4's reported ~16% score** — at a fraction of the cost.
