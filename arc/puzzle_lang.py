@@ -1086,6 +1086,90 @@ def synthesize_programs(train_pairs: List[Tuple[Grid, Grid]]) -> List[PuzzleProg
                 ))
                 break
     
+    # === Pattern 9_uniform_row: Each row → uniform mark if all same, else bg ===
+    if (oh, ow) == (ih, iw):
+        out_colors_ur = set(out0[r][c] for r in range(oh) for c in range(ow))
+        if len(out_colors_ur) == 2:
+            for mark_ur, bg_ur in [
+                (min(out_colors_ur), max(out_colors_ur)),
+                (max(out_colors_ur), min(out_colors_ur)),
+            ]:
+                def make_ur(mk, bk):
+                    def fn(g):
+                        h, w = grid_shape(g)
+                        result = []
+                        for r in range(h):
+                            result.append([mk]*w if len(set(g[r]))==1 else [bk]*w)
+                        return result
+                    return fn
+                ur_fn = make_ur(mark_ur, bg_ur)
+                if all(grid_eq(ur_fn(inp), out) for inp, out in train_pairs):
+                    programs.append(PuzzleProgram(
+                        name=f"uniform_row_detect_{mark_ur}",
+                        apply_fn=ur_fn,
+                        description=f"MARK uniform rows with {mark_ur}, non-uniform with {bg_ur}"
+                    ))
+                    break
+        # Also try: uniform COLUMNS
+        out_colors_uc = set(out0[r][c] for r in range(oh) for c in range(ow))
+        if len(out_colors_uc) == 2:
+            for mark_uc, bg_uc in [
+                (min(out_colors_uc), max(out_colors_uc)),
+                (max(out_colors_uc), min(out_colors_uc)),
+            ]:
+                def make_uc(mk, bk):
+                    def fn(g):
+                        h, w = grid_shape(g)
+                        result = []
+                        for r in range(h):
+                            row = []
+                            for c in range(w):
+                                col_vals = [g[rr][c] for rr in range(h)]
+                                row.append(mk if len(set(col_vals))==1 else bk)
+                            result.append(row)
+                        return result
+                    return fn
+                uc_fn = make_uc(mark_uc, bg_uc)
+                if all(grid_eq(uc_fn(inp), out) for inp, out in train_pairs):
+                    programs.append(PuzzleProgram(
+                        name=f"uniform_col_detect_{mark_uc}",
+                        apply_fn=uc_fn,
+                        description=f"MARK uniform cols with {mark_uc}, else {bg_uc}"
+                    ))
+                    break
+
+    # === Pattern 9_shift: Shift content by 1 step and recolor ===
+    if (oh, ow) == (ih, iw):
+        # Detect fg and output color from first pair
+        bg_sh = most_common_color(inp0)
+        bg_sh_out = most_common_color(out0)
+        fg_cells_sh = [(r,c,inp0[r][c]) for r in range(ih) for c in range(iw) if inp0[r][c] != bg_sh]
+        out_cells_sh = [(r,c,out0[r][c]) for r in range(oh) for c in range(ow) if out0[r][c] != bg_sh_out]
+        if fg_cells_sh and out_cells_sh:
+            fg_color_sh = Counter(x[2] for x in fg_cells_sh).most_common(1)[0][0]
+            out_color_sh = Counter(x[2] for x in out_cells_sh).most_common(1)[0][0]
+            for dr, dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+                def make_shift(fg, oc, bg, drow, dcol):
+                    def fn(g):
+                        h, w = grid_shape(g)
+                        result = [[bg]*w for _ in range(h)]
+                        for r in range(h):
+                            for c in range(w):
+                                if g[r][c] == fg:
+                                    nr, nc = r+drow, c+dcol
+                                    if 0<=nr<h and 0<=nc<w:
+                                        result[nr][nc] = oc
+                        return result
+                    return fn
+                sh_fn = make_shift(fg_color_sh, out_color_sh, bg_sh_out, dr, dc)
+                if all(grid_eq(sh_fn(inp), out) for inp, out in train_pairs):
+                    programs.append(PuzzleProgram(
+                        name=f"shift_recolor_d{dr}{dc}",
+                        apply_fn=sh_fn,
+                        description=f"SHIFT {fg_color_sh}→{out_color_sh} by ({dr},{dc})"
+                    ))
+                    break
+
     # === Pattern 9_dedup: Extract unique tile from a repeated grid ===
     # Handles: top_half, bottom_half, left_half, right_half on a per-pair basis
     def extract_tile(g):
