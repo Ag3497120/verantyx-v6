@@ -462,6 +462,65 @@ def pattern_count_per_region(grid: Grid, bg: int, out_shape: Tuple[int, int]) ->
     return result
 
 
+def _nonzero_count_row(grid: Grid) -> Optional[Grid]:
+    """Output a 1-row grid: [fg_color] × count_of_fg_cells.
+    Always treats 0 as background (non-zero = fg)."""
+    h, w = grid_shape(grid)
+    nz_vals = [grid[r][c] for r in range(h) for c in range(w) if grid[r][c] != 0]
+    if not nz_vals:
+        return None
+    nz_colors = set(nz_vals)
+    if len(nz_colors) != 1:
+        return None
+    fc = list(nz_colors)[0]
+    return [[fc] * len(nz_vals)]
+
+
+def _u_drop_ball(grid: Grid) -> Optional[Grid]:
+    """Find U-shaped frames (open at bottom) and drop color-4 from opening to bottom."""
+    bg = most_common_color(grid)
+    h, w = grid_shape(grid)
+    result = [row[:] for row in grid]
+    openings = []
+    
+    for r in range(h - 1):
+        row = grid[r]
+        c = 0
+        while c < w:
+            if row[c] == bg:
+                c += 1
+                continue
+            start = c
+            color = row[c]
+            while c < w and row[c] == color:
+                c += 1
+            end = c - 1
+            if end - start < 2:
+                continue
+            if r + 1 >= h:
+                continue
+            next_row = grid[r + 1]
+            # Check side walls (same color at start and end of next row)
+            if next_row[start] == color and next_row[end] == color:
+                # Find empty (bg) positions in middle of next row
+                empty_mid = [cc for cc in range(start + 1, end) if next_row[cc] == bg]
+                if empty_mid:
+                    center_col = (start + end) // 2
+                    openings.append((r + 1, center_col))
+    
+    if not openings:
+        return None
+    
+    for (open_r, open_c) in openings:
+        # Drop from open_r to the last bg cell in that column
+        for r in range(h - 1, open_r - 1, -1):
+            if result[r][open_c] == bg:
+                result[r][open_c] = 4
+                break
+    
+    return result
+
+
 def _connect_same_color(grid: Grid) -> Optional[Grid]:
     """EACH color → draw straight lines connecting all cells of that color"""
     bg = most_common_color(grid)
@@ -827,6 +886,21 @@ def synthesize_programs(train_pairs: List[Tuple[Grid, Grid]]) -> List[PuzzleProg
                     apply_fn=make_split_fn(frozen),
                     description=f"SPLIT {split} → {op_name.upper()} → FILL WITH {out_color}"
                 ))
+    
+    # === Pattern 9_vec: Non-zero color × its count as row vector ===
+    programs.append(PuzzleProgram(
+        name="nonzero_count_row",
+        apply_fn=lambda g: _nonzero_count_row(g),
+        description="FIND non-zero fg color → OUTPUT [fg_color] × count_fg as 1-row grid"
+    ))
+    
+    # === Pattern 9a: U-shaped frame → drop ball ===
+    # "FIND U-shaped frame (open at bottom) → DROP color-4 from opening to bottom"
+    programs.append(PuzzleProgram(
+        name="u_drop_ball",
+        apply_fn=lambda g: _u_drop_ball(g),
+        description="FIND U-frame opening → DROP color-4 to bottom of grid"
+    ))
     
     # === Pattern 9b: Connect same-color cells with lines ===
     programs.append(PuzzleProgram(
