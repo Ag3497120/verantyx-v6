@@ -1828,12 +1828,26 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
                 train_pairs,
                 _generate_cross_pieces_fast,
                 max_depth=3,
-                beam_width=5,
-                time_limit=2.0
+                beam_width=4,
+                time_limit=1.5
             )
             for br in beam_results:
                 kind, chain = br
                 verified.append((kind, chain))
+                if len(verified) >= 2:
+                    break
+        except Exception:
+            pass
+    
+    # === Phase 6: DSL Program Enumeration (exhaustive, non-monotonic) ===
+    # Unlike beam search, this explores ALL paths including ones where
+    # partial match gets worse before reaching the answer.
+    if len(verified) < 2 and _max_cells <= 400:
+        try:
+            from arc.enumerator import enumerate_solve
+            enum_results = enumerate_solve(train_pairs, max_depth=2, time_limit=1.5)
+            for ename, efn in enum_results:
+                verified.append(('cross', CrossPiece(ename, lambda inp, _fn=efn: _fn(inp))))
                 if len(verified) >= 2:
                     break
         except Exception:
