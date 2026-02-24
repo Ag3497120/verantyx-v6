@@ -474,3 +474,76 @@ def apply_cross_with_marker(inp: Grid, params: Dict) -> Optional[Grid]:
 
 # Add to ALL_LEARNERS
 ALL_LEARNERS.append(('cross_marker', learn_cross_with_marker, apply_cross_with_marker))
+
+
+# =====================================================================
+# Multi-cross intersection (Module 20+)
+# =====================================================================
+
+def learn_multicross_intersection(train_pairs):
+    """Multiple dots → cross from each in own color; intersections → color 2 (or learned color)."""
+    from arc.grid import most_common_color
+    intersection_color = None
+
+    for inp, out in train_pairs:
+        h, w = grid_shape(inp)
+        if grid_shape(out) != (h, w): return None
+        bg = most_common_color(inp)
+        dots = [(r, c, inp[r][c]) for r in range(h) for c in range(w) if inp[r][c] != bg]
+        if len(dots) < 2: return None
+        dot_colors = set(d[2] for d in dots)
+        if len(dot_colors) != len(dots): return None
+
+        row_owner = {dr: dcolor for dr, dc, dcolor in dots}
+        col_owner = {dc: dcolor for dr, dc, dcolor in dots}
+        result = [[bg]*w for _ in range(h)]
+        for r in range(h):
+            if r in row_owner:
+                for c in range(w):
+                    result[r][c] = row_owner[r]
+        for c in range(w):
+            if c in col_owner:
+                for r in range(h):
+                    if result[r][c] == bg:
+                        result[r][c] = col_owner[c]
+                    elif result[r][c] != col_owner[c]:
+                        cell = out[r][c]
+                        if intersection_color is None: intersection_color = cell
+                        elif intersection_color != cell: return None
+                        result[r][c] = intersection_color
+        for dr, dc, dcolor in dots:
+            result[dr][dc] = dcolor
+        if intersection_color is None: return None
+        if not grid_eq(result, out): return None
+
+    if intersection_color is None: return None
+    return {'type': 'multicross_intersection', 'intersection_color': intersection_color}
+
+
+def apply_multicross_intersection(inp, params):
+    from arc.grid import most_common_color
+    intersection_color = params['intersection_color']
+    h, w = grid_shape(inp)
+    bg = most_common_color(inp)
+    dots = [(r, c, inp[r][c]) for r in range(h) for c in range(w) if inp[r][c] != bg]
+    if not dots: return None
+    row_owner = {dr: dcolor for dr, dc, dcolor in dots}
+    col_owner = {dc: dcolor for dr, dc, dcolor in dots}
+    result = [[bg]*w for _ in range(h)]
+    for r in range(h):
+        if r in row_owner:
+            for c in range(w):
+                result[r][c] = row_owner[r]
+    for c in range(w):
+        if c in col_owner:
+            for r in range(h):
+                if result[r][c] == bg:
+                    result[r][c] = col_owner[c]
+                elif result[r][c] != col_owner[c]:
+                    result[r][c] = intersection_color
+    for dr, dc, dcolor in dots:
+        result[dr][dc] = dcolor
+    return result
+
+
+ALL_LEARNERS.append(('multicross_intersection', learn_multicross_intersection, apply_multicross_intersection))

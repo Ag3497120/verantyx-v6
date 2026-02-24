@@ -134,6 +134,24 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
             lambda inp, _r=r: apply_count_based_rule(inp, _r)
         ))
     
+    # === Module 1b: Extended NB Rules (count-based, between, multipass) ===
+    try:
+        from arc.nb_extended import ALL_EXTENDED_NB
+        for ename, elearn, eapply in ALL_EXTENDED_NB:
+            try:
+                erule = elearn(train_pairs)
+                if erule is not None:
+                    _er = erule
+                    _ea = eapply
+                    pieces.insert(0, CrossPiece(
+                        f'ext_nb:{ename}',
+                        lambda inp, r=_er, fn=_ea: fn(inp, r)
+                    ))
+            except Exception:
+                pass
+    except ImportError:
+        pass
+    
     # === Module 2: Conditional Rules (Wall 3) ===
     rule = learn_conditional_color_rule(train_pairs)
     if rule is not None:
@@ -1605,6 +1623,31 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
             if piece.name not in existing_names:
                 verified.append(('cross', piece))
     
+    # === Phase 1.5: Standalone primitives (fast O(N), always run before early return) ===
+    # Ensures draw_diag, flip_h, etc. are tried even if Phase 1 returns early
+    try:
+        from arc.primitives import PARAMETERLESS_PRIMITIVES, get_color_primitives
+        _inp0, _out0 = train_pairs[0]
+        _all_prims = list(PARAMETERLESS_PRIMITIVES) + get_color_primitives(_inp0)
+        for _pname, _pfn in _all_prims:
+            try:
+                _r0 = _pfn(_inp0)
+                if _r0 is None or not grid_eq(_r0, _out0):
+                    continue
+                _ok = True
+                for _inp, _exp in train_pairs[1:]:
+                    _r = _pfn(_inp)
+                    if _r is None or not grid_eq(_r, _exp):
+                        _ok = False; break
+                if _ok:
+                    _existing = {getattr(p, 'name', '') for _, p in verified}
+                    if _pname not in _existing:
+                        verified.insert(0, ('cross', CrossPiece(_pname, lambda inp, fn=_pfn: fn(inp))))
+            except Exception:
+                pass
+    except Exception:
+        pass
+    
     if len(verified) >= 2:
         return _apply_verified(verified, test_inputs), verified
     
@@ -1791,32 +1834,7 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
             if len(verified) >= 2:
                 break
     
-    # === Phase 4.5: Standalone primitives (fast O(N) check) ===
-    if len(verified) < 2:
-        try:
-            from arc.primitives import PARAMETERLESS_PRIMITIVES, get_color_primitives
-            inp0, out0 = train_pairs[0]
-            all_prims = list(PARAMETERLESS_PRIMITIVES) + get_color_primitives(inp0)
-            for pname, pfn in all_prims:
-                try:
-                    # Quick check on first pair
-                    r0 = pfn(inp0)
-                    if r0 is None or not grid_eq(r0, out0):
-                        continue
-                    # Full verify on all pairs
-                    ok = True
-                    for inp, exp in train_pairs[1:]:
-                        r = pfn(inp)
-                        if r is None or not grid_eq(r, exp):
-                            ok = False; break
-                    if ok:
-                        verified.append(('cross', CrossPiece(pname, lambda inp, _fn=pfn: _fn(inp))))
-                        if len(verified) >= 2:
-                            break
-                except Exception:
-                    pass
-        except Exception:
-            pass
+    # Note: standalone primitives are checked in Phase 1.5 (before early return)
     
     # === Phase 5: Multi-Arm Beam Search ===
     # Generalized beam search: N-step chains with top-K beam width

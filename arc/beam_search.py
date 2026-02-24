@@ -84,7 +84,7 @@ def beam_search_solve(train_pairs: List[Tuple[Grid, Grid]],
                       max_depth: int = 4,
                       beam_width: int = 8,
                       time_limit: float = 5.0,
-                      min_improvement: float = 0.02) -> List[Tuple[str, tuple]]:
+                      min_improvement: float = 0.005) -> List[Tuple[str, tuple]]:
     """
     Multi-arm beam search.
     
