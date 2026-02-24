@@ -887,6 +887,38 @@ def synthesize_programs(train_pairs: List[Tuple[Grid, Grid]]) -> List[PuzzleProg
                     description=f"SPLIT {split} → {op_name.upper()} → FILL WITH {out_color}"
                 ))
     
+    # === Pattern 9_sd: Scale-down (NxN blocks → single cell, all-same aggregation) ===
+    for N_sd in [2, 3, 4, 5]:
+        if ih % N_sd != 0 or iw % N_sd != 0:
+            continue
+        if (oh, ow) != (ih // N_sd, iw // N_sd):
+            continue
+        # Try: each NxN block → block[0] if all same, else 0
+        def make_sd(n):
+            def fn(g):
+                h, w = grid_shape(g)
+                if h % n != 0 or w % n != 0:
+                    return None
+                result = []
+                for r in range(0, h, n):
+                    row = []
+                    for c in range(0, w, n):
+                        block = [g[r+dr][c+dc] for dr in range(n) for dc in range(n)]
+                        row.append(block[0] if len(set(block)) == 1 else 0)
+                    result.append(row)
+                return result
+            return fn
+        
+        sd_fn = make_sd(N_sd)
+        # Quick verify on first pair
+        r0 = sd_fn(inp0)
+        if r0 is not None and grid_eq(r0, out0):
+            programs.append(PuzzleProgram(
+                name=f"scale_down_{N_sd}_uniform",
+                apply_fn=sd_fn,
+                description=f"COMPRESS {N_sd}x{N_sd} blocks → single cell (uniform→color, else 0)"
+            ))
+    
     # === Pattern 9_vec: Non-zero color × its count as row vector ===
     programs.append(PuzzleProgram(
         name="nonzero_count_row",
