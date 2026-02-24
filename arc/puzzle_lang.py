@@ -751,6 +751,166 @@ def synthesize_programs(train_pairs: List[Tuple[Grid, Grid]]) -> List[PuzzleProg
                     description=f"SPLIT {split} → {op_name.upper()} → FILL WITH {out_color}"
                 ))
     
+    # === Pattern 9: Most frequent color → center of empty region ===
+    # "ABOVE separator → COUNT colors → MOST_FREQUENT → WRITE AT center of below"
+    for inp_t, out_t in train_pairs[:1]:
+        ih_t, iw_t = grid_shape(inp_t)
+        bg_t = most_common_color(inp_t)
+        sep_r = None
+        for r in range(ih_t):
+            vals = set(inp_t[r][c] for c in range(iw_t))
+            if len(vals) == 1 and inp_t[r][0] != bg_t:
+                sep_r = r
+                break
+        if sep_r is not None and sep_r > 0:
+            def make_mfc():
+                def fn(g):
+                    h2, w2 = grid_shape(g)
+                    bg2 = most_common_color(g)
+                    sr = None
+                    for r in range(h2):
+                        vals = set(g[r][c2] for c2 in range(w2))
+                        if len(vals) == 1 and g[r][0] != bg2:
+                            sr = r
+                            break
+                    if sr is None or sr == 0:
+                        return None
+                    colors = Counter()
+                    for r in range(sr):
+                        for c in range(w2):
+                            v = g[r][c]
+                            if v != bg2 and v != g[sr][0]:
+                                colors[v] += 1
+                    if not colors:
+                        return None
+                    mc = colors.most_common(1)[0][0]
+                    result = [row[:] for row in g]
+                    result[h2 - 1][w2 // 2] = mc
+                    return result
+                return fn
+            programs.append(PuzzleProgram(
+                name="most_freq_center",
+                apply_fn=make_mfc(),
+                description="ABOVE separator → MOST_FREQUENT color → WRITE AT bottom center"
+            ))
+    
+    # === Pattern 10: Diagonal extend ===
+    # "FIND collinear points → EXTEND pattern beyond last point WITH new_color"
+    if (ih, iw) == (oh, ow):
+        objs = sorted([(r, c) for r in range(ih) for c in range(iw) if inp0[r][c] != bg])
+        if 2 <= len(objs) <= 30:
+            dr_d = objs[1][0] - objs[0][0]
+            dc_d = objs[1][1] - objs[0][1]
+            if (dr_d != 0 or dc_d != 0):
+                consistent = all(
+                    objs[j][0] - objs[j-1][0] == dr_d and objs[j][1] - objs[j-1][1] == dc_d
+                    for j in range(2, len(objs))
+                )
+                if consistent:
+                    # Learn new_color from first training pair diff
+                    new_cs = set(
+                        out0[r][c] for r in range(ih) for c in range(iw)
+                        if inp0[r][c] != out0[r][c] and inp0[r][c] == bg
+                    )
+                    if len(new_cs) == 1:
+                        nc_d = list(new_cs)[0]
+                        frozen_d = (dr_d, dc_d, nc_d)
+                        
+                        def make_diag_ext(params):
+                            _, _, nc2 = params  # dr/dc learned dynamically per input
+                            def fn(g):
+                                bg3 = most_common_color(g)
+                                h2, w2 = grid_shape(g)
+                                pts = sorted([(r, c) for r in range(h2) for c in range(w2)
+                                              if g[r][c] != bg3])
+                                if len(pts) < 2:
+                                    return None
+                                # Dynamic dr/dc from this input's points
+                                d_r = pts[1][0] - pts[0][0]
+                                d_c = pts[1][1] - pts[0][1]
+                                if d_r == 0 and d_c == 0:
+                                    return None
+                                # Verify all points are collinear
+                                for j in range(2, len(pts)):
+                                    if pts[j][0] - pts[j-1][0] != d_r or pts[j][1] - pts[j-1][1] != d_c:
+                                        return None
+                                result = [row[:] for row in g]
+                                r, c = pts[-1]
+                                while True:
+                                    r += d_r
+                                    c += d_c
+                                    if not (0 <= r < h2 and 0 <= c < w2):
+                                        break
+                                    result[r][c] = nc2
+                                return result
+                            return fn
+                        
+                        programs.append(PuzzleProgram(
+                            name="diagonal_extend",
+                            apply_fn=make_diag_ext(frozen_d),
+                            description=f"FIND collinear points (dr={dr_d},dc={dc_d}) → EXTEND WITH color {nc_d}"
+                        ))
+    
+    # === Pattern 11: Separator split + compare (non-equal halves) ===
+    # For single horizontal or vertical separator, output = shrunk operation result
+    for sep_c_try in range(10):
+        if sep_c_try == bg:
+            continue
+        h_seps = [r for r in range(ih) if all(inp0[r][c] == sep_c_try for c in range(iw))]
+        v_seps = [c for c in range(iw) if all(inp0[r][c] == sep_c_try for r in range(ih))]
+        
+        if len(h_seps) == 1 and not v_seps:
+            sr = h_seps[0]
+            top_h = sr
+            bot_h = ih - sr - 1
+            if top_h == bot_h and (oh, ow) == (top_h, iw):
+                for op_s in ['xor', 'or', 'and']:
+                    for fill_c_s in range(10):
+                        frozen_s = {'sep_c': sep_c_try, 'op': op_s, 'fill': fill_c_s, 'bg': bg}
+                        
+                        def make_sep_h(params):
+                            def fn(g):
+                                h2, w2 = grid_shape(g)
+                                bg2 = params['bg']
+                                sc = params['sep_c']
+                                sr2 = None
+                                for r in range(h2):
+                                    if all(g[r][c2] == sc for c2 in range(w2)):
+                                        sr2 = r
+                                        break
+                                if sr2 is None:
+                                    return None
+                                th = sr2
+                                result = [[bg2] * w2 for _ in range(th)]
+                                for r in range(th):
+                                    for c in range(w2):
+                                        a = g[r][c] != bg2
+                                        b = g[sr2 + 1 + r][c] != bg2 if sr2 + 1 + r < h2 else False
+                                        if params['op'] == 'xor':
+                                            m = a != b
+                                        elif params['op'] == 'or':
+                                            m = a or b
+                                        else:
+                                            m = a and b
+                                        if m:
+                                            result[r][c] = params['fill']
+                                return result
+                            return fn
+                        
+                        # Quick verify on first pair only
+                        test_fn = make_sep_h(frozen_s)
+                        r0 = test_fn(inp0)
+                        if r0 is not None and grid_eq(r0, out0):
+                            programs.append(PuzzleProgram(
+                                name=f"sep_h_{op_s}_{fill_c_s}",
+                                apply_fn=test_fn,
+                                description=f"H-separator → {op_s.upper()} halves → FILL {fill_c_s}"
+                            ))
+                            break
+                    else:
+                        continue
+                    break
+    
     return programs
 
 
