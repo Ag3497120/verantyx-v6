@@ -984,6 +984,156 @@ def synthesize_programs(train_pairs: List[Tuple[Grid, Grid]]) -> List[PuzzleProg
             description="1-row input → grow fg count by 1 each row (staircase)"
         ))
     
+    # === Pattern 9_interleave: 2-row interleave (checkerboard by row) ===
+    if ih == 2 and oh == 2 and iw == ow:
+        def two_row_interleave(g):
+            h, w = grid_shape(g)
+            if h != 2: return None
+            # Each row must be uniform
+            c0 = set(g[0])
+            c1 = set(g[1])
+            if len(c0) != 1 or len(c1) != 1: return None
+            col0 = g[0][0]
+            col1 = g[1][0]
+            result = []
+            for r in range(h):
+                row = []
+                for c in range(w):
+                    # c even → own row's color; c odd → other row's color
+                    if c % 2 == 0:
+                        row.append(col0 if r == 0 else col1)
+                    else:
+                        row.append(col1 if r == 0 else col0)
+                result.append(row)
+            return result
+        # Verify on all pairs
+        ok_il = all(grid_eq(two_row_interleave(inp), out) for inp, out in train_pairs)
+        if ok_il:
+            programs.append(PuzzleProgram(
+                name="two_row_interleave",
+                apply_fn=two_row_interleave,
+                description="INTERLEAVE two uniform rows in checkerboard pattern"
+            ))
+    
+    # === Pattern 9_nor: Stack-NOR — two halves stacked, mark where both are bg ===
+    if ih % 2 == 0 and oh == ih // 2 and ow == iw:
+        # Try: top half (A) and bottom half (B) stacked
+        # Output[r][c] = mark_color where A[r][c]==bg AND B[r][c]==bg
+        half_h = ih // 2
+        # Detect mark color from first pair
+        bg0 = most_common_color(inp0)
+        top0 = inp0[:half_h]
+        bot0 = inp0[half_h:]
+        # Find mark color = the non-bg color in out0 where both top0/bot0 are bg
+        mark_color_nor = None
+        for r in range(half_h):
+            for c in range(iw):
+                if top0[r][c] == bg0 and bot0[r][c] == bg0 and out0[r][c] != bg0:
+                    mark_color_nor = out0[r][c]
+                    break
+            if mark_color_nor: break
+        if mark_color_nor is not None:
+            # bg is detected from out0 (simpler grid, clearer background)
+            fixed_bg_nor = most_common_color(out0)
+            def make_nor(mark, fixed_bg):
+                def fn(g):
+                    h, w = grid_shape(g)
+                    if h % 2 != 0: return None
+                    hh = h // 2
+                    top = g[:hh]
+                    bot = g[hh:]
+                    result = []
+                    for r in range(hh):
+                        row = []
+                        for c in range(w):
+                            if top[r][c] == fixed_bg and bot[r][c] == fixed_bg:
+                                row.append(mark)
+                            else:
+                                row.append(fixed_bg)
+                        result.append(row)
+                    return result
+                return fn
+            nor_fn = make_nor(mark_color_nor, fixed_bg_nor)
+            ok_nor = all(grid_eq(nor_fn(inp), out) for inp, out in train_pairs)
+            if ok_nor:
+                programs.append(PuzzleProgram(
+                    name="stack_nor",
+                    apply_fn=nor_fn,
+                    description=f"STACK-NOR: mark {mark_color_nor} where both halves are bg"
+                ))
+    
+    # === Pattern 9_frame: Add repeat-border around input (corners=bg) ===
+    if oh == ih + 2 and ow == iw + 2:
+        # Try with corner_color = 0 (global bg) and with detected bg
+        for corner_c in [0, most_common_color(inp0)]:
+            def make_frame(cc):
+                def frame_fn(g):
+                    h, w = grid_shape(g)
+                    result = []
+                    result.append([cc] + list(g[0]) + [cc])
+                    for r in range(h):
+                        result.append([g[r][0]] + list(g[r]) + [g[r][w-1]])
+                    result.append([cc] + list(g[-1]) + [cc])
+                    return result
+                return frame_fn
+            frame_fn = make_frame(corner_c)
+            ok_fr = all(grid_eq(frame_fn(inp), out) for inp, out in train_pairs)
+            if ok_fr:
+                programs.append(PuzzleProgram(
+                    name=f"frame_repeat_border_c{corner_c}",
+                    apply_fn=frame_fn,
+                    description=f"FRAME input with repeat-border (corners={corner_c})"
+                ))
+                break
+    
+    # === Pattern 9_dedup: Extract unique tile from a repeated grid ===
+    # Handles: top_half, bottom_half, left_half, right_half on a per-pair basis
+    def extract_tile(g):
+        """Auto-detect if grid is tiled and extract unique tile."""
+        h, w = grid_shape(g)
+        # Try left half (tiled 1×2 horizontally)
+        if w % 2 == 0:
+            half_w = w // 2
+            left = [row[:half_w] for row in g]
+            right = [row[half_w:] for row in g]
+            if grid_eq(left, right):
+                return left
+        # Try top half (tiled 2×1 vertically)
+        if h % 2 == 0:
+            half_h = h // 2
+            top = g[:half_h]
+            bot = g[half_h:]
+            if grid_eq(top, bot):
+                return top
+        # Try top third, quarter, etc.
+        for divisor in [3, 4]:
+            if h % divisor == 0:
+                tile_h = h // divisor
+                tile = g[:tile_h]
+                if all(grid_eq(tile, g[k*tile_h:(k+1)*tile_h]) for k in range(1, divisor)):
+                    return tile
+            if w % divisor == 0:
+                tile_w = w // divisor
+                tile = [row[:tile_w] for row in g]
+                tiles = [[row[k*tile_w:(k+1)*tile_w] for row in g] for k in range(1, divisor)]
+                if all(grid_eq(tile, t) for t in tiles):
+                    return tile
+        return None
+    
+    # Verify on all pairs
+    ok_et = True
+    for inp_et, out_et in train_pairs:
+        pred_et = extract_tile(inp_et)
+        if pred_et is None or not grid_eq(pred_et, out_et):
+            ok_et = False
+            break
+    if ok_et:
+        programs.append(PuzzleProgram(
+            name="extract_tile",
+            apply_fn=extract_tile,
+            description="DETECT and EXTRACT unique repeated tile"
+        ))
+    
     # === Pattern 9_sd: Scale-down (NxN blocks → single cell, all-same aggregation) ===
     for N_sd in [2, 3, 4, 5]:
         if ih % N_sd != 0 or iw % N_sd != 0:
