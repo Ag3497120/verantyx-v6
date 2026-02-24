@@ -52,6 +52,9 @@ def solve_task_engine(task_path: str) -> dict:
             n1 = p1.name if hasattr(p1, 'name') else str(p1)
             n2 = p2.name if hasattr(p2, 'name') else str(p2)
             method = f"cross_compose({n1}+{n2})"
+        elif kind in ('iterative_cross_2', 'iterative_cross_3', 'cross_compose_3'):
+            names = [p.name if hasattr(p, 'name') else str(p) for p in prog]
+            method = f"{kind}({'+'.join(names)})"
         else:
             method = str(kind)
     else:
@@ -72,6 +75,9 @@ def evaluate(data_dir: str, split: str = "training", limit: int = 0):
         sys.exit(1)
     
     task_files = sorted([f for f in os.listdir(task_dir) if f.endswith('.json')])
+    offset = args.offset
+    if offset > 0:
+        task_files = task_files[offset:]
     if limit > 0:
         task_files = task_files[:limit]
     
@@ -136,6 +142,7 @@ if __name__ == '__main__':
     parser.add_argument('--data-dir', default='/tmp/arc-agi-2/data')
     parser.add_argument('--split', default='training')
     parser.add_argument('--limit', type=int, default=0)
+    parser.add_argument('--offset', type=int, default=0)
     args = parser.parse_args()
     
     evaluate(args.data_dir, args.split, args.limit)

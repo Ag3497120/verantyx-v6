@@ -212,6 +212,27 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
     # === Module 12: Line drawing / connection ===
     _add_line_connect_pieces(pieces, train_pairs)
     
+    # === Module 13: Panel operations (split + reduce/select) ===
+    _add_panel_ops_pieces(pieces, train_pairs)
+    
+    # === Module 14: Per-object conditional transforms ===
+    _add_per_object_pieces(pieces, train_pairs)
+    
+    # === Module 15: Gravity ===
+    _add_gravity_pieces(pieces, train_pairs)
+    
+    # === Module 16: Symmetry completion ===
+    _add_symmetry_pieces(pieces, train_pairs)
+    
+    # === Module 17: Frame extraction ===
+    _add_frame_extract_pieces(pieces, train_pairs)
+    
+    # === Module 18: Mask/overlay operations ===
+    _add_mask_pieces(pieces, train_pairs)
+    
+    # === Module 19: Residual learners (fill between, project, cross dots, etc.) ===
+    _add_residual_pieces(pieces, train_pairs)
+    
     return pieces
 
 
@@ -1252,6 +1273,180 @@ def _apply_extract_multicolor_by_size(inp: Grid, target_size: int, bg: int) -> O
     return best.as_multicolor_grid(inp)
 
 
+# ============================================================
+# Module 13-18: New modules (panel_ops, per_object, gravity, symmetry, frame, mask)
+# ============================================================
+
+def _add_panel_ops_pieces(pieces: List[CrossPiece],
+                          train_pairs: List[Tuple[Grid, Grid]]):
+    """Module 13: Panel split + reduce/select"""
+    from arc.panel_ops import learn_panel_reduce, apply_panel_reduce
+    
+    rule = learn_panel_reduce(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.insert(0, CrossPiece(
+            f'panel_reduce:{_rule["op"]}',
+            lambda inp, r=_rule: apply_panel_reduce(inp, r)
+        ))
+
+
+def _add_per_object_pieces(pieces: List[CrossPiece],
+                           train_pairs: List[Tuple[Grid, Grid]]):
+    """Module 14: Per-object conditional transforms"""
+    from arc.per_object import (
+        learn_per_object_recolor, apply_per_object_recolor,
+        learn_fill_object_bbox, apply_fill_object_bbox,
+        learn_remove_objects, apply_remove_objects,
+        learn_cross_projection, apply_cross_projection,
+        learn_extract_object, apply_extract_object,
+    )
+    
+    # Per-object recolor
+    rule = learn_per_object_recolor(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.insert(0, CrossPiece(
+            f'per_obj_recolor:{_rule["type"]}',
+            lambda inp, r=_rule: apply_per_object_recolor(inp, r)
+        ))
+    
+    # Fill object bbox
+    rule = learn_fill_object_bbox(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            'fill_obj_bbox',
+            lambda inp, r=_rule: apply_fill_object_bbox(inp, r)
+        ))
+    
+    # Remove objects
+    rule = learn_remove_objects(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            f'remove_obj:{_rule["remove_by"]}',
+            lambda inp, r=_rule: apply_remove_objects(inp, r)
+        ))
+    
+    # Cross projection
+    rule = learn_cross_projection(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.insert(0, CrossPiece(
+            'cross_projection',
+            lambda inp, r=_rule: apply_cross_projection(inp, r)
+        ))
+    
+    # Extract object
+    rule = learn_extract_object(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            f'extract_obj:{_rule["selector"]}',
+            lambda inp, r=_rule: apply_extract_object(inp, r)
+        ))
+
+
+def _add_gravity_pieces(pieces: List[CrossPiece],
+                        train_pairs: List[Tuple[Grid, Grid]]):
+    """Module 15: Gravity operations"""
+    from arc.panel_ops import (
+        learn_gravity, apply_gravity,
+        learn_gravity_with_obstacles, apply_gravity_with_obstacles,
+    )
+    
+    rule = learn_gravity(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.insert(0, CrossPiece(
+            f'gravity:{_rule["direction"]}',
+            lambda inp, r=_rule: apply_gravity(inp, r)
+        ))
+        return  # Don't try obstacles if simple gravity works
+    
+    rule = learn_gravity_with_obstacles(train_pairs)
+    if rule is not None:
+        _rule = rule
+        mc = _rule.get('moving_color', 'all')
+        pieces.insert(0, CrossPiece(
+            f'gravity_obs:{_rule["direction"]}_mc{mc}',
+            lambda inp, r=_rule: apply_gravity_with_obstacles(inp, r)
+        ))
+
+
+def _add_symmetry_pieces(pieces: List[CrossPiece],
+                         train_pairs: List[Tuple[Grid, Grid]]):
+    """Module 16: Symmetry completion"""
+    from arc.panel_ops import learn_symmetry_fill, apply_symmetry_fill
+    
+    rule = learn_symmetry_fill(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.insert(0, CrossPiece(
+            f'symmetry_fill:{_rule["sym_type"]}',
+            lambda inp, r=_rule: apply_symmetry_fill(inp, r)
+        ))
+
+
+def _add_frame_extract_pieces(pieces: List[CrossPiece],
+                              train_pairs: List[Tuple[Grid, Grid]]):
+    """Module 17: Frame-based extraction"""
+    from arc.panel_ops import (
+        learn_extract_by_frame, apply_extract_by_frame,
+        learn_crop_to_objects, apply_crop_to_objects,
+    )
+    
+    rule = learn_extract_by_frame(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.insert(0, CrossPiece(
+            f'extract_frame:color{_rule["frame_color"]}',
+            lambda inp, r=_rule: apply_extract_by_frame(inp, r)
+        ))
+    
+    rule = learn_crop_to_objects(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.append(CrossPiece(
+            'crop_to_objects',
+            lambda inp, r=_rule: apply_crop_to_objects(inp, r)
+        ))
+
+
+def _add_mask_pieces(pieces: List[CrossPiece],
+                     train_pairs: List[Tuple[Grid, Grid]]):
+    """Module 18: Mask/overlay between grid halves"""
+    from arc.per_object import learn_mask_apply, apply_mask_apply
+    
+    rule = learn_mask_apply(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.insert(0, CrossPiece(
+            f'mask_apply:{_rule["split_dir"]}',
+            lambda inp, r=_rule: apply_mask_apply(inp, r)
+        ))
+
+
+def _add_residual_pieces(pieces: List[CrossPiece],
+                         train_pairs: List[Tuple[Grid, Grid]]):
+    """Module 19: Residual learners"""
+    from arc.residual_learner import ALL_LEARNERS
+    
+    for name, learn_fn, apply_fn in ALL_LEARNERS:
+        try:
+            rule = learn_fn(train_pairs)
+            if rule is not None:
+                _rule = rule
+                _apply = apply_fn
+                pieces.insert(0, CrossPiece(
+                    f'residual:{name}',
+                    lambda inp, r=_rule, fn=_apply: fn(inp, r)
+                ))
+        except Exception:
+            pass
+
+
 def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]], 
                        test_inputs: List[Grid]) -> Tuple[List[List[Grid]], List]:
     """
@@ -1454,7 +1649,140 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
                             if len(verified) >= 2:
                                 break
     
+    # === Phase 4: Iterative Cross (残差学習) ===
+    # Apply best partial-match piece, then re-learn on residual (mid, target) pairs
+    # Skip for large grids (too slow)
+    _max_cells = max((grid_shape(i)[0] * grid_shape(i)[1]) for i, _ in train_pairs)
+    if len(verified) < 2 and cross_pieces and _max_cells <= 400:
+        iter_results = _iterative_cross_search(train_pairs, cross_pieces, sim, 
+                                               max_rounds=2, time_limit=2.0)
+        for ir in iter_results:
+            verified.append(ir)
+            if len(verified) >= 2:
+                break
+    
     return _apply_verified(verified, test_inputs), verified
+
+
+def _iterative_cross_search(train_pairs: List[Tuple[Grid, Grid]], 
+                            initial_pieces: List[CrossPiece],
+                            sim: CrossSimulator,
+                            max_rounds: int = 3,
+                            time_limit: float = 3.0) -> List:
+    """Iterative Cross: apply best partial piece, re-generate pieces for residual.
+    
+    Round 1: Find piece with highest partial match
+    Round 2: Generate new pieces from (piece1_output, target) pairs
+    Round 3+: Continue until exact match or max_rounds
+    
+    Returns list of verified (kind, program) tuples.
+    """
+    import time as _time
+    _t0 = _time.time()
+    results = []
+    
+    # Score all initial pieces by partial match
+    scored = []
+    for i, piece in enumerate(initial_pieces):
+        score = sim.partial_verify(piece, train_pairs)
+        if 0.3 < score < 1.0:  # Skip exact matches (already handled) and very poor
+            scored.append((score, i, piece))
+    scored.sort(key=lambda x: -x[0])
+    
+    # Try top-N best partial matches as round 1 candidates
+    for _, _, round1_piece in scored[:10]:
+        if _time.time() - _t0 > time_limit:
+            break
+        
+        # Compute intermediate results
+        mid_pairs = []
+        ok = True
+        for inp, out in train_pairs:
+            mid = round1_piece.apply(inp)
+            if mid is None:
+                ok = False
+                break
+            mid_pairs.append((mid, out))
+        if not ok:
+            continue
+        
+        # Round 2: Try residual learners FIRST (fast), then cross pieces (slow)
+        round2_pieces = []
+        
+        # Fast: residual learners
+        try:
+            from arc.residual_learner import ALL_LEARNERS as RES_LEARNERS
+            for rname, rlearn, rapply in RES_LEARNERS:
+                try:
+                    rrule = rlearn(mid_pairs)
+                    if rrule is not None:
+                        _rr = rrule
+                        _ra = rapply
+                        round2_pieces.insert(0, CrossPiece(
+                            f'res:{rname}',
+                            lambda inp, r=_rr, fn=_ra: fn(inp, r)
+                        ))
+                except Exception:
+                    pass
+        except Exception:
+            pass
+        
+        # Slower: cross structure re-generation
+        round2_pieces.extend(_generate_cross_pieces(mid_pairs))
+        
+        # Check if any round2 piece completes the job
+        for r2_piece in round2_pieces:
+            if sim.verify(r2_piece, mid_pairs):
+                # Full verify: round1 + round2 on original train
+                full_ok = True
+                for inp, out in train_pairs:
+                    mid = round1_piece.apply(inp)
+                    if mid is None:
+                        full_ok = False; break
+                    final = r2_piece.apply(mid)
+                    if final is None or not grid_eq(final, out):
+                        full_ok = False; break
+                if full_ok:
+                    results.append(('iterative_cross_2', (round1_piece, r2_piece)))
+                    return results
+        
+        # Round 3: Try one more level if round 2 partial matches exist
+        if max_rounds >= 3:
+            r2_scored = []
+            for ri, r2_piece in enumerate(round2_pieces):
+                s = sim.partial_verify(r2_piece, mid_pairs)
+                if 0.3 < s < 1.0:
+                    r2_scored.append((s, ri, r2_piece))
+            r2_scored.sort(key=lambda x: -x[0])
+            
+            for _, _, r2_piece in r2_scored[:5]:
+                mid2_pairs = []
+                ok2 = True
+                for mid, out in mid_pairs:
+                    mid2 = r2_piece.apply(mid)
+                    if mid2 is None:
+                        ok2 = False; break
+                    mid2_pairs.append((mid2, out))
+                if not ok2:
+                    continue
+                
+                round3_pieces = _generate_cross_pieces(mid2_pairs)
+                for r3_piece in round3_pieces:
+                    if sim.verify(r3_piece, mid2_pairs):
+                        # Full verify
+                        full_ok = True
+                        for inp, out in train_pairs:
+                            m1 = round1_piece.apply(inp)
+                            if m1 is None: full_ok = False; break
+                            m2 = r2_piece.apply(m1)
+                            if m2 is None: full_ok = False; break
+                            final = r3_piece.apply(m2)
+                            if final is None or not grid_eq(final, out): full_ok = False; break
+                        if full_ok:
+                            results.append(('iterative_cross_3', (round1_piece, r2_piece, r3_piece)))
+                            return results
+    
+    return results
 
 
 def _apply_verified(verified: List, test_inputs: List[Grid]) -> List[List[Grid]]:
@@ -1524,6 +1852,15 @@ def _apply_verified(verified: List, test_inputs: List[Grid]) -> List[List[Grid]]
             elif kind == 'cross_compose_3':
                 p1, p2, p3 = prog
                 m1 = p1.apply(test_inp) if hasattr(p1, 'apply') else None
+                m2 = p2.apply(m1) if m1 is not None else None
+                result = p3.apply(m2) if m2 is not None else None
+            elif kind == 'iterative_cross_2':
+                p1, p2 = prog
+                m1 = p1.apply(test_inp)
+                result = p2.apply(m1) if m1 is not None else None
+            elif kind == 'iterative_cross_3':
+                p1, p2, p3 = prog
+                m1 = p1.apply(test_inp)
                 m2 = p2.apply(m1) if m1 is not None else None
                 result = p3.apply(m2) if m2 is not None else None
             else:
