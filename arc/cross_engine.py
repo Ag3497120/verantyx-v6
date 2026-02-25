@@ -254,6 +254,15 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
     # Note: Module 20 primitives are generated separately in _generate_cross_pieces_fast
     # for beam search. Adding them here would slow down Phase 3 composition (O(N²)).
     
+    # === Module 21: Residual-Guided pieces (reverse-direction analysis) ===
+    try:
+        from arc.residual_guided import generate_residual_guided_pieces
+        rg_pieces = generate_residual_guided_pieces(train_pairs)
+        for rg in rg_pieces:
+            pieces.insert(0, rg)  # High priority — targeted by residual analysis
+    except Exception:
+        pass
+    
     return pieces
 
 
