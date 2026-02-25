@@ -820,9 +820,17 @@ def apply_gravity_with_obstacles(inp: Grid, params: Dict) -> Optional[Grid]:
 
 def learn_symmetry_fill(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[Dict]:
     """Learn: complete a partially symmetric pattern"""
-    for bg in [0]:
-        # Try horizontal mirror
-        for sym_type in ['mirror_h', 'mirror_v', 'mirror_hv', 'rot90', 'rot180']:
+    # Try all possible background colors (most common first)
+    bg_candidates = [0]
+    # Add bg from first input's most common color
+    from collections import Counter as _Counter
+    flat0 = [c for row in train_pairs[0][0] for c in row]
+    mc0 = _Counter(flat0).most_common()
+    for color, _ in mc0:
+        if color not in bg_candidates:
+            bg_candidates.append(color)
+    for bg in bg_candidates:
+        for sym_type in ['mirror_hv', 'rot90', 'rot180', 'mirror_h', 'mirror_v']:
             ok = True
             for inp, out in train_pairs:
                 h, w = grid_shape(inp)
