@@ -1736,6 +1736,45 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
     
+    # === Phase 1.6: Convergent stamp application ===
+    if cross_pieces:
+        for cp in cross_pieces:
+            if not cp.name.startswith('stamp:'):
+                continue
+            _conv_ok = True
+            for _ci, _co in train_pairs:
+                _x = _ci
+                for _ in range(20):
+                    try:
+                        _y = cp.apply(_x)
+                    except Exception:
+                        _y = None
+                    if _y is None:
+                        break
+                    if grid_eq(_y, _x):
+                        break
+                    _x = _y
+                if not grid_eq(_x, _co):
+                    _conv_ok = False
+                    break
+            if _conv_ok:
+                _cp_ref = cp
+                def _conv_apply(inp, _piece=_cp_ref):
+                    x = inp
+                    for _ in range(20):
+                        try:
+                            y = _piece.apply(x)
+                        except Exception:
+                            break
+                        if y is None or grid_eq(y, x):
+                            break
+                        x = y
+                    return x
+                verified.append(('cross',
+                    CrossPiece(f'converge:{_cp_ref.name}', _conv_apply)))
+                if len(verified) >= 2:
+                    break
+
     if len(verified) >= 2:
         return _apply_verified(verified, test_inputs), verified
 
@@ -1971,7 +2010,7 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
                                 break
     
     # === Phase 3d: Convergent application (apply piece until stable) ===
-    if len(verified) < 2 and cross_pieces and _max_cells <= 400:
+    if len(verified) < 2 and cross_pieces:
         for cp in cross_pieces:
             # Only try stamp pieces for convergent application (NB overfits)
             if not cp.name.startswith('stamp:'):
