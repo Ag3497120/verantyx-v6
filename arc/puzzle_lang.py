@@ -537,12 +537,15 @@ def _connect_same_color(grid: Grid) -> Optional[Grid]:
             dr = 0 if r2 == r1 else (1 if r2 > r1 else -1)
             dc = 0 if c2 == c1 else (1 if c2 > c1 else -1)
             r, c = r1, c1
-            while True:
-                result[r][c] = color
+            steps = 0
+            while steps < h * w:
+                if 0 <= r < h and 0 <= c < w:
+                    result[r][c] = color
                 if r == r2 and c == c2:
                     break
                 r += dr
                 c += dc
+                steps += 1
     return result
 
 
@@ -2351,6 +2354,62 @@ def synthesize_programs(train_pairs: List[Tuple[Grid, Grid]]) -> List[PuzzleProg
         apply_fn=try_concentric_frames,
         description="FIND dots → GROUP BY distance → FILL concentric frames"
     ))
+
+    # === Pattern: ray_extend_to_edge ===
+    # Each non-bg cell extends rays in learned directions until hitting edge or obstacle
+    # Learn direction set from training pairs
+    if ih == oh and iw == ow:
+        DIRS_4 = [(0,1),(0,-1),(1,0),(-1,0)]
+        DIRS_DIAG = [(1,1),(1,-1),(-1,1),(-1,-1)]
+        DIRS_8 = DIRS_4 + DIRS_DIAG
+
+        for dir_set_name, dir_set in [('4dir', DIRS_4), ('8dir', DIRS_8), ('diag', DIRS_DIAG)]:
+            # Learn: which subset of directions is needed?
+            # For each direction, extend every non-bg cell until edge/obstacle
+            # Check if this exactly reproduces training outputs
+
+            def make_ray_fn(dirs):
+                def fn(g):
+                    bg2 = most_common_color(g)
+                    h2, w2 = grid_shape(g)
+                    result = [row[:] for row in g]
+                    for r in range(h2):
+                        for c in range(w2):
+                            if g[r][c] != bg2:
+                                color = g[r][c]
+                                for dr, dc in dirs:
+                                    nr, nc = r + dr, c + dc
+                                    while 0 <= nr < h2 and 0 <= nc < w2:
+                                        if g[nr][nc] != bg2:
+                                            break
+                                        result[nr][nc] = color
+                                        nr += dr
+                                        nc += dc
+                    return result
+                return fn
+
+            ray_fn = make_ray_fn(dir_set)
+            if all(grid_eq(ray_fn(inp_t), out_t) for inp_t, out_t in train_pairs):
+                programs.append(PuzzleProgram(
+                    name=f"ray_extend_{dir_set_name}",
+                    apply_fn=ray_fn,
+                    description=f"EACH non-bg cell → EXTEND rays {dir_set_name} TO edge/obstacle"
+                ))
+                break  # found the right direction set
+
+        # Also try per-direction variants (only H, only V, only certain dirs)
+        for single_dir_name, single_dirs in [
+            ('right', [(0,1)]), ('left', [(0,-1)]),
+            ('down', [(1,0)]), ('up', [(-1,0)]),
+            ('h', [(0,1),(0,-1)]), ('v', [(1,0),(-1,0)]),
+        ]:
+            sfn = make_ray_fn(single_dirs)
+            if all(grid_eq(sfn(inp_t), out_t) for inp_t, out_t in train_pairs):
+                programs.append(PuzzleProgram(
+                    name=f"ray_extend_{single_dir_name}",
+                    apply_fn=sfn,
+                    description=f"EACH non-bg cell → EXTEND ray {single_dir_name} TO edge/obstacle"
+                ))
 
     return programs
 
