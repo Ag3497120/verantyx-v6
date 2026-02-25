@@ -1736,6 +1736,18 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
     
+    # === Phase 1.55: CrossUniverse flow propagation ===
+    try:
+        from arc.cross_universe import generate_cross_universe_pieces
+        _cu_pieces = generate_cross_universe_pieces(train_pairs)
+        for _cup in _cu_pieces:
+            if sim.verify(_cup, train_pairs):
+                verified.append(('cross', _cup))
+                if len(verified) >= 2:
+                    break
+    except Exception:
+        pass
+
     # === Phase 1.6: Convergent stamp application ===
     if cross_pieces:
         for cp in cross_pieces:
