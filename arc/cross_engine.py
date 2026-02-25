@@ -239,6 +239,9 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
     # === Module 15: Gravity ===
     _add_gravity_pieces(pieces, train_pairs)
     
+    # === Module 23: Self-stamp ===
+    _add_self_stamp_pieces(pieces, train_pairs)
+    
     # === Module 16: Symmetry completion ===
     _add_symmetry_pieces(pieces, train_pairs)
     
@@ -1432,6 +1435,18 @@ def _add_per_object_pieces(pieces: List[CrossPiece],
         pieces.insert(0, CrossPiece(
             f'color_to_pattern_k{_rule["k"]}',
             lambda inp, r=_rule: apply_color_to_pattern(inp, r)
+        ))
+
+
+def _add_self_stamp_pieces(pieces: List[CrossPiece],
+                           train_pairs: List[Tuple[Grid, Grid]]):
+    """Module 23: Self-stamp (stamp input at positions of specific color)"""
+    from arc.per_object import learn_self_stamp, apply_self_stamp
+    sc = learn_self_stamp(train_pairs)
+    if sc is not None:
+        pieces.insert(0, CrossPiece(
+            f'self_stamp_c{sc}',
+            lambda inp, _sc=sc: apply_self_stamp(inp, _sc)
         ))
 
 

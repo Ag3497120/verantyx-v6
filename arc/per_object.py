@@ -1237,3 +1237,52 @@ def apply_color_to_pattern(inp: Grid, params: Dict) -> Optional[Grid]:
             result[r * k:(r + 1) * k, c * k:(c + 1) * k] = block
 
     return result.tolist()
+
+
+def learn_self_stamp(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[int]:
+    """Learn: which color triggers 'stamp entire input into that cell's block position'."""
+    import numpy as np
+    if not train_pairs:
+        return None
+    
+    arr0 = np.array(train_pairs[0][0])
+    h, w = arr0.shape
+    out0 = np.array(train_pairs[0][1])
+    
+    if out0.shape != (h * h, w * w):
+        return None
+    
+    colors = set(int(v) for v in arr0.flatten())
+    for stamp_color in colors:
+        ok = True
+        for inp, out in train_pairs:
+            ai = np.array(inp)
+            ao = np.array(out)
+            _h, _w = ai.shape
+            if ao.shape != (_h * _h, _w * _w):
+                ok = False
+                break
+            result = np.zeros((_h * _h, _w * _w), dtype=int)
+            for r in range(_h):
+                for c in range(_w):
+                    if ai[r, c] == stamp_color:
+                        result[r * _h:(r + 1) * _h, c * _w:(c + 1) * _w] = ai
+            if not np.array_equal(result, ao):
+                ok = False
+                break
+        if ok:
+            return stamp_color
+    return None
+
+
+def apply_self_stamp(inp: Grid, stamp_color: int) -> Optional[Grid]:
+    """Apply self-stamp: place input at positions where cell == stamp_color."""
+    import numpy as np
+    arr = np.array(inp)
+    h, w = arr.shape
+    result = np.zeros((h * h, w * w), dtype=int)
+    for r in range(h):
+        for c in range(w):
+            if arr[r, c] == stamp_color:
+                result[r * h:(r + 1) * h, c * w:(c + 1) * w] = arr
+    return result.tolist()
