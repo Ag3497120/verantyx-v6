@@ -315,6 +315,23 @@ def get_parametric_transforms(
         params={"bg": bg},
     ))
 
+    # Extended transforms
+    transforms.append(make_flood_fill_enclosed(bg))
+    transforms.append(make_sort_rows(bg, "color_count"))
+    transforms.append(make_sort_rows(bg, "color_count_desc"))
+    transforms.append(make_sort_cols(bg, "color_count"))
+    transforms.append(make_sort_cols(bg, "color_count_desc"))
+    transforms.append(make_mirror_complete('h'))
+    transforms.append(make_mirror_complete('v'))
+    transforms.append(make_extract_largest_object(bg))
+    transforms.append(make_boolean_and(bg))
+    transforms.append(make_boolean_or(bg))
+    transforms.append(make_boolean_xor(bg))
+    transforms.append(make_dedup_rows())
+    transforms.append(make_dedup_cols())
+    for c in fg_colors:
+        transforms.append(make_remove_color(c, bg))
+
     # 出力サイズが分かっている場合のリサイズ系
     if out_grid is not None:
         h_out, w_out = out_grid.shape
@@ -329,3 +346,188 @@ def get_parametric_transforms(
                     transforms.append(make_crop(r1, c1, r1 + h_out - 1, c1 + w_out - 1))
 
     return transforms
+
+
+# ============================================================
+# Extended transforms for ARC-AGI-2
+# ============================================================
+
+def make_flood_fill_enclosed(bg: int) -> Transform:
+    """Fill enclosed bg regions with the surrounding color."""
+    def fn(grid: Grid) -> Grid:
+        from scipy import ndimage
+        arr = grid.copy() if isinstance(grid, np.ndarray) else np.array(grid, dtype=np.int8)
+        bg_mask = arr == bg
+        labeled, n = ndimage.label(bg_mask)
+        h, w = arr.shape
+        border_labels = set()
+        for r in range(h):
+            for c in range(w):
+                if (r == 0 or r == h-1 or c == 0 or c == w-1) and bg_mask[r, c]:
+                    border_labels.add(labeled[r, c])
+        for lbl in range(1, n+1):
+            if lbl in border_labels:
+                continue
+            mask = labeled == lbl
+            # Find surrounding color
+            dilated = ndimage.binary_dilation(mask)
+            border = dilated & ~mask & ~bg_mask
+            if border.any():
+                colors = arr[border]
+                fill_color = int(np.bincount(colors).argmax())
+                arr[mask] = fill_color
+        return arr
+    return Transform(name="flood_fill_enclosed", fn=fn, params={"bg": bg})
+
+
+def make_sort_rows(bg: int, key: str = "color_count") -> Transform:
+    """Sort rows by a key."""
+    def fn(grid: Grid) -> Grid:
+        arr = grid.copy() if isinstance(grid, np.ndarray) else np.array(grid, dtype=np.int8)
+        rows = list(arr)
+        if key == "color_count":
+            rows.sort(key=lambda r: sum(1 for v in r if v != bg))
+        elif key == "color_count_desc":
+            rows.sort(key=lambda r: -sum(1 for v in r if v != bg))
+        return np.array(rows, dtype=np.int8)
+    return Transform(name=f"sort_rows_{key}", fn=fn, params={"bg": bg, "key": key})
+
+
+def make_sort_cols(bg: int, key: str = "color_count") -> Transform:
+    """Sort columns by a key."""
+    def fn(grid: Grid) -> Grid:
+        arr = grid.copy() if isinstance(grid, np.ndarray) else np.array(grid, dtype=np.int8)
+        cols = list(arr.T)
+        if key == "color_count":
+            cols.sort(key=lambda c: sum(1 for v in c if v != bg))
+        elif key == "color_count_desc":
+            cols.sort(key=lambda c: -sum(1 for v in c if v != bg))
+        return np.array(cols, dtype=np.int8).T
+    return Transform(name=f"sort_cols_{key}", fn=fn, params={"bg": bg, "key": key})
+
+
+def make_mirror_complete(axis: str) -> Transform:
+    """Complete partial symmetry by mirroring."""
+    def fn(grid: Grid) -> Grid:
+        arr = grid.copy() if isinstance(grid, np.ndarray) else np.array(grid, dtype=np.int8)
+        h, w = arr.shape
+        result = arr.copy()
+        if axis == 'h':
+            flipped = arr[:, ::-1]
+        elif axis == 'v':
+            flipped = arr[::-1, :]
+        else:
+            return arr
+        # Fill bg cells with mirror
+        bg = int(np.bincount(arr.flatten()).argmax())
+        mask = result == bg
+        result[mask] = flipped[mask]
+        return result
+    return Transform(name=f"mirror_complete_{axis}", fn=fn)
+
+
+def make_extract_largest_object(bg: int) -> Transform:
+    """Extract the largest connected component."""
+    def fn(grid: Grid) -> Grid:
+        from scipy import ndimage
+        arr = grid.copy() if isinstance(grid, np.ndarray) else np.array(grid, dtype=np.int8)
+        labeled, n = ndimage.label(arr != bg)
+        if n == 0:
+            return arr
+        sizes = {i: int(np.sum(labeled == i)) for i in range(1, n+1)}
+        largest = max(sizes, key=sizes.get)
+        mask = labeled == largest
+        rows, cols = np.where(mask)
+        r0, c0 = rows.min(), cols.min()
+        r1, c1 = rows.max(), cols.max()
+        result = np.full((r1-r0+1, c1-c0+1), bg, dtype=np.int8)
+        for r, c in zip(rows, cols):
+            result[r-r0, c-c0] = arr[r, c]
+        return result
+    return Transform(name="extract_largest_object", fn=fn, params={"bg": bg})
+
+
+def make_remove_color(color: int, bg: int) -> Transform:
+    """Remove all cells of a specific color (set to bg)."""
+    def fn(grid: Grid) -> Grid:
+        arr = grid.copy() if isinstance(grid, np.ndarray) else np.array(grid, dtype=np.int8)
+        arr[arr == color] = bg
+        return arr
+    return Transform(name=f"remove_color_{color}", fn=fn, params={"color": color, "bg": bg})
+
+
+def make_boolean_and(bg: int) -> Transform:
+    """Split grid in half horizontally and AND the two halves."""
+    def fn(grid: Grid) -> Grid:
+        arr = grid.copy() if isinstance(grid, np.ndarray) else np.array(grid, dtype=np.int8)
+        h, w = arr.shape
+        if h % 2 != 0:
+            return arr
+        top = arr[:h//2]
+        bot = arr[h//2:]
+        result = np.full_like(top, bg)
+        result[(top != bg) & (bot != bg)] = top[(top != bg) & (bot != bg)]
+        return result
+    return Transform(name="boolean_and_h", fn=fn, params={"bg": bg})
+
+
+def make_boolean_or(bg: int) -> Transform:
+    """Split grid in half horizontally and OR the two halves."""
+    def fn(grid: Grid) -> Grid:
+        arr = grid.copy() if isinstance(grid, np.ndarray) else np.array(grid, dtype=np.int8)
+        h, w = arr.shape
+        if h % 2 != 0:
+            return arr
+        top = arr[:h//2]
+        bot = arr[h//2:]
+        result = top.copy()
+        result[top == bg] = bot[top == bg]
+        return result
+    return Transform(name="boolean_or_h", fn=fn, params={"bg": bg})
+
+
+def make_boolean_xor(bg: int) -> Transform:
+    """Split grid in half horizontally and XOR the two halves."""
+    def fn(grid: Grid) -> Grid:
+        arr = grid.copy() if isinstance(grid, np.ndarray) else np.array(grid, dtype=np.int8)
+        h, w = arr.shape
+        if h % 2 != 0:
+            return arr
+        top = arr[:h//2]
+        bot = arr[h//2:]
+        result = np.full_like(top, bg)
+        # XOR: cells that differ
+        result[(top != bg) & (bot == bg)] = top[(top != bg) & (bot == bg)]
+        result[(top == bg) & (bot != bg)] = bot[(top == bg) & (bot != bg)]
+        return result
+    return Transform(name="boolean_xor_h", fn=fn, params={"bg": bg})
+
+
+def make_dedup_rows() -> Transform:
+    """Remove duplicate rows."""
+    def fn(grid: Grid) -> Grid:
+        arr = grid.copy() if isinstance(grid, np.ndarray) else np.array(grid, dtype=np.int8)
+        seen = set()
+        rows = []
+        for r in arr:
+            key = tuple(r)
+            if key not in seen:
+                seen.add(key)
+                rows.append(r)
+        return np.array(rows, dtype=np.int8) if rows else arr
+    return Transform(name="dedup_rows", fn=fn)
+
+
+def make_dedup_cols() -> Transform:
+    """Remove duplicate columns."""
+    def fn(grid: Grid) -> Grid:
+        arr = grid.copy() if isinstance(grid, np.ndarray) else np.array(grid, dtype=np.int8)
+        seen = set()
+        cols = []
+        for c in arr.T:
+            key = tuple(c)
+            if key not in seen:
+                seen.add(key)
+                cols.append(c)
+        return np.array(cols, dtype=np.int8).T if cols else arr
+    return Transform(name="dedup_cols", fn=fn)

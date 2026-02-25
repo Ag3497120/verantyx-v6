@@ -1727,6 +1727,37 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     if len(verified) >= 2:
         return _apply_verified(verified, test_inputs), verified
 
+    # === Phase 9: ARC-CEGIS (transform chain synthesis) ===
+    try:
+        from arc.arc_cegis import ARCCEGISLoop
+        import numpy as _np
+        _cegis = ARCCEGISLoop(max_chain_len=2, time_limit_ms=3000)
+        _cegis_result = _cegis.solve(
+            [{'input': i, 'output': o} for i, o in train_pairs],
+            test_inputs[0])
+        if _cegis_result.solved and _cegis_result.transform_chain:
+            _chain = _cegis_result.transform_chain
+            def _apply_chain(inp, chain=_chain):
+                x = _np.array(inp, dtype=_np.int8)
+                for t in chain:
+                    x = t.fn(x)
+                return x.tolist()
+            # Verify on all train pairs
+            _cegis_ok = True
+            for _ci, _co in train_pairs:
+                _cr = _apply_chain(_ci)
+                if not grid_eq(_cr, _co):
+                    _cegis_ok = False; break
+            if _cegis_ok:
+                _desc = '+'.join(t.name for t in _chain)
+                verified.insert(0, ('cross',
+                    CrossPiece(f'cegis:{_desc}', _apply_chain)))
+    except Exception:
+        pass
+
+    if len(verified) >= 2:
+        return _apply_verified(verified, test_inputs), verified
+
     # === Phase 3: Composition of cross pieces with WG programs ===
     wg_cands = None
     midpoints = {}
