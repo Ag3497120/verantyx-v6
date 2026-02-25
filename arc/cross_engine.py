@@ -1744,25 +1744,11 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
         from arc.block_ir import solve_at_block_level
         _block_preds, _block_verified = solve_at_block_level(train_pairs, test_inputs)
         if _block_preds is not None and _block_verified:
-            # Block-level already returns pixel-level predictions
-            # Add as CrossPiece that wraps the block-level solution
-            for _bkind, _bpiece in _block_verified:
-                _bname = f'block_ir:{getattr(_bpiece, "name", "?")}'
-                from arc.block_ir import detect_block_grid, block_colors_to_grid
-                import numpy as _bnp
-                _bg_block = most_common_color(train_pairs[0][0])
-                def _block_apply(inp, _piece=_bpiece, _bg=_bg_block):
-                    from arc.block_ir import detect_block_grid, block_colors_to_grid
-                    ir = detect_block_grid(inp, _bg)
-                    if ir is None: return None
-                    block_result = _piece.apply(ir['block_colors'].tolist())
-                    if block_result is None: return None
-                    return block_colors_to_grid(
-                        np.array(block_result), ir['block_h'], ir['block_w'],
-                        ir['sep_w'], ir['sep_color'])
-                verified.append(('cross', CrossPiece(_bname, _block_apply)))
-            if len(verified) >= 2:
-                return _apply_verified(verified, test_inputs), verified
+            # solve_at_block_level returns pixel-level predictions directly
+            # Verify against test outputs (can't verify without them, so trust train verify)
+            _bname = f'block_ir:{_block_verified[0][1].name}'
+            # Return block predictions directly
+            return _block_preds, [('cross', CrossPiece(_bname, lambda inp: None))]
     except Exception:
         pass
 
@@ -1984,6 +1970,46 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
                             if len(verified) >= 2:
                                 break
     
+    # === Phase 3d: Convergent application (apply piece until stable) ===
+    if len(verified) < 2 and cross_pieces and _max_cells <= 400:
+        for cp in cross_pieces:
+            # Only try stamp pieces for convergent application (NB overfits)
+            if not cp.name.startswith('stamp:'):
+                continue
+            _conv_ok = True
+            for _ci, _co in train_pairs:
+                _x = _ci
+                for _ in range(20):
+                    try:
+                        _y = cp.apply(_x)
+                    except Exception:
+                        _y = None
+                    if _y is None:
+                        break
+                    if grid_eq(_y, _x):
+                        break
+                    _x = _y
+                if not grid_eq(_x, _co):
+                    _conv_ok = False
+                    break
+            if _conv_ok:
+                _cp_ref = cp
+                def _conv_apply(inp, _piece=_cp_ref):
+                    x = inp
+                    for _ in range(20):
+                        try:
+                            y = _piece.apply(x)
+                        except Exception:
+                            break
+                        if y is None or grid_eq(y, x):
+                            break
+                        x = y
+                    return x
+                verified.append(('cross',
+                    CrossPiece(f'converge:{_cp_ref.name}', _conv_apply)))
+                if len(verified) >= 2:
+                    break
+
     # === Phase 4: Iterative Cross (残差学習) ===
     # Apply best partial-match piece, then re-learn on residual (mid, target) pairs
     # Skip for large grids (too slow)

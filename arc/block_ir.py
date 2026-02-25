@@ -131,9 +131,16 @@ def detect_block_grid(grid: Grid, bg: int = None) -> Optional[Dict]:
                 if uniformity < 0.5:
                     continue
                 
-                score = uniformity * n_rows * n_cols
+                # Block size 1x1 with no separator is trivial (just the grid itself)
+                if bh == 1 and bw == 1 and sep_w == 0:
+                    continue
+                
+                # Prefer: separator present, larger blocks, reasonable grid size
+                score = uniformity * 100
                 if sep_w > 0:
-                    score *= 2  # Prefer grids with clear separators
+                    score *= 10  # Strongly prefer grids with separators
+                if bh >= 2 and bw >= 2:
+                    score *= 3  # Prefer non-trivial blocks
                 
                 results.append({
                     'block_h': bh, 'block_w': bw,
@@ -189,11 +196,39 @@ def blocks_to_grid(blocks: list, block_h: int, block_w: int,
     return result.tolist()
 
 
-def solve_at_block_level(train_pairs, test_inputs):
-    """Try to solve by detecting block grid and solving at block color level.
+def _between_fill_same_color(inp, bg=0):
+    """Fill between same-color cells in rows and cols."""
+    arr = np.array(inp)
+    h, w = arr.shape
+    result = arr.copy()
     
-    Returns (predictions, verified) or (None, []) if not applicable.
-    """
+    # Row-wise
+    for r in range(h):
+        for color in range(10):
+            if color == bg:
+                continue
+            cols = [c for c in range(w) if arr[r, c] == color]
+            if len(cols) >= 2:
+                for c in range(min(cols), max(cols) + 1):
+                    if result[r, c] == bg:
+                        result[r, c] = color
+    
+    # Col-wise
+    for c in range(w):
+        for color in range(10):
+            if color == bg:
+                continue
+            rows = [r for r in range(h) if arr[r, c] == color]
+            if len(rows) >= 2:
+                for r in range(min(rows), max(rows) + 1):
+                    if result[r, c] == bg:
+                        result[r, c] = color
+    
+    return result.tolist()
+
+
+def solve_at_block_level(train_pairs, test_inputs):
+    """Try to solve by detecting block grid and solving at block color level."""
     from arc.cross_engine import _generate_cross_pieces, CrossSimulator, CrossPiece
     
     # Detect block grid for first training pair
@@ -207,7 +242,7 @@ def solve_at_block_level(train_pairs, test_inputs):
     sep_w = ir0['sep_w']
     sep_color = ir0['sep_color']
     
-    # Verify all pairs have same block structure
+    # Verify all pairs have same block size (grid size may differ)
     block_train = []
     for inp, out in train_pairs:
         ir_in = detect_block_grid(inp, bg0)
@@ -222,24 +257,41 @@ def solve_at_block_level(train_pairs, test_inputs):
         if ir_in['sep_w'] != sep_w or ir_out['sep_w'] != sep_w:
             return None, []
         
-        # Use block_colors as the "grid" to solve
         block_in = ir_in['block_colors'].tolist()
         block_out = ir_out['block_colors'].tolist()
         block_train.append((block_in, block_out))
     
-    # Also detect block grid for test inputs
-    block_test = []
+    # Detect block grid for test inputs
+    block_test_irs = []
     for test_inp in test_inputs:
         ir_t = detect_block_grid(test_inp, bg0)
         if ir_t is None or ir_t['block_h'] != bh or ir_t['block_w'] != bw:
             return None, []
-        block_test.append(ir_t['block_colors'].tolist())
+        block_test_irs.append(ir_t)
     
-    # Now solve the block-level problem using cross_engine pieces
-    pieces = _generate_cross_pieces(block_train)
+    block_test = [ir_t['block_colors'].tolist() for ir_t in block_test_irs]
+    
+    # Try solving at block level
     sim = CrossSimulator()
-    
     verified = []
+    
+    # 0. Try between_fill_same_color first (high-confidence block-level op)
+    block_bg = most_common_color(block_train[0][0])
+    _bf_ok = True
+    for b_in, b_out in block_train:
+        _bf_pred = _between_fill_same_color(b_in, block_bg)
+        if not grid_eq(_bf_pred, b_out):
+            _bf_ok = False
+            break
+    if _bf_ok:
+        verified.append(('block_ir',
+            type('Piece', (), {
+                'name': 'block_between_fill_same_color',
+                'apply': lambda inp, _bg=block_bg: _between_fill_same_color(inp, _bg)
+            })()))
+    
+    # 1. Try cross_engine pieces on block-level grids
+    pieces = _generate_cross_pieces(block_train)
     for piece in pieces:
         if sim.verify(piece, block_train):
             verified.append(('block_ir', piece))
@@ -251,14 +303,19 @@ def solve_at_block_level(train_pairs, test_inputs):
     
     # Apply to test and convert back
     predictions = []
-    for test_block in block_test:
+    for i, test_block in enumerate(block_test):
         attempts = []
+        _tir = block_test_irs[i]
         for kind, piece in verified:
-            block_result = piece.apply(test_block)
+            try:
+                block_result = piece.apply(test_block)
+            except Exception:
+                block_result = None
             if block_result is not None:
-                # Convert back to pixel grid
                 pixel_result = block_colors_to_grid(
-                    np.array(block_result), bh, bw, sep_w, sep_color)
+                    np.array(block_result),
+                    _tir['block_h'], _tir['block_w'],
+                    _tir['sep_w'], _tir['sep_color'])
                 attempts.append(pixel_result)
         predictions.append(attempts)
     
