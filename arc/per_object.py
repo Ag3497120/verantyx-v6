@@ -1249,6 +1249,9 @@ def learn_self_stamp(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[int]:
     h, w = arr0.shape
     out0 = np.array(train_pairs[0][1])
     
+    # Quick size check: output must be exactly h*h x w*w
+    if h > 10 or w > 10:
+        return None  # Too large for self-stamp
     if out0.shape != (h * h, w * w):
         return None
     
