@@ -1,6 +1,6 @@
 # Verantyx-v6 — ARC-AGI-2 Solver
 
-**198/1000 (19.8%)** on ARC-AGI-2 training set.
+**199/1000 (19.9%)** on ARC-AGI-2 training set.
 
 > No cheats. No bias. No hardcode. Pure rule-based reasoning.
 
@@ -47,7 +47,8 @@ A multi-phase Cross-Structure solver with 22 modules and 9 solving phases:
 
 ```
 Score (%)
- 20% ┤                                                          ●── 19.8% (v48)
+ 20% ┤                                                              ●── 19.9% (v49)
+     │                                                          ●─── 19.8% (v48)
      │                                                      ●─── 19.6% (v47)
  19% ┤                                                  ●─── 18.7% (v45)
      │                                            ●──── 18.2% (v44)
@@ -82,7 +83,8 @@ Score (%)
 | v44 | 182/1000 (18.2%) | Region recolor + fill bbox |
 | v45 | 187/1000 (18.7%) | holes_to_color + cluster_histogram |
 | v47 | 196/1000 (19.6%) | dynamic_tile + cell_to_color_block + color_to_pattern |
-| **v48** | **198/1000 (19.8%)** | **block_ir between_fill + converge:stamp** |
+| v48 | 198/1000 (19.8%) | block_ir between_fill + converge:stamp |
+| **v49** | **199/1000 (19.9%)** | **scale_border_dup** |
 
 ## Setup
 
