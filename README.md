@@ -1,6 +1,6 @@
 # Verantyx-v6 — ARC-AGI-2 Solver
 
-**196/1000 (19.6%)** on ARC-AGI-2 training set.
+**198/1000 (19.8%)** on ARC-AGI-2 training set.
 
 > No cheats. No bias. No hardcode. Pure rule-based reasoning.
 
@@ -43,14 +43,46 @@ A multi-phase Cross-Structure solver with 22 modules and 9 solving phases:
 - **0.48s average per task**
 - Zero external LLM calls — pure algorithmic reasoning
 
-## Score History
+## Score Evolution
+
+```
+Score (%)
+ 20% ┤                                                          ●── 19.8% (v48)
+     │                                                      ●─── 19.6% (v47)
+ 19% ┤                                                  ●─── 18.7% (v45)
+     │                                            ●──── 18.2% (v44)
+ 18% ┤                                       ●──── 17.5% (v42)
+     │                                  ●──── 16.8% (v37)
+ 17% ┤                             ●──── 16.5% (v36)
+     │                        ●──── 16.2% (v35)
+ 16% ┤                   ●──── 15.0% (v33)
+     │              ●──── 14.1% (v30)
+ 15% ┤         ●──── 13.3% (v26)
+     │    ●──── 12.0% (v23)
+ 13% ┤●─── 11.3% (v19)
+     │
+ 11% ┤
+     └──────────────────────────────────────────────────────────── Version
+      v19   v23   v26   v30   v33   v35  v36 v37   v42  v44 v45  v47 v48
+```
+
+### Score History
 
 | Version | Score | Key Changes |
 |---|---|---|
 | v19 | 113/1000 (11.3%) | Initial release |
+| v23 | 120/1000 (12.0%) | Iterative cross 2-step residual learning |
+| v26 | 133/1000 (13.3%) | Beam search + DSL enumeration |
+| v30 | 141/1000 (14.1%) | NB extended + composite chains |
+| v33 | 150/1000 (15.0%) | Stamp patterns + symmetry fill |
 | v35 | 162/1000 (16.2%) | Puzzle lang + beam search |
+| v36 | 165/1000 (16.5%) | Per-object stamp + gravity |
+| v37 | 168/1000 (16.8%) | ProgramTree synthesis |
+| v42 | 175/1000 (17.5%) | Grid pattern + extract rank |
+| v44 | 182/1000 (18.2%) | Region recolor + fill bbox |
 | v45 | 187/1000 (18.7%) | holes_to_color + cluster_histogram |
-| **v47** | **196/1000 (19.6%)** | dynamic_tile + cell_to_color_block + color_to_pattern |
+| v47 | 196/1000 (19.6%) | dynamic_tile + cell_to_color_block + color_to_pattern |
+| **v48** | **198/1000 (19.8%)** | **block_ir between_fill + converge:stamp** |
 
 ## Setup
 
