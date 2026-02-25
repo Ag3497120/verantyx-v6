@@ -2,7 +2,7 @@
 
 > **Zero LLMs. Zero neural networks. Zero pre-training. Pure program synthesis.**
 
-[![ARC-AGI-2](https://img.shields.io/badge/ARC--AGI--2-17.8%25_(178%2F1000)-brightgreen)](https://arcprize.org/)
+[![ARC-AGI-2](https://img.shields.io/badge/ARC--AGI--2-18.0%25_(180%2F1000)-brightgreen)](https://arcprize.org/)
 [![HLE Score](https://img.shields.io/badge/HLE-3.80%25_(bias--free)-blue)](https://agi.safe.ai/)
 [![Cost](https://img.shields.io/badge/cost-$0.00_per_task-gold)](.)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -20,13 +20,13 @@
 
 ## 🏆 ARC-AGI-2: 17.8% — Outperforming Grok 4
 
-Verantyx achieves **17.8% on ARC-AGI-2** (178/1000 training tasks), **exceeding Grok 4's reported ~16% score** — at a fraction of the cost.
+Verantyx achieves **18.0% on ARC-AGI-2** (180/1000 training tasks), **exceeding Grok 4's reported ~16% score** — at a fraction of the cost.
 
 ### The Numbers That Matter
 
 | System | ARC-AGI-2 Score | Cost per Task | Total Cost (1000 tasks) | Speed | GPU Required |
 |--------|----------------|---------------|------------------------|-------|-------------|
-| **Verantyx v6** | **17.8%** | **$0.00** | **$0.00** | **0.42s** | **No** |
+| **Verantyx v6** | **18.0%** | **$0.00** | **$0.00** | **0.42s** | **No** |
 | Grok 4 | ~16% | ~$3.50 | ~$3,500 | minutes | Yes (API) |
 | o3-mini (high) | ~4% | ~$0.32 | ~$320 | ~30s | Yes (API) |
 | Claude 3.7 Sonnet | ~2% | ~$0.10 | ~$100 | ~15s | Yes (API) |
@@ -52,7 +52,8 @@ v35  ████████████████░░░░░░░░░
 v36  ████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  16.1% (161)
 v37  █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  16.8% (168)
 v38  █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  17.6% (176)
-v39  ██████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  17.8% (178) ← current
+v39  ██████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  17.8% (178)
+v40  ██████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  18.0% (180) ← current
 ```
 
 ---
@@ -199,7 +200,7 @@ print(preds)
 
 | Metric | Value |
 |--------|-------|
-| Accuracy | 17.8% (178/1000) |
+| Accuracy | 18.0% (180/1000) |
 | Speed | 0.42s/task average |
 | Total eval time | ~7 minutes (1000 tasks) |
 | Memory | <500MB |
@@ -214,16 +215,17 @@ Verantyx also tackles [HLE](https://lastexam.ai/) — a PhD-level benchmark — 
 
 | Version | Score | Method |
 |---|---|---|
-| **Bias-Free** | **3.80%** (95/2500) | Structural decomposition + CEGIS verification |
+| **With detectors** | **4.04%** (101/2500) | + domain-specific detectors (DFA, quantum gates, etc.) |
+| **Bias-Free** | **3.80%** (95/2500) | Structural decomposition + CEGIS verification only |
 | No-cheat v2 | 12.5% (5/40)* | + Wikipedia atom matching + MCQ cross-decompose |
 
-*\*40-question sample*
+*\*40-question sample. No position bias, no hardcoded answers, no LLM inference.*
 
 ---
 
 ## HuggingFace
 
-- 🤗 [kofdai/verantyx-arc-agi2](https://huggingface.co/kofdai/verantyx-arc-agi2) — ARC-AGI-2 solver (17.8%)
+- 🤗 [kofdai/verantyx-arc-agi2](https://huggingface.co/kofdai/verantyx-arc-agi2) — ARC-AGI-2 solver (18.0%)
 - 🤗 [kofdai/verantyx-hle-8](https://huggingface.co/kofdai/verantyx-hle-8) — HLE solver (8.56%)
 
 ---

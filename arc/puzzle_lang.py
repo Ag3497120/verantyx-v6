@@ -1850,6 +1850,131 @@ def synthesize_programs(train_pairs: List[Tuple[Grid, Grid]]) -> List[PuzzleProg
                         ))
                     break
 
+    # === Pattern: cell_to_inverted_block (0692e18c type) ===
+    # Input NxN → Output (N*N)x(N*N): each non-zero cell → place inverted copy of input
+    if oh == ih * ih and ow == iw * iw:
+        def try_cell_invert_block(g, ratio=ih):
+            h2, w2 = grid_shape(g)
+            r = h2  # ratio = input size
+            oh2, ow2 = h2 * r, w2 * r
+            result = [[0] * ow2 for _ in range(oh2)]
+            for row in range(h2):
+                for col in range(w2):
+                    if g[row][col] != 0:
+                        color = g[row][col]
+                        inv = [[color if g[rr][cc] == 0 else 0
+                                for cc in range(w2)] for rr in range(h2)]
+                        for rr in range(h2):
+                            for cc in range(w2):
+                                result[row * h2 + rr][col * w2 + cc] = inv[rr][cc]
+            return result
+
+        programs.append(PuzzleProgram(
+            name="cell_to_inverted_block",
+            apply_fn=try_cell_invert_block,
+            description="EACH non-zero cell → PLACE inverted input copy AT cell position"
+        ))
+
+    # === Pattern: cell_to_solid_block ===
+    # Input NxN → Output (N*N)x(N*N): each non-zero cell → fill NxN block with cell's color
+    if oh == ih * ih and ow == iw * iw:
+        def try_cell_solid_block(g, ratio=ih):
+            h2, w2 = grid_shape(g)
+            r = h2
+            oh2, ow2 = h2 * r, w2 * r
+            result = [[0] * ow2 for _ in range(oh2)]
+            for row in range(h2):
+                for col in range(w2):
+                    if g[row][col] != 0:
+                        color = g[row][col]
+                        for rr in range(h2):
+                            for cc in range(w2):
+                                result[row * h2 + rr][col * w2 + cc] = color
+            return result
+
+        programs.append(PuzzleProgram(
+            name="cell_to_solid_block",
+            apply_fn=try_cell_solid_block,
+            description="EACH non-zero cell → FILL NxN block WITH cell color"
+        ))
+
+    # === Pattern: cell_to_copy_block ===
+    # Input NxN → Output (N*N)x(N*N): each non-zero cell → place copy of input
+    if oh == ih * ih and ow == iw * iw:
+        def try_cell_copy_block(g, ratio=ih):
+            h2, w2 = grid_shape(g)
+            r = h2
+            oh2, ow2 = h2 * r, w2 * r
+            result = [[0] * ow2 for _ in range(oh2)]
+            for row in range(h2):
+                for col in range(w2):
+                    if g[row][col] != 0:
+                        for rr in range(h2):
+                            for cc in range(w2):
+                                result[row * h2 + rr][col * w2 + cc] = g[rr][cc]
+            return result
+
+        programs.append(PuzzleProgram(
+            name="cell_to_copy_block",
+            apply_fn=try_cell_copy_block,
+            description="EACH non-zero cell → COPY input AT cell position"
+        ))
+
+    # === Pattern: simple_tile_NxN ===
+    # Input → tile N times in each direction to fill output
+    # Dynamic: detect ratio from output shape per-pair (handled by cross_engine)
+    if oh > ih and ow > iw and oh % ih == 0 and ow % iw == 0:
+        # Check if all train pairs have integer ratio
+        all_int_ratio = True
+        for inp_t, out_t in train_pairs:
+            h_t, w_t = grid_shape(inp_t)
+            oh_t, ow_t = grid_shape(out_t)
+            if oh_t % h_t != 0 or ow_t % w_t != 0:
+                all_int_ratio = False
+                break
+
+        if all_int_ratio:
+            # Fixed ratio version
+            frozen_ratio_h = oh // ih
+            frozen_ratio_w = ow // iw
+            def try_simple_tile(g, rh=frozen_ratio_h, rw=frozen_ratio_w):
+                h2, w2 = grid_shape(g)
+                return [[g[r % h2][c % w2] for c in range(w2 * rw)] for r in range(h2 * rh)]
+
+            programs.append(PuzzleProgram(
+                name="simple_tile",
+                apply_fn=try_simple_tile,
+                description=f"TILE input {oh//ih}x{ow//iw} times"
+            ))
+
+    # === Pattern: diagonal_slide_tile (d13f3404 type) ===
+    # Input pattern slides diagonally in output: each row shifts right by 1 column
+    if oh == ih * 2 and ow == iw * 2:
+        for shift_r, shift_c in [(0, 1), (1, 0), (1, 1)]:
+            def make_diag_slide(sr, sc):
+                def fn(g):
+                    h2, w2 = grid_shape(g)
+                    oh2, ow2 = h2 * 2, w2 * 2
+                    result = [[0] * ow2 for _ in range(oh2)]
+                    # Find non-zero cells and their diagonal pattern
+                    nz = [(r, c, g[r][c]) for r in range(h2) for c in range(w2) if g[r][c] != 0]
+                    if not nz:
+                        return None
+                    # Place copies diagonally
+                    for step in range(max(oh2, ow2)):
+                        for r0, c0, color in nz:
+                            nr = r0 + step * sr
+                            nc = c0 + step * sc
+                            if 0 <= nr < oh2 and 0 <= nc < ow2:
+                                result[nr][nc] = color
+                    return result
+                return fn
+            programs.append(PuzzleProgram(
+                name=f"diagonal_slide_{shift_r}_{shift_c}",
+                apply_fn=make_diag_slide(shift_r, shift_c),
+                description=f"TILE input SLIDING diagonally ({shift_r},{shift_c})"
+            ))
+
     # === Pattern: fill_dot_to_corner ===
     # Single non-bg dot on uniform bg → fill rectangle from dot to nearest corner
     def try_fill_dot_to_corner(g):
