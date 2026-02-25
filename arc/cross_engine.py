@@ -1739,6 +1739,33 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     if len(verified) >= 2:
         return _apply_verified(verified, test_inputs), verified
 
+    # === Phase 2.5: Block-level IR (multi-scale reasoning) ===
+    try:
+        from arc.block_ir import solve_at_block_level
+        _block_preds, _block_verified = solve_at_block_level(train_pairs, test_inputs)
+        if _block_preds is not None and _block_verified:
+            # Block-level already returns pixel-level predictions
+            # Add as CrossPiece that wraps the block-level solution
+            for _bkind, _bpiece in _block_verified:
+                _bname = f'block_ir:{getattr(_bpiece, "name", "?")}'
+                from arc.block_ir import detect_block_grid, block_colors_to_grid
+                import numpy as _bnp
+                _bg_block = most_common_color(train_pairs[0][0])
+                def _block_apply(inp, _piece=_bpiece, _bg=_bg_block):
+                    from arc.block_ir import detect_block_grid, block_colors_to_grid
+                    ir = detect_block_grid(inp, _bg)
+                    if ir is None: return None
+                    block_result = _piece.apply(ir['block_colors'].tolist())
+                    if block_result is None: return None
+                    return block_colors_to_grid(
+                        np.array(block_result), ir['block_h'], ir['block_w'],
+                        ir['sep_w'], ir['sep_color'])
+                verified.append(('cross', CrossPiece(_bname, _block_apply)))
+            if len(verified) >= 2:
+                return _apply_verified(verified, test_inputs), verified
+    except Exception:
+        pass
+
     # === Phase 8: ProgramTree (CEGIS条件分岐/ループ合成) ===
     try:
         from arc.program_tree import ProgramTreeSynthesizer, ApplyNode
