@@ -1341,6 +1341,9 @@ def _add_per_object_pieces(pieces: List[CrossPiece],
         learn_extract_object, apply_extract_object,
         learn_holes_to_color, apply_holes_to_color,
         learn_cluster_histogram, apply_cluster_histogram,
+        learn_dynamic_tile, apply_dynamic_tile,
+        learn_cell_to_color_block, apply_cell_to_color_block,
+        learn_color_to_pattern, apply_color_to_pattern,
     )
     
     # Per-object recolor
@@ -1404,6 +1407,31 @@ def _add_per_object_pieces(pieces: List[CrossPiece],
         pieces.insert(0, CrossPiece(
             'cluster_histogram',
             lambda inp, r=_rule: apply_cluster_histogram(inp, r)
+        ))
+
+    # Dynamic tile: tile count depends on input properties
+    rule = learn_dynamic_tile(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.insert(0, CrossPiece(
+            f'dynamic_tile:{_rule["rule"]}',
+            lambda inp, r=_rule: apply_dynamic_tile(inp, r)
+        ))
+
+    # Cell to color block: each cell → KxK block, K = n_unique_colors
+    if learn_cell_to_color_block(train_pairs):
+        pieces.insert(0, CrossPiece(
+            'cell_to_color_block',
+            lambda inp: apply_cell_to_color_block(inp)
+        ))
+
+    # Color to KxK pattern: each color → fixed KxK block
+    rule = learn_color_to_pattern(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.insert(0, CrossPiece(
+            f'color_to_pattern_k{_rule["k"]}',
+            lambda inp, r=_rule: apply_color_to_pattern(inp, r)
         ))
 
 

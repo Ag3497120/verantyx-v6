@@ -1001,3 +1001,239 @@ def apply_recolor_by_nearest_object(inp: Grid, params: Dict) -> Optional[Grid]:
             result[r, c] = nearest_color
 
     return result.tolist()
+
+
+# ============================================================
+# Dynamic tiling: tile count depends on input properties
+# ============================================================
+
+def learn_dynamic_tile(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[Dict]:
+    """Learn dynamic tiling rule: tile(k,k) where k depends on input."""
+    import numpy as np
+    from scipy import ndimage
+    from arc.grid import most_common_color, grid_eq
+
+    # Try different k-determination rules
+    for rule_name, k_fn in [
+        ('n_colors_plus1', lambda inp, bg: len(set(int(v) for v in np.array(inp).flatten() if v != bg)) + 1),
+        ('self_size', lambda inp, bg: max(np.array(inp).shape)),
+        ('n_objects', lambda inp, bg: ndimage.label(np.array(inp) != bg)[1]),
+        ('self_tile_color', None),  # handled separately
+    ]:
+        if rule_name == 'self_tile_color':
+            continue
+        
+        ok = True
+        for inp, out in train_pairs:
+            bg = most_common_color(inp)
+            try:
+                k = k_fn(inp, bg)
+            except:
+                ok = False; break
+            if k < 1:
+                ok = False; break
+            arr = np.array(inp)
+            tiled = np.tile(arr, (k, k))
+            if not grid_eq(tiled.tolist(), out):
+                ok = False; break
+        
+        if ok:
+            return {'type': 'dynamic_tile', 'rule': rule_name}
+    
+    # Try self_tile_color: output = NxN grid of input-sized blocks
+    # Block at (r,c) = input if input[r][c] == trigger_color, else bg
+    bg0 = most_common_color(train_pairs[0][0])
+    inp0 = np.array(train_pairs[0][0])
+    ih, iw = inp0.shape
+    out0 = np.array(train_pairs[0][1])
+    oh, ow = out0.shape
+    if oh == ih * ih and ow == iw * iw:
+        for trigger_color in range(10):
+            if trigger_color == bg0:
+                continue
+            ok = True
+            for inp, out in train_pairs:
+                arr_i = np.array(inp)
+                arr_o = np.array(out)
+                bg = most_common_color(out)  # Use OUTPUT bg for block checking
+                ih2, iw2 = arr_i.shape
+                if arr_o.shape != (ih2 * ih2, iw2 * iw2):
+                    ok = False; break
+                for br in range(ih2):
+                    for bc in range(iw2):
+                        block = arr_o[br * ih2:(br + 1) * ih2, bc * iw2:(bc + 1) * iw2]
+                        if int(arr_i[br, bc]) == trigger_color:
+                            if not np.array_equal(block, arr_i):
+                                ok = False; break
+                        else:
+                            if not np.all(block == bg):
+                                ok = False; break
+                    if not ok:
+                        break
+                if not ok:
+                    break
+            if ok:
+                return {'type': 'dynamic_tile', 'rule': 'self_tile_color',
+                        'trigger_color': trigger_color,
+                        'bg': int(most_common_color(train_pairs[0][1]))}
+    
+    return None
+
+
+def apply_dynamic_tile(inp: Grid, params: Dict) -> Optional[Grid]:
+    """Apply dynamic tiling."""
+    import numpy as np
+    from scipy import ndimage
+    from arc.grid import most_common_color
+
+    rule = params['rule']
+    arr = np.array(inp)
+    bg = most_common_color(inp)
+
+    if rule == 'n_colors_plus1':
+        k = len(set(int(v) for v in arr.flatten() if v != bg)) + 1
+        return np.tile(arr, (k, k)).tolist()
+    elif rule == 'self_size':
+        k = max(arr.shape)
+        return np.tile(arr, (k, k)).tolist()
+    elif rule == 'n_objects':
+        _, n = ndimage.label(arr != bg)
+        if n < 1:
+            return None
+        return np.tile(arr, (n, n)).tolist()
+    elif rule == 'self_tile_color':
+        trigger = params.get('trigger_color', -1)
+        bg = params.get('bg', bg)  # Use stored bg if available
+        ih, iw = arr.shape
+        result = np.full((ih * ih, iw * iw), bg, dtype=int)
+        for br in range(ih):
+            for bc in range(iw):
+                if int(arr[br, bc]) == trigger:
+                    result[br * ih:(br + 1) * ih, bc * iw:(bc + 1) * iw] = arr
+        return result.tolist()
+    
+    return None
+
+
+# ============================================================
+# Cell to color block: each input cell → KxK solid block, K = n_unique_colors
+# ============================================================
+
+def learn_cell_to_color_block(train_pairs: List[Tuple[Grid, Grid]]) -> bool:
+    """Check if output is cell-to-block expansion with K = n_unique_non_bg_colors."""
+    import numpy as np
+    from arc.grid import most_common_color, grid_eq
+
+    for inp, out in train_pairs:
+        arr = np.array(inp)
+        bg = most_common_color(inp)
+        ih, iw = arr.shape
+        n_colors = len(set(int(v) for v in arr.flatten() if v != bg))
+        if n_colors < 1:
+            return False
+        k = n_colors
+        oh, ow = np.array(out).shape
+        if oh != ih * k or ow != iw * k:
+            return False
+        result = np.full((ih * k, iw * k), bg, dtype=int)
+        for r in range(ih):
+            for c in range(iw):
+                if arr[r, c] != bg:
+                    result[r * k:(r + 1) * k, c * k:(c + 1) * k] = int(arr[r, c])
+        if not grid_eq(result.tolist(), out):
+            return False
+    return True
+
+
+def apply_cell_to_color_block(inp: Grid) -> Optional[Grid]:
+    """Apply cell-to-block expansion."""
+    import numpy as np
+    from arc.grid import most_common_color
+
+    arr = np.array(inp)
+    bg = most_common_color(inp)
+    ih, iw = arr.shape
+    n_colors = len(set(int(v) for v in arr.flatten() if v != bg))
+    if n_colors < 1:
+        return None
+    k = n_colors
+    result = np.full((ih * k, iw * k), bg, dtype=int)
+    for r in range(ih):
+        for c in range(iw):
+            if arr[r, c] != bg:
+                result[r * k:(r + 1) * k, c * k:(c + 1) * k] = int(arr[r, c])
+    return result.tolist()
+
+
+# ============================================================
+# Color to KxK pattern: each color maps to a fixed KxK block
+# ============================================================
+
+def learn_color_to_pattern(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[Dict]:
+    """Learn color → KxK pattern mapping."""
+    import numpy as np
+    from arc.grid import grid_eq
+
+    inp0 = np.array(train_pairs[0][0])
+    out0 = np.array(train_pairs[0][1])
+    ih, iw = inp0.shape
+    oh, ow = out0.shape
+    if oh % ih != 0 or ow % iw != 0:
+        return None
+    kh = oh // ih
+    kw = ow // iw
+    if kh != kw or kh <= 1:
+        return None
+    k = kh
+
+    color_pattern = {}
+    for r in range(ih):
+        for c in range(iw):
+            color = int(inp0[r, c])
+            block = out0[r * k:(r + 1) * k, c * k:(c + 1) * k]
+            block_key = tuple(block.flatten().tolist())
+            if color in color_pattern:
+                if color_pattern[color] != block_key:
+                    return None
+            else:
+                color_pattern[color] = block_key
+
+    # Verify all pairs
+    for inp, out in train_pairs[1:]:
+        arr_i = np.array(inp)
+        arr_o = np.array(out)
+        ih2, iw2 = arr_i.shape
+        if arr_o.shape != (ih2 * k, iw2 * k):
+            return None
+        for r in range(ih2):
+            for c in range(iw2):
+                color = int(arr_i[r, c])
+                block = arr_o[r * k:(r + 1) * k, c * k:(c + 1) * k]
+                block_key = tuple(block.flatten().tolist())
+                if color not in color_pattern:
+                    return None
+                if color_pattern[color] != block_key:
+                    return None
+
+    return {'k': k, 'patterns': {c: list(p) for c, p in color_pattern.items()}}
+
+
+def apply_color_to_pattern(inp: Grid, params: Dict) -> Optional[Grid]:
+    """Apply color → KxK pattern mapping."""
+    import numpy as np
+
+    k = params['k']
+    patterns = params['patterns']
+    arr = np.array(inp)
+    ih, iw = arr.shape
+    result = np.zeros((ih * k, iw * k), dtype=int)
+
+    for r in range(ih):
+        for c in range(iw):
+            color = int(arr[r, c])
+            if color not in patterns:
+                return None
+            block = np.array(patterns[color]).reshape(k, k)
+            result[r * k:(r + 1) * k, c * k:(c + 1) * k] = block
+
+    return result.tolist()
