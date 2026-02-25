@@ -2411,6 +2411,35 @@ def synthesize_programs(train_pairs: List[Tuple[Grid, Grid]]) -> List[PuzzleProg
                     description=f"EACH non-bg cell → EXTEND ray {single_dir_name} TO edge/obstacle"
                 ))
 
+    # === Pattern: scale_border_dup (duplicate border rows/cols) ===
+    if oh == 2 * ih - 1 and ow == 2 * iw - 1:
+        def _scale_border_dup(inp):
+            import numpy as np
+            arr = np.array(inp)
+            _h, _w = arr.shape
+            row_map = []
+            for i in range(_h):
+                if i == 0 or i == _h - 1:
+                    row_map.extend([i, i])
+                else:
+                    row_map.append(i)
+            col_map = []
+            for j in range(_w):
+                if j == 0 or j == _w - 1:
+                    col_map.extend([j, j])
+                else:
+                    col_map.append(j)
+            result = np.zeros((len(row_map), len(col_map)), dtype=int)
+            for r in range(len(row_map)):
+                for c in range(len(col_map)):
+                    result[r, c] = arr[row_map[r], col_map[c]]
+            return result.tolist()
+        programs.append(PuzzleProgram(
+            name="scale_border_dup",
+            apply_fn=_scale_border_dup,
+            description="SCALE grid by duplicating border rows/cols"
+        ))
+
     return programs
 
 
