@@ -3,7 +3,7 @@
 > **Zero LLMs. Zero neural networks. Zero pre-training. Pure program synthesis.**
 
 [![ARC-AGI-2](https://img.shields.io/badge/ARC--AGI--2-18.0%25_(180%2F1000)-brightgreen)](https://arcprize.org/)
-[![HLE Score](https://img.shields.io/badge/HLE-3.80%25_(bias--free)-blue)](https://agi.safe.ai/)
+[![HLE Score](https://img.shields.io/badge/HLE-4.6%25_(LLM--free)-blue)](https://agi.safe.ai/)
 [![Cost](https://img.shields.io/badge/cost-$0.00_per_task-gold)](.)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-yellow)](https://python.org)
@@ -215,18 +215,18 @@ Verantyx also tackles [HLE](https://lastexam.ai/) — a PhD-level benchmark — 
 
 | Version | Score | Method |
 |---|---|---|
-| **With detectors** | **4.04%** (101/2500) | + domain-specific detectors (DFA, quantum gates, etc.) |
-| **Bias-Free** | **3.80%** (95/2500) | Structural decomposition + CEGIS verification only |
-| No-cheat v2 | 12.5% (5/40)* | + Wikipedia atom matching + MCQ cross-decompose |
+| **LLM-free (full)** | **4.6%** (115/2500) | atom_cross + Wikipedia cross-decompose + MCQ全問回答 |
+| With detectors | 4.04% (101/2500) | + domain-specific detectors (DFA, quantum gates, etc.) |
+| Bias-Free baseline | 3.80% (95/2500) | Structural decomposition + CEGIS verification only |
 
-*\*40-question sample. No position bias, no hardcoded answers, no LLM inference.*
+*No position bias, no hardcoded answers, no LLM inference, no neural networks. Wikipedia as only knowledge source.*
 
 ---
 
 ## HuggingFace
 
 - 🤗 [kofdai/verantyx-arc-agi2](https://huggingface.co/kofdai/verantyx-arc-agi2) — ARC-AGI-2 solver (18.0%)
-- 🤗 [kofdai/verantyx-hle-8](https://huggingface.co/kofdai/verantyx-hle-8) — HLE solver (8.56%)
+- 🤗 [kofdai/Verantyx-hle-4.6](https://huggingface.co/kofdai/Verantyx-hle-4.6) — HLE solver (4.6%, LLM-free)
 
 ---
 
