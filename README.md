@@ -85,7 +85,7 @@ Score (%)
 | v47 | 196/1000 (19.6%) | dynamic_tile + cell_to_color_block + color_to_pattern |
 | v48 | 198/1000 (19.8%) | block_ir between_fill + converge:stamp |
 | v49 | 199/1000 (19.9%) | scale_border_dup |
-| **v50** | **200/1000 (20.0%)** | **CrossUniverse separator_propagate — 20% milestone!** |
+| **v50** | **201/1000 (20.1%)** | **CrossUniverse separator_propagate — 20% milestone!** |
 | **v49** | **199/1000 (19.9%)** | **scale_border_dup** |
 
 ## Setup
