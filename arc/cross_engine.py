@@ -1710,7 +1710,23 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     
     if len(verified) >= 2:
         return _apply_verified(verified, test_inputs), verified
-    
+
+    # === Phase 8: ProgramTree (CEGIS条件分岐/ループ合成) ===
+    try:
+        from arc.program_tree import ProgramTreeSynthesizer, ApplyNode
+        _pt_synth = ProgramTreeSynthesizer(
+            pieces=cross_pieces, train_pairs=train_pairs, timeout=2.0)
+        _pt_result = _pt_synth.synthesize()
+        if _pt_result is not None:
+            verified.insert(0, ('cross',
+                CrossPiece(f'ptree:{_pt_result.describe()[:60]}',
+                           _pt_result.apply)))
+    except Exception:
+        pass
+
+    if len(verified) >= 2:
+        return _apply_verified(verified, test_inputs), verified
+
     # === Phase 3: Composition of cross pieces with WG programs ===
     wg_cands = None
     midpoints = {}
