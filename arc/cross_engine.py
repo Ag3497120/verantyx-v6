@@ -263,6 +263,15 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
     except Exception:
         pass
     
+    # === Module 22: Meta-Cross (concept→role→operation hierarchical routing) ===
+    try:
+        from arc.meta_cross import generate_meta_cross_pieces
+        mc_pieces = generate_meta_cross_pieces(train_pairs)
+        for mc in mc_pieces:
+            pieces.insert(0, mc)  # Highest priority — concept-guided
+    except Exception:
+        pass
+    
     return pieces
 
 
@@ -1330,6 +1339,8 @@ def _add_per_object_pieces(pieces: List[CrossPiece],
         learn_remove_objects, apply_remove_objects,
         learn_cross_projection, apply_cross_projection,
         learn_extract_object, apply_extract_object,
+        learn_holes_to_color, apply_holes_to_color,
+        learn_cluster_histogram, apply_cluster_histogram,
     )
     
     # Per-object recolor
@@ -1375,6 +1386,24 @@ def _add_per_object_pieces(pieces: List[CrossPiece],
         pieces.append(CrossPiece(
             f'extract_obj:{_rule["selector"]}',
             lambda inp, r=_rule: apply_extract_object(inp, r)
+        ))
+
+    # Holes-to-color: recolor objects by number of enclosed holes
+    rule = learn_holes_to_color(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.insert(0, CrossPiece(
+            'holes_to_color',
+            lambda inp, r=_rule: apply_holes_to_color(inp, r)
+        ))
+
+    # Cluster histogram: histogram of cluster counts per color
+    rule = learn_cluster_histogram(train_pairs)
+    if rule is not None:
+        _rule = rule
+        pieces.insert(0, CrossPiece(
+            'cluster_histogram',
+            lambda inp, r=_rule: apply_cluster_histogram(inp, r)
         ))
 
 

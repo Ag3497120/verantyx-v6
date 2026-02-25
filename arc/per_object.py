@@ -740,3 +740,264 @@ def apply_mask_apply(inp: Grid, params: Dict) -> Optional[Grid]:
         return result
     
     return None
+
+
+# ============================================================
+# Holes-to-color: recolor objects based on number of enclosed holes
+# ============================================================
+
+def _count_enclosed_holes(mask_2d):
+    """Count number of enclosed (interior) holes in a binary mask."""
+    import numpy as np
+    from scipy import ndimage
+    inv = ~mask_2d
+    border_labeled, bn = ndimage.label(inv)
+    if bn == 0:
+        return 0
+    border_labels = set()
+    h, w = mask_2d.shape
+    for r in range(h):
+        for c in range(w):
+            if (r == 0 or r == h - 1 or c == 0 or c == w - 1) and inv[r, c]:
+                border_labels.add(border_labeled[r, c])
+    return bn - len(border_labels)
+
+
+def learn_holes_to_color(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[Dict]:
+    """Learn holes→color mapping from training pairs."""
+    import numpy as np
+    from scipy import ndimage
+    from arc.grid import most_common_color
+
+    bg = most_common_color(train_pairs[0][0])
+    mapping = {}
+
+    for inp, out in train_pairs:
+        inp_arr = np.array(inp)
+        out_arr = np.array(out)
+        if inp_arr.shape != out_arr.shape:
+            return None
+
+        labeled, n = ndimage.label(inp_arr != bg)
+        for oid in range(1, n + 1):
+            mask = labeled == oid
+            rows, cols = np.where(mask)
+            r0, c0 = rows.min(), cols.min()
+            local = mask[r0:rows.max() + 1, c0:cols.max() + 1]
+            nh = _count_enclosed_holes(local)
+
+            out_colors = set(int(out_arr[r, c]) for r, c in zip(rows, cols))
+            if len(out_colors) != 1:
+                return None
+            oc = list(out_colors)[0]
+
+            if nh in mapping:
+                if mapping[nh] != oc:
+                    return None
+            else:
+                mapping[nh] = oc
+
+    if not mapping:
+        return None
+    return {'type': 'holes_to_color', 'mapping': mapping, 'bg': bg}
+
+
+def apply_holes_to_color(inp: Grid, params: Dict) -> Optional[Grid]:
+    """Apply holes→color recoloring."""
+    import numpy as np
+    from scipy import ndimage
+
+    mapping = params['mapping']
+    bg = params['bg']
+    inp_arr = np.array(inp)
+    labeled, n = ndimage.label(inp_arr != bg)
+    result = inp_arr.copy()
+
+    for oid in range(1, n + 1):
+        mask = labeled == oid
+        rows, cols = np.where(mask)
+        r0, c0 = rows.min(), cols.min()
+        local = mask[r0:rows.max() + 1, c0:cols.max() + 1]
+        nh = _count_enclosed_holes(local)
+
+        if nh not in mapping:
+            return None
+        result[rows, cols] = mapping[nh]
+
+    return result.tolist()
+
+
+# ============================================================
+# Cluster histogram: output = histogram of cluster counts per color
+# ============================================================
+
+def learn_cluster_histogram(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[Dict]:
+    """Learn cluster-count histogram rule: sort colors by n_clusters desc,
+    output row i = color[i], right-aligned with n_clusters[i] cells."""
+    import numpy as np
+    from scipy import ndimage
+    from arc.grid import most_common_color, grid_eq
+
+    bg = most_common_color(train_pairs[0][0])
+
+    for inp, out in train_pairs:
+        inp_arr = np.array(inp)
+        out_arr = np.array(out)
+        oh, ow = out_arr.shape
+
+        non_bg = sorted(set(int(v) for v in inp_arr.flatten() if v != bg))
+        if not non_bg:
+            return None
+        if len(non_bg) != oh:
+            return None
+
+        cc = {}
+        for color in non_bg:
+            _, nc = ndimage.label(inp_arr == color)
+            cc[color] = nc
+
+        sorted_colors = sorted(non_bg, key=lambda c: -cc[c])
+        max_nc = max(cc.values())
+
+        if max_nc != ow:
+            return None
+
+        # Verify right-aligned histogram
+        expected = np.full((oh, ow), bg, dtype=int)
+        for ri, color in enumerate(sorted_colors):
+            nc = cc[color]
+            expected[ri, ow - nc:] = color
+
+        if not np.array_equal(expected, out_arr):
+            return None
+
+    return {'type': 'cluster_histogram', 'bg': bg}
+
+
+def apply_cluster_histogram(inp: Grid, params: Dict) -> Optional[Grid]:
+    """Apply cluster histogram transformation."""
+    import numpy as np
+    from scipy import ndimage
+
+    bg = params['bg']
+    inp_arr = np.array(inp)
+    non_bg = sorted(set(int(v) for v in inp_arr.flatten() if v != bg))
+    if not non_bg:
+        return None
+
+    cc = {}
+    for color in non_bg:
+        _, nc = ndimage.label(inp_arr == color)
+        cc[color] = nc
+
+    sorted_colors = sorted(non_bg, key=lambda c: -cc[c])
+    n = len(sorted_colors)
+    mx = max(cc.values())
+
+    out = np.full((n, mx), bg, dtype=int)
+    for ri, color in enumerate(sorted_colors):
+        nc = cc[color]
+        out[ri, mx - nc:] = color
+
+    return out.tolist()
+
+
+# ============================================================
+# Recolor each object to the color of its nearest neighboring object
+# ============================================================
+
+def learn_recolor_by_nearest_object(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[Dict]:
+    """Learn: each object is recolored to the color of its nearest other object."""
+    import numpy as np
+    from scipy import ndimage
+    from arc.grid import most_common_color
+
+    bg = most_common_color(train_pairs[0][0])
+
+    for inp, out in train_pairs:
+        inp_arr = np.array(inp)
+        out_arr = np.array(out)
+        if inp_arr.shape != out_arr.shape:
+            return None
+
+        labeled, n = ndimage.label(inp_arr != bg)
+        if n < 2:
+            return None
+
+        objs = []
+        for oid in range(1, n + 1):
+            mask = labeled == oid
+            rows, cols = np.where(mask)
+            cin_set = set(int(inp_arr[r, c]) for r, c in zip(rows, cols))
+            cout_set = set(int(out_arr[r, c]) for r, c in zip(rows, cols))
+            if len(cin_set) != 1 or len(cout_set) != 1:
+                return None
+            objs.append({
+                'cin': list(cin_set)[0],
+                'cout': list(cout_set)[0],
+                'cells': list(zip(rows.tolist(), cols.tolist())),
+            })
+
+        # For each object, check cout == nearest other object's cin
+        for i, obj in enumerate(objs):
+            nearest_color = None
+            nearest_dist = float('inf')
+            for j, other in enumerate(objs):
+                if i == j:
+                    continue
+                for r, c in other['cells']:
+                    for r2, c2 in obj['cells']:
+                        d = abs(r - r2) + abs(c - c2)
+                        if d < nearest_dist:
+                            nearest_dist = d
+                            nearest_color = other['cin']
+
+            if nearest_color != obj['cout']:
+                return None
+
+    return {'type': 'recolor_by_nearest_object', 'bg': bg}
+
+
+def apply_recolor_by_nearest_object(inp: Grid, params: Dict) -> Optional[Grid]:
+    """Apply: recolor each object to its nearest other object's color."""
+    import numpy as np
+    from scipy import ndimage
+
+    bg = params['bg']
+    inp_arr = np.array(inp)
+    labeled, n = ndimage.label(inp_arr != bg)
+    if n < 2:
+        return None
+
+    objs = []
+    for oid in range(1, n + 1):
+        mask = labeled == oid
+        rows, cols = np.where(mask)
+        cin_set = set(int(inp_arr[r, c]) for r, c in zip(rows, cols))
+        if len(cin_set) != 1:
+            return None
+        objs.append({
+            'cin': list(cin_set)[0],
+            'cells': list(zip(rows.tolist(), cols.tolist())),
+        })
+
+    result = inp_arr.copy()
+    for i, obj in enumerate(objs):
+        nearest_color = None
+        nearest_dist = float('inf')
+        for j, other in enumerate(objs):
+            if i == j:
+                continue
+            for r, c in other['cells']:
+                for r2, c2 in obj['cells']:
+                    d = abs(r - r2) + abs(c - c2)
+                    if d < nearest_dist:
+                        nearest_dist = d
+                        nearest_color = other['cin']
+
+        if nearest_color is None:
+            return None
+        for r, c in obj['cells']:
+            result[r, c] = nearest_color
+
+    return result.tolist()
