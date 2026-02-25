@@ -1850,6 +1850,383 @@ def synthesize_programs(train_pairs: List[Tuple[Grid, Grid]]) -> List[PuzzleProg
                         ))
                     break
 
+    # === Pattern: fill_dot_to_corner ===
+    # Single non-bg dot on uniform bg → fill rectangle from dot to nearest corner
+    def try_fill_dot_to_corner(g):
+        bg2 = most_common_color(g)
+        h2, w2 = grid_shape(g)
+        non_bg = [(r, c, g[r][c]) for r in range(h2) for c in range(w2) if g[r][c] != bg2]
+        if len(non_bg) != 1:
+            return None
+        r0, c0, color = non_bg[0]
+        # nearest corner
+        corners = [(0, 0), (0, w2-1), (h2-1, 0), (h2-1, w2-1)]
+        best_corner = min(corners, key=lambda cr: abs(cr[0]-r0) + abs(cr[1]-c0))
+        cr, cc = best_corner
+        rmin, rmax = min(r0, cr), max(r0, cr)
+        cmin, cmax = min(c0, cc), max(c0, cc)
+        result = [row[:] for row in g]
+        for r in range(rmin, rmax+1):
+            for c in range(cmin, cmax+1):
+                result[r][c] = color
+        return result
+
+    programs.append(PuzzleProgram(
+        name="fill_dot_to_corner",
+        apply_fn=try_fill_dot_to_corner,
+        description="FIND single dot → FILL rectangle TO nearest corner"
+    ))
+
+    # === Pattern: majority_vote_fix ===
+    # Find cells where all 4-neighbors of same non-bg color disagree → fix to majority
+    def try_majority_vote_fix(g):
+        bg2 = most_common_color(g)
+        h2, w2 = grid_shape(g)
+        result = [row[:] for row in g]
+        changed = False
+        for r in range(h2):
+            for c in range(w2):
+                nbrs = []
+                for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                    nr, nc = r+dr, c+dc
+                    if 0 <= nr < h2 and 0 <= nc < w2:
+                        nbrs.append(g[nr][nc])
+                if not nbrs:
+                    continue
+                from collections import Counter
+                cnt = Counter(nbrs)
+                # If cell differs from all neighbors and neighbors mostly agree
+                majority_color, majority_count = cnt.most_common(1)[0]
+                if majority_count >= 3 and g[r][c] != majority_color and g[r][c] != bg2:
+                    result[r][c] = majority_color
+                    changed = True
+        return result if changed else None
+
+    programs.append(PuzzleProgram(
+        name="majority_vote_fix",
+        apply_fn=try_majority_vote_fix,
+        description="EACH cell WHERE neighbors disagree → REPLACE WITH majority neighbor color"
+    ))
+
+    # === Pattern: bar_rotate_at_pivot ===
+    # Horizontal bar + single pivot cell of different color → rotate bar 90° at pivot
+    def try_bar_rotate_pivot(g):
+        bg2 = most_common_color(g)
+        h2, w2 = grid_shape(g)
+        objs = select_objects(g, bg2)
+        if len(objs) != 1:
+            return None
+        obj = objs[0]
+        cells_sorted = sorted(obj.cells)
+        rows_set = {r for r, c in cells_sorted}
+        cols_set = {c for r, c in cells_sorted}
+        if len(rows_set) != 1:
+            return None
+        row0 = list(rows_set)[0]
+        # Find colors in the bar
+        colors = {}
+        for r, c in cells_sorted:
+            colors.setdefault(g[r][c], []).append((r, c))
+        if len(colors) != 2:
+            return None
+        # Pivot = color with fewer cells (ideally 1)
+        sorted_colors = sorted(colors.items(), key=lambda x: len(x[1]))
+        pivot_color, pivot_cells = sorted_colors[0]
+        bar_color, bar_cells = sorted_colors[1]
+        if len(pivot_cells) != 1:
+            return None
+        pr, pc = pivot_cells[0]
+        # Bar is horizontal, rotate to vertical at pivot
+        result = [row[:] for row in g]
+        # Remove original bar (except pivot)
+        for r, c in bar_cells:
+            result[r][c] = bg2
+        # Count cells on each side of pivot
+        left_count = sum(1 for r, c in bar_cells if c < pc)
+        right_count = sum(1 for r, c in bar_cells if c > pc)
+        # Rotate: left→up, right→down (or vice versa based on which side has more)
+        for i in range(1, left_count + 1):
+            nr = pr - i
+            if 0 <= nr < h2:
+                result[nr][pc] = bar_color
+        for i in range(1, right_count + 1):
+            nr = pr + i
+            if 0 <= nr < h2:
+                result[nr][pc] = bar_color
+        return result
+
+    programs.append(PuzzleProgram(
+        name="bar_rotate_at_pivot",
+        apply_fn=try_bar_rotate_pivot,
+        description="FIND horizontal bar WITH pivot → ROTATE 90° at pivot"
+    ))
+
+    # === Pattern: dot_L_to_corner ===
+    # Each dot draws L-shaped path to nearest corner (right+down or similar)
+    def try_dot_L_to_corner(g):
+        bg2 = most_common_color(g)
+        h2, w2 = grid_shape(g)
+        non_bg = [(r, c, g[r][c]) for r in range(h2) for c in range(w2) if g[r][c] != bg2]
+        if len(non_bg) < 1 or len(non_bg) > 10:
+            return None
+        result = [row[:] for row in g]
+        for r0, c0, color in non_bg:
+            # nearest corner
+            corners = [(0, 0), (0, w2-1), (h2-1, 0), (h2-1, w2-1)]
+            best_corner = min(corners, key=lambda cr: abs(cr[0]-r0) + abs(cr[1]-c0))
+            cr, cc = best_corner
+            # Draw L: first horizontal to corner col, then vertical to corner row
+            dc = 1 if cc > c0 else -1 if cc < c0 else 0
+            dr = 1 if cr > r0 else -1 if cr < r0 else 0
+            # Horizontal leg
+            c = c0
+            while c != cc + dc:
+                result[r0][c] = color
+                c += dc
+            # Vertical leg
+            r = r0
+            while r != cr + dr:
+                result[r][cc] = color
+                r += dr
+        return result
+
+    programs.append(PuzzleProgram(
+        name="dot_L_to_corner",
+        apply_fn=try_dot_L_to_corner,
+        description="EACH dot → DRAW L-path TO nearest corner"
+    ))
+
+    # === Pattern: diagonal_object_continue ===
+    # Two same-colored objects placed diagonally → predict continuation position
+    def try_diagonal_continue(g):
+        bg2 = most_common_color(g)
+        h2, w2 = grid_shape(g)
+        objs = select_objects_multicolor(g, bg2)
+        if len(objs) < 2 or len(objs) > 4:
+            return None
+        # Check if objects have same shape
+        shapes = []
+        for o in objs:
+            min_r = min(r for r, c in o.cells)
+            min_c = min(c for r, c in o.cells)
+            norm = frozenset((r - min_r, c - min_c) for r, c in o.cells)
+            shapes.append((norm, min_r, min_c, o))
+        if len(set(s[0] for s in shapes)) != 1:
+            return None
+        # Sort by position
+        shapes.sort(key=lambda s: (s[1], s[2]))
+        if len(shapes) == 2:
+            dr = shapes[1][1] - shapes[0][1]
+            dc = shapes[1][2] - shapes[0][2]
+            # Predict next position
+            new_r = shapes[1][1] + dr
+            new_c = shapes[1][2] + dc
+            # Also predict before first
+            pre_r = shapes[0][1] - dr
+            pre_c = shapes[0][2] - dc
+            result = [row[:] for row in g]
+            new_color = 8  # Will be learned from training
+            candidates = []
+            # Try placing at continuation
+            for nr, nc in [(new_r, new_c), (pre_r, pre_c)]:
+                for r_off, c_off in shapes[0][0]:
+                    rr, cc = nr + r_off, nc + c_off
+                    if 0 <= rr < h2 and 0 <= cc < w2:
+                        candidates.append((rr, cc))
+            return None  # Too complex for generic, skip
+        return None
+
+    # === Pattern: reflect_object_4fold ===
+    # One shape object + one center object → reflect shape around center in 4 directions
+    def try_reflect_4fold(g):
+        bg2 = most_common_color(g)
+        h2, w2 = grid_shape(g)
+        objs = select_objects(g, bg2)
+        if len(objs) != 2:
+            return None
+        # Identify center object (more compact/square) and shape object
+        o1, o2 = objs
+        # Center = the one that's more centered in the grid
+        def center_dist(o):
+            cr = sum(r for r, c in o.cells) / len(o.cells)
+            cc = sum(c for r, c in o.cells) / len(o.cells)
+            return abs(cr - h2/2) + abs(cc - w2/2)
+        if center_dist(o1) < center_dist(o2):
+            center_obj, shape_obj = o1, o2
+        else:
+            center_obj, shape_obj = o2, o1
+        # Center point of center object
+        cr = sum(r for r, c in center_obj.cells) / len(center_obj.cells)
+        cc = sum(c for r, c in center_obj.cells) / len(center_obj.cells)
+        result = [row[:] for row in g]
+        shape_color = shape_obj.color
+        # Reflect shape across center point
+        for r, c in shape_obj.cells:
+            # 180° rotation
+            nr, nc = int(2*cr - r), int(2*cc - c)
+            if 0 <= nr < h2 and 0 <= nc < w2 and result[nr][nc] == bg2:
+                result[nr][nc] = g[r][c]
+            # Horizontal reflection
+            nr2, nc2 = r, int(2*cc - c)
+            if 0 <= nr2 < h2 and 0 <= nc2 < w2 and result[nr2][nc2] == bg2:
+                result[nr2][nc2] = g[r][c]
+            # Vertical reflection
+            nr3, nc3 = int(2*cr - r), c
+            if 0 <= nr3 < h2 and 0 <= nc3 < w2 and result[nr3][nc3] == bg2:
+                result[nr3][nc3] = g[r][c]
+        return result
+
+    programs.append(PuzzleProgram(
+        name="reflect_4fold_center",
+        apply_fn=try_reflect_4fold,
+        description="FIND shape+center → REFLECT shape 4-fold AROUND center"
+    ))
+
+    # === Pattern: connect_dots_line ===
+    # Dots of same color → connect with straight lines (horizontal/vertical)
+    def try_connect_same_color_lines(g):
+        bg2 = most_common_color(g)
+        h2, w2 = grid_shape(g)
+        # Group cells by color
+        color_cells = {}
+        for r in range(h2):
+            for c in range(w2):
+                if g[r][c] != bg2:
+                    color_cells.setdefault(g[r][c], []).append((r, c))
+        if not color_cells:
+            return None
+        result = [row[:] for row in g]
+        changed = False
+        for color, cells in color_cells.items():
+            if len(cells) < 2 or len(cells) > 20:
+                continue
+            # Connect pairs that share a row or column
+            for i, (r1, c1) in enumerate(cells):
+                for r2, c2 in cells[i+1:]:
+                    if r1 == r2:
+                        cmin, cmax = min(c1, c2), max(c1, c2)
+                        for c in range(cmin, cmax+1):
+                            if result[r1][c] == bg2:
+                                result[r1][c] = color
+                                changed = True
+                    elif c1 == c2:
+                        rmin, rmax = min(r1, r2), max(r1, r2)
+                        for r in range(rmin, rmax+1):
+                            if result[r][c1] == bg2:
+                                result[r][c1] = color
+                                changed = True
+        return result if changed else None
+
+    programs.append(PuzzleProgram(
+        name="connect_same_color_lines",
+        apply_fn=try_connect_same_color_lines,
+        description="EACH color → CONNECT dots WITH straight lines"
+    ))
+
+    # === Pattern: template_row_project ===
+    # Separator row splits grid; template row below separator has colors;
+    # marker row above has non-zero cells; project template colors upward
+    def try_template_project(g):
+        bg2 = most_common_color(g)
+        h2, w2 = grid_shape(g)
+        # Find full separator row
+        sep_rows = []
+        for r in range(h2):
+            vals = set(g[r])
+            if len(vals) == 1 and list(vals)[0] != bg2:
+                sep_rows.append(r)
+        if len(sep_rows) != 1:
+            return None
+        sep_r = sep_rows[0]
+        sep_c = g[sep_r][0]
+        # Template row: first non-bg row below separator (skip empty rows)
+        template_r = None
+        for r in range(sep_r+1, h2):
+            if any(g[r][c] != bg2 for c in range(w2)):
+                template_r = r
+                break
+        if template_r is None:
+            return None
+        # Marker: non-bg cells above separator (e.g., row 0 has 8s)
+        marker_cells = []
+        for r in range(sep_r):
+            for c in range(w2):
+                if g[r][c] != bg2 and g[r][c] != sep_c:
+                    marker_cells.append((r, c, g[r][c]))
+        if not marker_cells:
+            return None
+        # Count marker cells per column span
+        marker_count = len(marker_cells)
+        # For each column: template color + fill upward from separator by marker_count rows
+        result = [row[:] for row in g]
+        for c in range(w2):
+            tmpl_color = g[template_r][c]
+            if tmpl_color == bg2 or tmpl_color == sep_c:
+                continue
+            # Fill upward from sep_r-1 for marker_count rows
+            for i in range(1, marker_count + 1):
+                nr = sep_r - i
+                if 0 <= nr < h2 and result[nr][c] == bg2:
+                    result[nr][c] = tmpl_color
+        return result
+
+    programs.append(PuzzleProgram(
+        name="template_row_project",
+        apply_fn=try_template_project,
+        description="FIND separator → TEMPLATE row below → PROJECT colors upward BY marker count"
+    ))
+
+    # === Pattern: gravity_fill (dot falls to nearest edge in each quadrant) ===
+    # Single dot + direction = flood toward edge
+    # Actually more general: each non-bg cell expands in all 4 directions until blocked
+
+    # === Pattern: concentric_frames ===
+    # Single dot → expand outward with concentric rectangles of alternating colors
+    def try_concentric_frames(g):
+        bg2 = most_common_color(g)
+        h2, w2 = grid_shape(g)
+        non_bg = [(r, c, g[r][c]) for r in range(h2) for c in range(w2) if g[r][c] != bg2]
+        if len(non_bg) < 2 or len(non_bg) > 10:
+            return None
+        # Check if they form concentric pattern already
+        # Sort by distance from center of all points
+        cr = sum(r for r, c, _ in non_bg) / len(non_bg)
+        cc = sum(c for r, c, _ in non_bg) / len(non_bg)
+        # Group by Chebyshev distance from center
+        dist_colors = {}
+        for r, c, color in non_bg:
+            d = max(abs(r - cr), abs(c - cc))
+            d_int = round(d)
+            dist_colors.setdefault(d_int, set()).add(color)
+        if len(dist_colors) < 2:
+            return None
+        # Each distance should have exactly one color
+        if not all(len(cs) == 1 for cs in dist_colors.values()):
+            return None
+        # Get color sequence from innermost
+        max_dist = max(dist_colors.keys())
+        color_seq = []
+        for d in range(max_dist + 1):
+            if d in dist_colors:
+                color_seq.append(list(dist_colors[d])[0])
+            else:
+                color_seq.append(bg2)
+        # Expand: fill remaining cells by distance
+        result = [row[:] for row in g]
+        center_r, center_c = round(cr), round(cc)
+        for r in range(h2):
+            for c in range(w2):
+                d = max(abs(r - center_r), abs(c - center_c))
+                if d < len(color_seq) and result[r][c] == bg2:
+                    result[r][c] = color_seq[d]
+        return result
+
+    programs.append(PuzzleProgram(
+        name="concentric_frames",
+        apply_fn=try_concentric_frames,
+        description="FIND dots → GROUP BY distance → FILL concentric frames"
+    ))
+
     return programs
 
 
