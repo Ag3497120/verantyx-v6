@@ -20,14 +20,14 @@ const links = [
   },
   {
     title: 'Follow @kofdai',
-    url: 'https://x.com/kofdai',
+    url: 'https://x.com/Koffdai',
     icon: 'x',
     color: '#A855F7',
     description: 'Latest updates and research progress',
   },
   {
     title: 'Verantyx Logic',
-    url: 'https://apps.apple.com/app/verantyx-logic/id6740806562',
+    url: 'https://apps.apple.com/jp/app/verantyx-logic/id6757994077',
     icon: 'appstore',
     color: '#2ECC40',
     description: 'iOS app — modal logic puzzles only',
@@ -37,7 +37,7 @@ const links = [
 
 export default function LinkReveal() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: false, margin: '-100px' });
 
   return (
     <div ref={ref} className="link-reveal-container">
