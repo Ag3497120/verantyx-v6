@@ -31,8 +31,8 @@ export default function Home() {
         <BenchmarkCounters />
       </section>
 
-      {/* Section 3: Solver Animation - electricity through cross */}
-      <section className="relative min-h-screen">
+      {/* Section 3: Solver Animation */}
+      <section className="relative">
         <SolverAnimation />
       </section>
 
