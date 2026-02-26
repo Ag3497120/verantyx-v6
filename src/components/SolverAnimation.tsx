@@ -36,11 +36,11 @@ export default function SolverAnimation() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start end', 'end start'],
+    offset: ['start start', 'end end'],
   });
 
   // Map scroll progress to animation phase (0-1)
-  const progress = useTransform(scrollYProgress, [0.1, 0.9], [0, 1]);
+  const progress = useTransform(scrollYProgress, [0, 1], [0, 1]);
   const [progressVal, setProgressVal] = useState(0);
 
   useEffect(() => {
@@ -148,7 +148,7 @@ export default function SolverAnimation() {
   }, [progressVal, currentPhase]);
 
   return (
-    <div ref={containerRef} style={{ minHeight: '200vh', position: 'relative' }}>
+    <div ref={containerRef} style={{ minHeight: '300vh', position: 'relative' }}>
       <div style={{
         position: 'sticky',
         top: 0,
