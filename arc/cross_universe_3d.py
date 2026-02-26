@@ -780,6 +780,60 @@ def apply_invert_recolor(inp, bg, color_map):
     return result.tolist()
 
 
+def _try_odd_one_out(train_pairs, bg):
+    """Extract the object whose (bbox_h, bbox_w, area) is unique among all objects."""
+    from scipy import ndimage
+    
+    for inp, out in train_pairs:
+        a = np.array(inp)
+        o = np.array(out)
+        labeled, n = ndimage.label(a != bg)
+        if n < 2:
+            return False
+        
+        objs = []
+        for lbl in range(1, n + 1):
+            rows, cols = np.where(labeled == lbl)
+            r0, r1 = int(rows.min()), int(rows.max())
+            c0, c1 = int(cols.min()), int(cols.max())
+            area = int((labeled == lbl).sum())
+            objs.append({
+                'shape_key': (r1 - r0 + 1, c1 - c0 + 1, area),
+                'subgrid': a[r0:r1+1, c0:c1+1].tolist(),
+            })
+        
+        key_counts = Counter(obj['shape_key'] for obj in objs)
+        unique = [obj for obj in objs if key_counts[obj['shape_key']] == 1]
+        if len(unique) != 1 or unique[0]['subgrid'] != o.tolist():
+            return False
+    
+    return True
+
+
+def apply_odd_one_out(inp, bg):
+    from scipy import ndimage
+    a = np.array(inp)
+    labeled, n = ndimage.label(a != bg)
+    if n < 2:
+        return None
+    
+    objs = []
+    for lbl in range(1, n + 1):
+        rows, cols = np.where(labeled == lbl)
+        r0, r1 = int(rows.min()), int(rows.max())
+        c0, c1 = int(cols.min()), int(cols.max())
+        area = int((labeled == lbl).sum())
+        objs.append((r1 - r0 + 1, c1 - c0 + 1, area, r0, c0))
+    
+    key_counts = Counter((h, w, ar) for h, w, ar, _, _ in objs)
+    unique = [(h, w, ar, r0, c0) for h, w, ar, r0, c0 in objs if key_counts[(h, w, ar)] == 1]
+    if len(unique) != 1:
+        return None
+    
+    h, w, _, r0, c0 = unique[0]
+    return a[r0:r0+h, c0:c0+w].tolist()
+
+
 def _try_midpoint_cross(train_pairs, bg):
     """2 dots of same color → cross at midpoint with learned color."""
     from collections import defaultdict
@@ -917,6 +971,15 @@ def _try_1x1_feature_rule(train_pairs, bg):
     def parity_nonbg(inp, bg):
         return int((np.array(inp) != bg).sum()) % 2
     
+    # Binary shape key (all inputs must be same size)
+    in_shapes = set(np.array(inp).shape for inp, _ in train_pairs)
+    if len(in_shapes) == 1:
+        def binary_shape(inp, bg):
+            return tuple((np.array(inp) != 0).flatten().tolist())  # use 0 as bg for shape
+        features_extra = [('binary_shape', binary_shape)]
+    else:
+        features_extra = []
+    
     features = [
         ('parity_bg', parity_bg),
         ('parity_nonbg', parity_nonbg),
@@ -924,7 +987,7 @@ def _try_1x1_feature_rule(train_pairs, bg):
         ('n_objects', n_objects),
         ('majority', majority_nonbg),
         ('minority', minority_nonbg),
-    ]
+    ] + features_extra
     
     candidates = []
     for feat_name, feat_fn in features:
@@ -977,6 +1040,12 @@ def generate_3d_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]):
         def _apply_pc(inp, _bg=bg):
             return apply_panel_compact(inp, _bg)
         pieces.append(CrossPiece('cross3d:panel_compact', _apply_pc))
+    
+    # Odd one out extraction
+    if _try_odd_one_out(train_pairs, bg):
+        def _apply_ooo(inp, _bg=bg):
+            return apply_odd_one_out(inp, _bg)
+        pieces.append(CrossPiece('cross3d:odd_one_out', _apply_ooo))
     
     # Midpoint cross
     rule_mc = _try_midpoint_cross(train_pairs, bg)
