@@ -1906,11 +1906,14 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
         from arc.block_ir import solve_at_block_level
         _block_preds, _block_verified = solve_at_block_level(train_pairs, test_inputs)
         if _block_preds is not None and _block_verified:
-            # solve_at_block_level returns pixel-level predictions directly
-            # Verify against test outputs (can't verify without them, so trust train verify)
             _bname = f'block_ir:{_block_verified[0][1].name}'
-            # Return block predictions directly
-            return _block_preds, [('cross', CrossPiece(_bname, lambda inp: None))]
+            # If we have high-confidence cross3d pieces, don't let block_ir override
+            _has_cross3d = any(getattr(p, 'name', '').startswith('cross3d:') for _, p in verified)
+            if _has_cross3d:
+                # Add as fallback candidate instead of returning immediately
+                verified.append(('cross', CrossPiece(_bname, lambda inp, _bp=_block_preds: _bp[0][0] if _bp and _bp[0] else None)))
+            else:
+                return _block_preds, [('cross', CrossPiece(_bname, lambda inp: None))]
     except Exception:
         pass
 
@@ -2376,11 +2379,15 @@ def _apply_verified(verified: List, test_inputs: List[Grid]) -> List[List[Grid]]
             non_nb_verified.append(item)
     
     # Puzzle-lang programs are highest confidence — always first
+    # cross3d programs are high confidence (structural, not overfit)
     puzzle_verified = [item for item in non_nb_verified if getattr(item[1], 'name', '').startswith('puzzle:')]
-    other_non_nb = [item for item in non_nb_verified if not getattr(item[1], 'name', '').startswith('puzzle:')]
+    cross3d_verified = [item for item in non_nb_verified if getattr(item[1], 'name', '').startswith('cross3d:')]
+    other_non_nb = [item for item in non_nb_verified 
+                    if not getattr(item[1], 'name', '').startswith('puzzle:')
+                    and not getattr(item[1], 'name', '').startswith('cross3d:')]
     
-    # Build final candidate list: puzzle first, then other non-NB, then NB, then fallback
-    selected = puzzle_verified[:2] + other_non_nb[:2] + nb_verified[:2] + fallback_verified[:1]
+    # Build final candidate list: puzzle first, then cross3d, then other non-NB, then NB, then fallback
+    selected = puzzle_verified[:2] + cross3d_verified[:2] + other_non_nb[:2] + nb_verified[:2] + fallback_verified[:1]
     # Deduplicate and limit to 3
     seen = set()
     final = []

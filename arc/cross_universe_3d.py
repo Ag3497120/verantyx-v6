@@ -705,6 +705,254 @@ def apply_panel_compact(inp, bg):
     return np.concatenate(rows_assembled, axis=0).tolist()
 
 
+def _try_invert_recolor(train_pairs, bg):
+    """色反転: nonbg→bg, bg→学習色"""
+    color_map = {}
+    for inp, out in train_pairs:
+        a_in = np.array(inp)
+        a_out = np.array(out)
+        if a_in.shape != a_out.shape:
+            return None
+        in_nonbg = (a_in != bg)
+        out_nonbg = (a_out != bg)
+        if not np.array_equal(in_nonbg, ~out_nonbg):
+            return None
+        in_colors = set(int(v) for v in a_in[in_nonbg].flatten())
+        out_colors = set(int(v) for v in a_out[~in_nonbg].flatten())
+        if len(in_colors) != 1 or len(out_colors) != 1:
+            return None
+        c_in = in_colors.pop()
+        c_out = out_colors.pop()
+        if c_in in color_map and color_map[c_in] != c_out:
+            return None
+        color_map[c_in] = c_out
+    return {'type': 'invert_recolor', 'bg': bg, 'color_map': color_map}
+
+
+def apply_symmetrize_4fold(inp, bg):
+    """Complete 4-fold symmetry around center of non-bg region."""
+    a = np.array(inp)
+    h, w = a.shape
+    nonbg = np.where(a != bg)
+    if len(nonbg[0]) == 0:
+        return inp
+    r_min, r_max = int(nonbg[0].min()), int(nonbg[0].max())
+    c_min, c_max = int(nonbg[1].min()), int(nonbg[1].max())
+    cr = (r_min + r_max) / 2
+    cc = (c_min + c_max) / 2
+    result = a.copy()
+    for r in range(h):
+        for c in range(w):
+            if a[r, c] != bg:
+                dr, dc = r - cr, c - cc
+                for mr, mc in [
+                    (int(round(cr - dr)), int(round(cc + dc))),   # mirror V
+                    (int(round(cr + dr)), int(round(cc - dc))),   # mirror H
+                    (int(round(cr - dr)), int(round(cc - dc))),   # mirror VH
+                    (int(round(cr + dc)), int(round(cc + dr))),   # rot 90
+                    (int(round(cr - dc)), int(round(cc - dr))),   # rot 270
+                    (int(round(cr + dc)), int(round(cc - dr))),   # rot90+mirrorH
+                    (int(round(cr - dc)), int(round(cc + dr))),   # rot270+mirrorH
+                ]:
+                    if 0 <= mr < h and 0 <= mc < w and result[mr, mc] == bg:
+                        result[mr, mc] = int(a[r, c])
+    return result.tolist()
+
+
+def _try_symmetrize_4fold(train_pairs, bg):
+    for inp, out in train_pairs:
+        if apply_symmetrize_4fold(inp, bg) != out:
+            return False
+    # Must change at least one pair
+    return any(apply_symmetrize_4fold(inp, bg) != inp for inp, _ in train_pairs)
+
+
+def apply_invert_recolor(inp, bg, color_map):
+    a = np.array(inp)
+    in_colors = set(int(v) for v in a[a != bg].flatten())
+    if len(in_colors) != 1:
+        return None
+    c_in = in_colors.pop()
+    if c_in not in color_map:
+        return None
+    c_out = color_map[c_in]
+    result = np.where(a == bg, c_out, bg)
+    return result.tolist()
+
+
+def _try_midpoint_cross(train_pairs, bg):
+    """2 dots of same color → cross at midpoint with learned color."""
+    from collections import defaultdict
+    
+    in0, out0 = train_pairs[0]
+    a_in = np.array(in0)
+    a_out = np.array(out0)
+    if a_in.shape != a_out.shape:
+        return None
+    h, w = a_in.shape
+    
+    cg = defaultdict(list)
+    for r in range(h):
+        for c in range(w):
+            if a_in[r, c] != bg:
+                cg[int(a_in[r, c])].append((r, c))
+    
+    dot_colors = [c for c, pos in cg.items() if len(pos) == 2]
+    if len(dot_colors) != 1:
+        return None
+    
+    dot_color = dot_colors[0]
+    (r1, c1), (r2, c2) = cg[dot_color]
+    mr, mc = (r1 + r2) / 2, (c1 + c2) / 2
+    if mr != int(mr) or mc != int(mc):
+        return None
+    mr, mc = int(mr), int(mc)
+    
+    new_color = int(a_out[mr, mc])
+    if new_color == bg:
+        return None
+    
+    # Verify cross at midpoint
+    expected = a_in.copy()
+    for dr, dc in [(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)]:
+        nr, nc = mr + dr, mc + dc
+        if 0 <= nr < h and 0 <= nc < w and expected[nr, nc] == bg:
+            expected[nr, nc] = new_color
+    
+    if not np.array_equal(expected, a_out):
+        return None
+    
+    # Verify all pairs
+    for inp, out in train_pairs[1:]:
+        a_i = np.array(inp)
+        a_o = np.array(out)
+        if a_i.shape != a_o.shape:
+            return None
+        ph, pw = a_i.shape
+        
+        cg2 = defaultdict(list)
+        for r in range(ph):
+            for c in range(pw):
+                if a_i[r, c] != bg:
+                    cg2[int(a_i[r, c])].append((r, c))
+        
+        dc2 = [c for c, pos in cg2.items() if len(pos) == 2]
+        if len(dc2) != 1:
+            return None
+        
+        (r1, c1), (r2, c2) = cg2[dc2[0]]
+        mr2, mc2 = (r1 + r2) / 2, (c1 + c2) / 2
+        if mr2 != int(mr2) or mc2 != int(mc2):
+            return None
+        mr2, mc2 = int(mr2), int(mc2)
+        
+        exp = a_i.copy()
+        for dr, dc in [(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)]:
+            nr, nc = mr2 + dr, mc2 + dc
+            if 0 <= nr < ph and 0 <= nc < pw and exp[nr, nc] == bg:
+                exp[nr, nc] = new_color
+        
+        if not np.array_equal(exp, a_o):
+            return None
+    
+    return {'dot_color': dot_color, 'new_color': new_color}
+
+
+def apply_midpoint_cross(inp, bg, new_color):
+    from collections import defaultdict
+    a = np.array(inp)
+    h, w = a.shape
+    
+    cg = defaultdict(list)
+    for r in range(h):
+        for c in range(w):
+            if a[r, c] != bg:
+                cg[int(a[r, c])].append((r, c))
+    
+    dc = [c for c, pos in cg.items() if len(pos) == 2]
+    if len(dc) != 1:
+        return None
+    
+    (r1, c1), (r2, c2) = cg[dc[0]]
+    mr, mc = (r1 + r2) / 2, (c1 + c2) / 2
+    if mr != int(mr) or mc != int(mc):
+        return None
+    mr, mc = int(mr), int(mc)
+    
+    result = a.copy()
+    for dr, dcc in [(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)]:
+        nr, nc = mr + dr, mc + dcc
+        if 0 <= nr < h and 0 <= nc < w and result[nr, nc] == bg:
+            result[nr, nc] = new_color
+    return result.tolist()
+
+
+def _try_1x1_feature_rule(train_pairs, bg):
+    """Try feature→output mapping for 1x1 output tasks."""
+    from scipy import ndimage
+    
+    def n_distinct(inp, bg):
+        return len(set(int(v) for v in np.array(inp).flatten()) - {bg})
+    
+    def majority_nonbg(inp, bg):
+        a = np.array(inp)
+        nonbg = [int(v) for v in a.flatten() if v != bg]
+        if not nonbg: return -1
+        return Counter(nonbg).most_common(1)[0][0]
+    
+    def minority_nonbg(inp, bg):
+        a = np.array(inp)
+        nonbg = [int(v) for v in a.flatten() if v != bg]
+        if not nonbg: return -1
+        return Counter(nonbg).most_common()[-1][0]
+    
+    def parity_bg(inp, bg):
+        return int((np.array(inp) == bg).sum()) % 2
+    
+    def n_objects(inp, bg):
+        a = np.array(inp)
+        labeled, n = ndimage.label(a != bg)
+        return n
+    
+    def parity_nonbg(inp, bg):
+        return int((np.array(inp) != bg).sum()) % 2
+    
+    features = [
+        ('parity_bg', parity_bg),
+        ('parity_nonbg', parity_nonbg),
+        ('n_distinct', n_distinct),
+        ('n_objects', n_objects),
+        ('majority', majority_nonbg),
+        ('minority', minority_nonbg),
+    ]
+    
+    candidates = []
+    for feat_name, feat_fn in features:
+        mapping = {}
+        ok = True
+        for inp, out in train_pairs:
+            feat = feat_fn(inp, bg)
+            out_val = int(np.array(out)[0, 0])
+            if feat in mapping:
+                if mapping[feat] != out_val:
+                    ok = False
+                    break
+            else:
+                mapping[feat] = out_val
+        
+        if ok and len(mapping) >= 2:
+            # Require at least one mapping value to appear 2+ times (not all unique)
+            from collections import Counter as _Cnt
+            feat_counts = _Cnt(feat_fn(inp, bg) for inp, _ in train_pairs)
+            has_repeated = any(v >= 2 for v in feat_counts.values())
+            if has_repeated or len(train_pairs) <= 3:
+                candidates.append({'name': feat_name, 'feat_fn': feat_fn, 'mapping': mapping})
+    
+    # Return first candidate (caller will try all via pieces)
+    # But generate pieces for ALL candidates so at least one can predict test
+    return candidates if candidates else None
+
+
 def generate_3d_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]):
     """立体cross構造由来のCrossPieceを生成する。"""
     from arc.cross_engine import CrossPiece
@@ -729,5 +977,42 @@ def generate_3d_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]):
         def _apply_pc(inp, _bg=bg):
             return apply_panel_compact(inp, _bg)
         pieces.append(CrossPiece('cross3d:panel_compact', _apply_pc))
+    
+    # Midpoint cross
+    rule_mc = _try_midpoint_cross(train_pairs, bg)
+    if rule_mc is not None:
+        _nc = rule_mc['new_color']
+        def _apply_mc(inp, _bg=bg, _nc=_nc):
+            return apply_midpoint_cross(inp, _bg, _nc)
+        pieces.append(CrossPiece('cross3d:midpoint_cross', _apply_mc))
+    
+    # 4-fold symmetry completion
+    if _try_symmetrize_4fold(train_pairs, bg):
+        def _apply_sym4(inp, _bg=bg):
+            return apply_symmetrize_4fold(inp, _bg)
+        pieces.append(CrossPiece('cross3d:symmetrize_4fold', _apply_sym4))
+    
+    # Invert + recolor
+    rule_ir = _try_invert_recolor(train_pairs, bg)
+    if rule_ir is not None:
+        _cmap = rule_ir['color_map']
+        def _apply_ir(inp, _bg=bg, _cm=_cmap):
+            return apply_invert_recolor(inp, _bg, _cm)
+        pieces.append(CrossPiece('cross3d:invert_recolor', _apply_ir))
+    
+    # 1x1 output feature rules
+    if all(np.array(out).shape == (1, 1) for _, out in train_pairs):
+        rules_1x1 = _try_1x1_feature_rule(train_pairs, bg)
+        if rules_1x1 is not None:
+            for _rule in rules_1x1:
+                _feat_fn = _rule['feat_fn']
+                _mapping = _rule['mapping']
+                _name = _rule['name']
+                def _apply_1x1(inp, _fn=_feat_fn, _m=_mapping, _bg=bg):
+                    feat = _fn(inp, _bg)
+                    if feat in _m:
+                        return [[_m[feat]]]
+                    return None
+                pieces.append(CrossPiece(f'cross3d:1x1_{_name}', _apply_1x1))
     
     return pieces
