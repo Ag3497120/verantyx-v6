@@ -174,62 +174,87 @@ export default function SolverAnimation() {
         />
 
         {/* Content overlay */}
-        <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', maxWidth: '600px', padding: '0 20px' }}>
-          {/* Input grid */}
+        <div style={{ position: 'relative', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '60px', padding: '0 20px', maxWidth: '900px' }}>
+          {/* Left: Input grid */}
           <motion.div
-            animate={{ opacity: progressVal > 0.02 ? 1 : 0, y: progressVal > 0.02 ? 0 : 30 }}
+            animate={{ opacity: progressVal > 0.02 ? 1 : 0, x: progressVal > 0.02 ? 0 : -30 }}
             transition={{ duration: 0.3 }}
-            style={{ marginBottom: '24px' }}
+            style={{ textAlign: 'center', flexShrink: 0 }}
           >
-            <div style={{ color: '#888', fontSize: '12px', marginBottom: '8px' }}>INPUT</div>
-            <div style={{ display: 'inline-grid', gridTemplateColumns: 'repeat(5, 24px)', gap: '2px' }}>
+            <div style={{ color: '#888', fontSize: '11px', marginBottom: '6px', letterSpacing: '2px' }}>INPUT</div>
+            <div style={{ display: 'inline-grid', gridTemplateColumns: 'repeat(5, 22px)', gap: '2px' }}>
               {SAMPLE_INPUT.flat().map((c, i) => (
-                <div key={i} style={{ width: 24, height: 24, background: ARC_COLORS[c], borderRadius: 2, border: '1px solid #222' }} />
+                <div key={i} style={{ width: 22, height: 22, background: ARC_COLORS[c], borderRadius: 2, border: '1px solid #222' }} />
               ))}
             </div>
           </motion.div>
 
-          {/* Phase indicator */}
-          <div style={{ marginBottom: '24px' }}>
-            {PHASES.map((p, i) => (
+          {/* Center: Current phase (only one shown) */}
+          <div style={{ textAlign: 'center', minWidth: '220px' }}>
+            {/* Progress bar */}
+            <div style={{ width: '100%', height: '3px', background: '#222', borderRadius: '2px', marginBottom: '16px' }}>
               <motion.div
-                key={i}
-                animate={{
-                  opacity: currentPhase === i ? 1 : currentPhase > i ? 0.3 : 0.1,
-                  scale: currentPhase === i ? 1.1 : 1,
-                  x: currentPhase === i ? 0 : currentPhase > i ? -10 : 10,
-                }}
-                transition={{ duration: 0.3 }}
-                style={{
-                  padding: '6px 16px',
-                  margin: '4px 0',
-                  borderRadius: '8px',
-                  border: `1px solid ${currentPhase === i ? p.color : 'transparent'}`,
-                  background: currentPhase === i ? `${p.color}22` : 'transparent',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                  fontSize: '14px',
-                }}
+                animate={{ width: `${progressVal * 100}%` }}
+                style={{ height: '100%', background: 'linear-gradient(90deg, #0EA5E9, #A855F7)', borderRadius: '2px' }}
+              />
+            </div>
+
+            {/* Phase dots */}
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '6px', marginBottom: '16px' }}>
+              {PHASES.map((p, i) => (
+                <div key={i} style={{
+                  width: 8, height: 8, borderRadius: '50%',
+                  background: currentPhase > i ? p.color : currentPhase === i ? p.color : '#333',
+                  opacity: currentPhase >= i ? 1 : 0.3,
+                  transition: 'all 0.3s',
+                  boxShadow: currentPhase === i ? `0 0 10px ${p.color}` : 'none',
+                }} />
+              ))}
+            </div>
+
+            {/* Current phase name */}
+            {currentPhase < 7 && (
+              <motion.div
+                key={currentPhase}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                style={{ marginBottom: '8px' }}
               >
-                <span style={{ color: p.color, fontWeight: 700, minWidth: '24px' }}>{currentPhase > i ? '✓' : `${i + 1}`}</span>
-                <span style={{ color: currentPhase >= i ? '#fff' : '#444' }}>{p.name}</span>
-                {currentPhase === i && (
-                  <span style={{ color: '#888', fontSize: '11px', marginLeft: 'auto' }}>{p.desc}</span>
-                )}
+                <div style={{
+                  color: PHASES[currentPhase].color,
+                  fontSize: '20px',
+                  fontWeight: 700,
+                }}>
+                  Phase {currentPhase + 1}: {PHASES[currentPhase].name}
+                </div>
+                <div style={{ color: '#888', fontSize: '12px', marginTop: '4px' }}>
+                  {PHASES[currentPhase].desc}
+                </div>
               </motion.div>
-            ))}
+            )}
+
+            {currentPhase >= 7 && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                style={{ color: '#2ECC40', fontSize: '20px', fontWeight: 700 }}
+              >
+                ✓ Solution Found
+              </motion.div>
+            )}
           </div>
 
-          {/* Output grid */}
+          {/* Right: Output grid */}
           <motion.div
-            animate={{ opacity: progressVal > 0.85 ? 1 : 0, y: progressVal > 0.85 ? 0 : 30, scale: progressVal > 0.85 ? 1 : 0.8 }}
+            animate={{ opacity: progressVal > 0.85 ? 1 : 0, x: progressVal > 0.85 ? 0 : 30, scale: progressVal > 0.85 ? 1 : 0.8 }}
             transition={{ duration: 0.4 }}
+            style={{ textAlign: 'center', flexShrink: 0 }}
           >
-            <div style={{ color: '#2ECC40', fontSize: '12px', marginBottom: '8px' }}>OUTPUT ✓</div>
-            <div style={{ display: 'inline-grid', gridTemplateColumns: 'repeat(5, 24px)', gap: '2px' }}>
+            <div style={{ color: '#2ECC40', fontSize: '11px', marginBottom: '6px', letterSpacing: '2px' }}>OUTPUT</div>
+            <div style={{ display: 'inline-grid', gridTemplateColumns: 'repeat(5, 22px)', gap: '2px' }}>
               {SAMPLE_OUTPUT.flat().map((c, i) => (
-                <div key={i} style={{ width: 24, height: 24, background: ARC_COLORS[c], borderRadius: 2, border: '1px solid #222' }} />
+                <div key={i} style={{ width: 22, height: 22, background: ARC_COLORS[c], borderRadius: 2, border: '1px solid #222' }} />
               ))}
             </div>
           </motion.div>
