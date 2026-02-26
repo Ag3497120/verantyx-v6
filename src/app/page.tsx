@@ -7,7 +7,6 @@ import ScoreChart from '@/components/ScoreChart';
 import Stats from '@/components/Stats';
 import Footer from '@/components/Footer';
 
-export const runtime = 'edge';
 
 export default function Home() {
   return (
