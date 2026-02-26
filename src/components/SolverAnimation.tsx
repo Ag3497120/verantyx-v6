@@ -36,11 +36,14 @@ export default function SolverAnimation() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start start', 'end end'],
+    offset: ['start end', 'end end'],
   });
 
-  // Map scroll progress to animation phase (0-1)
-  const progress = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  // Only start animation after the section enters view (scrollYProgress ~0.33 = top of section at viewport top)
+  // 0.0 = top of container at bottom of viewport
+  // 0.33 = top of container at top of viewport (for 300vh container)
+  // 1.0 = bottom of container at bottom of viewport
+  const progress = useTransform(scrollYProgress, [0.33, 0.95], [0, 1]);
   const [progressVal, setProgressVal] = useState(0);
 
   useEffect(() => {
