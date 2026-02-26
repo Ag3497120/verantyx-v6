@@ -1,6 +1,6 @@
 # Verantyx V6 — ARC-AGI-2 Solver
 
-## 🎯 201/1000 (20.1%) on ARC-AGI-2 Training Set
+## 🎯 222/1000 (22.2%) on ARC-AGI-2 Training Set
 
 > Zero neural networks. Zero LLM calls. Zero hardcoded answers.
 > Pure symbolic program synthesis — every solution is a verifiable, interpretable program.
@@ -153,7 +153,8 @@ These are not handcoded task solutions — they're **general-purpose spatial pri
  v48 198 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░  19.8%
  v49 199 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░  19.9%
  v50 200 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░  20.0%
- v51 201 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░  20.1% ★
+ v51 201 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░  20.1%
+ v59 222 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░  22.2% ★
          └─────────┴─────────┴─────────┘
 ```
 
@@ -174,7 +175,8 @@ These are not handcoded task solutions — they're **general-purpose spatial pri
 | v48 | 198 (19.8%) | Block IR between_fill + converge:stamp |
 | v49 | 199 (19.9%) | scale_border_dup |
 | **v50** | **200 (20.0%)** | **CrossUniverse: separator_propagate** |
-| **v51** | **201 (20.1%)** | **self_stamp: input-as-stamp spatial placement** |
+| v51 | 201 (20.1%) | self_stamp: input-as-stamp spatial placement |
+| **v59** | **222 (22.2%)** | **3D cross structure: 8 new primitives, self-tile, odd-one-out** |
 
 ---
 
@@ -186,7 +188,7 @@ These are not handcoded task solutions — they're **general-purpose spatial pri
 
 **Compositional search over brute force.** Rather than enumerating all possible programs, Verantyx builds solutions from typed, reusable pieces. This keeps the search space manageable while maintaining expressiveness.
 
-**Fail cleanly.** If Verantyx can't find a verified program, it outputs nothing. The 20.1% score represents tasks where it found *provably correct* programs — not best guesses.
+**Fail cleanly.** If Verantyx can't find a verified program, it outputs nothing. The 22.2% score represents tasks where it found *provably correct* programs — not best guesses.
 
 ---
 

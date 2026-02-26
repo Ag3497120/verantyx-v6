@@ -780,6 +780,217 @@ def apply_invert_recolor(inp, bg, color_map):
     return result.tolist()
 
 
+def _try_color_count_upscale(train_pairs):
+    """Each cell → NxN solid block where N = number of distinct colors in input."""
+    for inp, out in train_pairs:
+        if apply_color_count_upscale(inp) != out:
+            return False
+    return True
+
+
+def apply_color_count_upscale(inp):
+    a = np.array(inp)
+    n_colors = len(set(int(v) for v in a.flatten()))
+    h, w = a.shape
+    out = np.zeros((h * n_colors, w * n_colors), dtype=int)
+    for r in range(h):
+        for c in range(w):
+            out[r*n_colors:(r+1)*n_colors, c*n_colors:(c+1)*n_colors] = int(a[r, c])
+    return out.tolist()
+
+
+def _try_self_tile(train_pairs, bg):
+    """Detect NxN→N²×N² self-tiling patterns and return matching CrossPieces."""
+    from arc.cross_engine import CrossPiece
+    
+    pieces = []
+    in0, out0 = train_pairs[0]
+    a_in = np.array(in0)
+    a_out = np.array(out0)
+    h, w = a_in.shape
+    oh, ow = a_out.shape
+    
+    if oh != h * h or ow != w * w:
+        return pieces
+    
+    # Check each pair: each block is either input or zeros
+    block_masks = []
+    for inp, out in train_pairs:
+        a = np.array(inp)
+        o = np.array(out)
+        hh, ww = a.shape
+        
+        mask = np.zeros((hh, ww), dtype=int)  # 0=zero, 1=input, 2=cinv, -1=unknown
+        for r in range(hh):
+            for c in range(ww):
+                block = o[r*hh:(r+1)*hh, c*ww:(c+1)*ww]
+                if np.array_equal(block, a):
+                    mask[r, c] = 1
+                elif np.all(block == 0):
+                    mask[r, c] = 0
+                else:
+                    # Check color-inverted input
+                    nonbg_vals = a[a != 0]
+                    if len(nonbg_vals) > 0:
+                        nc = int(nonbg_vals[0])
+                        cinv = np.where(a == 0, nc, 0)
+                        if np.array_equal(block, cinv):
+                            mask[r, c] = 2
+                        else:
+                            mask[r, c] = -1
+                    else:
+                        mask[r, c] = -1
+        
+        if (mask == -1).any():
+            return pieces  # Unknown block type
+        
+        block_masks.append((a, mask))
+    
+    # Try rules: uniform_row, min_color, bg_cinv
+    
+    # Rule: uniform row/col → input tile, others → zero
+    def _check_uniform_row():
+        for a, mask in block_masks:
+            hh, ww = a.shape
+            pred = np.zeros((hh, ww), dtype=int)
+            has = False
+            for r in range(hh):
+                if len(set(int(v) for v in a[r])) == 1:
+                    pred[r, :] = 1
+                    has = True
+            if not has:
+                for c in range(ww):
+                    if len(set(int(a[r, c]) for r in range(hh))) == 1:
+                        pred[:, c] = 1
+                        has = True
+            if not has or not np.array_equal(pred, mask):
+                return False
+        return True
+    
+    # Rule: min color → input tile
+    def _check_min_color():
+        for a, mask in block_masks:
+            cc = Counter(int(v) for v in a.flatten())
+            mn = min(cc.values())
+            colors = {c for c, n in cc.items() if n == mn}
+            pred = np.where(np.isin(a, list(colors)), 1, 0)
+            if not np.array_equal(pred, mask):
+                return False
+        return True
+    
+    # Rule: bg cells → color-inverted input
+    def _check_bg_cinv():
+        for a, mask in block_masks:
+            pred = np.where(a == 0, 2, 0)
+            if not np.array_equal(pred, mask):
+                return False
+        return True
+    
+    # Rule: nonbg cells → input tile
+    def _check_nonbg():
+        for a, mask in block_masks:
+            cc = Counter(int(v) for v in a.flatten())
+            bg_val = cc.most_common(1)[0][0]
+            pred = np.where(a != bg_val, 1, 0)
+            if not np.array_equal(pred, mask):
+                return False
+        return True
+    
+    if _check_uniform_row():
+        def _apply(inp):
+            a = np.array(inp)
+            hh, ww = a.shape
+            out = np.zeros((hh*hh, ww*ww), dtype=int)
+            done = False
+            for r in range(hh):
+                if len(set(int(v) for v in a[r])) == 1:
+                    for c in range(ww):
+                        out[r*hh:(r+1)*hh, c*ww:(c+1)*ww] = a
+                    done = True
+            if not done:
+                for c in range(ww):
+                    if len(set(int(a[r, c]) for r in range(hh))) == 1:
+                        for r in range(hh):
+                            out[r*hh:(r+1)*hh, c*ww:(c+1)*ww] = a
+            return out.tolist()
+        pieces.append(CrossPiece('cross3d:self_tile_uniform', _apply))
+    
+    if _check_min_color():
+        def _apply(inp):
+            a = np.array(inp)
+            hh, ww = a.shape
+            cc = Counter(int(v) for v in a.flatten())
+            mn = min(cc.values())
+            colors = {c for c, n in cc.items() if n == mn}
+            out = np.zeros((hh*hh, ww*ww), dtype=int)
+            for r in range(hh):
+                for c in range(ww):
+                    if int(a[r, c]) in colors:
+                        out[r*hh:(r+1)*hh, c*ww:(c+1)*ww] = a
+            return out.tolist()
+        pieces.append(CrossPiece('cross3d:self_tile_min_color', _apply))
+    
+    if _check_bg_cinv():
+        def _apply(inp):
+            a = np.array(inp)
+            hh, ww = a.shape
+            nonbg_vals = a[a != 0]
+            nc = int(nonbg_vals[0]) if len(nonbg_vals) > 0 else 0
+            cinv = np.where(a == 0, nc, 0)
+            out = np.zeros((hh*hh, ww*ww), dtype=int)
+            for r in range(hh):
+                for c in range(ww):
+                    if a[r, c] == 0:
+                        out[r*hh:(r+1)*hh, c*ww:(c+1)*ww] = cinv
+            return out.tolist()
+        pieces.append(CrossPiece('cross3d:self_tile_bg_cinv', _apply))
+    
+    if _check_nonbg():
+        def _apply(inp):
+            a = np.array(inp)
+            hh, ww = a.shape
+            cc = Counter(int(v) for v in a.flatten())
+            bg_val = cc.most_common(1)[0][0]
+            out = np.zeros((hh*hh, ww*ww), dtype=int)
+            for r in range(hh):
+                for c in range(ww):
+                    if a[r, c] != bg_val:
+                        out[r*hh:(r+1)*hh, c*ww:(c+1)*ww] = a
+            return out.tolist()
+        pieces.append(CrossPiece('cross3d:self_tile_nonbg', _apply))
+    
+    return pieces
+
+
+def _try_denoise_majority(train_pairs, bg):
+    """Replace cells where 3+ of 4 neighbors agree on a different color."""
+    for inp, out in train_pairs:
+        if apply_denoise_majority(inp, bg) != out:
+            return False
+        if inp == out:
+            return False
+    return True
+
+
+def apply_denoise_majority(inp, bg):
+    a = np.array(inp)
+    h, w = a.shape
+    result = a.copy()
+    for r in range(h):
+        for c in range(w):
+            neighbors = []
+            for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < h and 0 <= nc < w:
+                    neighbors.append(int(a[nr, nc]))
+            if not neighbors:
+                continue
+            mc = Counter(neighbors).most_common(1)[0]
+            if mc[1] >= 3 and a[r, c] != mc[0]:
+                result[r, c] = mc[0]
+    return result.tolist()
+
+
 def _try_odd_one_out(train_pairs, bg):
     """Extract the object whose (bbox_h, bbox_w, area) is unique among all objects."""
     from scipy import ndimage
@@ -1068,6 +1279,16 @@ def generate_3d_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]):
         def _apply_ir(inp, _bg=bg, _cm=_cmap):
             return apply_invert_recolor(inp, _bg, _cm)
         pieces.append(CrossPiece('cross3d:invert_recolor', _apply_ir))
+    
+    # Self-tile rules (NxN → N²×N²)
+    self_tile_pieces = _try_self_tile(train_pairs, bg)
+    pieces.extend(self_tile_pieces)
+    
+    # Color-count upscale (N colors → N× pixel upscale)
+    if _try_color_count_upscale(train_pairs):
+        def _apply_ccu(inp):
+            return apply_color_count_upscale(inp)
+        pieces.append(CrossPiece('cross3d:color_count_upscale', _apply_ccu))
     
     # 1x1 output feature rules
     if all(np.array(out).shape == (1, 1) for _, out in train_pairs):
