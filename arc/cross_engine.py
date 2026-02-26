@@ -1847,6 +1847,18 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    # === Phase 1.56: CrossUniverse3D — 立体cross構造 ===
+    try:
+        from arc.cross_universe_3d import generate_3d_cross_pieces
+        _cu3d_pieces = generate_3d_cross_pieces(train_pairs)
+        for _cup3d in _cu3d_pieces:
+            if sim.verify(_cup3d, train_pairs):
+                verified.append(('cross', _cup3d))
+                if len(verified) >= 2:
+                    break
+    except Exception:
+        pass
+
     # === Phase 1.6: Convergent stamp application ===
     if cross_pieces:
         for cp in cross_pieces:
