@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #0a0a0f;
+  color: #e5e7eb;
+  overflow-x: hidden;
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 20px rgba(14, 165, 233, 0.5),
+                 0 0 30px rgba(14, 165, 233, 0.3);
+  }
+
+  .text-glow-purple {
+    text-shadow: 0 0 20px rgba(168, 85, 247, 0.5),
+                 0 0 30px rgba(168, 85, 247, 0.3);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #0EA5E9 0%, #A855F7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .card-glow {
+    box-shadow: 0 0 40px rgba(14, 165, 233, 0.1),
+                inset 0 0 40px rgba(14, 165, 233, 0.05);
+  }
+
+  .border-glow {
+    border: 1px solid rgba(14, 165, 233, 0.3);
+  }
+}
