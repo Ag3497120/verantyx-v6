@@ -1305,6 +1305,18 @@ def _try_1x1_feature_rule(train_pairs, bg):
     else:
         features_extra = []
     
+    def is_h_symmetric(inp, bg):
+        a = np.array(inp)
+        return int(np.array_equal(a, a[:, ::-1]))
+    
+    def is_v_symmetric(inp, bg):
+        a = np.array(inp)
+        return int(np.array_equal(a, a[::-1, :]))
+    
+    def is_rot180_symmetric(inp, bg):
+        a = np.array(inp)
+        return int(np.array_equal(a, np.rot90(a, 2)))
+    
     features = [
         ('parity_bg', parity_bg),
         ('parity_nonbg', parity_nonbg),
@@ -1312,6 +1324,9 @@ def _try_1x1_feature_rule(train_pairs, bg):
         ('n_objects', n_objects),
         ('majority', majority_nonbg),
         ('minority', minority_nonbg),
+        ('h_symmetric', is_h_symmetric),
+        ('v_symmetric', is_v_symmetric),
+        ('rot180_symmetric', is_rot180_symmetric),
     ] + features_extra
     
     candidates = []
@@ -1431,4 +1446,219 @@ def generate_3d_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]):
                     return None
                 pieces.append(CrossPiece(f'cross3d:1x1_{_name}', _apply_1x1))
     
+    # Pyramid converge (top row pattern shrinks downward via XOR-like rule)
+    rule_pyr = _try_pyramid_converge(train_pairs, bg)
+    if rule_pyr is not None:
+        _c1, _c2 = rule_pyr['c1'], rule_pyr['c2']
+        def _apply_pyr(inp, _bg=bg, _c1=_c1, _c2=_c2):
+            return apply_pyramid_converge(inp, _bg, _c1, _c2)
+        pieces.append(CrossPiece('cross3d:pyramid_converge', _apply_pyr))
+    
+    # Panel binary OR (split by separator, OR all panels)
+    rule_por = _try_panel_binary_or(train_pairs, bg)
+    if rule_por is not None:
+        def _apply_por(inp, _bg=bg):
+            return apply_panel_binary_or(inp, _bg)
+        pieces.append(CrossPiece('cross3d:panel_binary_or', _apply_por))
+    
+    # Diagonal shadow tile (NxN → 3Nx3N, shadow at (-1,-1) with color 2)
+    if _try_diagonal_shadow_tile(train_pairs, bg):
+        def _apply_dst(inp, _bg=bg):
+            return apply_diagonal_shadow_tile(inp, _bg)
+        pieces.append(CrossPiece('cross3d:diagonal_shadow_tile', _apply_dst))
+    
     return pieces
+
+
+# ── Pyramid converge ──────────────────────────────────────────
+
+def _try_pyramid_converge(train_pairs, bg):
+    """Detect pyramid convergence: row 0 has a pattern of 2 colors,
+    each subsequent row shrinks by 1 on each side using XOR-like rule."""
+    # Collect all non-bg colors across all train pairs
+    all_colors = set()
+    for inp, out in train_pairs:
+        inp_arr = np.array(inp)
+        all_colors |= set(int(c) for c in inp_arr.flat if c != bg)
+    
+    if len(all_colors) != 2:
+        return None
+    c1, c2 = sorted(all_colors)
+    
+    for inp, out in train_pairs:
+        inp_arr, out_arr = np.array(inp), np.array(out)
+        if inp_arr.shape != out_arr.shape:
+            return None
+        h, w = inp_arr.shape
+        
+        # Row 0 must have non-bg cells, rows 1+ must be all bg in input
+        row0 = inp_arr[0]
+        if all(c == bg for c in row0):
+            return None
+        for r in range(1, h):
+            if any(inp_arr[r, c] != bg for c in range(w)):
+                return None
+        
+        # Verify output matches pyramid rule
+        pred = apply_pyramid_converge(inp, bg, c1, c2)
+        if pred is None or not np.array_equal(np.array(pred), out_arr):
+            return None
+    
+    return {'c1': c1, 'c2': c2}
+
+
+def apply_pyramid_converge(inp, bg, c1, c2):
+    """Apply pyramid convergence: f(a,b) = flip(a) if a==b else b."""
+    arr = np.array(inp)
+    h, w = arr.shape
+    
+    def flip(x):
+        return c1 if x == c2 else c2
+    
+    def f(a, b):
+        return flip(a) if a == b else b
+    
+    result = arr.copy()
+    prev = arr[0].tolist()
+    for r in range(1, h):
+        curr = [bg] * w
+        for c in range(r, w - r):
+            a = prev[c - 1]
+            b = prev[c + 1]
+            if a != bg and b != bg:
+                curr[c] = f(a, b)
+        result[r] = curr
+        prev = curr
+    
+    return result.tolist()
+
+
+# ── Panel binary OR ───────────────────────────────────────────
+
+def _split_by_separators(grid, bg):
+    """Split grid into panels using single-color separator lines."""
+    arr = np.array(grid)
+    h, w = arr.shape
+    
+    # Find separator rows and columns
+    h_seps = []
+    sep_color = None
+    for r in range(h):
+        row = arr[r, :]
+        vals = set(int(v) for v in row)
+        if len(vals) == 1 and row[0] != bg:
+            h_seps.append(r)
+            sep_color = int(row[0])
+    
+    v_seps = []
+    for c in range(w):
+        col = arr[:, c]
+        vals = set(int(v) for v in col)
+        if len(vals) == 1 and col[0] != bg:
+            v_seps.append(c)
+            if sep_color is None:
+                sep_color = int(col[0])
+    
+    if not h_seps and not v_seps:
+        return None, None
+    
+    row_bounds = [-1] + h_seps + [h]
+    col_bounds = [-1] + v_seps + [w]
+    
+    panels = []
+    for i in range(len(row_bounds) - 1):
+        r0, r1 = row_bounds[i] + 1, row_bounds[i + 1]
+        if r0 >= r1:
+            continue
+        for j in range(len(col_bounds) - 1):
+            c0, c1 = col_bounds[j] + 1, col_bounds[j + 1]
+            if c0 >= c1:
+                continue
+            panels.append(arr[r0:r1, c0:c1])
+    
+    return panels, sep_color
+
+
+def _try_panel_binary_or(train_pairs, bg):
+    """Detect: split input by separators, output = binary OR of all panels
+    with color preservation from source panels."""
+    for inp, out in train_pairs:
+        panels, sep_color = _split_by_separators(inp, bg)
+        if panels is None or len(panels) < 2:
+            return None
+        
+        out_arr = np.array(out)
+        
+        # All panels must be same shape as output
+        if not all(p.shape == out_arr.shape for p in panels):
+            return None
+        
+        # Binary OR must match
+        result_bin = np.zeros(out_arr.shape, dtype=int)
+        for p in panels:
+            result_bin = result_bin | (p != bg).astype(int)
+        
+        out_bin = (out_arr != bg).astype(int)
+        if not np.array_equal(result_bin, out_bin):
+            return None
+        
+        # Verify color: for each nonzero cell, color comes from one of the panels
+        pred = apply_panel_binary_or(inp, bg)
+        if pred is None or not np.array_equal(np.array(pred), out_arr):
+            return None
+    
+    return {'type': 'panel_binary_or'}
+
+
+def _try_diagonal_shadow_tile(train_pairs, bg):
+    """Detect: NxN input → 3Nx3N output, tile = input + color 2 shadow at (-1,-1)."""
+    for inp, out in train_pairs:
+        arr_in = np.array(inp)
+        arr_out = np.array(out)
+        if arr_in.shape[0] != arr_in.shape[1]:
+            return False
+        N = arr_in.shape[0]
+        if arr_out.shape != (3 * N, 3 * N):
+            return False
+        
+        pred = apply_diagonal_shadow_tile(inp, bg)
+        if pred is None or not np.array_equal(np.array(pred), arr_out):
+            return False
+    return True
+
+
+def apply_diagonal_shadow_tile(inp, bg):
+    """Apply diagonal shadow tile: NxN → 3Nx3N."""
+    arr = np.array(inp)
+    if arr.shape[0] != arr.shape[1]:
+        return None
+    N = arr.shape[0]
+    nonzero = [(r, c) for r in range(N) for c in range(N) if arr[r, c] != bg]
+    if not nonzero:
+        return None
+    
+    tile = arr.copy()
+    for r, c in nonzero:
+        nr, nc = (r - 1) % N, (c - 1) % N
+        if tile[nr, nc] == bg:
+            tile[nr, nc] = 2
+    
+    return np.tile(tile, (3, 3)).tolist()
+
+
+def apply_panel_binary_or(inp, bg):
+    """Apply panel binary OR: overlay all panels, last nonzero wins."""
+    panels, sep_color = _split_by_separators(inp, bg)
+    if panels is None or len(panels) < 2:
+        return None
+    
+    h, w = panels[0].shape
+    result = np.full((h, w), bg, dtype=int)
+    
+    for p in panels:
+        if p.shape != (h, w):
+            return None
+        mask = p != bg
+        result[mask] = p[mask]
+    
+    return result.tolist()
