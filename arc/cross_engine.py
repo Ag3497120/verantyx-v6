@@ -27,7 +27,12 @@ from arc.conditional import (
     learn_conditional_color_rule, apply_conditional_color_rule,
     learn_region_property_rule, apply_region_property_rule,
 )
+from arc.conditional_transform import (
+    learn_conditional_object_transform, apply_conditional_object_transform,
+)
 from arc.objects import detect_objects, find_matching_objects, object_transform_type
+from arc.flood_fill import learn_flood_fill_region, apply_flood_fill_region
+from arc.extract_summary import learn_fixed_output_summary, apply_fixed_output_summary
 
 
 class CrossPiece:
@@ -174,7 +179,17 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
                 'region_size_recolor',
                 lambda inp, _r=r: apply_region_property_rule(inp, _r)
             ))
-    
+
+    # === Module 2b: Conditional Object Transforms ===
+    # Per-object conditional transforms: fill interior, line extension, bg->color
+    rule = learn_conditional_object_transform(train_pairs)
+    if rule is not None:
+        r = rule
+        pieces.insert(0, CrossPiece(
+            f'conditional_obj:{r.get("strategy", r.get("type"))}',
+            lambda inp, _r=r: apply_conditional_object_transform(inp, _r)
+        ))
+
     # === Module 3: Object-level operations (Wall 1) ===
     bg = most_common_color(train_pairs[0][0])
     all_same = all(grid_shape(i) == grid_shape(o) for i, o in train_pairs)
@@ -195,11 +210,29 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
         # Try: draw lines between same-color objects
         pieces.append(CrossPiece('draw_lines_same_color',
             lambda inp: _draw_lines_same_color(inp)))
-        
-        # Try: flood fill enclosed bg regions
+
+        # Try: flood fill enclosed bg regions (legacy)
         pieces.append(CrossPiece('flood_fill_enclosed',
             lambda inp: _flood_fill_enclosed(inp)))
-    
+
+    # === Module 24: Flood Fill Region (new primitive) ===
+    rule = learn_flood_fill_region(train_pairs)
+    if rule is not None:
+        r = rule
+        pieces.insert(0, CrossPiece(
+            f'flood_fill:{rule["type"]}',
+            lambda inp, _r=r: apply_flood_fill_region(inp, _r)
+        ))
+
+    # === Module 25: Fixed-Output Summary (extract fixed-size output from variable input) ===
+    rule = learn_fixed_output_summary(train_pairs)
+    if rule is not None:
+        r = rule
+        pieces.insert(0, CrossPiece(
+            f'extract_summary:{rule["type"]}',
+            lambda inp, _r=r: apply_fixed_output_summary(inp, _r)
+        ))
+
     # === Module 6: Object Correspondence + Conditional Transform ===
     _add_obj_correspondence_pieces(pieces, train_pairs, bg)
     

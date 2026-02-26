@@ -2440,6 +2440,161 @@ def synthesize_programs(train_pairs: List[Tuple[Grid, Grid]]) -> List[PuzzleProg
             description="SCALE grid by duplicating border rows/cols"
         ))
 
+    # === Pattern: split_half_nor ===
+    # Split input horizontally or vertically into two halves
+    # Output = new_color where BOTH halves are bg (NOR)
+    for split_axis in ['h', 'v']:
+        if split_axis == 'h' and iw % 2 != 0: continue
+        if split_axis == 'v' and ih % 2 != 0: continue
+        
+        # Determine expected output size
+        if split_axis == 'h':
+            exp_oh, exp_ow = ih, iw // 2
+        else:
+            exp_oh, exp_ow = ih // 2, iw
+        
+        if (oh, ow) != (exp_oh, exp_ow): continue
+        
+        for out_color in range(1, 10):
+            def make_split_nor(axis, oc):
+                def fn(g):
+                    import numpy as np
+                    a = np.array(g)
+                    h2, w2 = a.shape
+                    if axis == 'h':
+                        left = a[:, :w2//2]
+                        right = a[:, w2//2:]
+                    else:
+                        left = a[:h2//2, :]
+                        right = a[h2//2:, :]
+                    res = [[0]*left.shape[1] for _ in range(left.shape[0])]
+                    for r in range(left.shape[0]):
+                        for c in range(left.shape[1]):
+                            if left[r,c] == 0 and right[r,c] == 0:
+                                res[r][c] = oc
+                    return res
+                return fn
+            
+            nor_fn = make_split_nor(split_axis, out_color)
+            if all(grid_eq(nor_fn(inp_t), out_t) for inp_t, out_t in train_pairs):
+                programs.append(PuzzleProgram(
+                    name=f"split_{split_axis}_nor_c{out_color}",
+                    apply_fn=nor_fn,
+                    description=f"SPLIT {split_axis} → NOR (both bg → color {out_color})"
+                ))
+                break
+
+    # === Pattern: move_toward_anchor ===
+    # Two single-cell objects, one moves 1 step toward the other
+    if ih == oh and iw == ow:
+        import numpy as np
+        arr_in = np.array(train_pairs[0][0])
+        arr_out = np.array(train_pairs[0][1])
+        nonbg_in = [(r, c, arr_in[r,c]) for r in range(ih) for c in range(iw) if arr_in[r,c] != 0]
+        nonbg_out = [(r, c, arr_out[r,c]) for r in range(oh) for c in range(ow) if arr_out[r,c] != 0]
+        
+        if len(nonbg_in) == 2 and len(nonbg_out) == 2:
+            # Identify mover vs anchor
+            in_colors = {c for _, _, c in nonbg_in}
+            out_colors = {c for _, _, c in nonbg_out}
+            if in_colors == out_colors:
+                for mover_color_idx in range(2):
+                    anchor_idx = 1 - mover_color_idx
+                    mr, mc, mcolor = nonbg_in[mover_color_idx]
+                    ar, ac, acolor = nonbg_in[anchor_idx]
+                    or_, oc_, _ = [(r,c,col) for r,c,col in nonbg_out if col == mcolor][0]
+                    
+                    dr = int(np.sign(ar - mr))
+                    dc = int(np.sign(ac - mc))
+                    
+                    if or_ == mr + dr and oc_ == mc + dc:
+                        # Found! mover_color moves toward anchor_color
+                        def make_move_toward(mc_color, ac_color):
+                            def fn(g):
+                                import numpy as np
+                                a = np.array(g)
+                                h2, w2 = a.shape
+                                pos = {}
+                                for r in range(h2):
+                                    for c in range(w2):
+                                        if a[r,c] != 0:
+                                            pos[a[r,c]] = (r, c)
+                                if mc_color not in pos or ac_color not in pos:
+                                    return None
+                                mr2, mc2 = pos[mc_color]
+                                ar2, ac2 = pos[ac_color]
+                                dr2 = int(np.sign(ar2 - mr2))
+                                dc2 = int(np.sign(ac2 - mc2))
+                                result = [[0]*w2 for _ in range(h2)]
+                                result[mr2 + dr2][mc2 + dc2] = mc_color
+                                result[ar2][ac2] = ac_color
+                                return result
+                            return fn
+                        
+                        mt_fn = make_move_toward(mcolor, acolor)
+                        if all(grid_eq(mt_fn(inp_t), out_t) for inp_t, out_t in train_pairs):
+                            programs.append(PuzzleProgram(
+                                name=f"move_toward_{mcolor}_to_{acolor}",
+                                apply_fn=mt_fn,
+                                description=f"MOVE color {mcolor} 1 step toward color {acolor}"
+                            ))
+                        break
+
+    # === Pattern: mirror_h_alt_tile ===
+    # Output = mirror_h(input) tiled Nx vertically with alternating vflip
+    if oh > ih and ow == 2 * iw:
+        import numpy as np
+        arr0 = np.array(train_pairs[0][0])
+        mirrored = np.concatenate([arr0[:, ::-1], arr0], axis=1)
+        if oh % ih == 0:
+            n_tiles = oh // ih
+            blocks = []
+            for i in range(n_tiles):
+                blocks.append(mirrored[::-1] if i % 2 == 0 else mirrored)
+            candidate = np.concatenate(blocks, axis=0)
+            if candidate.tolist() == train_pairs[0][1]:
+                def make_mirror_alt(nt):
+                    def fn(g):
+                        import numpy as np
+                        a = np.array(g)
+                        m = np.concatenate([a[:, ::-1], a], axis=1)
+                        bs = []
+                        for i in range(nt):
+                            bs.append(m[::-1] if i % 2 == 0 else m)
+                        return np.concatenate(bs, axis=0).tolist()
+                    return fn
+                mat_fn = make_mirror_alt(n_tiles)
+                if all(grid_eq(mat_fn(inp_t), out_t) for inp_t, out_t in train_pairs):
+                    programs.append(PuzzleProgram(
+                        name="mirror_h_alt_tile",
+                        apply_fn=mat_fn,
+                        description=f"MIRROR H → TILE {n_tiles}x with alternating VFLIP"
+                    ))
+
+    # === Pattern: upscale_kx ===
+    # Output = each cell of input repeated KxK
+    if oh > ih and ow > iw and oh % ih == 0 and ow % iw == 0:
+        kr = oh // ih
+        kc = ow // iw
+        if kr == kc and kr > 1:
+            import numpy as np
+            arr0 = np.array(train_pairs[0][0])
+            upscaled = np.repeat(np.repeat(arr0, kr, axis=0), kc, axis=1)
+            if upscaled.tolist() == train_pairs[0][1]:
+                def make_upscale(k):
+                    def fn(g):
+                        import numpy as np
+                        a = np.array(g)
+                        return np.repeat(np.repeat(a, k, axis=0), k, axis=1).tolist()
+                    return fn
+                us_fn = make_upscale(kr)
+                if all(grid_eq(us_fn(inp_t), out_t) for inp_t, out_t in train_pairs):
+                    programs.append(PuzzleProgram(
+                        name=f"upscale_{kr}x",
+                        apply_fn=us_fn,
+                        description=f"UPSCALE each cell to {kr}x{kr}"
+                    ))
+
     return programs
 
 
