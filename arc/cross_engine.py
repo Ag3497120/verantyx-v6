@@ -33,6 +33,15 @@ from arc.conditional_transform import (
 from arc.objects import detect_objects, find_matching_objects, object_transform_type
 from arc.flood_fill import learn_flood_fill_region, apply_flood_fill_region
 from arc.extract_summary import learn_fixed_output_summary, apply_fixed_output_summary
+from arc.grow_primitives import (
+    learn_grow_via_self_stamp, apply_grow_via_self_stamp,
+    learn_grow_color_template, apply_grow_color_template,
+    learn_grow_fixed_color_template, apply_grow_fixed_color_template,
+)
+from arc.line_ray_primitives import (
+    learn_line_ray_from_objects, apply_line_ray_from_objects,
+    learn_fill_object_interior, apply_fill_object_interior,
+)
 
 
 class CrossPiece:
@@ -231,6 +240,48 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
         pieces.insert(0, CrossPiece(
             f'extract_summary:{rule["type"]}',
             lambda inp, _r=r: apply_fixed_output_summary(inp, _r)
+        ))
+
+    # === Module 26: Grow/Scale primitives (NxN expansion with templates) ===
+    rule = learn_grow_via_self_stamp(train_pairs)
+    if rule is not None:
+        r = rule
+        pieces.insert(0, CrossPiece(
+            'grow:self_stamp',
+            lambda inp, _r=r: apply_grow_via_self_stamp(inp, _r)
+        ))
+
+    rule = learn_grow_fixed_color_template(train_pairs)
+    if rule is not None:
+        r = rule
+        pieces.insert(0, CrossPiece(
+            'grow:color_template',
+            lambda inp, _r=r: apply_grow_fixed_color_template(inp, _r)
+        ))
+
+    rule = learn_grow_color_template(train_pairs)
+    if rule is not None:
+        r = rule
+        pieces.insert(0, CrossPiece(
+            'grow:position_template',
+            lambda inp, _r=r: apply_grow_color_template(inp, _r)
+        ))
+
+    # === Module 27: Line/Ray extension and object interior fill ===
+    rule = learn_line_ray_from_objects(train_pairs)
+    if rule is not None:
+        r = rule
+        pieces.insert(0, CrossPiece(
+            f'line_ray:{rule["type"]}',
+            lambda inp, _r=r: apply_line_ray_from_objects(inp, _r)
+        ))
+
+    rule = learn_fill_object_interior(train_pairs)
+    if rule is not None:
+        r = rule
+        pieces.insert(0, CrossPiece(
+            f'fill_interior:{rule["type"]}',
+            lambda inp, _r=r: apply_fill_object_interior(inp, _r)
         ))
 
     # === Module 6: Object Correspondence + Conditional Transform ===
