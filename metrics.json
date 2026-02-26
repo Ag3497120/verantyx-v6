@@ -1,0 +1,905 @@
+{
+  "score": {
+    "solved": 222,
+    "total": 1000,
+    "percentage": 22.2
+  },
+  "engine": {
+    "lines_of_code": 28332,
+    "files": 47,
+    "avg_speed_sec": 0.6,
+    "primitives": 132
+  },
+  "solved_tasks": [
+    {
+      "id": "00576224",
+      "rule": "mod_copy_flip"
+    },
+    {
+      "id": "007bbfb7",
+      "rule": "cross:puzzle:cell_to_copy_block"
+    },
+    {
+      "id": "00d62c1b",
+      "rule": "fill_enclosed"
+    },
+    {
+      "id": "025d127b",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "0520fde7",
+      "rule": "cross:puzzle:sep_v_and_mark2"
+    },
+    {
+      "id": "05269061",
+      "rule": "diagonal_tile"
+    },
+    {
+      "id": "0692e18c",
+      "rule": "cross:puzzle:cell_to_inverted_block"
+    },
+    {
+      "id": "06df4c85",
+      "rule": "cross:block_ir:block_between_fill_same_color"
+    },
+    {
+      "id": "070dd51e",
+      "rule": "cross:puzzle:connect_same_color_lines"
+    },
+    {
+      "id": "08ed6ac7",
+      "rule": "cross:rg:recolor_by_position:row"
+    },
+    {
+      "id": "0a2355a6",
+      "rule": "recolor_by_size"
+    },
+    {
+      "id": "0b148d64",
+      "rule": "cross:ptree:Seq(Apply(extract_majority_bbox)"
+    },
+    {
+      "id": "0b17323b",
+      "rule": "cross:puzzle:diagonal_extend"
+    },
+    {
+      "id": "0bb8deee",
+      "rule": "cross:cross3d:panel_compact"
+    },
+    {
+      "id": "0c786b71",
+      "rule": "cross:puzzle:mirror_h_alt_tile"
+    },
+    {
+      "id": "0c9aba6e",
+      "rule": "cross:puzzle:sep_h_nor_mark8"
+    },
+    {
+      "id": "0ca9ddb6",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "0d3d703e",
+      "rule": "cross:puzzle:global_color_map"
+    },
+    {
+      "id": "11852cab",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "140c817e",
+      "rule": "cross:ptree:Seq(Apply(draw_lines_same_color)"
+    },
+    {
+      "id": "15696249",
+      "rule": "cross:cross3d:self_tile_uniform"
+    },
+    {
+      "id": "195ba7dc",
+      "rule": "cross:puzzle:sep_v_or_mark1"
+    },
+    {
+      "id": "1a2e2828",
+      "rule": "cross_compose(extract_unique_color+tile_to_output)"
+    },
+    {
+      "id": "1b2d62fb",
+      "rule": "cross:puzzle:sep_v_nor_mark8"
+    },
+    {
+      "id": "1c786137",
+      "rule": "cross:ptree:Seq(Apply(extract_obj_rank_0)"
+    },
+    {
+      "id": "1cf80156",
+      "rule": "cross:extract_largest"
+    },
+    {
+      "id": "1e0a9b12",
+      "rule": "cross:gravity_down"
+    },
+    {
+      "id": "1f85a75f",
+      "rule": "cross:extract_largest"
+    },
+    {
+      "id": "1f876c06",
+      "rule": "cross:puzzle:connect_same_color"
+    },
+    {
+      "id": "2013d3e2",
+      "rule": "composite(crop_bbox+tile_to_output)"
+    },
+    {
+      "id": "2072aba6",
+      "rule": "cross:color_to_pattern_k2"
+    },
+    {
+      "id": "21f83797",
+      "rule": "cross:puzzle:cross_and_fill"
+    },
+    {
+      "id": "22168020",
+      "rule": "cross:puzzle:connect_same_color_lines"
+    },
+    {
+      "id": "22eb0ac0",
+      "rule": "cross:fill_between_h"
+    },
+    {
+      "id": "23581191",
+      "rule": "cross:ptree:Seq(Apply(recolor_by_size_rank)"
+    },
+    {
+      "id": "23b5c85d",
+      "rule": "extract_smallest_region"
+    },
+    {
+      "id": "253bf280",
+      "rule": "cross:ptree:Seq(Apply(holes_to_color)"
+    },
+    {
+      "id": "25d8a9c8",
+      "rule": "cross:puzzle:uniform_row_detect_5"
+    },
+    {
+      "id": "25ff71a9",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "2753e76c",
+      "rule": "cross:cluster_histogram"
+    },
+    {
+      "id": "27a28665",
+      "rule": "cross:cross3d:1x1_binary_shape"
+    },
+    {
+      "id": "27a77e38",
+      "rule": "cross:puzzle:most_freq_center"
+    },
+    {
+      "id": "27f8ce4f",
+      "rule": "cross:grow:self_stamp"
+    },
+    {
+      "id": "28bf18c6",
+      "rule": "composite(crop_bbox+tile_to_output)"
+    },
+    {
+      "id": "2dc579da",
+      "rule": "cross:puzzle:extract_unique_panel"
+    },
+    {
+      "id": "2dee498d",
+      "rule": "cross:cegis:dedup_cols"
+    },
+    {
+      "id": "3194b014",
+      "rule": "cross:ptree:Seq(Apply(extract_majority_bbox)"
+    },
+    {
+      "id": "31d5ba1a",
+      "rule": "cross:puzzle:split_h_equal_xor"
+    },
+    {
+      "id": "332efdb3",
+      "rule": "cross:puzzle:grid_pattern_grid_inv_0"
+    },
+    {
+      "id": "3428a4f5",
+      "rule": "cross:puzzle:sep_h_xor_mark3"
+    },
+    {
+      "id": "34b99a2b",
+      "rule": "cross:puzzle:sep_v_xor_mark2"
+    },
+    {
+      "id": "358ba94e",
+      "rule": "cross:cross3d:odd_one_out"
+    },
+    {
+      "id": "3618c87e",
+      "rule": "gravity"
+    },
+    {
+      "id": "37d3e8b2",
+      "rule": "cross:holes_to_color"
+    },
+    {
+      "id": "3906de3d",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "3aa6fb7a",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "3af2c5a8",
+      "rule": "corners_mirror"
+    },
+    {
+      "id": "3bd67248",
+      "rule": "cross:puzzle:antidiag_fill"
+    },
+    {
+      "id": "3c9b0459",
+      "rule": "cross:puzzle:rotate_180_content"
+    },
+    {
+      "id": "4258a5f9",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "42a50994",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "4347f46a",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "445eab21",
+      "rule": "cross:ptree:Seq(Apply(extract_majority_bbox)"
+    },
+    {
+      "id": "45737921",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "45bbe264",
+      "rule": "cross:ptree:Seq(Apply(draw_lines_same_color)"
+    },
+    {
+      "id": "46442a0e",
+      "rule": "cross:tile:tile_2x2_transform"
+    },
+    {
+      "id": "48131b3c",
+      "rule": "cross:puzzle:comp_tile_2x2"
+    },
+    {
+      "id": "48f8583b",
+      "rule": "cross:cross3d:self_tile_min_color"
+    },
+    {
+      "id": "496994bd",
+      "rule": "cross:sym_h"
+    },
+    {
+      "id": "49d1d64f",
+      "rule": "cross:puzzle:frame_repeat_border_c0"
+    },
+    {
+      "id": "4a1cacc2",
+      "rule": "cross:puzzle:fill_dot_to_corner"
+    },
+    {
+      "id": "4c4377d9",
+      "rule": "cross:tile:tile_2x1_transform"
+    },
+    {
+      "id": "4cd1b7b2",
+      "rule": "cross:puzzle:latin_square"
+    },
+    {
+      "id": "506d28a5",
+      "rule": "cross:puzzle:sep_h_or_mark3"
+    },
+    {
+      "id": "50cb2852",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "5207a7b5",
+      "rule": "cross:stamp:stamp_by_obj_shape"
+    },
+    {
+      "id": "54d82841",
+      "rule": "cross:puzzle:u_drop_ball"
+    },
+    {
+      "id": "5521c0d9",
+      "rule": "cross:puzzle:move_obj_by_height_up"
+    },
+    {
+      "id": "5582e5ca",
+      "rule": "cross:remove_small_5"
+    },
+    {
+      "id": "5614dbcf",
+      "rule": "downscale"
+    },
+    {
+      "id": "56ff96f3",
+      "rule": "fill_rect"
+    },
+    {
+      "id": "5751f35e",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "5783df64",
+      "rule": "cross:extract_summary:grid_partition_majority"
+    },
+    {
+      "id": "59341089",
+      "rule": "cross:tile:tile_1x4_transform"
+    },
+    {
+      "id": "5b6cbef5",
+      "rule": "cross:puzzle:cell_to_copy_block"
+    },
+    {
+      "id": "5bd6f4ac",
+      "rule": "cross:cegis:crop"
+    },
+    {
+      "id": "5d2a5c43",
+      "rule": "cross:puzzle:sep_v_or_mark8"
+    },
+    {
+      "id": "60b61512",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "60c09cac",
+      "rule": "cross:puzzle:upscale_2x"
+    },
+    {
+      "id": "6150a2bd",
+      "rule": "cross:puzzle:rotate_180_content"
+    },
+    {
+      "id": "623ea044",
+      "rule": "cross:puzzle:ray_extend_diag"
+    },
+    {
+      "id": "62c24649",
+      "rule": "corners_mirror"
+    },
+    {
+      "id": "642d658d",
+      "rule": "cross:cross3d:1x1_n_objects"
+    },
+    {
+      "id": "6430c8c4",
+      "rule": "cross:puzzle:sep_h_nor_mark3"
+    },
+    {
+      "id": "66e6c45b",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "66f2d22f",
+      "rule": "cross:puzzle:split_h_nor_c5"
+    },
+    {
+      "id": "67385a82",
+      "rule": "cond_neighbor"
+    },
+    {
+      "id": "6773b310",
+      "rule": "cross:ptree:Seq(Apply(extract_minority_bbox)"
+    },
+    {
+      "id": "67a3c6ac",
+      "rule": "cross:flip_h"
+    },
+    {
+      "id": "67a423a3",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "67e8384a",
+      "rule": "corners_mirror"
+    },
+    {
+      "id": "68b16354",
+      "rule": "cross:flip_v"
+    },
+    {
+      "id": "68b67ca3",
+      "rule": "remove_empty_both"
+    },
+    {
+      "id": "6c434453",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "6d0aefbc",
+      "rule": "stack_h_flip"
+    },
+    {
+      "id": "6d75e8bb",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "6e82a1ae",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "6ea4a07e",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "6f8cd79b",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "6fa7a44f",
+      "rule": "stack_v_flip"
+    },
+    {
+      "id": "7039b2d7",
+      "rule": "cross:ptree:Seq(Apply(extract_minority_bbox)"
+    },
+    {
+      "id": "72a961c9",
+      "rule": "cross:ptree:Seq(Apply(draw_lines_same_color)"
+    },
+    {
+      "id": "73182012",
+      "rule": "composite(crop_bbox+tile_to_output)"
+    },
+    {
+      "id": "7468f01a",
+      "rule": "cross:cegis:flip_h+extract_largest_object"
+    },
+    {
+      "id": "746b3537",
+      "rule": "composite(dedup_rows+dedup_cols)"
+    },
+    {
+      "id": "74dd1130",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "7953d61e",
+      "rule": "cross:tile:tile_2x2_transform"
+    },
+    {
+      "id": "7b7f7511",
+      "rule": "cross:cegis:dedup_rows+dedup_cols"
+    },
+    {
+      "id": "7d1f7ee8",
+      "rule": "cross:per_obj_recolor:shape_to_color"
+    },
+    {
+      "id": "7fe24cdd",
+      "rule": "cross:tile:tile_2x2_transform"
+    },
+    {
+      "id": "810b9b61",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "833966f4",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "833dafe3",
+      "rule": "cross:puzzle:mirror_h_alt_tile"
+    },
+    {
+      "id": "84f2aca1",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "88a62173",
+      "rule": "extract_unique_subgrid"
+    },
+    {
+      "id": "8be77c9e",
+      "rule": "stack_v_flip"
+    },
+    {
+      "id": "8d5021e8",
+      "rule": "cross:puzzle:mirror_h_alt_tile"
+    },
+    {
+      "id": "8e2edd66",
+      "rule": "cross:cross3d:self_tile_bg_cinv"
+    },
+    {
+      "id": "913fb3ed",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "9172f3a0",
+      "rule": "cross:puzzle:upscale_3x"
+    },
+    {
+      "id": "94f9d214",
+      "rule": "cross:puzzle:split_v_nor_c2"
+    },
+    {
+      "id": "9565186b",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "95990924",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "99b1bc43",
+      "rule": "cross:puzzle:sep_h_xor_mark3"
+    },
+    {
+      "id": "9a4bb226",
+      "rule": "cross:extract_most_colors_mc"
+    },
+    {
+      "id": "9ddd00f0",
+      "rule": "cross:symmetry_fill:rot90"
+    },
+    {
+      "id": "9dfd6313",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "a2fd1cf0",
+      "rule": "cross:ptree:Seq(Apply(draw_lines_same_color)"
+    },
+    {
+      "id": "a416b8f3",
+      "rule": "stack_h"
+    },
+    {
+      "id": "a5313dff",
+      "rule": "fill_enclosed"
+    },
+    {
+      "id": "a59b95c0",
+      "rule": "cross:dynamic_tile:n_colors_plus1"
+    },
+    {
+      "id": "a68b268e",
+      "rule": "cross:ptree:Seq(Apply(extract_majority_bbox)"
+    },
+    {
+      "id": "a699fb00",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "a740d043",
+      "rule": "beam_depth_2(crop+res:color_sub)"
+    },
+    {
+      "id": "a79310a0",
+      "rule": "cross:puzzle:shift_recolor_d10"
+    },
+    {
+      "id": "a85d4709",
+      "rule": "cross:puzzle:col_color_map"
+    },
+    {
+      "id": "a87f7484",
+      "rule": "extract_unique_subgrid"
+    },
+    {
+      "id": "a9f96cdd",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "aa18de87",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "aabf363d",
+      "rule": "cross:puzzle:global_color_map"
+    },
+    {
+      "id": "ac0a08a4",
+      "rule": "cross:cell_to_color_block"
+    },
+    {
+      "id": "ad38a9d0",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "ad7e01d0",
+      "rule": "cross:self_stamp_c5"
+    },
+    {
+      "id": "ae58858e",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "aedd82e4",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "b1948b0a",
+      "rule": "cross:puzzle:global_color_map"
+    },
+    {
+      "id": "b2862040",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "b60334d2",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "b6afb2da",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "b8825c91",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "b91ae062",
+      "rule": "cross:cell_to_color_block"
+    },
+    {
+      "id": "ba97ae07",
+      "rule": "cross:puzzle:fill_intersection_gap"
+    },
+    {
+      "id": "bb43febb",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "bbc9ae5d",
+      "rule": "cross:puzzle:staircase_grow"
+    },
+    {
+      "id": "bc4146bd",
+      "rule": "cross:tile:tile_1x5_transform"
+    },
+    {
+      "id": "be03b35f",
+      "rule": "cross:cegis:rotate_90+crop"
+    },
+    {
+      "id": "be94b721",
+      "rule": "cross:extract_largest"
+    },
+    {
+      "id": "bf699163",
+      "rule": "composite(crop_to_color+crop_to_color)"
+    },
+    {
+      "id": "c0f76784",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "c3e719e8",
+      "rule": "cross:grow:self_stamp"
+    },
+    {
+      "id": "c48954c1",
+      "rule": "cross:tile:tile_3x3_transform"
+    },
+    {
+      "id": "c59eb873",
+      "rule": "cross:puzzle:upscale_2x"
+    },
+    {
+      "id": "c8f0f002",
+      "rule": "cross:puzzle:global_color_map"
+    },
+    {
+      "id": "c909285e",
+      "rule": "cross:extract:extract_unique_color_obj_7x7"
+    },
+    {
+      "id": "c9e6f938",
+      "rule": "stack_h_flip"
+    },
+    {
+      "id": "c9f8e694",
+      "rule": "cross:ptree:Seq(Apply(conditional_obj:bg_to_color)"
+    },
+    {
+      "id": "ccd554ac",
+      "rule": "cross:dynamic_tile:self_size"
+    },
+    {
+      "id": "cce03e0d",
+      "rule": "cross:self_stamp_c2"
+    },
+    {
+      "id": "cd3c21df",
+      "rule": "cross:extract_unique_shape"
+    },
+    {
+      "id": "ce22a75a",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "ce4f8723",
+      "rule": "cross:puzzle:sep_h_or_mark3"
+    },
+    {
+      "id": "ce8d95cc",
+      "rule": "composite(dedup_rows+dedup_cols)"
+    },
+    {
+      "id": "cf5fd0ad",
+      "rule": "cross:tile:tile_4x4_transform"
+    },
+    {
+      "id": "d037b0a7",
+      "rule": "cross:puzzle:ray_extend_down"
+    },
+    {
+      "id": "d10ecb37",
+      "rule": "tile_to_output"
+    },
+    {
+      "id": "d13f3404",
+      "rule": "cross:puzzle:diagonal_slide_1_1"
+    },
+    {
+      "id": "d19f7514",
+      "rule": "cross:puzzle:split_h_equal_or"
+    },
+    {
+      "id": "d364b489",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "d4a91cb9",
+      "rule": "cross:ptree:Seq(Apply(draw_lines_same_color)"
+    },
+    {
+      "id": "d4b1c2b1",
+      "rule": "cross:cross3d:color_count_upscale"
+    },
+    {
+      "id": "d511f180",
+      "rule": "cross:puzzle:global_color_map"
+    },
+    {
+      "id": "d631b094",
+      "rule": "cross:puzzle:nonzero_count_row"
+    },
+    {
+      "id": "d9fac9be",
+      "rule": "extract_smallest_region"
+    },
+    {
+      "id": "dae9d2b5",
+      "rule": "cross:ext_nb:split_combine"
+    },
+    {
+      "id": "dbc1a6ce",
+      "rule": "cross:ext_nb:between_fill"
+    },
+    {
+      "id": "dc1df850",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "dc433765",
+      "rule": "cross:puzzle:move_toward_3_to_4"
+    },
+    {
+      "id": "de1cd16c",
+      "rule": "cross:cegis:mirror_complete_v+crop"
+    },
+    {
+      "id": "ded97339",
+      "rule": "cross:puzzle:connect_same_color_lines"
+    },
+    {
+      "id": "e0fb7511",
+      "rule": "cond_neighbor"
+    },
+    {
+      "id": "e133d23d",
+      "rule": "cross:puzzle:sep_v_or_mark2"
+    },
+    {
+      "id": "e1baa8a4",
+      "rule": "composite(dedup_rows+dedup_cols)"
+    },
+    {
+      "id": "e345f17b",
+      "rule": "cross:puzzle:split_h_nor_c4"
+    },
+    {
+      "id": "e3497940",
+      "rule": "composite(symmetry_fill+subgrid_select)"
+    },
+    {
+      "id": "e57337a4",
+      "rule": "cross:puzzle:scale_down_5_uniform"
+    },
+    {
+      "id": "e633a9e5",
+      "rule": "cross:puzzle:scale_border_dup"
+    },
+    {
+      "id": "e69241bd",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "e729b7be",
+      "rule": "symmetry_fill"
+    },
+    {
+      "id": "e8593010",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "e9614598",
+      "rule": "cross:cross3d:midpoint_cross"
+    },
+    {
+      "id": "e98196ab",
+      "rule": "subgrid_overlay"
+    },
+    {
+      "id": "e9afcf9a",
+      "rule": "cross:puzzle:two_row_interleave"
+    },
+    {
+      "id": "ea32f347",
+      "rule": "cross:per_obj_recolor:shape_to_color"
+    },
+    {
+      "id": "ea786f4a",
+      "rule": "cross:puzzle:ray_extend_diag"
+    },
+    {
+      "id": "eb5a1d5d",
+      "rule": "composite(dedup_rows+dedup_cols)"
+    },
+    {
+      "id": "ed36ccf7",
+      "rule": "cross:rot270"
+    },
+    {
+      "id": "ed98d772",
+      "rule": "cross:tile:tile_2x2_transform"
+    },
+    {
+      "id": "f0df5ff0",
+      "rule": "neighborhood_rule"
+    },
+    {
+      "id": "f25fbde4",
+      "rule": "cross:enum_d2:crop+scale_2x"
+    },
+    {
+      "id": "f25ffba3",
+      "rule": "cross:sym_h"
+    },
+    {
+      "id": "f2829549",
+      "rule": "cross:puzzle:sep_v_nor_mark3"
+    },
+    {
+      "id": "fafffa47",
+      "rule": "cross:puzzle:split_v_nor_c2"
+    }
+  ],
+  "timestamp": "2026-02-26T21:12:45.299113+09:00",
+  "commit": "c80e978c770c336135496e0bfe5dfa848912410c"
+}
