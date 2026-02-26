@@ -1,14 +1,14 @@
 {
   "score": {
-    "solved": 222,
+    "solved": 224,
     "total": 1000,
-    "percentage": 22.2
+    "percentage": 22.4
   },
   "engine": {
-    "lines_of_code": 28332,
+    "lines_of_code": 28458,
     "files": 47,
-    "avg_speed_sec": 0.6,
-    "primitives": 132
+    "avg_speed_sec": 0.61,
+    "primitives": 134
   },
   "solved_tasks": [
     {
@@ -576,6 +576,10 @@
       "rule": "cross:dynamic_tile:n_colors_plus1"
     },
     {
+      "id": "a61ba2ce",
+      "rule": "cross:cross3d:corner_assembly"
+    },
+    {
       "id": "a68b268e",
       "rule": "cross:ptree:Seq(Apply(extract_majority_bbox)"
     },
@@ -748,6 +752,10 @@
       "rule": "cross:puzzle:ray_extend_down"
     },
     {
+      "id": "d0f5fe59",
+      "rule": "cross:cross3d:identity_n_objects"
+    },
+    {
       "id": "d10ecb37",
       "rule": "tile_to_output"
     },
@@ -900,6 +908,6 @@
       "rule": "cross:puzzle:split_v_nor_c2"
     }
   ],
-  "timestamp": "2026-02-26T21:12:45.299113+09:00",
-  "commit": "c80e978c770c336135496e0bfe5dfa848912410c"
+  "timestamp": "2026-02-26T21:29:10.004240+09:00",
+  "commit": "bd80810b590a3c489cb3ec44af9776ccce0a8e72"
 }

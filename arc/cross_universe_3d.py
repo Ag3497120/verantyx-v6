@@ -780,6 +780,120 @@ def apply_invert_recolor(inp, bg, color_map):
     return result.tolist()
 
 
+def _try_identity_n_objects(train_pairs, bg):
+    """Output = NxN identity matrix where N = number of objects, diagonal = nonbg color."""
+    from scipy import ndimage
+    
+    for inp, out in train_pairs:
+        a = np.array(inp)
+        o = np.array(out)
+        labeled, n = ndimage.label(a != bg)
+        if n < 2:
+            return False
+        if o.shape != (n, n):
+            return False
+        
+        nonbg_vals = a[a != bg]
+        if len(nonbg_vals) == 0:
+            return False
+        color = int(Counter(nonbg_vals.tolist()).most_common(1)[0][0])
+        
+        expected = np.zeros((n, n), dtype=int)
+        for i in range(n):
+            expected[i, i] = color
+        if not np.array_equal(expected, o):
+            return False
+    
+    return True
+
+
+def apply_identity_n_objects(inp, bg):
+    from scipy import ndimage
+    a = np.array(inp)
+    labeled, n = ndimage.label(a != bg)
+    nonbg_vals = a[a != bg]
+    color = int(Counter(nonbg_vals.tolist()).most_common(1)[0][0])
+    out = np.zeros((n, n), dtype=int)
+    for i in range(n):
+        out[i, i] = color
+    return out.tolist()
+
+
+def _try_corner_assembly(train_pairs, bg):
+    """4 L-shaped 2x2 objects assembled by missing corner position."""
+    from scipy import ndimage
+    
+    for inp, out in train_pairs:
+        a = np.array(inp)
+        o = np.array(out)
+        if o.shape != (4, 4):
+            return False
+        
+        labeled, n = ndimage.label(a != bg)
+        if n != 4:
+            return False
+        
+        objects = {}
+        for lbl in range(1, n + 1):
+            rows, cols = np.where(labeled == lbl)
+            r0, r1 = int(rows.min()), int(rows.max())
+            c0, c1 = int(cols.min()), int(cols.max())
+            sub = a[r0:r1+1, c0:c1+1]
+            if sub.shape != (2, 2):
+                return False
+            
+            if sub[0, 0] == bg: corner = 'TL'
+            elif sub[0, 1] == bg: corner = 'TR'
+            elif sub[1, 0] == bg: corner = 'BL'
+            elif sub[1, 1] == bg: corner = 'BR'
+            else:
+                return False
+            
+            objects[corner] = sub
+        
+        if len(objects) != 4:
+            return False
+        
+        expected = np.zeros((4, 4), dtype=int)
+        if 'BR' in objects: expected[0:2, 0:2] = objects['BR']
+        if 'BL' in objects: expected[0:2, 2:4] = objects['BL']
+        if 'TR' in objects: expected[2:4, 0:2] = objects['TR']
+        if 'TL' in objects: expected[2:4, 2:4] = objects['TL']
+        
+        if not np.array_equal(expected, o):
+            return False
+    
+    return True
+
+
+def apply_corner_assembly(inp, bg):
+    from scipy import ndimage
+    a = np.array(inp)
+    labeled, n = ndimage.label(a != bg)
+    
+    objects = {}
+    for lbl in range(1, n + 1):
+        rows, cols = np.where(labeled == lbl)
+        r0, r1 = int(rows.min()), int(rows.max())
+        c0, c1 = int(cols.min()), int(cols.max())
+        sub = a[r0:r1+1, c0:c1+1]
+        
+        if sub[0, 0] == bg: corner = 'TL'
+        elif sub[0, 1] == bg: corner = 'TR'
+        elif sub[1, 0] == bg: corner = 'BL'
+        elif sub[1, 1] == bg: corner = 'BR'
+        else: continue
+        
+        objects[corner] = sub
+    
+    out = np.zeros((4, 4), dtype=int)
+    if 'BR' in objects: out[0:2, 0:2] = objects['BR']
+    if 'BL' in objects: out[0:2, 2:4] = objects['BL']
+    if 'TR' in objects: out[2:4, 0:2] = objects['TR']
+    if 'TL' in objects: out[2:4, 2:4] = objects['TL']
+    return out.tolist()
+
+
 def _try_color_count_upscale(train_pairs):
     """Each cell → NxN solid block where N = number of distinct colors in input."""
     for inp, out in train_pairs:
@@ -1289,6 +1403,18 @@ def generate_3d_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]):
         def _apply_ccu(inp):
             return apply_color_count_upscale(inp)
         pieces.append(CrossPiece('cross3d:color_count_upscale', _apply_ccu))
+    
+    # Identity matrix from object count
+    if _try_identity_n_objects(train_pairs, bg):
+        def _apply_ino(inp, _bg=bg):
+            return apply_identity_n_objects(inp, _bg)
+        pieces.append(CrossPiece('cross3d:identity_n_objects', _apply_ino))
+    
+    # Corner assembly (4 L-shaped 2x2 pieces)
+    if _try_corner_assembly(train_pairs, bg):
+        def _apply_ca(inp, _bg=bg):
+            return apply_corner_assembly(inp, _bg)
+        pieces.append(CrossPiece('cross3d:corner_assembly', _apply_ca))
     
     # 1x1 output feature rules
     if all(np.array(out).shape == (1, 1) for _, out in train_pairs):
