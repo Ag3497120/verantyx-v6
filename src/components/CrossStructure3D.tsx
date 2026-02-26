@@ -1,295 +1,271 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
-interface CrossStructure3DProps {
-  children?: React.ReactNode;
-  className?: string;
-}
-
-export default function CrossStructure3D({ children, className = '' }: CrossStructure3DProps) {
-  const [scrollY, setScrollY] = useState(0);
-  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+export default function CrossStructure3D() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientY / window.innerHeight - 0.5) * 10;
-      const y = (e.clientX / window.innerWidth - 0.5) * 10;
-      setRotation({ x, y });
-    };
+    let animFrame = 0;
+    let mouseX = 0.5;
+    let mouseY = 0.5;
+    let time = 0;
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const handleMouse = (e: MouseEvent) => {
+      mouseX = e.clientX / window.innerWidth;
+      mouseY = e.clientY / window.innerHeight;
+    };
+    window.addEventListener('mousemove', handleMouse);
+
+    // 3D Cross vertices (Von Neumann: center + 4 cardinal arms)
+    // Each arm has depth (z) for 3D effect
+    interface Point3D { x: number; y: number; z: number; }
+
+    function project(p: Point3D, cx: number, cy: number, fov: number, rotX: number, rotY: number): { x: number; y: number; scale: number } {
+      // Rotate around Y axis
+      let x = p.x * Math.cos(rotY) - p.z * Math.sin(rotY);
+      let z = p.x * Math.sin(rotY) + p.z * Math.cos(rotY);
+      let y = p.y;
+
+      // Rotate around X axis
+      const y2 = y * Math.cos(rotX) - z * Math.sin(rotX);
+      const z2 = y * Math.sin(rotX) + z * Math.cos(rotX);
+      y = y2;
+      z = z2;
+
+      const scale = fov / (fov + z + 400);
+      return { x: cx + x * scale, y: cy + y * scale, scale };
+    }
+
+    function drawCross3D(
+      ctx: CanvasRenderingContext2D,
+      cx: number, cy: number,
+      size: number, depth: number,
+      rotX: number, rotY: number, rotZ: number,
+      color: string, alpha: number, fov: number,
+      pulse: number
+    ) {
+      const armLength = size;
+      const armWidth = size * 0.3;
+      const armDepth = depth;
+
+      // Define the 6 faces of each arm as quads in 3D
+      // Cross has 5 parts: center cube + 4 arms
+      const parts: Point3D[][] = [];
+
+      // Center cube
+      const cw = armWidth;
+      parts.push([
+        { x: -cw, y: -cw, z: -cw }, { x: cw, y: -cw, z: -cw },
+        { x: cw, y: cw, z: -cw }, { x: -cw, y: cw, z: -cw },
+      ]);
+      parts.push([
+        { x: -cw, y: -cw, z: cw }, { x: cw, y: -cw, z: cw },
+        { x: cw, y: cw, z: cw }, { x: -cw, y: cw, z: cw },
+      ]);
+
+      // Right arm (+X)
+      parts.push([
+        { x: cw, y: -cw, z: -cw }, { x: armLength, y: -cw, z: -cw },
+        { x: armLength, y: cw, z: -cw }, { x: cw, y: cw, z: -cw },
+      ]);
+      parts.push([
+        { x: cw, y: -cw, z: cw }, { x: armLength, y: -cw, z: cw },
+        { x: armLength, y: cw, z: cw }, { x: cw, y: cw, z: cw },
+      ]);
+      parts.push([
+        { x: cw, y: -cw, z: -cw }, { x: armLength, y: -cw, z: -cw },
+        { x: armLength, y: -cw, z: cw }, { x: cw, y: -cw, z: cw },
+      ]);
+      parts.push([
+        { x: cw, y: cw, z: -cw }, { x: armLength, y: cw, z: -cw },
+        { x: armLength, y: cw, z: cw }, { x: cw, y: cw, z: cw },
+      ]);
+      // End cap
+      parts.push([
+        { x: armLength, y: -cw, z: -cw }, { x: armLength, y: cw, z: -cw },
+        { x: armLength, y: cw, z: cw }, { x: armLength, y: -cw, z: cw },
+      ]);
+
+      // Left arm (-X)
+      parts.push([
+        { x: -cw, y: -cw, z: -cw }, { x: -armLength, y: -cw, z: -cw },
+        { x: -armLength, y: cw, z: -cw }, { x: -cw, y: cw, z: -cw },
+      ]);
+      parts.push([
+        { x: -cw, y: -cw, z: cw }, { x: -armLength, y: -cw, z: cw },
+        { x: -armLength, y: cw, z: cw }, { x: -cw, y: cw, z: cw },
+      ]);
+      parts.push([
+        { x: -armLength, y: -cw, z: -cw }, { x: -armLength, y: cw, z: -cw },
+        { x: -armLength, y: cw, z: cw }, { x: -armLength, y: -cw, z: cw },
+      ]);
+
+      // Up arm (-Y)
+      parts.push([
+        { x: -cw, y: -cw, z: -cw }, { x: cw, y: -cw, z: -cw },
+        { x: cw, y: -armLength, z: -cw }, { x: -cw, y: -armLength, z: -cw },
+      ]);
+      parts.push([
+        { x: -cw, y: -cw, z: cw }, { x: cw, y: -cw, z: cw },
+        { x: cw, y: -armLength, z: cw }, { x: -cw, y: -armLength, z: cw },
+      ]);
+      parts.push([
+        { x: -cw, y: -armLength, z: -cw }, { x: cw, y: -armLength, z: -cw },
+        { x: cw, y: -armLength, z: cw }, { x: -cw, y: -armLength, z: cw },
+      ]);
+
+      // Down arm (+Y)
+      parts.push([
+        { x: -cw, y: cw, z: -cw }, { x: cw, y: cw, z: -cw },
+        { x: cw, y: armLength, z: -cw }, { x: -cw, y: armLength, z: -cw },
+      ]);
+      parts.push([
+        { x: -cw, y: cw, z: cw }, { x: cw, y: cw, z: cw },
+        { x: cw, y: armLength, z: cw }, { x: -cw, y: armLength, z: cw },
+      ]);
+      parts.push([
+        { x: -cw, y: armLength, z: -cw }, { x: cw, y: armLength, z: -cw },
+        { x: cw, y: armLength, z: cw }, { x: -cw, y: armLength, z: cw },
+      ]);
+
+      // Apply rotZ to all points
+      const cosZ = Math.cos(rotZ);
+      const sinZ = Math.sin(rotZ);
+
+      // Sort faces by average z (painter's algorithm)
+      const projected = parts.map(face => {
+        const pts = face.map(p => {
+          const rx = p.x * cosZ - p.y * sinZ;
+          const ry = p.x * sinZ + p.y * cosZ;
+          return project({ x: rx, y: ry, z: p.z }, cx, cy, fov, rotX, rotY);
+        });
+        const avgZ = face.reduce((s, p) => {
+          const rx = p.x * cosZ - p.y * sinZ;
+          const ry = p.x * sinZ + p.y * cosZ;
+          const z = rx * Math.sin(rotY) + p.z * Math.cos(rotY);
+          const z2 = ry * Math.sin(rotX) + z * Math.cos(rotX);
+          return s + z2;
+        }, 0) / face.length;
+        return { pts, avgZ };
+      });
+
+      projected.sort((a, b) => a.avgZ - b.avgZ);
+
+      for (const { pts } of projected) {
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (let i = 1; i < pts.length; i++) {
+          ctx.lineTo(pts[i].x, pts[i].y);
+        }
+        ctx.closePath();
+
+        const pulseAlpha = alpha * (0.5 + 0.5 * Math.sin(pulse));
+        ctx.fillStyle = color.replace(')', `,${pulseAlpha * 0.3})`).replace('rgb', 'rgba');
+        ctx.fill();
+        ctx.strokeStyle = color.replace(')', `,${pulseAlpha * 0.8})`).replace('rgb', 'rgba');
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+
+    function drawElectricPulse(ctx: CanvasRenderingContext2D, cx: number, cy: number, size: number, t: number) {
+      // Electric pulses traveling along the cross arms
+      const armLength = size;
+      const directions = [
+        { dx: 1, dy: 0 }, { dx: -1, dy: 0 },
+        { dx: 0, dy: -1 }, { dx: 0, dy: 1 },
+      ];
+
+      for (const dir of directions) {
+        const progress = ((t * 2) % 1);
+        const px = cx + dir.dx * armLength * progress;
+        const py = cy + dir.dy * armLength * progress;
+
+        const gradient = ctx.createRadialGradient(px, py, 0, px, py, 15);
+        gradient.addColorStop(0, 'rgba(14, 165, 233, 0.8)');
+        gradient.addColorStop(0.5, 'rgba(14, 165, 233, 0.3)');
+        gradient.addColorStop(1, 'rgba(14, 165, 233, 0)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(px - 15, py - 15, 30, 30);
+      }
+    }
+
+    function animate() {
+      if (!canvas || !ctx) return;
+      time += 0.005;
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      const cx = w / 2;
+      const cy = h / 2;
+      const baseRotX = (mouseY - 0.5) * 0.4 + Math.sin(time * 0.3) * 0.1;
+      const baseRotY = (mouseX - 0.5) * 0.4 + time * 0.2;
+      const baseRotZ = Math.sin(time * 0.15) * 0.05;
+
+      // Main large cross
+      drawCross3D(ctx, cx, cy, 180, 40, baseRotX, baseRotY, baseRotZ, 'rgb(14, 165, 233)', 0.8, 800, time * 2);
+
+      // Nested smaller crosses at each arm tip
+      const nestedSize = 60;
+      const tipDist = 220;
+      const nestAngles = [
+        { ox: tipDist, oy: 0 },
+        { ox: -tipDist, oy: 0 },
+        { ox: 0, oy: -tipDist },
+        { ox: 0, oy: tipDist },
+      ];
+
+      for (let i = 0; i < nestAngles.length; i++) {
+        const n = nestAngles[i];
+        // Project the offset through the same rotation
+        const p = project(
+          { x: n.ox, y: n.oy, z: 0 },
+          cx, cy, 800, baseRotX, baseRotY
+        );
+        drawCross3D(ctx, p.x, p.y, nestedSize * p.scale, 15, baseRotX + time * 0.5, baseRotY + i * 0.3, baseRotZ, 'rgb(168, 85, 247)', 0.5, 800, time * 3 + i);
+      }
+
+      // Electric pulses
+      drawElectricPulse(ctx, cx, cy, 180, time);
+
+      animFrame = requestAnimationFrame(animate);
+    }
+
+    animate();
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(animFrame);
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('mousemove', handleMouse);
     };
   }, []);
 
   return (
-    <div className={`cross-structure-container ${className}`}>
-      <div
-        className="cross-structure"
-        style={{
-          transform: `perspective(1200px) rotateX(${rotation.x + scrollY * 0.05}deg) rotateY(${rotation.y}deg)`,
-          transformStyle: 'preserve-3d',
-        }}
-      >
-        {/* Vertical arm - top */}
-        <motion.div
-          className="cross-arm cross-arm-vertical-top"
-          initial={{ opacity: 0, z: -200 }}
-          animate={{ opacity: 1, z: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-        >
-          <div className="cross-arm-inner">
-            <div className="cross-glow" />
-          </div>
-        </motion.div>
-
-        {/* Horizontal arm - left */}
-        <motion.div
-          className="cross-arm cross-arm-horizontal-left"
-          initial={{ opacity: 0, x: -200 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.4 }}
-        >
-          <div className="cross-arm-inner">
-            <div className="cross-glow" />
-          </div>
-        </motion.div>
-
-        {/* Center */}
-        <motion.div
-          className="cross-center"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1, delay: 0.6 }}
-        >
-          {children}
-        </motion.div>
-
-        {/* Horizontal arm - right */}
-        <motion.div
-          className="cross-arm cross-arm-horizontal-right"
-          initial={{ opacity: 0, x: 200 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.4 }}
-        >
-          <div className="cross-arm-inner">
-            <div className="cross-glow" />
-          </div>
-        </motion.div>
-
-        {/* Vertical arm - bottom */}
-        <motion.div
-          className="cross-arm cross-arm-vertical-bottom"
-          initial={{ opacity: 0, y: 200 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-        >
-          <div className="cross-arm-inner">
-            <div className="cross-glow" />
-          </div>
-        </motion.div>
-
-        {/* Nested crosses */}
-        <NestedCross position="top" delay={1.0} />
-        <NestedCross position="left" delay={1.2} />
-        <NestedCross position="right" delay={1.4} />
-        <NestedCross position="bottom" delay={1.6} />
-      </div>
-
-      <style jsx>{`
-        .cross-structure-container {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          pointer-events: none;
-          z-index: 0;
-          overflow: hidden;
-        }
-
-        .cross-structure {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform-origin: center center;
-          transition: transform 0.1s ease-out;
-        }
-
-        .cross-arm {
-          position: absolute;
-          background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(168, 85, 247, 0.1));
-          border: 1px solid rgba(14, 165, 233, 0.3);
-          box-shadow: 0 0 30px rgba(14, 165, 233, 0.2),
-                      inset 0 0 30px rgba(14, 165, 233, 0.1);
-          backdrop-filter: blur(10px);
-        }
-
-        .cross-arm-vertical-top {
-          width: 80px;
-          height: 300px;
-          left: 50%;
-          bottom: 50%;
-          margin-left: -40px;
-          transform-origin: bottom center;
-        }
-
-        .cross-arm-vertical-bottom {
-          width: 80px;
-          height: 300px;
-          left: 50%;
-          top: 50%;
-          margin-left: -40px;
-          transform-origin: top center;
-        }
-
-        .cross-arm-horizontal-left {
-          width: 300px;
-          height: 80px;
-          top: 50%;
-          right: 50%;
-          margin-top: -40px;
-          transform-origin: right center;
-        }
-
-        .cross-arm-horizontal-right {
-          width: 300px;
-          height: 80px;
-          top: 50%;
-          left: 50%;
-          margin-top: -40px;
-          transform-origin: left center;
-        }
-
-        .cross-center {
-          position: absolute;
-          width: 120px;
-          height: 120px;
-          left: 50%;
-          top: 50%;
-          margin-left: -60px;
-          margin-top: -60px;
-          background: radial-gradient(circle, rgba(14, 165, 233, 0.2), transparent);
-          border: 2px solid rgba(14, 165, 233, 0.5);
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 0 60px rgba(14, 165, 233, 0.4);
-        }
-
-        .cross-glow {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(90deg,
-            transparent 0%,
-            rgba(14, 165, 233, 0.3) 50%,
-            transparent 100%);
-          animation: pulse 3s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 1; }
-        }
-
-        @media (max-width: 768px) {
-          .cross-arm-vertical-top,
-          .cross-arm-vertical-bottom {
-            width: 40px;
-            height: 150px;
-            margin-left: -20px;
-          }
-
-          .cross-arm-horizontal-left,
-          .cross-arm-horizontal-right {
-            width: 150px;
-            height: 40px;
-            margin-top: -20px;
-          }
-
-          .cross-center {
-            width: 80px;
-            height: 80px;
-            margin-left: -40px;
-            margin-top: -40px;
-          }
-        }
-      `}</style>
-    </div>
-  );
-}
-
-function NestedCross({ position, delay }: { position: 'top' | 'left' | 'right' | 'bottom', delay: number }) {
-  const getPosition = () => {
-    switch (position) {
-      case 'top':
-        return { left: '50%', bottom: '100%', marginLeft: '-30px', marginBottom: '100px' };
-      case 'bottom':
-        return { left: '50%', top: '100%', marginLeft: '-30px', marginTop: '100px' };
-      case 'left':
-        return { right: '100%', top: '50%', marginRight: '100px', marginTop: '-30px' };
-      case 'right':
-        return { left: '100%', top: '50%', marginLeft: '100px', marginTop: '-30px' };
-    }
-  };
-
-  return (
-    <motion.div
-      className="nested-cross"
+    <canvas
+      ref={canvasRef}
       style={{
         position: 'absolute',
-        ...getPosition(),
-        transformStyle: 'preserve-3d',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none',
+        zIndex: 0,
       }}
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 0.6 }}
-      transition={{ duration: 0.8, delay }}
-    >
-      <div className="nested-cross-vertical" />
-      <div className="nested-cross-horizontal" />
-
-      <style jsx>{`
-        .nested-cross {
-          width: 60px;
-          height: 60px;
-          transform: scale(0.5) translateZ(-50px);
-        }
-
-        .nested-cross-vertical {
-          position: absolute;
-          width: 20px;
-          height: 60px;
-          left: 50%;
-          top: 0;
-          margin-left: -10px;
-          background: linear-gradient(180deg, rgba(168, 85, 247, 0.3), rgba(14, 165, 233, 0.3));
-          border: 1px solid rgba(168, 85, 247, 0.4);
-          box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
-        }
-
-        .nested-cross-horizontal {
-          position: absolute;
-          width: 60px;
-          height: 20px;
-          top: 50%;
-          left: 0;
-          margin-top: -10px;
-          background: linear-gradient(90deg, rgba(168, 85, 247, 0.3), rgba(14, 165, 233, 0.3));
-          border: 1px solid rgba(168, 85, 247, 0.4);
-          box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
-        }
-      `}</style>
-    </motion.div>
+    />
   );
 }
