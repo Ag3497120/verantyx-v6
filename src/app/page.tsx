@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <main className="relative bg-black text-white overflow-x-hidden">
       {/* Section 1: 3D Cross Hero */}
-      <section className="relative min-h-screen flex items-center justify-center">
+      <section className="relative min-h-screen flex items-center justify-center" style={{ containIntrinsicSize: '0 100vh', contentVisibility: 'auto' }}>
         <CrossStructure3D />
         <div className="relative z-10 text-center">
           <Hero />

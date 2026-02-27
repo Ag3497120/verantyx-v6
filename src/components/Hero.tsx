@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export default function Hero() {
   return (
-    <section className="min-h-screen flex items-center justify-center px-6 relative">
+    <section className="flex items-center justify-center px-6 relative">
       <div className="max-w-5xl mx-auto text-center">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
@@ -46,6 +46,19 @@ export default function Hero() {
             </p>
           </div>
         </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.2 }}
+          className="mt-8 text-sm text-gray-500"
+        >
+          Built by{' '}
+          <a href="https://x.com/Koffdai" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-cyan-400 transition-colors">kofdai</a>
+          {' '}×{' '}
+          <a href="https://openclaw.ai" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-cyan-400 transition-colors">OpenClaw</a>
+          {' '}— Human Logic + AI Implementation
+        </motion.p>
       </div>
     </section>
   );

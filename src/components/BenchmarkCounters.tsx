@@ -59,9 +59,9 @@ export default function BenchmarkCounters() {
         >
           <div className="counter-label">ARC-AGI-2</div>
           <div className="counter-value">
-            <AnimatedCounter end={20.7} suffix="%" decimals={1} />
+            <AnimatedCounter end={22.1} suffix="%" decimals={1} />
           </div>
-          <div className="counter-detail">207/1000 tasks</div>
+          <div className="counter-detail">222/1000 tasks</div>
           <div className="counter-glow arc-glow" />
         </motion.div>
 

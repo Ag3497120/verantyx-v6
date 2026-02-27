@@ -11,13 +11,14 @@ const data = [
   { version: 'v40', score: 17.2 },
   { version: 'v47', score: 18.9 },
   { version: 'v53', score: 20.7 },
+  { version: 'v59', score: 22.1 },
 ];
 
 export default function ScoreChart() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
-  const maxScore = 25;
+  const maxScore = 30;
   const chartHeight = 300;
   const chartWidth = 600;
   const padding = 40;
@@ -43,7 +44,7 @@ export default function ScoreChart() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-xl text-center text-gray-400 mb-16"
         >
-          From 11.3% to 20.7% — continuous improvement through symbolic refinement
+          From 11.3% to 22.1% — continuous improvement through symbolic refinement
         </motion.p>
 
         <div className="card-glow border-glow rounded-2xl p-10 bg-gray-900/50 backdrop-blur-sm overflow-x-auto">

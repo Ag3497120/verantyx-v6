@@ -11,7 +11,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'Verantyx - Symbolic Reasoning. Zero Neural Networks.',
-  description: 'LLM-free symbolic reasoning engine achieving 20.7% on ARC-AGI-2 through pure program synthesis.',
+  description: 'LLM-free symbolic reasoning engine achieving 22.1% on ARC-AGI-2 through pure program synthesis.',
   keywords: ['symbolic reasoning', 'ARC-AGI', 'program synthesis', 'no neural networks'],
 };
 

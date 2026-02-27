@@ -1,11 +1,15 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import LiveMetrics from './LiveMetrics';
 
 export default function Footer() {
   return (
     <footer className="py-16 px-6 border-t border-gray-800">
       <div className="max-w-6xl mx-auto">
+        {/* Live Metrics from CI */}
+        <LiveMetrics />
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -32,10 +36,12 @@ export default function Footer() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="text-gray-300 font-semibold">View on GitHub</span>
+              <span className="text-gray-300 font-semibold">★ Star on GitHub</span>
             </a>
 
-            <p className="text-gray-500 text-sm">Built by kofdai</p>
+            <p className="text-gray-500 text-sm">
+              Built by <a href="https://x.com/Koffdai" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-cyan-400 transition-colors">@Koffdai</a> × <a href="https://openclaw.ai" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-cyan-400 transition-colors">OpenClaw</a>
+            </p>
           </div>
         </motion.div>
 
@@ -46,7 +52,10 @@ export default function Footer() {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm"
         >
-          <p>© 2025 Verantyx. Pure symbolic reasoning without neural networks.</p>
+          <p>© 2025 Verantyx. Pure symbolic reasoning — zero neural networks, zero GPUs.</p>
+          <p className="mt-2 text-gray-600 text-xs">
+            Human architecture × AI implementation — kofdai designs the algorithms, <a href="https://openclaw.ai" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-cyan-400 transition-colors">OpenClaw (Claude)</a> helps implement and test them.
+          </p>
         </motion.div>
       </div>
     </footer>

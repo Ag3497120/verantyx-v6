@@ -257,6 +257,8 @@ export default function CrossStructure3D() {
   return (
     <canvas
       ref={canvasRef}
+      width={1920}
+      height={1080}
       style={{
         position: 'absolute',
         top: 0,

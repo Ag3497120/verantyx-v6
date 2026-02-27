@@ -1,0 +1,53 @@
+{
+  "project": "verantyx",
+  "benchmark": "ARC-AGI-2",
+  "current": {
+    "version": "v69",
+    "solved": 231,
+    "total": 1000,
+    "percentage": 23.1,
+    "updated_at": "2026-02-27T21:00:00+09:00"
+  },
+  "approach": {
+    "type": "symbolic_program_synthesis",
+    "neural_networks": false,
+    "llm": false,
+    "pretrained_models": false,
+    "interpretable": true,
+    "verifiable": true
+  },
+  "engine_stats": {
+    "phases": [
+      "Cross DSL (neighborhood rules)",
+      "Cross3D Probe (6-axis measurement)",
+      "Rotating Cross (orientation-invariant search)",
+      "Standalone Primitives",
+      "Stamp / Pattern",
+      "Composite Chains",
+      "Iterative Cross (residual learning)",
+      "Puzzle Reasoning",
+      "ProgramTree (CEGIS synthesis)"
+    ],
+    "avg_solve_time_sec": 0.66
+  },
+  "evolution": [
+    { "version": "v1", "solved": 42, "percentage": 4.2 },
+    { "version": "v19", "solved": 113, "percentage": 11.3 },
+    { "version": "v23", "solved": 120, "percentage": 12.0 },
+    { "version": "v50", "solved": 200, "percentage": 20.0 },
+    { "version": "v57", "solved": 216, "percentage": 21.6 },
+    { "version": "v60", "solved": 224, "percentage": 22.4 },
+    { "version": "v65", "solved": 228, "percentage": 22.8 },
+    { "version": "v69", "solved": 231, "percentage": 23.1 }
+  ],
+  "raw_data": {
+    "status": "sponsor_exclusive",
+    "message": "Full inference logs, per-task results, failure analysis, and DSL architecture details are available for GitHub Sponsors.",
+    "sponsor_url": "https://github.com/sponsors/Ag3497120",
+    "tiers": {
+      "researcher": "$5/mo — Score updates + failure categories",
+      "lab": "$20/mo — Full inference logs + rule distribution",
+      "institution": "$50/mo — Raw eval data + DSL drafts + architecture deep-dives"
+    }
+  }
+}

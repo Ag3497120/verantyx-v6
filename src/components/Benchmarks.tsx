@@ -50,7 +50,7 @@ export default function Benchmarks() {
           >
             <h3 className="text-2xl font-semibold text-gray-300 mb-4">ARC-AGI-2</h3>
             <div className="text-8xl font-bold mb-4 text-glow text-electric">
-              <AnimatedCounter value={20.7} suffix="%" />
+              <AnimatedCounter value={22.1} suffix="%" />
             </div>
             <p className="text-xl text-gray-400 mb-2">207/1000 tasks solved</p>
             <p className="text-lg text-gray-500">Pure symbolic program synthesis</p>

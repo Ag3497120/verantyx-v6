@@ -1,0 +1,16 @@
+{
+  "benchmark": "ARC-AGI-2",
+  "latest": {
+    "version": "v69",
+    "score": "23.1%",
+    "solved": 231,
+    "total": 1000,
+    "method": "Pure symbolic — zero neural networks",
+    "avg_time": "0.66s/task"
+  },
+  "detailed_results": {
+    "status": "sponsor_exclusive",
+    "info": "Per-task results, inference logs, failure taxonomy, and rule distribution are available to GitHub Sponsors.",
+    "url": "https://github.com/sponsors/Ag3497120"
+  }
+}
