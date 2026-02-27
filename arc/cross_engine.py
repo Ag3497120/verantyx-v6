@@ -1897,6 +1897,22 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    # === Phase 1.57i: Abstract Neighborhood Solver ===
+    try:
+        from arc.abstract_nb_solver import generate_abstract_nb_pieces
+        _anb_pieces = generate_abstract_nb_pieces(train_pairs)
+        all_pieces.extend(_anb_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.57h: Program Search (test-time synthesis) ===
+    try:
+        from arc.program_search import generate_search_pieces
+        _search_pieces = generate_search_pieces(train_pairs)
+        all_pieces.extend(_search_pieces)
+    except Exception:
+        pass
+
     # === Phase 1.57g: Brute-force Rule Solver ===
     try:
         from arc.brute_rule_solver import generate_brute_pieces
