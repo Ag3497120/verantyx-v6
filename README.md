@@ -1,6 +1,6 @@
 # Verantyx V6 — ARC-AGI-2 Solver
 
-## 🎯 222/1000 (22.2%) on ARC-AGI-2 Training Set
+## 🎯 227/1000 (22.7%) on ARC-AGI-2 Training Set
 
 > Zero neural networks. Zero LLM calls. Zero hardcoded answers.
 > Pure symbolic program synthesis — every solution is a verifiable, interpretable program.
@@ -219,10 +219,23 @@ python3 -m arc.eval_cross_engine --split training --task <task_id>
 
 Requires Python 3.10+ and NumPy. No other dependencies.
 
+## Built With
+
+This project is built by **kofdai** in collaboration with **[OpenClaw](https://openclaw.ai)** — an AI agent platform.
+
+The entire development process — architecture design, implementation, debugging, and evaluation — is a human-AI collaboration:
+
+- **kofdai**: Core architecture vision, algorithm design (Cross DSL, MultiScale Cross, 3D Cross Geometry), strategic decisions on which approaches to pursue
+- **OpenClaw (Claude)**: Implementation, code generation, systematic testing, evaluation pipeline, debugging assistance
+
+Every design decision comes from kofdai. The AI implements, tests, and iterates on those designs. No LLM is used in the actual solving pipeline — Verantyx is 100% symbolic. The AI assists only in the development process itself.
+
+This is what human-AI collaboration looks like: human intuition and architectural vision, combined with AI's ability to rapidly implement and test ideas.
+
 ## License
 
 MIT
 
 ## Author
 
-[kofdai](https://github.com/kofdai)
+[kofdai](https://github.com/kofdai) × [OpenClaw](https://openclaw.ai)

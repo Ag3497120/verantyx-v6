@@ -1,0 +1,2744 @@
+{
+  "017c7c7b": {
+    "primary": "composition_2step",
+    "secondary": "color_map+upscale_downscale",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a vertical upscaling by 1.5x (6 rows \u2192 9 rows) combined with a color mapping from 1 to 2."
+  },
+  "03560426": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Objects appear to fall downward (or slide leftward) until they encounter a boundary or another object, as seen by the movement of colored blocks toward the bottom-left in each example."
+  },
+  "045e512c": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "Each input contains a small pattern (like a cross or a 3x3 block) that is stamped repeatedly at the locations of specific colored cells in the input to produce the output."
+  },
+  "05a7bcf2": {
+    "primary": "composition_2step",
+    "secondary": "gravity+color_map",
+    "confidence": 0.95,
+    "reasoning": "The transformation involves objects falling downward (gravity) until they hit a barrier (the horizontal line of color 8), followed by a global color remapping (e.g., 4\u21923, 3\u21924, etc.) in the affected regions."
+  },
+  "05f2a901": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Objects (colored blobs) are falling downward until they hit the bottom or another object, with empty rows above them being filled by shifting the objects down."
+  },
+  "09c534e7": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation appears to recolor specific objects (like the '1' cells forming certain shapes) based on their local neighborhood or adjacency to other colors, rather than a global color map or simple object property."
+  },
+  "0a1d4ef5": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.95,
+    "reasoning": "Each example shows a small object extracted from the large grid and recolored to produce the final 2x3 or 3x3 output."
+  },
+  "0a938d79": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each input contains one or two colored cells, and the output shows those colors repeated horizontally across entire rows in a periodic pattern."
+  },
+  "0d87d2a6": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+flood_fill",
+    "confidence": 0.95,
+    "reasoning": "The transformation first extracts the blue (1) cells from the input, then performs a flood fill from those cells to turn adjacent red (2) regions into blue (1) while preserving other colors."
+  },
+  "0e206a2e": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Objects appear to fall downward until hitting a barrier or the bottom, with some color changes occurring upon collision or stacking."
+  },
+  "0e671a1a": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows colored regions (color 5) that appear to fill areas bounded by colored cells (2,3,4) and the grid edges, resembling a flood-fill operation from certain seed points."
+  },
+  "0f63c0b9": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.95,
+    "reasoning": "First, each colored object is extracted and placed in a new grid, then a rule is applied to fill rows/columns around it to create a border pattern based on the object's color."
+  },
+  "103eff5b": {
+    "primary": "object_recolor",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each distinct contiguous object (blob) of color 8 is recolored to a new color based on its shape and/or relative position, independent of other objects."
+  },
+  "10fcaaa3": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be created by first extracting the non-zero colored cells as objects and then stamping a checkerboard-like pattern (alternating 8 and 0) around them in a tiled manner."
+  },
+  "1190bc91": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output cells appear to be computed from local patterns around each cell, with the central digit in the input influencing the output values in a structured way that depends on neighboring cells."
+  },
+  "1190e5a7": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a smaller, uniform subgrid extracted from the input, specifically cropping to the region of repeated color 1 columns and ignoring the full-width separator rows of color 8 or 1."
+  },
+  "11dc524f": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Objects of colors other than the background (7) appear to fall downward until they encounter another non-background cell or the bottom edge."
+  },
+  "11e1fe23": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output appears to be the input grid with a specific pattern (a cross or plus shape) stamped at the location of certain colored cells, adding new colored cells around them."
+  },
+  "12422b43": {
+    "primary": "tiling",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output repeats a pattern from the input grid downward, filling the entire output space by tiling a vertical segment."
+  },
+  "12997ef3": {
+    "primary": "extract_object",
+    "secondary": "null",
+    "confidence": 0.95,
+    "reasoning": "The output consists of small 3x3 blocks that appear to be extracted and stacked vertically from the input grid, where each block corresponds to a distinct colored object and its immediate surrounding cells."
+  },
+  "13713586": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each example shows regions of a specific color expanding to fill all contiguous cells bounded by the outermost border color (5), starting from the original colored cells."
+  },
+  "137eaa0f": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a 3x3 grid that appears to be a cropped bounding box around the largest contiguous non-zero object in the input."
+  },
+  "13f06aa5": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation shows objects (distinct colored cells) falling downward until they hit obstacles or the bottom, with new cells appearing at the top to replace them."
+  },
+  "1478ab18": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output changes only specific cells (color 7 to 8) in a pattern that depends on the positions of color 5 cells, suggesting a local rule based on neighbor counts or distances."
+  },
+  "15660dd6": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a cropped and recolored version of a specific repeating internal object from the input grid."
+  },
+  "17829a00": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation shows objects (non-7 colors) falling downward until they hit a barrier or the bottom, which is characteristic of a gravity operation."
+  },
+  "178fcbfb": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.95,
+    "reasoning": "The transformation first extracts the colored cells (1, 2, 3) as objects, then stamps a full-width horizontal bar pattern at each object's row using the object's color."
+  },
+  "17b80ad2": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Colored cells appear to fall downward until they hit another colored cell or the bottom edge, with the output showing vertical columns of color extending downward from each original colored cell position."
+  },
+  "17b866bd": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+flood_fill",
+    "confidence": 0.95,
+    "reasoning": "The transformation first extracts a specific object (the central '8' shape) and then performs a flood fill from its interior outward, changing enclosed cells to a new color."
+  },
+  "184a9768": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts the main contiguous colored objects (like the large colored blocks) and then applies a local neighborhood rule to modify their interior colors based on adjacent colors or small patterns."
+  },
+  "1990f7a8": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a 7x7 grid extracted from each input, where each cell is determined by the presence and arrangement of colored cells (likely 2s) in the corresponding local neighborhood of the input grid."
+  },
+  "19bb5feb": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a 2x2 grid that appears to be extracted from the interior of a larger rectangular object, specifically capturing the colors of a smaller 2x2 block inside it."
+  },
+  "1a6449f1": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a specific subgrid extracted from the larger input grid, maintaining the same cell values without transformation."
+  },
+  "1be83260": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a cropped and recolored version of a specific repeating object from the input grid."
+  },
+  "1c02dbbe": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts a central colored region (object) and then applies a local flooding or boundary propagation rule to recolor its interior based on seed colors at its edges."
+  },
+  "1c56ad9f": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows subtle shifts in the positions of colored cells within the thick border patterns, consistent with a cellular automaton or local neighbor-based transformation that moves or toggles cells based on their immediate surroundings."
+  },
+  "1d0a4b61": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "All three examples show that regions of zeros (black) in the input are replaced by the surrounding non-zero pattern, as if performing a flood fill from the boundaries to replace zeros with the neighboring colors."
+  },
+  "1d398264": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "Each example shows a small object in the input that acts as a 'stamp' to create a pattern of lines or rays extending outward in the output, often with color changes."
+  },
+  "1da012fc": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation applies different recoloring rules to distinct objects based on their shape and context, with 1\u21922, 8\u21923, and 0\u21924 in specific object patterns."
+  },
+  "1e32b0e9": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation appears to fill enclosed regions defined by the colored lines (color 2, 8, or 1) and the grid boundaries, changing interior zeros to the line color."
+  },
+  "1efba499": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output cells change based on the colors of their immediate neighbors, with specific patterns like a 5 appearing between a 9 and a 3 in Example 3, and isolated color changes in local contexts in Examples 1 and 2."
+  },
+  "1f0c79e5": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows a pattern of colored cells (the color matches a specific input object) radiating outward from the object's location, resembling a stamp or propagation of that object's shape/color into a larger pattern."
+  },
+  "1fad071e": {
+    "primary": "counting_output",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a 1x5 binary sequence that appears to count occurrences of a specific pattern or color in each column of the 9x9 input grid."
+  },
+  "2037f2c7": {
+    "primary": "extract_object",
+    "secondary": "color_map",
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a small extracted subgrid from the input, with colors remapped (e.g., 6\u21928)."
+  },
+  "20818e16": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a specific contiguous region (object) extracted from the center of the input grid, ignoring the outer border of a single color."
+  },
+  "20981f0e": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts the large blue (2) cross-shaped objects and then applies a local rule to modify or fill the remaining red (1) and green (3) patterns in their vicinity."
+  },
+  "20fb2937": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to extract a specific object (the central structure) and then apply a local neighborhood rule to transform its colors based on adjacent cells."
+  },
+  "212895b5": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to first extract the large 8-colored object (likely a 'blob') and then apply a neighborhood rule that propagates colors outward from its boundary, creating a gradient-like effect in the surrounding area."
+  },
+  "2204b7a8": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation changes specific colored cells (3s) to different colors (4, 2, 8, 9) depending on their position relative to the colored border rows."
+  },
+  "22208ba4": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "All examples show objects of specific colors (2,7,8,9,5, etc.) falling downward until blocked by other objects or boundaries, with empty spaces (color 7) filling from above."
+  },
+  "22233c11": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output places a 2x2 block of color 8 at a fixed offset from each input object (color 3 cells), suggesting a stamping pattern relative to object positions."
+  },
+  "22425bda": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a small sequence of digits that appear exactly once each in the input grid, extracted in reading order."
+  },
+  "2281f1f4": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation applies a rule only to rows containing a 5 in the last column, changing specific 0s in those rows to 2s based on the pattern of 5s in the first row."
+  },
+  "22a4bbc2": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation changes specific 1-cells to 2 based on their local context, such as being part of a horizontal line of 1s that is adjacent to an 8-region, rather than a global recolor or simple neighborhood rule."
+  },
+  "234bbc79": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to extract specific colored objects (like 5s and 8s) and then apply a local rule that spreads or merges them based on neighboring colors."
+  },
+  "256b0a75": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows enclosed regions being filled with a solid color, starting from certain seed cells and expanding until hitting boundaries of a different color."
+  },
+  "25c199f5": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each output is a 5x5 subgrid extracted from the larger 5x17 input, specifically from the region between the vertical separators (color 6 columns)."
+  },
+  "264363fd": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output cells appear to be determined by the colors of their immediate neighbors in the input, with specific patterns of color changes around isolated cells of different colors."
+  },
+  "2685904e": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output appears to stamp a pattern derived from the bottom row's digits onto specific rows above the middle line, with the pattern's position and size determined by the top-left number."
+  },
+  "2697da3f": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be created by stamping the input pattern at multiple locations, with the input shape being a small cross-like object that is repeated in a larger grid."
+  },
+  "278e5215": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.95,
+    "reasoning": "Each example shows extraction of specific colored objects from the input followed by a consistent global color remapping to produce the output."
+  },
+  "281123b4": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output is a 4x4 grid extracted from the larger input, where each output cell appears to be determined by a local 3x3 neighborhood rule applied to specific positions in the input."
+  },
+  "28e73c20": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a pattern of nested squares (like a maze border) that emerges from a uniform zero grid, suggesting a cellular automaton rule based on neighbor counts or positions."
+  },
+  "292dd178": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation changes specific interior cells (color 1) to color 2 based on the number of adjacent cells of color 1, resembling a cellular automaton rule."
+  },
+  "29700607": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Colored cells fall downward (or in a specific direction) until they hit another colored cell or the bottom, forming vertical/horizontal lines."
+  },
+  "2b01abd0": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "Objects appear to fall downward until they hit a barrier (like the horizontal line of color 1 in examples 2 and 3), with some color changes occurring upon collision or movement."
+  },
+  "2b9ef948": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each input contains a small object (like a shape or line) that is used as a stamp to fill the output grid with a pattern of 7s, 3s, or 8s, radiating outward from the object's location."
+  },
+  "2c608aff": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "In each example, colored cells (2, 4, 5, 8) appear to 'fall' downward until they encounter other colored cells or the bottom edge, similar to sand falling under gravity."
+  },
+  "2c737e39": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Objects appear to fall downward until they encounter another object or the bottom of the grid, as seen by the shifted positions of colored cells in the output."
+  },
+  "2ccd9fef": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output is a contiguous vertical crop of the input grid, removing repeated or duplicate rows while preserving the central pattern."
+  },
+  "2dd70a9a": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation fills enclosed regions starting from certain seed cells (like color 3) until hitting boundaries of other colors, which is characteristic of flood fill."
+  },
+  "2f0c5170": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a smaller grid containing only the non-background (non-8) object from the input, cropped to its bounding box."
+  },
+  "2faf500b": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output cells appear to depend on the presence and arrangement of colored neighbors (especially 9 and 6) in the input, with specific patterns of 0s and 9s emerging based on local configurations."
+  },
+  "305b1341": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts the large contiguous colored regions (like the 8/0 checkerboard and 4/0 patterns) and then applies a cellular automaton rule that expands borders and fills interiors based on neighbor colors."
+  },
+  "310f3251": {
+    "primary": "tiling",
+    "secondary": "composition_2step",
+    "confidence": 0.95,
+    "reasoning": "The output is created by tiling the input pattern multiple times to fill a larger grid, but with an additional color transformation step where certain colors are remapped before tiling."
+  },
+  "320afe60": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.95,
+    "reasoning": "The transformation first extracts specific digit-shaped objects (likely representing numbers) from the input grid, then applies a color mapping where the extracted objects' colors change from 1/4 to 2/3/4 while maintaining their relative positions."
+  },
+  "33067df9": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each colored cell in the input grid acts as a seed to stamp a large rectangular block of that color in the output, with the block's position and size determined by the seed's location."
+  },
+  "332202d5": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.95,
+    "reasoning": "The transformation first extracts rows containing a single distinct color (non-7) and then applies a global color mapping where 7 becomes the extracted color and the extracted color becomes 1."
+  },
+  "337b420f": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a 5x5 subgrid extracted from the rightmost 5 columns of the input, ignoring the leftmost 12 columns which appear to be a separator pattern."
+  },
+  "33b52de3": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation applies different recoloring rules to distinct, repeating object patterns (the 3x3 blocks of 5s and 0s) based on their surrounding context or position, rather than a single global rule."
+  },
+  "3490cc26": {
+    "primary": "line_draw",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation connects objects of the same color with horizontal lines, filling the space between them with color 7 (orange) to form bridges or connectors."
+  },
+  "34cfa167": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The output shows each distinct object from the input being used as a stamp to create a repeated border pattern around the grid."
+  },
+  "351d6448": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output grid appears to be a single extracted object from the input, specifically the non-zero pattern that is not part of the full-width gray (5) rows."
+  },
+  "363442ee": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is created by stamping a pattern derived from the top-left object (a 3x3 block) at positions marked by 1-cells in the input grid."
+  },
+  "3979b1a8": {
+    "primary": "composition_2step",
+    "secondary": "upscale_downscale+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be the input scaled by 2x and then a specific 5x5 pattern stamped repeatedly in the new space created by scaling."
+  },
+  "39e1d7f9": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The transformation appears to first extract specific colored blocks (like 3x3 squares of color 6 in example 1) and then apply a neighborhood rule that propagates or copies these blocks to adjacent positions based on the grid's structure."
+  },
+  "3b4c2228": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output is a 3x3 grid where each cell appears to be 1 if a specific object (likely the 3x2 blue '03' blocks) has a certain neighbor pattern, otherwise 0."
+  },
+  "3bdb4ada": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows alternating cells in the interior rows of each colored block, which is a pattern consistent with applying a rule based on neighboring cells, such as turning a cell into a background color if it has certain neighbors."
+  },
+  "3cd86f4f": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+gravity",
+    "confidence": 0.95,
+    "reasoning": "The transformation first extracts the main object (the colored shape) from the input grid and then applies a gravity-like shift to the right while padding with zeros on the left and right."
+  },
+  "3d6c6e23": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The colored cells (7, 6, 4) fall downward until they hit the bottom or other cells, forming stacked patterns at the bottom of the grid."
+  },
+  "3de23699": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a cropped bounding box containing only the non-zero objects from the input grid, with their relative positions preserved."
+  },
+  "3e980e27": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each output grid appears to copy and stamp a pattern from the input (like a small cluster of colored cells) at other locations, often relative to existing objects or in a tiling manner."
+  },
+  "3ee1011a": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.95,
+    "reasoning": "The output is a symmetric pattern centered on the input objects, suggesting first extracting the objects and then applying a neighborhood rule to grow them into a filled shape."
+  },
+  "3f23242b": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "A fixed pattern (a cross-like shape) is stamped at the location of the input's colored cell (color 3), with the pattern's colors and structure consistent across examples."
+  },
+  "3f7978a0": {
+    "primary": "extract_object",
+    "secondary": "crop_extract",
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a cropped extraction of the central object formed by the colored cells (8 and 5) from the input grid, removing the surrounding zeros."
+  },
+  "40f6cd08": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be created by copying a distinct internal pattern (like a rectangle with nested shapes) from one location in the input and stamping it into other similar large blocks of color in the grid."
+  },
+  "412b6263": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.95,
+    "reasoning": "The output is created by first extracting a rectangular object from the input and then tiling it with a border pattern to form a larger grid."
+  },
+  "41ace6b5": {
+    "primary": "composition_2step",
+    "secondary": "neighborhood_rule+color_map",
+    "confidence": 0.9,
+    "reasoning": "The transformation first applies a local rule that changes specific cells based on their neighbors (e.g., turning some 7s into 9s or 8s), followed by a global color remapping (e.g., 2\u21928, 5\u21921, 7\u21927, 8\u21922, etc.) to produce the final output."
+  },
+  "41e4d17e": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output shows the original 8-background with some cells changed to 6, and the central digit-like objects remain, indicating first extraction of those objects, then a rule applied to the background based on neighbor patterns."
+  },
+  "423a55dc": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "All examples show objects sliding leftward until they hit the left boundary or other objects, with preserved shape and color."
+  },
+  "4290ef0e": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a smaller grid that appears to be a central symmetrical object extracted from the larger input, with the surrounding background removed."
+  },
+  "42918530": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation changes specific interior cells of digit-like shapes based on their local neighbors, resembling a cellular automaton rule that fills or empties cells to smooth or complete the shape's edges."
+  },
+  "42a15761": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output grid differs from the input by only a few cells, and the changes appear to follow a local rule based on the pattern of neighboring cells, such as correcting or inverting specific cells within the repeating '202' and '222' vertical structures."
+  },
+  "42f14c03": {
+    "primary": "extract_object",
+    "secondary": "crop_extract",
+    "confidence": 0.95,
+    "reasoning": "Each output is a smaller grid containing only the largest contiguous non-background object from the input, cropped to its bounding box."
+  },
+  "42f83767": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.95,
+    "reasoning": "Each example extracts a small pattern from the input (like a 3x3 or 5x5 block) and then tiles it repeatedly to form the larger output grid."
+  },
+  "447fd412": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows enclosed regions being filled with color 1 (blue), starting from seed cells and expanding until hitting boundaries of other colors."
+  },
+  "44d8ac46": {
+    "primary": "object_recolor",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation changes specific interior cells of certain objects from color 0 to color 2, likely based on the object's shape or size."
+  },
+  "44f52bb0": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a single cell whose color depends on the pattern of colors in the 3x3 input, suggesting a rule applied to the entire grid to produce a summary value."
+  },
+  "4522001f": {
+    "primary": "upscale_downscale",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a 9x9 grid, which is exactly a 3x scaling of the 3x3 input, with each input cell replaced by a 3x3 block of that same color."
+  },
+  "456873bc": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.95,
+    "reasoning": "The transformation first extracts the 2-colored object (digit-like shape) from the left side, ignoring the solid 3-colored right block, and then recolors specific cells of that object from 2 to 8 based on their position within the object."
+  },
+  "458e3a53": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+counting_output",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a small grid derived by extracting specific subgrids (likely the central 3x3 or 2x2 regions from each panel) and then applying a counting rule based on the colors within those regions."
+  },
+  "469497ad": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.95,
+    "reasoning": "Each input grid contains distinct colored objects that are extracted and then used as stamps to create a larger output grid with repeated patterns."
+  },
+  "47c1f68c": {
+    "primary": "symmetry",
+    "secondary": "extract_object",
+    "confidence": 0.9,
+    "reasoning": "The output is a symmetric pattern (rotational or mirror) derived from the central object in the input after removing the central separator line."
+  },
+  "484b58aa": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "All three examples show contiguous regions of zeros being replaced by the surrounding pattern, which is characteristic of flood-filling enclosed areas."
+  },
+  "4852f2fa": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.95,
+    "reasoning": "The output consists of a small pattern (3x3 shape) extracted from the input and then tiled horizontally to match the width of the output grid."
+  },
+  "48d8fb45": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a small 3x3 grid that appears to be the bounding box of the largest contiguous colored object in the input."
+  },
+  "4938f0c2": {
+    "primary": "symmetry",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is the input grid with a vertical mirror copy of the top-left object placed on the right side, creating bilateral symmetry."
+  },
+  "4acc7107": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "All examples show colored objects falling downward until they hit the bottom or another object, with empty space above them after transformation."
+  },
+  "4be741c5": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a vertical column extracted from the leftmost distinct color region of each input grid."
+  },
+  "4c177718": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.95,
+    "reasoning": "First, a specific object (the small shape in the lower region) is extracted and placed in the output, then a neighborhood rule (likely Conway's Game of Life or similar) is applied to generate a new pattern above it."
+  },
+  "4c5c2cf0": {
+    "primary": "symmetry",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is created by reflecting the input pattern horizontally and vertically to create a symmetric cross-like pattern."
+  },
+  "4df5b0ae": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Objects of certain colors appear to fall downward until blocked by other objects or the grid boundary, with the background color (likely 7) acting as empty space."
+  },
+  "4e45f183": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The transformation isolates specific colored objects (like 2,3 in example 1) and then modifies them based on their local neighbors, creating a pattern of swapping or adjusting colors in structured blocks."
+  },
+  "4e7e0eb9": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.95,
+    "reasoning": "The transformation first isolates specific rectangular regions (objects) from the input, then applies a consistent color swap within those regions across all examples."
+  },
+  "4f537728": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts the largest or most distinct object (the central block of 3s in example 1 and 2s in example 2) and then applies a color mapping to that object and its surrounding pattern."
+  },
+  "505fff84": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a smaller subgrid extracted from the input, typically from the top-left or a specific region, with consistent cropping across examples."
+  },
+  "508bd3b6": {
+    "primary": "line_draw",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation draws a diagonal line of color 3 (green) extending from the tip of the small diagonal object made of color 8 (cyan) and 0 (black), continuing in the same direction until it hits the boundary or another object."
+  },
+  "50a16a69": {
+    "primary": "crop_extract",
+    "secondary": "null",
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a cropped or extracted subgrid from the top-left region of the input, ignoring the bottom rows of uniform color (8 or 4)."
+  },
+  "50aad11f": {
+    "primary": "extract_object",
+    "secondary": "null",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a cropped bounding box containing only the largest contiguous colored object from the input grid, ignoring background and smaller scattered cells."
+  },
+  "50c07299": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The colored cells (2 and 7) appear to be falling downward (or moving in a specific direction) until they hit a boundary or another cell, which is characteristic of a gravity transformation."
+  },
+  "516b51b7": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows a gradient-like recoloring of interior cells within each contiguous block of 1s, where the new color depends on the cell's distance from the block's border, resembling a distance transform or cellular automaton rule based on neighbors."
+  },
+  "522fdd07": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+gravity",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts specific colored objects (like the 3s in Example 1, 6s in Example 2, 5s in Example 3, and 8s in Example 4) and then applies gravity to move them upward or sideways until blocked by other cells."
+  },
+  "5289ad53": {
+    "primary": "extract_object",
+    "secondary": "color_map",
+    "confidence": 0.9,
+    "reasoning": "The output is a small 2x3 grid that appears to be extracted from specific locations in the input, with colors possibly remapped based on the original colors present in those extracted cells."
+  },
+  "538b439f": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows enclosed regions of color 1 in the input being filled with color 1, expanding until hitting boundaries of color 2 or 8."
+  },
+  "539a4f51": {
+    "primary": "composition_2step",
+    "secondary": "upscale_downscale+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output is double the size of the input (5x5 \u2192 10x10) and appears to be created by first upscaling by factor 2, then applying a rule that fills new cells based on neighbors, particularly extending patterns and filling with the dominant color from the left side."
+  },
+  "53b68214": {
+    "primary": "upscale_downscale",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output grid is larger than the input grid, with the input pattern repeated or extended in a way that suggests vertical scaling (adding rows) while preserving the horizontal pattern."
+  },
+  "55059096": {
+    "primary": "line_draw",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation draws diagonal lines (color 2) connecting the tips of the plus-shaped objects (color 3) in a consistent direction."
+  },
+  "551d5bf1": {
+    "primary": "object_recolor",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation changes specific objects (likely the interior of digit-like shapes) from color 0 (black) to color 8 (cyan) while preserving the outer border color 1 (blue)."
+  },
+  "5587a8d0": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.95,
+    "reasoning": "Each output is a smaller grid that appears to be a processed version of a central object extracted from the input, where the object's interior is transformed based on its local neighborhood."
+  },
+  "5623160b": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Objects of certain colors (like 1, 2, 6, 9) appear to fall downward until blocked by other objects or the grid boundary, while the background color 7 remains static."
+  },
+  "56dc2b01": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows objects (colored blocks) falling downward until they hit a barrier or the bottom, with a new barrier (color 8) appearing to stop them."
+  },
+  "57aa92db": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each example shows a shape (like a cross or line) being expanded outward in all directions until hitting boundaries or other objects, which is characteristic of flood fill from seed objects."
+  },
+  "57edb29d": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be extracting specific rectangular regions from the input grids that contain patterns of 1s, 3s, or 8s surrounded by borders."
+  },
+  "5833af48": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a central pattern derived from the input's top-left object, with a symmetrical expansion or tiling based on a local rule applied to its structure."
+  },
+  "58c02a16": {
+    "primary": "tiling",
+    "secondary": "extract_object",
+    "confidence": 0.95,
+    "reasoning": "The output is created by tiling a small extracted pattern (the non-7 region from the top-left of the input) across the entire grid, ignoring the large background of 7s."
+  },
+  "58e15b12": {
+    "primary": "line_draw",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output appears to show rays or lines being drawn from objects (like the 8s and 3s) in specific directions, extending until they hit boundaries or other objects, creating diagonal or orthogonal patterns."
+  },
+  "5a5a2103": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.95,
+    "reasoning": "The output appears to first extract the colored rectangular objects (blue, red, cyan, etc.) from the input, then apply a local neighborhood rule that expands or replicates them into patterned stripes while preserving the horizontal separator lines."
+  },
+  "5ad4f10b": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a small 3x3 grid extracted from a specific location in the input, likely corresponding to a distinct object or pattern."
+  },
+  "5ad8a7c0": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation appears to fill cells between non-zero cells in the same row, turning zeros into color 2 when bracketed by non-zero cells horizontally."
+  },
+  "5adee1b2": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output shows each distinct object from the input is surrounded by a border of a consistent color (1 for the first object group, 2 for the second), indicating extraction of objects followed by a dilation/neighborhood operation to create borders."
+  },
+  "5af49b42": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation stamps a specific multi-color sequence (e.g., '1243' or '235164') from the bottom row onto other rows at positions corresponding to non-zero cells in the input."
+  },
+  "5b526a93": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation applies a specific recoloring (1\u21928, but only in certain positions) to objects that are isolated in the right half of the grid, while leaving identical objects on the left unchanged."
+  },
+  "5c2c9af4": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each input contains a single colored cell, and the output appears to be a complex nested pattern centered at that cell's location, resembling a recursive stamping of a fixed shape (like a diamond or cross) based on the input color and position."
+  },
+  "5d588b4d": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The input grid contains a single colored object in the top row, and the output appears to be a pattern generated by applying a cellular automaton-like rule starting from that object."
+  },
+  "5daaa586": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a specific object extracted from the input grid, preserving its shape while removing surrounding background."
+  },
+  "5ecac7f7": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a 5x5 subgrid extracted from the center of the 5x17 input, specifically columns 7 through 11."
+  },
+  "5ffb2104": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "All colored objects (non-zero cells) slide to the right until blocked by other objects or the grid boundary, with empty space shifting to the left."
+  },
+  "60a26a3e": {
+    "primary": "line_draw",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation draws vertical lines of color 1 (blue) downward from the bottom of certain 'V' or 'X'-like structures formed by color 2 (red) cells, extending until they hit another color 2 cell or the grid boundary."
+  },
+  "6165ea8f": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The output is constructed by extracting distinct colored objects from the input and arranging them into a tiled pattern of repeated 2x2 blocks separated by blank rows."
+  },
+  "62b74c02": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The zeros in the input are being filled with the color of the adjacent non-zero region, expanding horizontally until reaching the boundary or another region."
+  },
+  "639f5a19": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts the large 8-colored rectangular regions from the input, then applies a local neighborhood rule that recolors interior cells based on their position relative to the rectangle's edges, creating a gradient-like pattern."
+  },
+  "652646ff": {
+    "primary": "extract_object",
+    "secondary": "null",
+    "confidence": 0.95,
+    "reasoning": "The output consists of multiple small 6x2 patterns (like 224422, 242242, etc.) that appear to be extracted from the input grid, each representing a distinct object or shape."
+  },
+  "662c240a": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a 3x3 block that appears exactly as a contiguous 3x3 subgrid within the larger 9x3 input, selecting one of three distinct 3x3 regions present in the input."
+  },
+  "668eec9a": {
+    "primary": "extract_object",
+    "secondary": "sort_arrange",
+    "confidence": 0.95,
+    "reasoning": "The output consists of 5 distinct colored objects extracted from the input grid and arranged in a specific order."
+  },
+  "66ac4c3b": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to first extract a specific object (the central pattern of 2s and 8s in Example 1, and the pattern of 1s, 2s, and 4s in Example 2) and then apply a local neighborhood rule to modify or extend it."
+  },
+  "673ef223": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation fills enclosed regions bounded by color 2 (blue) walls with color 8 (cyan), starting from seed cells of color 0 (black) that are adjacent to color 8 seeds, creating flood-filled rectangles."
+  },
+  "67636eac": {
+    "primary": "extract_object",
+    "secondary": "null",
+    "confidence": 0.95,
+    "reasoning": "Each input grid contains multiple small cross-like objects of different colors, and the output stacks their 3x3 patterns vertically."
+  },
+  "681b3aeb": {
+    "primary": "extract_object",
+    "secondary": "crop_extract",
+    "confidence": 0.95,
+    "reasoning": "The output appears to be the smallest bounding box containing the largest contiguous colored object from the input grid."
+  },
+  "689c358e": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output changes only specific cells (often isolated 6s or 7s) based on their local neighbors, resembling a cellular automaton rule."
+  },
+  "68bc2e87": {
+    "primary": "extract_object",
+    "secondary": "null",
+    "confidence": 0.95,
+    "reasoning": "The output is a vertical column of single-digit colors extracted from specific positions inside distinct enclosed regions in the input grid."
+  },
+  "692cd3b6": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows a region of color 4 (yellow) that appears to fill an enclosed area defined by the input shapes, expanding until it hits boundaries."
+  },
+  "694f12f3": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation changes interior cells of the blue (4) rectangles to red (2) or green (1) based on their position relative to the rectangle's edges, indicating a local neighbor-dependent rule."
+  },
+  "695367ec": {
+    "primary": "tiling",
+    "secondary": "null",
+    "confidence": 0.95,
+    "reasoning": "The output is a tiled pattern where the input grid is repeated with full rows of the input color inserted as separators at regular intervals."
+  },
+  "69889d6e": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows a pattern of 2's expanding diagonally from the input's colored cells, resembling a cellular automaton rule where a cell becomes 2 based on its neighbors."
+  },
+  "6a11f6da": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The input is a 15x5 grid that appears to be three stacked 5x5 panels, and the output is a single 5x5 grid, suggesting extraction of objects from each panel followed by a local combination rule."
+  },
+  "6a980be1": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.9,
+    "reasoning": "Each example extracts a specific object (the interior pattern) and then applies a global color remapping to the border and background."
+  },
+  "6aa20dc0": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output shows new cells appearing adjacent to existing colored objects, suggesting a local growth or propagation rule based on neighboring cell colors."
+  },
+  "6b9890af": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a bounding box around the largest object in the input, with interior cells transformed based on the presence of smaller internal objects."
+  },
+  "6ca952ad": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation shows colored objects (non-7 cells) falling downward until they hit a boundary or another object, which is characteristic of a gravity operation."
+  },
+  "6cbe9eb8": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a smaller grid containing only the largest contiguous colored region from the input, with its interior hollowed out to a single border layer."
+  },
+  "6d1d5c90": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a 6x6 grid that appears to be the input 6x7 grid with the first column removed."
+  },
+  "6d58a25d": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "A vertical line of color 2 (blue) is stamped downward from a specific object (the '7' shape in example 1, '9' shape in example 2, '4' shape in example 3), extending to the bottom of the grid."
+  },
+  "6ecd11f4": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a small grid extracted from the bottom-left corner of the input where colored digits appear."
+  },
+  "6f473927": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+overlay_merge",
+    "confidence": 0.95,
+    "reasoning": "The output appears to be the original input grid overlaid with a new pattern (often using color 8) that is derived from the positions of specific objects (like color 2 clusters) in the input."
+  },
+  "6ffe8f07": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation fills all regions of color 0 (black) that are connected to the central 8-colored object with color 4 (yellow), which is a classic flood-fill operation from the 8 object into the black background."
+  },
+  "705a3229": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each colored object (8, 4, 5, 3, 9) falls downward until blocked by another object or the bottom edge, creating vertical columns or stacks."
+  },
+  "72207abc": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output appears to stamp a pattern of digits (the digits of the input number) repeatedly to the right of the original number."
+  },
+  "73ccf9c2": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a specific object extracted from the input grid, preserving its shape and colors while removing surrounding background."
+  },
+  "7447852a": {
+    "primary": "composition_2step",
+    "secondary": "neighborhood_rule+color_map",
+    "confidence": 0.9,
+    "reasoning": "The transformation first applies a local rule that changes certain cells (like turning some 0s into 4s) based on their neighbors, and then globally remaps some colors (like 2 to 4 in specific positions)."
+  },
+  "753ea09b": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation appears to fill enclosed regions of color 6 (magenta) with color 5 (gray) in Example 1, and similarly fills regions of color 3 (green) with color 4 (yellow) in Example 2, and regions of color 8 (cyan) with color 9 (maroon) in Example 3, which is characteristic of flood fill operations starting from certain seed points."
+  },
+  "75b8110e": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output is a 4x4 grid derived from the 8x8 input by first extracting specific 2x2 blocks and then applying a local rule to each block to produce a single output cell."
+  },
+  "760b3cac": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation appears to add new cells (color 8) based on the presence and arrangement of existing 8-colored cells in the input, suggesting a local neighbor-dependent rule."
+  },
+  "762cd429": {
+    "primary": "composition_2step",
+    "secondary": "pattern_stamp+flood_fill",
+    "confidence": 0.9,
+    "reasoning": "The transformation involves stamping a pattern from the input objects and then flood-filling regions to create large blocks of color."
+  },
+  "770cc55f": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation moves colored cells downward until they hit a barrier (the horizontal line of color 2), which is characteristic of a gravity operation."
+  },
+  "780d0b14": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+counting_output",
+    "confidence": 0.95,
+    "reasoning": "Each input grid contains a large object (like a digit shape) made of a single color, and the output appears to be a small grid where each cell's value corresponds to the count of a specific color within that object's region."
+  },
+  "7837ac64": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.95,
+    "reasoning": "The input grid contains a large pattern with full rows of a single color and blocks of repeating digits, and the output is a small 3x3 grid where each cell seems to correspond to the color of specific small objects (like 3x1 vertical bars) extracted from the input and then recolored."
+  },
+  "78e78cff": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation fills enclosed regions of a specific background color (3 in example 1, 1 in example 2) starting from a central seed cell (color 6 in example 1, color 3 in example 2) until hitting boundaries formed by other colors."
+  },
+  "79cce52d": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output is a 6x6 grid that appears to be a subgrid extracted from the 7x7 input by removing the first row and first column."
+  },
+  "7acdf6d3": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation changes a single cell (color 9) to color 2 only when it has exactly one neighbor of color 2, as seen in both examples where isolated 9s surrounded by 7s remain 9, but the 9 adjacent to a 2 becomes 2."
+  },
+  "7bb29440": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a specific object extracted from the input grid, often a contiguous region of non-zero cells."
+  },
+  "7c008303": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a smaller grid derived by extracting a specific object (likely the central '8' structure) and then applying a local rule based on neighbor colors to transform it."
+  },
+  "7d18a6fb": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a 7x7 grid extracted from the input where each cell is determined by the presence and arrangement of colored objects in the corresponding region of the input grid."
+  },
+  "7d419a02": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation changes specific 8s to 4s based on their local context, such as being adjacent to a 0 or another 8, rather than a global rule or simple object extraction."
+  },
+  "7d7772cc": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "In both examples, objects of a certain color appear to move downward (or in a specific direction) until blocked by a boundary or another object, which is characteristic of a gravity transformation."
+  },
+  "7df24a62": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation appears to be growing or extending colored regions (especially color 1 and 4) based on local patterns, with new cells appearing adjacent to existing ones in a consistent directional manner."
+  },
+  "7e2bad24": {
+    "primary": "line_draw",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation draws a diagonal line of 1s (blue) extending from a starting point, often through or alongside existing objects, as seen in all three examples where a line propagates from a seed cell."
+  },
+  "7e4d4f7c": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.95,
+    "reasoning": "The output retains the first two rows and creates a new third row by applying a rule to the first row based on the alternating pattern of colors in the input's odd rows."
+  },
+  "7e576d6e": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation appears to fill enclosed regions (like rectangles) with a new color (8 in example 1, 3 in example 2, 9 in example 3) starting from specific seed points, which is characteristic of flood fill."
+  },
+  "7ec998c9": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows that cells change based on the presence and position of the single distinct colored cell (9, 8, or 4), forming a pattern of 1s and the original background color that appears to follow a directional or adjacency rule."
+  },
+  "80214e03": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output grids are small (3x3, 2x2, 2x3) and appear to be extracted from distinct, compact colored regions in the input, each output cell corresponding to a different object's color."
+  },
+  "80af3007": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a 9x9 grid derived by first extracting the central object (a digit-like shape) from the input and then applying a cellular automaton or neighbor-based rule to generate a pattern."
+  },
+  "81c0276b": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output is a small grid that appears to be a specific object extracted from the larger input, likely based on its unique shape and color pattern relative to the repeating structure."
+  },
+  "82819916": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each output modifies only the non-zero rows by extending their pattern to the right based on the existing digits, likely using a rule that replicates digits according to their neighbors."
+  },
+  "83302e8f": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+conditional_transform",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts the thick horizontal separator lines (color 1, 8, or 9) and then conditionally recolors the remaining cells based on their position relative to these separators."
+  },
+  "83b6b474": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a cropped bounding box around a specific object or region of interest from the larger input grid."
+  },
+  "83eb0a57": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output in each example is a cropped region containing the largest contiguous non-background object from the input grid."
+  },
+  "84551f4c": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The colored cells (1 and 2) appear to be falling downward until they hit a barrier or the bottom, with the 1s (blue) falling first and then the 2s (red) falling on top of them, which is characteristic of a gravity simulation."
+  },
+  "846bdb03": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a cropped region around a central object where each cell's color is determined by the colors of its immediate neighbors in the input grid."
+  },
+  "84ba50d3": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The colored cells (1, 2, 8) appear to be falling downward (or upward in some examples) until they hit a barrier or the edge, resembling a gravity-like movement."
+  },
+  "855e0971": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation identifies rows containing a single zero cell and propagates that zero vertically through all rows of the same color block, while leaving other rows unchanged."
+  },
+  "8597cfd7": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output is a small 2x2 block of uniform color extracted from a specific location in the input grid, ignoring the rest of the pattern."
+  },
+  "85b81ff1": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation involves flipping specific cells based on their local neighbors, as seen by isolated changes in the middle of rows that follow a consistent pattern across all examples."
+  },
+  "85fa5666": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation appears to stamp a specific pattern (like a diagonal line or cross shape) at the locations of certain objects (likely the colored cells) in the input grid."
+  },
+  "8618d23e": {
+    "primary": "composition_2step",
+    "secondary": "upscale_downscale+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be the input grid upscaled with an added border of 9s, which is a two-step process of scaling and then stamping a pattern."
+  },
+  "868de0fa": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation applies different recoloring rules to distinct objects based on their shape and connectivity, specifically turning interior cells of certain rectangles to color 7 and others to color 2."
+  },
+  "8719f442": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The input 3x3 pattern is stamped at multiple locations in the output grid, with the pattern appearing in a structured arrangement."
+  },
+  "8731374e": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.95,
+    "reasoning": "First, a specific repeating object (like a 3x3 block) is extracted from the input, then a cellular automaton rule is applied to transform it into the output pattern."
+  },
+  "878187ab": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts the non-7 cells (objects) and then applies a local neighborhood rule to generate a growing pattern from those seed positions."
+  },
+  "88a10436": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Objects (colored cells) are falling downward until they hit the bottom or another object, as seen by the movement of colored blocks in each example."
+  },
+  "891232d6": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.95,
+    "reasoning": "The output appears to extract the blue (7) objects and then apply a neighborhood rule that adds colored borders or extensions around them, with additional effects near the 6 cells."
+  },
+  "8a004b2b": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a cropped region around objects where each object expands outward by 1 cell in all directions, filling with its own color."
+  },
+  "8a371977": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output changes specific interior cells (color 0 to 2 or 3) based on the pattern of neighboring 1s and 0s, indicating a local transformation rule."
+  },
+  "8a6d367c": {
+    "primary": "crop_extract",
+    "secondary": "null",
+    "confidence": 0.95,
+    "reasoning": "All three examples show extraction of a smaller rectangular region from the larger input grid, removing the outer border of 8s and preserving an inner pattern."
+  },
+  "8abad3cf": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a transformed version of specific objects extracted from the input, with the transformation likely based on local neighbor patterns."
+  },
+  "8b28cd80": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output grid is generated by stamping a 3x3 pattern derived from the input at each cell location of a 3x3 output grid, where the pattern's central cell is replaced by the input's central cell value."
+  },
+  "8ba14f53": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output is a 3x3 grid extracted from the input's 4x9 grid, where the extraction appears to be based on a neighborhood rule that selects cells where the pattern of neighbors matches a specific condition, such as being part of a thicker border or region."
+  },
+  "8cb8642d": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows a pattern where interior cells of a colored block are transformed based on their neighbors, creating a hollow or structured interior shape (like a diamond or cross) while preserving the outer border."
+  },
+  "8d510a79": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output appears to be generated by a rule where cells are modified based on the presence of specific neighboring cells, particularly copying or extending patterns from nearby rows or columns."
+  },
+  "8dab14c2": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation involves small, localized changes to specific cells (often 1s turning into 8s or vice versa) based on their immediate neighbors, as seen by the isolated pixel flips in the interior regions of the shapes."
+  },
+  "8e1813be": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output consists of extracting the thick horizontal color bars from the input while ignoring thin separator rows and other objects."
+  },
+  "8e5a5113": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The transformation first isolates the left object (before the vertical 5-line) and then applies a rule where each cell's output depends on its neighbors within that object."
+  },
+  "8efcae92": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a specific contiguous object (likely the largest or a particular shape) extracted from the input grid, with surrounding zeros removed."
+  },
+  "8f2ea7aa": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be created by stamping the input pattern at multiple locations, effectively tiling or repeating it across the grid."
+  },
+  "8fff9e47": {
+    "primary": "composition_2step",
+    "secondary": "upscale_downscale+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output is a scaled-up version of the input with each cell replaced by a 2x2 block of new colors determined by the original cell's value and possibly its neighbors."
+  },
+  "902510d5": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "All examples show colored cells falling downward until they hit obstacles or the bottom, with the direction being consistently downward gravity."
+  },
+  "90347967": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "All non-zero cells appear to move downward (or in a consistent direction) until blocked by the bottom or another cell, preserving their relative order and colors."
+  },
+  "90c28cc7": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output consists of the top-left corner colors of each distinct colored rectangular region in the input grid."
+  },
+  "90f3ed37": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The cyan (8) cells appear to 'fall' to the right, filling contiguous empty cells to their right until they reach the grid boundary or another cyan cell, which is characteristic of a gravity operation in the rightward direction."
+  },
+  "9110e3c5": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.95,
+    "reasoning": "The output is a 3x3 grid containing only colors 0 and 8, which appears to be extracted from the input grid and then recolored, as the pattern of 8's matches the positions of certain objects in the input after a color mapping."
+  },
+  "91413438": {
+    "primary": "tiling",
+    "secondary": "crop_extract",
+    "confidence": 0.9,
+    "reasoning": "The input grid is tiled horizontally and vertically to fill a larger output, but then the output is cropped to a specific size, leaving zeros in the remaining area."
+  },
+  "928ad970": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation fills enclosed regions defined by the input objects with a border, creating a solid rectangle around each shape."
+  },
+  "9356391f": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "A distinct pattern (like a digit '8' or '6') is stamped at the location of a single colored cell in the input grid, with the pattern's colors derived from the input's top row."
+  },
+  "93c31fbe": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation appears to be a cellular automaton rule where cells change color based on the count or pattern of neighboring cells, as seen by isolated color changes in the interior of objects."
+  },
+  "94133066": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a compact region extracted from the input grid, ignoring scattered isolated cells and focusing on the main contiguous object."
+  },
+  "941d9a10": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation applies different recoloring rules to specific objects (the vertical line of 5s and the isolated 5s) based on their position relative to the horizontal 5-separators."
+  },
+  "94be5b80": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The output shows the original input pattern preserved but with additional smaller patterns stamped above and below each main object, matching the shape of the object but with different colors."
+  },
+  "95755ff2": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation fills enclosed regions (defined by the 2s and other colored boundaries) with a new color, starting from specific seed points, which is characteristic of a flood fill operation."
+  },
+  "95a58926": {
+    "primary": "extract_object",
+    "secondary": "color_map",
+    "confidence": 0.95,
+    "reasoning": "The output consistently shows only the vertical '5' columns and horizontal '5' rows from the input, with all other colors mapped to 0, indicating extraction of a specific object (the 5-structure) followed by a color mapping to clean up."
+  },
+  "963e52fc": {
+    "primary": "tiling",
+    "secondary": null,
+    "confidence": 1.0,
+    "reasoning": "The output grid is created by horizontally tiling the input pattern, specifically repeating the central non-zero row(s) to double the width."
+  },
+  "963f59bc": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "Each output appears to stamp a pattern (often a cross or plus shape) centered at the location of a specific colored object, with the pattern's color matching the object's color."
+  },
+  "96a8c0cd": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows color 2 (blue) flooding from certain seed cells (often color 3 or 1) outward until hitting boundaries or other obstacles, resembling a flood-fill algorithm."
+  },
+  "97239e3d": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation applies different recoloring and filling rules depending on the presence and color of special marker cells (like the 6, 2, 7, 3 in the inputs) that appear in the border rows/columns, affecting only the region above or below that marker."
+  },
+  "973e499e": {
+    "primary": "upscale_downscale",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each 3x3 input becomes a 9x9 output by scaling each cell to a 3x3 block with a pattern that depends on the original cell's value."
+  },
+  "97999447": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "A repeating two-color pattern (e.g., 2,5) is stamped starting from a colored seed cell and extends horizontally to the right edge."
+  },
+  "97a05b5b": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be extracting a specific object (likely the largest contiguous region of color 2) from the input grid while preserving its shape."
+  },
+  "981add89": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be generated by first extracting a specific object (the central pattern) and then applying a neighborhood rule that modifies its interior based on adjacent cells."
+  },
+  "9841fdad": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts the inner object (the shape made of 1s, 3s, and 8s) and then applies a rule that expands its 8-colored cells outward into the surrounding 4-colored region, replacing 4s with 8s only when adjacent to an 8 in the original object."
+  },
+  "985ae207": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+flood_fill",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts specific colored objects (like the 1-4-1 patterns) and then performs flood fill horizontally within their rows until hitting boundaries or other objects."
+  },
+  "98c475bf": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.95,
+    "reasoning": "The transformation first extracts a specific object (the central 'digit' shape) and then applies a neighborhood rule to generate a new pattern based on that object's structure."
+  },
+  "992798f6": {
+    "primary": "line_draw",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation draws a line of color 3 (green) from a seed cell (color 1 or 2) extending in a specific direction, often diagonally or at an angle, based on the relative positions of the seed cells."
+  },
+  "995c5fa3": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.95,
+    "reasoning": "The output is a 3x3 grid extracted from specific positions in the input, with colors remapped based on the pattern of zeros in the extracted columns."
+  },
+  "996ec1f3": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a small 3x3 grid that appears to be extracted from a specific location within the larger input grid, likely corresponding to a distinct object or region."
+  },
+  "99caaf76": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation shows objects (colored cells) falling downward until blocked by other colored cells or the bottom edge, while the background (color 8) remains unchanged."
+  },
+  "99fa7670": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Colored cells (non-zero) appear to fall downward and to the right, filling empty cells below and to the right until blocked by the grid boundary or other colored cells."
+  },
+  "9aec4887": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output grid is a smaller, cropped version containing only the distinct colored objects from the input, with their relative positions preserved."
+  },
+  "9af7a82c": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+gravity",
+    "confidence": 0.9,
+    "reasoning": "First, a specific object (largest contiguous region of non-zero cells) is extracted, then gravity is applied downward to shift its cells to the bottom."
+  },
+  "9b2a60aa": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output shows a consistent 3x3 pattern (like a small 'C' shape) being stamped at the location of each non-zero, non-background colored cell from the input, with the pattern's color matching the source cell's color."
+  },
+  "9b30e358": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be the bottom half of the input (extract_object) repeated to fill the grid (neighborhood_rule for tiling)."
+  },
+  "9b4c17c4": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation shows objects of color 2 moving rightward within their color regions (8 or 1) until blocked by a boundary or another object, consistent with a rightward gravity effect."
+  },
+  "9ba4a9aa": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a small 3x3 pattern that appears in the input grid, specifically a cross shape with a different center color, which is extracted from a larger repeating structure."
+  },
+  "9bebae7a": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be created by stamping a symmetric pattern (often a cross or plus shape) at the locations of specific colored objects in the input grid."
+  },
+  "9c1e755f": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Cells appear to fall downward until blocked by existing cells or the bottom edge, with the output showing filled columns below non-zero cells."
+  },
+  "9d9215db": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output appears to be generated by taking the input's colored cells as 'seeds' and stamping a symmetrical cross or border pattern around them, creating a frame-like structure."
+  },
+  "9def23fe": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts the large contiguous colored object (like the red 2x5 block) and then applies a neighborhood rule that expands it outward while also creating a patterned border or interior based on adjacent cells."
+  },
+  "9f236235": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The input grid contains multiple separated colored blocks and connecting lines, and the output is a small grid where each cell seems to represent the count or state of objects in each panel of the input."
+  },
+  "9f27f097": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is created by copying a distinct pattern from the top-left region of the input and stamping it into the empty or uniform region at the bottom of the grid."
+  },
+  "9f41bd9c": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Objects (colored blocks) appear to slide left or right until hitting a boundary or another object, as seen by the movement of the 5/1 patterns and the 6/9 blocks shifting within their rows."
+  },
+  "a096bf4d": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation changes specific interior cells based on the colors of their immediate neighbors, as seen by the selective changes to single cells within the patterned blocks."
+  },
+  "a1aa0c1e": {
+    "primary": "extract_object",
+    "secondary": "crop_extract",
+    "confidence": 0.95,
+    "reasoning": "The output appears to be extracting specific objects (the small 3x3 cross patterns and the bottom row) from the input grid and arranging them in a compact form."
+  },
+  "a2d730bd": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output shows local modifications around specific colored cells (like 1s and 8s) that appear to depend on the number or pattern of same-colored neighbors, indicating a cellular automaton or local rule."
+  },
+  "a3325580": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output consistently extracts a vertical column of cells from the input grid, specifically taking the non-zero cells from a single column and stacking them vertically in the output."
+  },
+  "a3f84088": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation fills the interior of the gray (5) border with red (2) and then recursively fills smaller nested interiors with alternating colors, resembling a flood-fill operation starting from the center."
+  },
+  "a406ac07": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation stamps a 2x2 block of the same color as the rightmost column's cell into the grid, positioned to the left of that column, with the block's vertical position matching the row of the original cell."
+  },
+  "a416fc5b": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a large uniform grid of color 7, which suggests the transformation first extracts a specific object (likely the central pattern) and then applies a neighborhood rule to fill the entire output grid."
+  },
+  "a57f2f04": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each contiguous region of non-8 cells in the input is replaced by a repeating tiled pattern that appears to be stamped based on the shape or content of the original region."
+  },
+  "a644e277": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a specific object (a central shape with a border) extracted from the larger input grid, ignoring the surrounding repetitive background structure."
+  },
+  "a64e4611": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation fills enclosed regions (including the background area) with color 3, starting from the right side of the grid where zeros are present."
+  },
+  "a680ac02": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output consists of extracting and stacking the distinct rectangular objects (blocks of 1s, 2s, 4s, etc.) from the input grid while preserving their internal patterns."
+  },
+  "a6953f00": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is consistently the top-left 2x2 subgrid of the input, regardless of the larger grid's content."
+  },
+  "a78176bb": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output appears to place a diagonal line pattern (like a ray or line of a specific color) originating from each non-zero cell in the input, with the pattern's color matching the input cell's color."
+  },
+  "a8c38be5": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output is a 9x9 grid extracted from the center of the input, then transformed by a local rule that depends on neighboring cells."
+  },
+  "aab50785": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a specific contiguous object extracted from the input grid, often a connected region of non-zero cells."
+  },
+  "aaecdb9a": {
+    "primary": "extract_object",
+    "secondary": "crop_extract",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a specific object extracted from the input grid and then cropped to its bounding box."
+  },
+  "abbfd121": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "All three examples show extracting a smaller rectangular subgrid from the larger input grid, removing border regions and interior blocks of uniform color."
+  },
+  "ac0c2ac3": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows concentric colored rings around a central seed cell, which is a classic pattern of a distance-based or wavefront propagation rule from the non-7 cells in the input."
+  },
+  "ac0c5833": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output appears to place a small 2x2 or 3x3 pattern (resembling a shape made of colors 0,2,4) at locations where certain input objects (like the '404' or '040' patterns) exist, while preserving other structures."
+  },
+  "ac2e8ecf": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+gravity",
+    "confidence": 0.95,
+    "reasoning": "The transformation first extracts distinct colored objects (like the blue 1 shapes, red 2 shapes, etc.) and then applies gravity to move them downward (or in a specific direction) until they settle, merging or aligning at the bottom of the grid."
+  },
+  "ac3e2b04": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation stamps a cross-shaped pattern of 1s (blue) centered on each 2 (red) cell that is adjacent to a 3 (green) cell, as seen in all examples where red cells touching green produce a blue plus sign."
+  },
+  "ac605cbb": {
+    "primary": "line_draw",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows lines (often diagonal) drawn from colored cells, with color 5 appearing along the line and sometimes a different color at the endpoint."
+  },
+  "ac6f9922": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a small grid containing only the distinct interior objects (digits) found at the center of each quadrant in the larger bordered input."
+  },
+  "ad3b40cf": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation shows objects (specifically groups of color 6) falling downward until they hit a barrier or another object, which is characteristic of a gravity operation."
+  },
+  "aee291af": {
+    "primary": "extract_object",
+    "secondary": "null",
+    "confidence": 0.95,
+    "reasoning": "The output is a smaller grid containing only the largest contiguous object of color 8 from the input, with interior details preserved."
+  },
+  "af24b4cc": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a smaller grid that appears to extract a central object from each of the two distinct regions in the input, ignoring the surrounding zeros and the separator row/column of zeros."
+  },
+  "af726779": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output shows new colored cells (6=magenta, 7=orange) appearing in specific positions relative to existing 7s in the input, suggesting a local rule based on neighboring cells."
+  },
+  "afe3afe9": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.95,
+    "reasoning": "The transformation first extracts specific digit patterns (likely representing numbers) from the input grid and then applies a global color remapping to produce the output."
+  },
+  "b0722778": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a single column extracted from the middle of each row of the input grid, specifically the 5th column (0-indexed)."
+  },
+  "b0c4d837": {
+    "primary": "extract_object",
+    "secondary": "crop_extract",
+    "confidence": 0.95,
+    "reasoning": "The output is a small 3x3 grid that appears to be a cropped and extracted portion of the input, specifically focusing on the central region of the 8-colored object."
+  },
+  "b0f4d537": {
+    "primary": "extract_object",
+    "secondary": "crop_extract",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a specific object extracted from the input grid, then cropped to a consistent width of 7 columns."
+  },
+  "b190f7f5": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The input grid contains small colored objects that are extracted and used as stamps to create a larger output grid with repeated patterns."
+  },
+  "b1986d4b": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output is a small grid derived from the input by first extracting specific objects (likely colored regions) and then applying a local rule to compute each output cell based on its neighbors."
+  },
+  "b1fc8b8e": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a specific shape (a cross-like pattern) extracted from the input grid, ignoring the surrounding background."
+  },
+  "b2bc3ffd": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Non-orange (non-7) objects appear to be falling downward within the orange background until they hit a boundary or another non-orange object."
+  },
+  "b457fec5": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.95,
+    "reasoning": "The transformation first extracts the large contiguous colored object (likely a triangle shape) and then applies a local neighborhood rule that propagates colors along its edges based on adjacent colors."
+  },
+  "b4a43f3b": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows small patterns (extracted from the input's top panels) being stamped at specific locations determined by the bottom panel's object positions."
+  },
+  "b527c5c6": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation shows cells of color 3 (green) falling downward until they hit a boundary or a different colored cell, with color 2 (red) acting as a fixed obstacle or seed point."
+  },
+  "b548a754": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation fills enclosed regions defined by the colored border with the border's color, starting from a seed point (the 8) inside the region."
+  },
+  "b71a7747": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a specific object (a shape or pattern) extracted from the larger, more complex input grid, with surrounding details removed."
+  },
+  "b7249182": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each input contains a single colored cell, and the output shows a symmetrical cross-like pattern centered at that cell's location, with the pattern's color matching the input cell's color."
+  },
+  "b745798f": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Non-black objects (colors 0-9) appear to fall downward until blocked by other objects or the bottom edge, with black (0) acting as empty space."
+  },
+  "b74ca5d1": {
+    "primary": "color_map",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each example shows a consistent global remapping of specific colors to other colors across the entire grid, such as 2\u21949, 4\u21946, and 8\u21947 in the respective examples."
+  },
+  "b782dc8a": {
+    "primary": "composition_2step",
+    "secondary": "neighborhood_rule+color_map",
+    "confidence": 0.95,
+    "reasoning": "The transformation first applies a local rule that changes certain cells (like 0s adjacent to 8s) to new colors (1,2,3,4), and then globally remaps those new colors back to 8."
+  },
+  "b7999b51": {
+    "primary": "extract_object",
+    "secondary": "crop_extract",
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a cropped bounding box around the largest contiguous non-zero object in each input grid."
+  },
+  "b7cb93ac": {
+    "primary": "extract_object",
+    "secondary": "crop_extract",
+    "confidence": 0.9,
+    "reasoning": "The output is a 3x4 subgrid extracted from the input, focusing on the region containing the colored objects while ignoring the surrounding zeros."
+  },
+  "b7f8a4d8": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output changes specific interior cells based on the patterns of their immediate neighbors, particularly within the digit blocks, indicating a local transformation rule."
+  },
+  "b7fb29bc": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation fills interior regions of the green (3) border with alternating colors (2,4) in a pattern consistent with flood-fill from specific interior starting points."
+  },
+  "b94a9452": {
+    "primary": "extract_object",
+    "secondary": "color_map",
+    "confidence": 0.95,
+    "reasoning": "Each output is a cropped version of the largest contiguous colored object in the input, with its interior color mapped to a new color (1\u21923, 2\u21924, 4\u21926)."
+  },
+  "b9630600": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation appears to be a cellular automaton or local rule where certain patterns of colored cells (like corners of rectangles) are filled in based on their immediate neighbors, creating diagonal connections or extensions."
+  },
+  "ba1aa698": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a subgrid extracted from the leftmost part of the input, cropping the width while preserving the full height."
+  },
+  "ba26e723": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output changes specific cells (color 4 to 6) based on a local pattern involving neighboring cells in the same column or row."
+  },
+  "ba9d41b8": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation applies a checkerboard-like pattern to the interior of solid-colored blocks while preserving the borders, which is a local rule based on cell neighbors and parity."
+  },
+  "baf41dbf": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+line_draw",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts a rectangular object (likely the 3-colored shape) and then draws vertical lines extending from its top and bottom edges to form a longer rectangle or connect to other boundaries."
+  },
+  "bbb1b8b6": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is consistently a 4x4 subgrid extracted from the leftmost 4 columns of the input, ignoring the rightmost 5 columns."
+  },
+  "bc1d5164": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output grid appears to be a smaller subgrid extracted from the input, specifically focusing on the non-zero cells that form a distinct pattern in the corners and edges."
+  },
+  "bd14c3bf": {
+    "primary": "color_map",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation consistently changes all cells of color 1 (blue) to color 2 (red) across all examples, while leaving other colors unchanged."
+  },
+  "bd5af378": {
+    "primary": "composition_2step",
+    "secondary": "gravity+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The transformation involves first moving cells downward (gravity) and then applying a local rule that changes colors based on neighbors, as seen by the cascading patterns and color shifts in the output."
+  },
+  "bdad9b1f": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+line_draw",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts the blue (1) vertical line object, then draws a horizontal line from the red (2) object to intersect it, extending the red line to meet the blue line."
+  },
+  "bf89d739": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows color 3 (green) filling enclosed regions starting from color 2 (red) cells, expanding until hitting boundaries or other obstacles."
+  },
+  "c074846d": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation appears to be a cellular automaton rule where a cell changes color based on the presence of a specific neighbor (color 2) directly above it, turning into color 2 or 3 depending on the original cell's color."
+  },
+  "c1990cce": {
+    "primary": "composition_2step",
+    "secondary": "line_draw+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be generated by first drawing diagonal lines from the central colored cell and then applying a local rule to fill or adjust the resulting pattern."
+  },
+  "c3202e5a": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a small grid that appears to be a specific object extracted from the input, ignoring the thick separator rows of a single repeated color."
+  },
+  "c6141b15": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+gravity",
+    "confidence": 0.9,
+    "reasoning": "The transformation first isolates specific colored objects (like 2s and 1s in Example 1, 9s in Example 2, and 4s/8s in Example 3) and then applies gravity to make them fall downward or to the right."
+  },
+  "c61be7dc": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation shows all colored cells (non-zero) falling downward until they hit a boundary or another colored cell, with the central vertical column acting as a barrier."
+  },
+  "c62e2108": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output appears to be generated by taking a specific object (a colored rectangle with a hole) from the input and stamping it repeatedly in a tiling pattern, often extending to fill rows or columns."
+  },
+  "c658a4bd": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.95,
+    "reasoning": "The output is a smaller grid containing a nested rectangle structure extracted from the input, with a global color remapping applied to the extracted region."
+  },
+  "c803e39c": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The input contains multiple colored blocks separated by vertical gray (5) columns, and the output appears to be a tiled arrangement of patterns derived from those blocks, suggesting objects are first extracted and then stamped in a structured layout."
+  },
+  "c87289bb": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation shows colored blocks (2=red) falling downward until they hit a barrier or another block, with the rest of the grid shifting accordingly."
+  },
+  "c8b7cc0f": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a small 3x3 grid that appears to be a specific object (likely the largest or most central colored region) extracted from the much larger input grid."
+  },
+  "c8cbb738": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a smaller grid that appears to be a specific, repeated object (like a cross or plus shape) extracted from the center or key locations of the larger input grid."
+  },
+  "c920a713": {
+    "primary": "extract_object",
+    "secondary": "neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output is a symmetric frame extracted from the center of the input, with an inner pattern that appears to be generated by applying a neighborhood rule to the extracted region."
+  },
+  "c92b942c": {
+    "primary": "pattern_stamp",
+    "secondary": "composition_2step",
+    "confidence": 0.95,
+    "reasoning": "The output shows a repeating pattern that appears to be generated by stamping a template at each non-zero cell location from the input, with the template's colors possibly mapped from the input cell's color."
+  },
+  "ca8de6ea": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output is a 3x3 center subgrid extracted from the 5x5 input, ignoring the border."
+  },
+  "caa06a1f": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be the top-left portion of the input grid after removing the bottom row(s) that are uniform or act as a separator."
+  },
+  "cad67732": {
+    "primary": "upscale_downscale",
+    "secondary": null,
+    "confidence": 1.0,
+    "reasoning": "The output grid is exactly double the size of the input grid, with each cell from the input expanded into a 2x2 block of identical cells, preserving the pattern."
+  },
+  "cb227835": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows a region of color 3 (green) that appears to fill an area starting from the cyan (8) cell and expanding outward, likely until hitting boundaries or other objects, which is characteristic of flood fill."
+  },
+  "cdecee7f": {
+    "primary": "extract_object",
+    "secondary": "null",
+    "confidence": 0.95,
+    "reasoning": "The output grid is a 3x3 arrangement of the non-zero digits from the input, extracted and placed in reading order."
+  },
+  "ce602527": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each output grid extracts a small repeating pattern object from the input grid while ignoring the rest of the background."
+  },
+  "ce9e57f2": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation changes specific red (2) cells to orange (8) based on their position relative to other red cells, applying different rules to interior vs. boundary cells."
+  },
+  "cf133acc": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+gravity",
+    "confidence": 0.95,
+    "reasoning": "The transformation first extracts distinct colored objects (vertical bars and horizontal blocks) and then applies gravity to move them downward until they hit another object or the bottom."
+  },
+  "cf98881b": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output is a 4x4 subgrid extracted from the rightmost columns of the 4x14 input."
+  },
+  "cfb2ce5a": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output shows enclosed regions from the input being filled with new colors, expanding until hitting boundaries."
+  },
+  "d017b73f": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+gravity",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts distinct colored objects (like the 8-blocks in Example 1) and then applies a gravity-like shift to move them horizontally until they touch another object or boundary."
+  },
+  "d06dbe63": {
+    "primary": "line_draw",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows diagonal lines of color 5 (gray) extending from the single color 8 (cyan) object, forming a symmetric 'X' pattern."
+  },
+  "d07ae81c": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each output cell depends on its local 3x3 neighborhood in the input, with specific patterns of color changes based on surrounding cells."
+  },
+  "d22278a0": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The transformation extracts colored objects from the input (e.g., color 2, 4, 8) and stamps a diagonal line pattern originating from each object's position, filling the grid with alternating stripes based on the object's color."
+  },
+  "d255d7a7": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation moves all non-zero cells (primarily color 7) downward until they hit a boundary or another non-zero cell, while preserving the relative positions of colored objects (like the 9,0,0 patterns)."
+  },
+  "d282b262": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "All objects in the input grid appear to be shifted diagonally down and to the right until they hit the bottom or right edge of the grid."
+  },
+  "d406998b": {
+    "primary": "color_map",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation consistently replaces color 5 with color 3 in specific positions, but only when the cell is part of a contiguous block of 5s, indicating a conditional recolor based on local context rather than a simple global map."
+  },
+  "d43fd935": {
+    "primary": "line_draw",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "In each example, a vertical line of a new color (7 in Example 1, 1 in Example 2, 1 in Example 3) is drawn downward from a specific seed cell, extending until it hits another object or the grid boundary."
+  },
+  "d4469b4b": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a 3x3 grid derived from the input 5x5 grid by applying a rule that depends on the local neighborhood of each cell, likely counting neighbors of a specific color to produce a new color."
+  },
+  "d47aa2ff": {
+    "primary": "separator_split",
+    "secondary": "color_map",
+    "confidence": 0.95,
+    "reasoning": "The input grid is split into two 10x10 panels by a vertical separator column of color 5, and the output is one of the panels with some colors remapped."
+  },
+  "d4c90558": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be extracting specific rectangular regions (likely the largest or outermost colored rectangles) from each input grid and arranging them vertically."
+  },
+  "d56f2372": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each output contains a single symmetrical object extracted from the input grid, ignoring all other elements."
+  },
+  "d5c634a2": {
+    "primary": "extract_object",
+    "secondary": "color_map",
+    "confidence": 0.95,
+    "reasoning": "The output is a small 3x6 grid that appears to extract and recolor specific objects (likely the '2' shapes) from the input, mapping them to new colors in a fixed output pattern."
+  },
+  "d749d46f": {
+    "primary": "upscale_downscale",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output grid is a larger version of the input grid, scaled up by an integer factor (approximately 2x in height and width) while preserving the pattern of colored cells."
+  },
+  "d8c310e9": {
+    "primary": "tiling",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output repeats the non-zero pattern from the left side of the input to fill the entire row, creating a tiled effect horizontally."
+  },
+  "d94c3b52": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation appears to change specific cells (like color 1 to 7 or 8) based on the presence and arrangement of neighboring cells, particularly around patterns of 0s, 1s, and 8s, indicating a local cellular automaton or neighbor-dependent rule."
+  },
+  "d968ffd4": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation fills enclosed regions of the background color (4, 2, 8 respectively) with a new color (1, 1, 1) starting from interior points, which is characteristic of flood fill."
+  },
+  "d9f24cd1": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The output appears to first extract the 2s as objects, then stamp a pattern of 2s and 0s based on the positions of the 5s."
+  },
+  "da6e95e5": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each output grid is a small, distinct object extracted from the larger input grid, matching its exact shape and colors."
+  },
+  "db118e2a": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows the input pattern stamped at two specific offset positions within a larger 15x15 grid filled with background color 7."
+  },
+  "db615bd4": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+flood_fill",
+    "confidence": 0.9,
+    "reasoning": "Each example first extracts a central rectangular region (object) from the input grid and then flood-fills its interior with a new color."
+  },
+  "db7260a4": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation depends on the presence and position of a single blue cell (color 1) in the top rows, either changing interior cells of the red (2) structure or adding a bottom row of blue."
+  },
+  "db93a21d": {
+    "primary": "composition_2step",
+    "secondary": "flood_fill+color_map",
+    "confidence": 0.95,
+    "reasoning": "The transformation first performs flood fill from certain seed points (likely the 9-colored objects) to create enclosed regions, then applies a global color mapping to produce the final output."
+  },
+  "dc46ea44": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The objects (non-7, non-4 cells) appear to be falling downward until they hit the solid row of color 4 or the bottom boundary, matching a gravity-like movement."
+  },
+  "dce56571": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a horizontal line of a different color (9 or 2) that emerges where there is a local cluster of that color in the input, suggesting a rule based on neighbor counts or connectivity."
+  },
+  "dd2401ed": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "A small pattern (like a '5' cell) is being stamped or inserted at positions relative to existing objects, shifting other cells to make room."
+  },
+  "de493100": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each output grid appears to be a small extracted subgrid containing a specific object or pattern from the larger input grid, often located near the center or in a consistent relative position."
+  },
+  "df8cc377": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation selectively replaces interior cells of enclosed shapes (like rectangles or squares) with a pattern based on the shape's border color and interior colors, while leaving other parts of the grid unchanged."
+  },
+  "df9fd884": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "In each example, colored cells (1=blue, 2=red, 8=cyan) appear to fall downward until blocked by other colored cells or the bottom edge, while the background (7=orange) remains unchanged."
+  },
+  "e048c9ed": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "A small pattern (a single cell of a specific color) is stamped at a consistent relative position to each distinct object in the grid."
+  },
+  "e179c5f4": {
+    "primary": "pattern_stamp",
+    "secondary": "extract_object",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a repeating pattern (like a checkerboard or wave) that is stamped starting from the location of the single colored cell in the input."
+  },
+  "e1d2900e": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation appears to be a cellular automaton rule where a blue cell (1) is placed between a red cell (2) and a black cell (0) when they are adjacent horizontally or vertically, as seen in multiple examples."
+  },
+  "e21d9049": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "First, a central object is extracted from the input, then that object is repeatedly stamped vertically to fill the output grid."
+  },
+  "e3f79277": {
+    "primary": "upscale_downscale",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a larger grid (16x16) that appears to be an upscaled version of the input (6x6) with some pattern of color 5 or 9 being expanded or repeated in a structured way."
+  },
+  "e4075551": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.95,
+    "reasoning": "The transformation first extracts the colored cells as objects, then applies a neighborhood rule to grow them into thick horizontal bars connected by vertical lines."
+  },
+  "e41c6fd3": {
+    "primary": "overlay_merge",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be the result of overlaying multiple distinct objects from the input grid, merging them into a single combined grid."
+  },
+  "e4888269": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation changes specific colored cells (like 3, 6, 10) to new colors (5, 7, 6, 4) based on their position relative to a vertical line of 2s and other objects, indicating different rules for different objects."
+  },
+  "e50d258f": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a rectangular subgrid extracted from the input, cropping away surrounding zeros to isolate the main pattern."
+  },
+  "e5790162": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The colored cells (3 and 8) appear to fall downward until they hit a boundary or another colored cell, creating vertical stacks."
+  },
+  "e5c44e8f": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows regions of color 3 (green) that appear to fill enclosed areas defined by the input's colored cells (2, 3) acting as boundaries."
+  },
+  "e619ca6e": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be generated by first extracting the colored objects (green 3 blocks) and then applying a neighborhood rule that expands them into diagonal or L-shaped patterns based on their positions."
+  },
+  "e6721834": {
+    "primary": "crop_extract",
+    "secondary": "null",
+    "confidence": 0.95,
+    "reasoning": "Each output appears to be a cropped subgrid extracted from the input, focusing on a specific region while discarding surrounding cells."
+  },
+  "e681b708": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation changes specific cells (color 1) to color 2 or 3 based on their adjacency to other objects or positions, while leaving other colors unchanged, indicating a conditional rule rather than a simple global remap."
+  },
+  "e6de6e8f": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+line_draw",
+    "confidence": 0.9,
+    "reasoning": "The input consists of two rows of colored cells, and the output appears to extract a specific object (like a shape or pattern) from the input and then draw lines or rays from it to form a larger structure."
+  },
+  "e760a62e": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The transformation first isolates specific colored objects (like 2s and 3s) from the input, then applies a local neighborhood rule that expands or fills around them based on adjacent 8s (walls)."
+  },
+  "e7639916": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows enclosed regions being filled with color 1 (blue) starting from the 8 (cyan) cells, creating rectangular borders around them."
+  },
+  "e78887d1": {
+    "primary": "separator_split",
+    "secondary": "neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The input grid is split into panels by rows of zeros, and each panel is processed independently by a local rule to produce a single output row."
+  },
+  "e7a25a18": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a cropped version of the central object in the input, preserving its internal colors and shape."
+  },
+  "e7b06bea": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.95,
+    "reasoning": "First, a specific object (the rightmost vertical line of non-zero cells) is extracted from each column, then its colors are remapped based on the original colors present in that line."
+  },
+  "e84fef15": {
+    "primary": "crop_extract",
+    "secondary": "null",
+    "confidence": 0.95,
+    "reasoning": "The output is a 5x5 subgrid extracted from the top-left corner of each repeating 5x5 tile in the input, ignoring the gray separator rows."
+  },
+  "e872b94a": {
+    "primary": "extract_object",
+    "secondary": "crop_extract",
+    "confidence": 0.9,
+    "reasoning": "The output is a single column of zeros, which appears to be extracting the leftmost column from the input grid after isolating a specific object or region."
+  },
+  "e8dc4411": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows new cells appearing in patterns that depend on the local neighborhood of existing cells, particularly propagating downward from the initial pattern."
+  },
+  "e99362f0": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output is a smaller grid derived from specific objects in the input, with each output cell determined by the colors of neighboring cells in the original object."
+  },
+  "e9ac8c9e": {
+    "primary": "object_recolor",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "Each example shows colored rectangles being recolored based on their vertical position or adjacency to other objects."
+  },
+  "e9bb6954": {
+    "primary": "composition_2step",
+    "secondary": "neighborhood_rule+color_map",
+    "confidence": 0.95,
+    "reasoning": "The transformation involves first applying a neighborhood rule that changes certain cells based on local patterns (like turning cells into '2' or '4' columns), followed by a global color remapping (e.g., some '0's become '3's or '8's)."
+  },
+  "e9fc42f2": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output consists of extracted irregularly shaped objects from the input grid, preserving their relative positions and colors."
+  },
+  "eb281b96": {
+    "primary": "tiling",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is created by vertically repeating the input pattern multiple times to fill a larger grid."
+  },
+  "ecdecbb3": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation stamps a cross-like pattern centered at each 2 (red) cell, with the pattern's size and shape influenced by nearby 8 (cyan) lines."
+  },
+  "ed74f2f2": {
+    "primary": "neighborhood_rule",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a smaller grid where each cell's value appears to be determined by counting or checking the pattern of the central color (5) in a 3x3 neighborhood of the corresponding region in the larger input grid."
+  },
+  "edcc2ff0": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "In each example, colored cells in the top rows appear to move downward until they encounter a solid row or block of cells, matching a gravity-like movement."
+  },
+  "f0afb749": {
+    "primary": "composition_2step",
+    "secondary": "upscale_downscale+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The output is an upscaled version of the input (by factor 2) with a specific 2x2 pattern (resembling a diagonal line) stamped at the positions of non-zero cells from the input."
+  },
+  "f15e1fac": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation shows objects (colored cells) falling downward until they hit a barrier or the bottom, which is characteristic of a gravity operation."
+  },
+  "f18ec8cc": {
+    "primary": "symmetry",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "Each output grid is a horizontal mirror (left-right flip) of the input grid."
+  },
+  "f1cefba8": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The transformation extracts a central object and stamps a vertical line pattern (color 4 in Example 1, color 2 in Example 2, color 3 in Example 3) at specific positions, often symmetrically, onto the background."
+  },
+  "f21745ec": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts distinct objects (colored blobs) from the input, then applies a local cellular automaton rule that flips interior pixels based on neighbor counts."
+  },
+  "f35d900a": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows a consistent 3x3 pattern (with a central cross and corners) stamped at the locations of the input colored cells, with the pattern colors derived from the input colors."
+  },
+  "f3b10344": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The transformation extracts specific rectangular objects (colored blocks) and then stamps a pattern (vertical 8-colored bars) between pairs of same-colored blocks that are horizontally aligned and separated by space."
+  },
+  "f3e14006": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The transformation first extracts a vertical line of colored cells from the input, then uses those colors to stamp a repeating horizontal pattern in the output."
+  },
+  "f5b8619d": {
+    "primary": "composition_2step",
+    "secondary": "upscale_downscale+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The output is created by first upscaling the input by a factor of 2 and then stamping a repeating pattern of the upscaled grid to fill the output dimensions."
+  },
+  "f5c89df1": {
+    "primary": "symmetry",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output appears to be a mirrored or symmetric copy of the input pattern across a vertical axis, creating a left-right symmetric version of the original shape."
+  },
+  "f8b3ba0a": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a small vertical column of colors extracted from specific positions in the input grid, ignoring the alternating blank rows."
+  },
+  "f8be4b64": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+pattern_stamp",
+    "confidence": 0.9,
+    "reasoning": "The output shows vertical lines (columns) of a single color added at positions where the input has small cross-shaped objects, and the lines extend across the entire grid height, matching a pattern stamping behavior based on extracted object locations."
+  },
+  "f8f52ecc": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "In each example, colored cells (non-1) appear to fall downward until blocked by other non-1 cells or the bottom, while the background (color 1) remains unchanged."
+  },
+  "f8ff0b80": {
+    "primary": "extract_object",
+    "secondary": "null",
+    "confidence": 0.9,
+    "reasoning": "The output is a 3x1 column of colors that appear to be extracted from the largest or most prominent objects in each input grid."
+  },
+  "f9012d9b": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output appears to be a small subgrid extracted from the input where a local pattern or rule is applied to reduce it to a single cell or small block."
+  },
+  "f9a67cb5": {
+    "primary": "flood_fill",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The transformation appears to fill enclosed regions (defined by color 8 boundaries) with color 2, starting from specific seed points (often color 0 cells adjacent to color 8)."
+  },
+  "f9d67f8b": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+color_map",
+    "confidence": 0.95,
+    "reasoning": "The transformation involves first extracting a specific object (the central '9' region) and then recoloring it to match the surrounding grid colors."
+  },
+  "fb791726": {
+    "primary": "composition_2step",
+    "secondary": "pattern_stamp+overlay_merge",
+    "confidence": 0.95,
+    "reasoning": "The output is created by stamping the input pattern at multiple positions (forming a tiling-like effect) and then overlaying a fixed grid of 3s (green) in every other row."
+  },
+  "fbf15a0b": {
+    "primary": "crop_extract",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output is a subgrid extracted from the top-left region of the input, cropping away rows and columns that are entirely color 8 (gray) after a certain point."
+  },
+  "fc4aaf52": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The objects (non-background color 8) are falling downward until they hit another object or the bottom, as seen by the vertical shift of the colored cells in both examples."
+  },
+  "fe45cba4": {
+    "primary": "gravity",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation shows cells of color 2 (red) falling downward until blocked by other cells, consistent with a gravity effect."
+  },
+  "fe9372f3": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output places a symmetric cross-like pattern centered at each input object (the small plus shapes), with the pattern's colors and orientation varying based on the object's position or the global symmetry of the grid."
+  },
+  "fea12743": {
+    "primary": "conditional_transform",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The transformation applies different recoloring rules to distinct objects (the large 2-colored shapes) based on their position or context within the grid, rather than a uniform global rule."
+  },
+  "feca6190": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The input row is placed repeatedly in the output grid, shifting one position down and right each time, as if stamping the pattern along a diagonal."
+  },
+  "ff28f65a": {
+    "primary": "composition_2step",
+    "secondary": "extract_object+neighborhood_rule",
+    "confidence": 0.9,
+    "reasoning": "The output is a 3x3 grid derived from detecting and analyzing 2x2 blue blocks in the input, where each output cell corresponds to the presence and adjacency pattern of those blocks."
+  },
+  "ff72ca3e": {
+    "primary": "pattern_stamp",
+    "secondary": null,
+    "confidence": 0.95,
+    "reasoning": "The output shows a 3x3 cross pattern (color 2) or a 5x5 cross pattern (color 2) stamped around each colored cell (color 4 or 5), with the central cell sometimes taking the original color."
+  },
+  "ff805c23": {
+    "primary": "extract_object",
+    "secondary": null,
+    "confidence": 0.9,
+    "reasoning": "The output is a small 5x5 grid that appears to be extracted from the center of the larger input grid, focusing on a specific object or region."
+  }
+}

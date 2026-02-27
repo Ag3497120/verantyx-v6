@@ -1859,6 +1859,34 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    # === Phase 1.57: MultiScale Cross Structure ===
+    try:
+        from arc.cross_multiscale import generate_multiscale_cross_pieces
+        _ms_pieces = generate_multiscale_cross_pieces(train_pairs)
+        for _msp in _ms_pieces:
+            if sim.verify(_msp, train_pairs):
+                verified.append(('cross', _msp))
+                if len(verified) >= 2:
+                    break
+    except Exception:
+        pass
+
+    # === Phase 1.58: Cross3D Geometry ===
+    try:
+        from arc.cross3d_geometry import generate_cross3d_geometry_pieces
+        _c3d_pieces = generate_cross3d_geometry_pieces(train_pairs)
+        all_pieces.extend(_c3d_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.59: Gravity/Slide Transform ===
+    try:
+        from arc.gravity_solver import generate_gravity_pieces
+        _grav_pieces = generate_gravity_pieces(train_pairs)
+        all_pieces.extend(_grav_pieces)
+    except Exception:
+        pass
+
     # === Phase 1.6: Convergent stamp application ===
     if cross_pieces:
         for cp in cross_pieces:
