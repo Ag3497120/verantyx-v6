@@ -1887,6 +1887,22 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    # === Phase 1.60: Flood Fill / Line Extension ===
+    try:
+        from arc.flood_fill_solver import generate_flood_fill_pieces
+        _ff_pieces = generate_flood_fill_pieces(train_pairs)
+        all_pieces.extend(_ff_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.61: Symmetry Repair ===
+    try:
+        from arc.symmetry_solver import generate_symmetry_pieces
+        _sym_pieces = generate_symmetry_pieces(train_pairs)
+        all_pieces.extend(_sym_pieces)
+    except Exception:
+        pass
+
     # === Phase 1.6: Convergent stamp application ===
     if cross_pieces:
         for cp in cross_pieces:
