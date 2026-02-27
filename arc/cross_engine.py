@@ -1994,6 +1994,14 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    # === Phase 1.62a: Cross Probe Fill ===
+    try:
+        from arc.cross_probe_fill import generate_cross_probe_pieces
+        _cpf_pieces = generate_cross_probe_pieces(train_pairs)
+        all_pieces.extend(_cpf_pieces)
+    except Exception:
+        pass
+
     # === Phase 1.62: Object Movement Engine ===
     try:
         from arc.object_mover import solve_object_movement

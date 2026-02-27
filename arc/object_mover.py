@@ -774,6 +774,119 @@ def try_color_grouped_gravity(train_pairs: List[Tuple[Grid, Grid]]) -> List:
     return results
 
 
+def try_wall_absorb(train_pairs: List[Tuple[Grid, Grid]]) -> List:
+    """
+    Cross mutual monitoring: objects slide toward same-color wall (edge row/col).
+    Two 'cross worlds' each absorb their own objects independently.
+    """
+    results = []
+    
+    inp0 = train_pairs[0][0]
+    h, w = grid_shape(inp0)
+    bg = most_common_color(inp0)
+    
+    # Detect walls: full rows/cols at edges (non-bg)
+    walls = {}
+    if len(set(inp0[0])) == 1 and inp0[0][0] != bg:
+        walls[inp0[0][0]] = 'top'
+    if len(set(inp0[h-1])) == 1 and inp0[h-1][0] != bg:
+        walls[inp0[h-1][0]] = 'bottom'
+    left_col = set(inp0[r][0] for r in range(h))
+    if len(left_col) == 1 and inp0[0][0] != bg and inp0[0][0] not in walls:
+        walls[inp0[0][0]] = 'left'
+    right_col = set(inp0[r][w-1] for r in range(h))
+    if len(right_col) == 1 and inp0[0][w-1] != bg and inp0[0][w-1] not in walls:
+        walls[inp0[0][w-1]] = 'right'
+    
+    if len(walls) < 2:
+        return []
+    
+    dir_map = {'top': (-1, 0), 'bottom': (1, 0), 'left': (0, -1), 'right': (0, 1)}
+    
+    # Try different sort orders for sliding
+    for sort_mode in ['closest_first', 'farthest_first']:
+        ok = True
+        for inp, out in train_pairs:
+            result = _apply_wall_absorb(inp, walls, dir_map, sort_mode)
+            if result is None or not grid_eq(result, out):
+                ok = False
+                break
+        if ok:
+            results.append(('wall_absorb', dict(walls), sort_mode))
+            return results
+    
+    return results
+
+
+def _apply_wall_absorb(inp, walls, dir_map, sort_mode):
+    h, w = grid_shape(inp)
+    bg = most_common_color(inp)
+    
+    # Detect walls in this input
+    local_walls = {}
+    if len(set(inp[0])) == 1 and inp[0][0] != bg:
+        local_walls[inp[0][0]] = 'top'
+    if len(set(inp[h-1])) == 1 and inp[h-1][0] != bg:
+        local_walls[inp[h-1][0]] = 'bottom'
+    
+    result = [[bg] * w for _ in range(h)]
+    wall_cells: Set[Tuple[int, int]] = set()
+    
+    for color, side in local_walls.items():
+        if side == 'top':
+            for c in range(w): result[0][c] = color; wall_cells.add((0, c))
+        elif side == 'bottom':
+            for c in range(w): result[h-1][c] = color; wall_cells.add((h-1, c))
+        elif side == 'left':
+            for r in range(h): result[r][0] = color; wall_cells.add((r, 0))
+        elif side == 'right':
+            for r in range(h): result[r][w-1] = color; wall_cells.add((r, w-1))
+    
+    objects = detect_objects(inp, bg)
+    non_wall = [o for o in objects if not any((r, c) in wall_cells for r, c in o.cells)]
+    
+    # Check all have matching wall color
+    for obj in non_wall:
+        if obj.color not in local_walls:
+            return None
+    
+    occupied = set(wall_cells)
+    
+    # Process each wall color separately
+    for color, side in local_walls.items():
+        dr, dc = dir_map[side]
+        color_objs = [o for o in non_wall if o.color == color]
+        
+        if sort_mode == 'closest_first':
+            if side == 'top':
+                color_objs.sort(key=lambda o: min(r for r, c in o.cells))
+            elif side == 'bottom':
+                color_objs.sort(key=lambda o: -max(r for r, c in o.cells))
+            elif side == 'left':
+                color_objs.sort(key=lambda o: min(c for r, c in o.cells))
+            elif side == 'right':
+                color_objs.sort(key=lambda o: -max(c for r, c in o.cells))
+        else:
+            if side == 'top':
+                color_objs.sort(key=lambda o: -max(r for r, c in o.cells))
+            elif side == 'bottom':
+                color_objs.sort(key=lambda o: min(r for r, c in o.cells))
+            elif side == 'left':
+                color_objs.sort(key=lambda o: -max(c for r, c in o.cells))
+            elif side == 'right':
+                color_objs.sort(key=lambda o: min(c for r, c in o.cells))
+        
+        for obj in color_objs:
+            tdr, tdc = _slide_object(obj, dr, dc, h, w, occupied)
+            for r, c in obj.cells:
+                nr, nc = r + tdr, c + tdc
+                if 0 <= nr < h and 0 <= nc < w:
+                    result[nr][nc] = inp[r][c]
+                    occupied.add((nr, nc))
+    
+    return result
+
+
 def try_sort_objects(train_pairs: List[Tuple[Grid, Grid]]) -> List:
     """Try: objects are sorted (by color, size, etc.) and placed in order."""
     results = []
@@ -852,6 +965,7 @@ def solve_object_movement(train_pairs: List[Tuple[Grid, Grid]],
     strategies.extend(try_reflect_line(train_pairs))
     strategies.extend(try_per_object_gravity(train_pairs))
     strategies.extend(try_color_grouped_gravity(train_pairs))
+    strategies.extend(try_wall_absorb(train_pairs))
     strategies.extend(try_sort_objects(train_pairs))
     
     if not strategies:
@@ -1101,6 +1215,11 @@ def _apply_strategy(strat, inp: Grid, h: int, w: int, bg: int) -> Optional[Grid]
                 for r, c in obj.cells:
                     result[r][c] = inp[r][c]
         return result
+    
+    elif name == 'wall_absorb':
+        _, wall_map, sort_mode = strat
+        dir_map = {'top': (-1, 0), 'bottom': (1, 0), 'left': (0, -1), 'right': (0, 1)}
+        return _apply_wall_absorb(inp, wall_map, dir_map, sort_mode)
     
     elif name == 'sort_objects':
         # Complex — for now return None
