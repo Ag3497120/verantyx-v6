@@ -1897,6 +1897,30 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    # === Phase 1.57g: Brute-force Rule Solver ===
+    try:
+        from arc.brute_rule_solver import generate_brute_pieces
+        _brute_pieces = generate_brute_pieces(train_pairs)
+        all_pieces.extend(_brute_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.57f: Panel Solver ===
+    try:
+        from arc.panel_solver import generate_panel_pieces
+        _panel_pieces = generate_panel_pieces(train_pairs)
+        all_pieces.extend(_panel_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.57e: Scale/Upscale Solver ===
+    try:
+        from arc.scale_solver import generate_scale_pieces
+        _scale_pieces = generate_scale_pieces(train_pairs)
+        all_pieces.extend(_scale_pieces)
+    except Exception:
+        pass
+
     # === Phase 1.57d: Color Map Solver ===
     try:
         from arc.color_map_solver import generate_color_map_pieces
