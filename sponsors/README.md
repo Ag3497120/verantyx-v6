@@ -8,7 +8,7 @@ This directory contains detailed research data for [GitHub Sponsors](https://git
 sponsors/
 ├── eval_and_save.py           ← Auto-generates all data below after each eval
 ├── data/
-│   ├── v63/                   ← Latest: 228/1000 (22.8%)
+│   ├── v65/                   ← Latest: 228/1000 (22.8%)
 │   │   ├── summary.json       ← Top-level stats
 │   │   ├── results.jsonl      ← Per-task: solved, rule, time, ver
 │   │   ├── failure_details.jsonl ← Per-task: why it failed, category, description
@@ -41,4 +41,4 @@ All data is auto-generated from the eval log + LLM classification file.
 
 ---
 
-*Updated each version. Current: v63 (228/1000, 22.8%)*
+*Updated each version. Current: v65 (228/1000, 22.8%)*

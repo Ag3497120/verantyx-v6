@@ -155,7 +155,8 @@ These are not handcoded task solutions — they're **general-purpose spatial pri
  v50 200 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░  20.0%
  v51 201 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░  20.1%
  v59 222 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░  22.2%
- v62 228 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░  22.8% ★
+ v62 227 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░  22.7%
+ v65 228 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░  22.8% ★
          └─────────┴─────────┴─────────┘
 ```
 
@@ -178,7 +179,9 @@ These are not handcoded task solutions — they're **general-purpose spatial pri
 | **v50** | **200 (20.0%)** | **CrossUniverse: separator_propagate** |
 | v51 | 201 (20.1%) | self_stamp: input-as-stamp spatial placement |
 | v59 | 222 (22.2%) | 3D cross structure: 8 new primitives, self-tile, odd-one-out |
-| **v62** | **228 (22.8%)** | **6-axis cross probe, corner stacking, gravity solver** |
+| v62 | 227 (22.7%) | gravity solver + cross3d geometry |
+| v64 | 227 (22.7%) | flood_fill_solver + symmetry_solver |
+| **v65** | **228 (22.8%)** | **6-axis cross probe, corner stacking** |
 
 ---
 
