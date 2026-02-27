@@ -32,6 +32,8 @@ from arc.conditional_transform import (
 )
 from arc.objects import detect_objects, find_matching_objects, object_transform_type
 from arc.flood_fill import learn_flood_fill_region, apply_flood_fill_region
+from arc.stripe_fill_solver import learn_stripe_fill_rule, apply_stripe_fill_rule
+from arc.cross_plus_solver import learn_cross_plus_rule, apply_cross_plus_rule
 from arc.extract_summary import learn_fixed_output_summary, apply_fixed_output_summary
 from arc.grow_primitives import (
     learn_grow_via_self_stamp, apply_grow_via_self_stamp,
@@ -231,6 +233,24 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
         pieces.insert(0, CrossPiece(
             f'flood_fill:{rule["type"]}',
             lambda inp, _r=r: apply_flood_fill_region(inp, _r)
+        ))
+
+    # === Module 24b: Stripe Fill (row/column fill from colored dots) ===
+    rule = learn_stripe_fill_rule(train_pairs)
+    if rule is not None:
+        r = rule
+        pieces.insert(0, CrossPiece(
+            f'stripe_fill:{rule["type"]}',
+            lambda inp, _r=r: apply_stripe_fill_rule(inp, _r)
+        ))
+
+    # === Module 24c: Cross/Plus Pattern (dots create cross patterns) ===
+    rule = learn_cross_plus_rule(train_pairs)
+    if rule is not None:
+        r = rule
+        pieces.insert(0, CrossPiece(
+            f'cross_plus:{rule["type"]}',
+            lambda inp, _r=r: apply_cross_plus_rule(inp, _r)
         ))
 
     # === Module 25: Fixed-Output Summary (extract fixed-size output from variable input) ===
@@ -2002,6 +2022,30 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    # === Phase 1.62c: Concentric Fill Solver ===
+    try:
+        from arc.concentric_fill_solver import generate_concentric_fill_pieces
+        _cf_pieces = generate_concentric_fill_pieces(train_pairs)
+        all_pieces.extend(_cf_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.62b: Panel Extract Solver ===
+    try:
+        from arc.panel_extract_solver import generate_panel_extract_pieces
+        _pe_pieces = generate_panel_extract_pieces(train_pairs)
+        all_pieces.extend(_pe_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.62a: Periodic Fill Solver ===
+    try:
+        from arc.periodic_fill_solver import generate_periodic_fill_pieces
+        _pf_pieces = generate_periodic_fill_pieces(train_pairs)
+        all_pieces.extend(_pf_pieces)
+    except Exception:
+        pass
+
     # === Phase 1.62: Object Movement Engine ===
     try:
         from arc.object_mover import solve_object_movement
@@ -2011,6 +2055,22 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
                 r = solve_object_movement(_train, [inp])
                 return r[0] if r else None
             all_pieces.append(CrossPiece('object_mover', _om_fn))
+    except Exception:
+        pass
+
+    # === Phase 1.63: Rectangular Boundary Solver ===
+    try:
+        from arc.rect_boundary_solver import generate_rect_boundary_pieces
+        _rb_pieces = generate_rect_boundary_pieces(train_pairs)
+        all_pieces.extend(_rb_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.64: Pattern Tiling Solver ===
+    try:
+        from arc.pattern_tiling_solver import generate_pattern_tiling_pieces
+        _pt_pieces = generate_pattern_tiling_pieces(train_pairs)
+        all_pieces.extend(_pt_pieces)
     except Exception:
         pass
 
