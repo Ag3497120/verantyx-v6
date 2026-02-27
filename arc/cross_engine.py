@@ -1889,6 +1889,22 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    # === Phase 1.57c: Smart Crop Solver ===
+    try:
+        from arc.smart_crop_solver import generate_smart_crop_pieces
+        _sc_pieces = generate_smart_crop_pieces(train_pairs)
+        all_pieces.extend(_sc_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.57d: Color Map Solver ===
+    try:
+        from arc.color_map_solver import generate_color_map_pieces
+        _cm_pieces = generate_color_map_pieces(train_pairs)
+        all_pieces.extend(_cm_pieces)
+    except Exception:
+        pass
+
     # === Phase 1.58a: Tiny Diff Solver ===
     try:
         from arc.tiny_diff_solver import generate_tiny_diff_pieces
