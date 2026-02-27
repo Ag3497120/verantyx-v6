@@ -424,6 +424,141 @@ def _apply_probe_merge(inp: Grid, h: int, w: int, bg: int, mode: str) -> Optiona
     return result
 
 
+def _try_dot_to_line(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[callable]:
+    """
+    Pattern: each non-bg cell extends into a full row or full column.
+    Direction (row vs col) may be per-dot based on position, or uniform.
+    """
+    # Try uniform row fill
+    for mode in ['row', 'col', 'edge_detect']:
+        ok = True
+        for inp, out in train_pairs:
+            h, w = grid_shape(inp)
+            bg = most_common_color(inp)
+            result = _apply_dot_to_line(inp, h, w, bg, mode)
+            if result is None or not grid_eq(result, out):
+                ok = False
+                break
+        if ok:
+            def fn(inp, _mode=mode):
+                h, w = grid_shape(inp)
+                bg = most_common_color(inp)
+                return _apply_dot_to_line(inp, h, w, bg, _mode)
+            return fn
+    return None
+
+
+def _apply_dot_to_line(inp: Grid, h: int, w: int, bg: int, mode: str) -> Optional[Grid]:
+    """Extend dots into full rows or columns."""
+    result = [[bg] * w for _ in range(h)]
+    
+    dots = [(r, c, inp[r][c]) for r in range(h) for c in range(w) if inp[r][c] != bg]
+    if not dots:
+        return None
+    
+    for r, c, color in dots:
+        if mode == 'row':
+            for cc in range(w):
+                result[r][cc] = color
+        elif mode == 'col':
+            for rr in range(h):
+                result[rr][c] = color
+        elif mode == 'edge_detect':
+            # If dot is on left/right edge → row fill; top/bottom edge → col fill
+            on_left = (c == 0)
+            on_right = (c == w - 1)
+            on_top = (r == 0)
+            on_bottom = (r == h - 1)
+            
+            if on_left or on_right:
+                for cc in range(w):
+                    result[r][cc] = color
+            elif on_top or on_bottom:
+                for rr in range(h):
+                    result[rr][c] = color
+            else:
+                # Interior dot — try row by default
+                for cc in range(w):
+                    result[r][cc] = color
+    
+    return result
+
+
+def _try_dot_to_cross_rect(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[callable]:
+    """
+    Pattern: dots define rectangles in a grid.
+    Each dot's color owns a region. Within that region:
+    - Dot row = full horizontal line
+    - Region start/end rows = full horizontal line  
+    - Other rows = left/right border only
+    Regions are split at midpoints between consecutive dots.
+    """
+    ok = True
+    for inp, out in train_pairs:
+        h, w = grid_shape(inp)
+        bg = most_common_color(inp)
+        result = _apply_dot_to_cross_rect(inp, h, w, bg)
+        if result is None or not grid_eq(result, out):
+            ok = False
+            break
+    
+    if ok:
+        def fn(inp):
+            h, w = grid_shape(inp)
+            bg = most_common_color(inp)
+            return _apply_dot_to_cross_rect(inp, h, w, bg)
+        return fn
+    return None
+
+
+def _apply_dot_to_cross_rect(inp: Grid, h: int, w: int, bg: int) -> Optional[Grid]:
+    """Dots → rectangular regions with cross borders."""
+    result = [[bg] * w for _ in range(h)]
+    
+    dots = sorted(
+        [(r, c, inp[r][c]) for r in range(h) for c in range(w) if inp[r][c] != bg],
+        key=lambda d: d[0]
+    )
+    if not dots:
+        return None
+    
+    # Compute regions: split at midpoints between consecutive dots
+    regions = []
+    for i, (r, c, color) in enumerate(dots):
+        if i == 0:
+            r_start = 0
+        else:
+            r_start = (dots[i - 1][0] + r) // 2 + 1
+        if i == len(dots) - 1:
+            r_end = h - 1
+        else:
+            r_end = (r + dots[i + 1][0]) // 2
+        regions.append((color, r_start, r_end, r))
+    
+    for color, r_start, r_end, dot_row in regions:
+        # Find which rows should be full lines:
+        # - The dot row itself
+        # - The region boundary that touches another color or grid edge
+        # Determine full rows: dot_row + the farthest row from dot
+        # The other full row is at grid edge (row 0 or row h-1)
+        # Only if this region touches the grid edge
+        other_full = None
+        if r_start == 0:
+            other_full = 0
+        elif r_end == h - 1:
+            other_full = h - 1
+        
+        for r in range(r_start, r_end + 1):
+            if r == dot_row or (other_full is not None and r == other_full):
+                for c in range(w):
+                    result[r][c] = color
+            else:
+                result[r][0] = color
+                result[r][w - 1] = color
+    
+    return result
+
+
 # ==================== Main Entry ====================
 
 def generate_cross_probe_pieces(train_pairs: List[Tuple[Grid, Grid]]):
@@ -437,6 +572,8 @@ def generate_cross_probe_pieces(train_pairs: List[Tuple[Grid, Grid]]):
         ('cross_probe:cross_expansion', _try_cross_expansion),
         ('cross_probe:dot_line_connect', _try_dot_line_connect),
         ('cross_probe:probe_merge', _try_probe_merge),
+        ('cross_probe:dot_to_line', _try_dot_to_line),
+        ('cross_probe:dot_to_cross_rect', _try_dot_to_cross_rect),
     ]
     
     for name, try_fn in strategies:
