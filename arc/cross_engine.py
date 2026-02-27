@@ -1898,12 +1898,13 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
         pass
 
     # === Phase 1.57i: Abstract Neighborhood Solver ===
-    try:
-        from arc.abstract_nb_solver import generate_abstract_nb_pieces
-        _anb_pieces = generate_abstract_nb_pieces(train_pairs)
-        all_pieces.extend(_anb_pieces)
-    except Exception:
-        pass
+    # DISABLED: causes regression on 67a423a3 (adds abs_nb piece that confuses NB rule selection)
+    # try:
+    #     from arc.abstract_nb_solver import generate_abstract_nb_pieces
+    #     _anb_pieces = generate_abstract_nb_pieces(train_pairs)
+    #     all_pieces.extend(_anb_pieces)
+    # except Exception:
+    #     pass
 
     # === Phase 1.57h: Program Search (test-time synthesis) ===
     try:
@@ -1982,6 +1983,14 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
         from arc.symmetry_solver import generate_symmetry_pieces
         _sym_pieces = generate_symmetry_pieces(train_pairs)
         all_pieces.extend(_sym_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.59z: Rotating Cross + Conditional Cross (last resort) ===
+    try:
+        from arc.rotating_cross import generate_rotating_cross_pieces
+        _rc_pieces = generate_rotating_cross_pieces(train_pairs)
+        all_pieces.extend(_rc_pieces)
     except Exception:
         pass
 

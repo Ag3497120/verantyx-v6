@@ -1,0 +1,1222 @@
+✨ 19.6% achieved by Verantyx-v6. If this helped your research, please STAR us: https://github.com/Ag3497120/verantyx-v6
+
+  [1/1000] ✓ 0.32s/t 00576224 ver=2 rule=mod_copy_flip
+  [2/1000] ✓ 0.17s/t 007bbfb7 ver=2 rule=cross:puzzle:cell_to_copy_block
+  [3/1000] ✗ 0.19s/t 009d5c81 ver=5
+  [4/1000] ✓ 0.17s/t 00d62c1b ver=5 rule=fill_enclosed
+  [5/1000] ✗ 0.46s/t 00dbd492 ver=1
+  [6/1000] ✗ 0.39s/t 017c7c7b ver=0
+  [7/1000] ✓ 0.34s/t 025d127b ver=5 rule=neighborhood_rule
+  [8/1000] ✓ 0.38s/t 03560426 ver=1 rule=cross:cross3d:corner_stack_(0, 0)
+  [9/1000] ✗ 0.45s/t 045e512c ver=0
+  [10/1000] ✓ 0.41s/t 0520fde7 ver=2 rule=cross:puzzle:sep_v_and_mark2
+  [11/1000] ✓ 0.40s/t 05269061 ver=1 rule=diagonal_tile
+  [12/1000] ✗ 0.61s/t 05a7bcf2 ver=0
+  [13/1000] ✗ 0.60s/t 05f2a901 ver=0
+  [14/1000] ✗ 0.63s/t 0607ce86 ver=5
+  [15/1000] ✓ 0.59s/t 0692e18c ver=2 rule=cross:puzzle:cell_to_inverted_block
+  [16/1000] ✓ 0.66s/t 06df4c85 ver=1 rule=cross:block_ir:block_between_fill_same_color
+  [17/1000] ✓ 0.64s/t 070dd51e ver=5 rule=cross:puzzle:connect_same_color_lines
+  [18/1000] ✓ 0.61s/t 08ed6ac7 ver=6 rule=cross:rg:recolor_by_position:row
+  [19/1000] ✗ 0.59s/t 09629e4f ver=5
+  [20/1000] ✗ 0.57s/t 0962bcdd ver=5
+  [21/1000] ✗ 0.60s/t 09c534e7 ver=0
+  [22/1000] ✗ 0.82s/t 0a1d4ef5 ver=0
+  [23/1000] ✓ 0.80s/t 0a2355a6 ver=6 rule=recolor_by_size
+  [24/1000] ✗ 0.79s/t 0a938d79 ver=0
+  [25/1000] ✓ 0.78s/t 0b148d64 ver=2 rule=cross:ptree:Seq(Apply(extract_majority_bbox) → Apply(extract_minority_bb
+  [26/1000] ✓ 0.79s/t 0b17323b ver=1 rule=cross:puzzle:diagonal_extend
+  [27/1000] ✓ 0.78s/t 0bb8deee ver=1 rule=cross:cross3d:panel_compact
+  [28/1000] ✗ 0.76s/t 0becf7df ver=5
+  [29/1000] ✓ 0.73s/t 0c786b71 ver=2 rule=cross:puzzle:mirror_h_alt_tile
+  [30/1000] ✓ 0.71s/t 0c9aba6e ver=1 rule=cross:puzzle:sep_h_nor_mark8
+  [31/1000] ✓ 0.69s/t 0ca9ddb6 ver=5 rule=neighborhood_rule
+  [32/1000] ✓ 0.67s/t 0d3d703e ver=6 rule=cross:puzzle:global_color_map
+  [33/1000] ✗ 0.68s/t 0d87d2a6 ver=0
+  [34/1000] ✗ 0.69s/t 0e206a2e ver=0
+  [35/1000] ✗ 0.68s/t 0e671a1a ver=0
+  [36/1000] ✗ 0.69s/t 0f63c0b9 ver=0
+  [37/1000] ✗ 0.70s/t 103eff5b ver=0
+  [38/1000] ✗ 0.68s/t 10fcaaa3 ver=0
+  [39/1000] ✓ 0.67s/t 11852cab ver=6 rule=neighborhood_rule
+  [40/1000] ✗ 0.67s/t 1190bc91 ver=0
+  [41/1000] ✗ 0.66s/t 1190e5a7 ver=0
+  [42/1000] ✗ 0.68s/t 11dc524f ver=0
+  [43/1000] ✗ 0.67s/t 11e1fe23 ver=0
+  [44/1000] ✗ 0.67s/t 12422b43 ver=0
+  [45/1000] ✗ 0.66s/t 12997ef3 ver=0
+  [46/1000] ✗ 0.65s/t 12eac192 ver=5
+  [47/1000] ✗ 0.66s/t 13713586 ver=0
+  [48/1000] ✗ 0.66s/t 137eaa0f ver=0
+  [49/1000] ✗ 0.64s/t 137f0df0 ver=5
+  [50/1000] ✗ 0.65s/t 13f06aa5 ver=0
+[50/1000] 20/50 (40.0%) att=28 ETA=619s
+  [51/1000] ✓ 0.64s/t 140c817e ver=2 rule=cross:ptree:Seq(Apply(draw_lines_same_color) → Apply(residual:cross_mark
+  [52/1000] ✗ 0.64s/t 14754a24 ver=5
+  [53/1000] ✗ 0.64s/t 1478ab18 ver=0
+  [54/1000] ✗ 0.63s/t 14b8e18c ver=6
+  [55/1000] ✗ 0.62s/t 150deff5 ver=5
+  [56/1000] ✗ 0.65s/t 15113be4 ver=3
+  [57/1000] ✗ 0.66s/t 15660dd6 ver=0
+  [58/1000] ✗ 0.65s/t 15663ba9 ver=5
+  [59/1000] ✓ 0.64s/t 15696249 ver=1 rule=cross:cross3d:self_tile_uniform
+  [60/1000] ✗ 0.67s/t 17829a00 ver=0
+  [61/1000] ✗ 0.67s/t 178fcbfb ver=0
+  [62/1000] ✗ 0.67s/t 17b80ad2 ver=0
+  [63/1000] ✗ 0.68s/t 17b866bd ver=0
+  [64/1000] ✗ 0.67s/t 17cae0c1 ver=5
+  [65/1000] ✗ 0.68s/t 18286ef8 ver=1
+  [66/1000] ✗ 0.69s/t 182e5d0f ver=1
+  [67/1000] ✗ 0.68s/t 18419cfa ver=5
+  [68/1000] ✗ 0.69s/t 18447a8d ver=1
+  [69/1000] ✗ 0.71s/t 184a9768 ver=0
+  [70/1000] ✓ 0.70s/t 195ba7dc ver=1 rule=cross:puzzle:sep_v_or_mark1
+  [71/1000] ✗ 0.70s/t 1990f7a8 ver=0
+  [72/1000] ✗ 0.70s/t 19bb5feb ver=0
+  [73/1000] ✗ 0.70s/t 1a07d186 ver=1
+  [74/1000] ✗ 0.70s/t 1a244afd ver=1
+  [75/1000] ✓ 0.70s/t 1a2e2828 ver=1 rule=cross_compose(extract_unique_color+tile_to_output)
+  [76/1000] ✗ 0.72s/t 1a6449f1 ver=0
+  [77/1000] ✗ 0.71s/t 1acc24af ver=5
+  [78/1000] ✓ 0.70s/t 1b2d62fb ver=1 rule=cross:puzzle:sep_v_nor_mark8
+  [79/1000] ✗ 0.71s/t 1b59e163 ver=1
+  [80/1000] ✗ 0.71s/t 1b60fb0c ver=2
+  [81/1000] ✗ 0.70s/t 1b8318e3 ver=5
+  [82/1000] ✗ 0.70s/t 1be83260 ver=0
+  [83/1000] ✗ 0.70s/t 1bfc4729 ver=2
+  [84/1000] ✗ 0.70s/t 1c02dbbe ver=0
+  [85/1000] ✗ 0.70s/t 1c0d0a4b ver=5
+  [86/1000] ✗ 0.70s/t 1c56ad9f ver=0
+  [87/1000] ✓ 0.70s/t 1c786137 ver=2 rule=cross:ptree:Seq(Apply(extract_obj_rank_0) → Apply(extract_mc_obj_rank_0)
+  [88/1000] ✗ 0.70s/t 1caeab9d ver=1
+  [89/1000] ✓ 0.69s/t 1cf80156 ver=17 rule=cross:extract_largest
+  [90/1000] ✗ 0.73s/t 1d0a4b61 ver=0
+  [91/1000] ✗ 0.75s/t 1d398264 ver=0
+  [92/1000] ✗ 0.74s/t 1d61978c ver=1
+  [93/1000] ✗ 0.75s/t 1da012fc ver=0
+  [94/1000] ✓ 0.74s/t 1e0a9b12 ver=9 rule=cross:gravity_down
+  [95/1000] ✗ 0.74s/t 1e32b0e9 ver=0
+  [96/1000] ✗ 0.74s/t 1e5d6875 ver=3
+  [97/1000] ✗ 0.75s/t 1e81d6f9 ver=1
+  [98/1000] ✗ 0.75s/t 1efba499 ver=0
+  [99/1000] ✗ 0.74s/t 1f0c79e5 ver=0
+  [100/1000] ✗ 0.74s/t 1f642eb9 ver=1
+[100/1000] 28/100 (28.0%) att=59 ETA=665s
+  [101/1000] ✓ 0.74s/t 1f85a75f ver=11 rule=cross:extract_largest
+  [102/1000] ✓ 0.74s/t 1f876c06 ver=1 rule=cross:puzzle:connect_same_color
+  [103/1000] ✗ 0.73s/t 1fad071e ver=0
+  [104/1000] ✓ 0.73s/t 2013d3e2 ver=3 rule=composite(crop_bbox+tile_to_output)
+  [105/1000] ✗ 0.73s/t 2037f2c7 ver=0
+  [106/1000] ✓ 0.73s/t 2072aba6 ver=3 rule=cross:color_to_pattern_k2
+  [107/1000] ✗ 0.73s/t 20818e16 ver=0
+  [108/1000] ✗ 0.73s/t 20981f0e ver=0
+  [109/1000] ✗ 0.73s/t 20fb2937 ver=0
+  [110/1000] ✗ 0.74s/t 212895b5 ver=0
+  [111/1000] ✓ 0.73s/t 21f83797 ver=1 rule=cross:puzzle:cross_and_fill
+  [112/1000] ✗ 0.73s/t 2204b7a8 ver=0
+  [113/1000] ✓ 0.73s/t 22168020 ver=8 rule=cross:puzzle:connect_same_color_lines
+  [114/1000] ✗ 0.74s/t 22208ba4 ver=0
+  [115/1000] ✗ 0.74s/t 22233c11 ver=0
+  [116/1000] ✗ 0.74s/t 22425bda ver=0
+  [117/1000] ✗ 0.74s/t 22806e14 ver=1
+  [118/1000] ✗ 0.74s/t 2281f1f4 ver=0
+  [119/1000] ✗ 0.73s/t 228f6490 ver=5
+  [120/1000] ✗ 0.73s/t 22a4bbc2 ver=0
+  [121/1000] ✓ 0.72s/t 22eb0ac0 ver=7 rule=cross:fill_between_h
+  [122/1000] ✗ 0.72s/t 230f2e48 ver=1
+  [123/1000] ✗ 0.72s/t 234bbc79 ver=0
+  [124/1000] ✓ 0.71s/t 23581191 ver=2 rule=cross:ptree:Seq(Apply(recolor_by_size_rank) → Apply(residual:multicross_
+  [125/1000] ✗ 0.71s/t 239be575 ver=1
+  [126/1000] ✓ 0.70s/t 23b5c85d ver=3 rule=extract_smallest_region
+  [127/1000] ✗ 0.75s/t 25094a63 ver=5
+  [128/1000] ✗ 0.75s/t 252143c9 ver=5
+  [129/1000] ✓ 0.74s/t 253bf280 ver=2 rule=cross:ptree:Seq(Apply(holes_to_color) → Apply(ext_nb:between_fill))
+  [130/1000] ✗ 0.74s/t 2546ccf6 ver=2
+  [131/1000] ✗ 0.76s/t 256b0a75 ver=0
+  [132/1000] ✗ 0.75s/t 25c199f5 ver=0
+  [133/1000] ✗ 0.75s/t 25d487eb ver=2
+  [134/1000] ✓ 0.74s/t 25d8a9c8 ver=6 rule=cross:puzzle:uniform_row_detect_5
+  [135/1000] ✗ 0.74s/t 25e02866 ver=1
+  [136/1000] ✓ 0.74s/t 25ff71a9 ver=6 rule=neighborhood_rule
+  [137/1000] ✗ 0.73s/t 2601afb7 ver=3
+  [138/1000] ✗ 0.78s/t 264363fd ver=0
+  [139/1000] ✗ 0.77s/t 2685904e ver=0
+  [140/1000] ✗ 0.77s/t 2697da3f ver=0
+  [141/1000] ✗ 0.77s/t 272f95fa ver=2
+  [142/1000] ✓ 0.76s/t 2753e76c ver=2 rule=cross:cluster_histogram
+  [143/1000] ✗ 0.76s/t 278e5215 ver=0
+  [144/1000] ✓ 0.76s/t 27a28665 ver=1 rule=cross:cross3d:1x1_binary_shape
+  [145/1000] ✓ 0.75s/t 27a77e38 ver=1 rule=cross:puzzle:most_freq_center
+  [146/1000] ✓ 0.75s/t 27f8ce4f ver=2 rule=cross:grow:self_stamp
+  [147/1000] ✗ 0.75s/t 281123b4 ver=0
+  [148/1000] ✓ 0.74s/t 28bf18c6 ver=2 rule=composite(crop_bbox+tile_to_output)
+  [149/1000] ✗ 0.74s/t 28e73c20 ver=0
+  [150/1000] ✗ 0.73s/t 292dd178 ver=0
+[150/1000] 45/150 (30.0%) att=87 ETA=625s
+  [151/1000] ✗ 0.73s/t 29623171 ver=5
+  [152/1000] ✗ 0.73s/t 29700607 ver=0
+  [153/1000] ✗ 0.73s/t 29c11459 ver=2
+  [154/1000] ✗ 0.72s/t 2a28add5 ver=5
+  [155/1000] ✗ 0.72s/t 2a5f8217 ver=7
+  [156/1000] ✗ 0.72s/t 2b01abd0 ver=0
+  [157/1000] ✗ 0.72s/t 2b9ef948 ver=0
+  [158/1000] ✗ 0.71s/t 2bcee788 ver=5
+  [159/1000] ✗ 0.71s/t 2bee17df ver=2
+  [160/1000] ✗ 0.71s/t 2c0b0aff ver=1
+  [161/1000] ✗ 0.72s/t 2c608aff ver=0
+  [162/1000] ✗ 0.72s/t 2c737e39 ver=0
+  [163/1000] ✗ 0.71s/t 2ccd9fef ver=0
+  [164/1000] ✓ 0.71s/t 2dc579da ver=3 rule=cross:puzzle:extract_unique_panel
+  [165/1000] ✗ 0.71s/t 2dd70a9a ver=0
+  [166/1000] ✗ 0.71s/t 2de01db2 ver=5
+  [167/1000] ✓ 0.70s/t 2dee498d ver=2 rule=cross:cegis:dedup_cols
+  [168/1000] ✗ 0.71s/t 2e65ae53 ver=2
+  [169/1000] ✗ 0.71s/t 2f0c5170 ver=0
+  [170/1000] ✗ 0.70s/t 2f767503 ver=5
+  [171/1000] ✗ 0.71s/t 2faf500b ver=0
+  [172/1000] ✗ 0.72s/t 305b1341 ver=0
+  [173/1000] ✗ 0.72s/t 30f42897 ver=2
+  [174/1000] ✓ 0.71s/t 310f3251 ver=1 rule=cross:cross3d:diagonal_shadow_tile
+  [175/1000] ✓ 0.71s/t 3194b014 ver=2 rule=cross:ptree:Seq(Apply(extract_majority_bbox) → Apply(extract_summary:lar
+  [176/1000] ✗ 0.72s/t 319f2597 ver=5
+  [177/1000] ✗ 0.72s/t 31aa019c ver=5
+  [178/1000] ✗ 0.72s/t 31adaf00 ver=5
+  [179/1000] ✓ 0.71s/t 31d5ba1a ver=2 rule=cross:puzzle:split_h_equal_xor
+  [180/1000] ✗ 0.72s/t 320afe60 ver=0
+  [181/1000] ✗ 0.72s/t 321b1fc6 ver=5
+  [182/1000] ✗ 0.72s/t 32597951 ver=5
+  [183/1000] ✗ 0.71s/t 32e9702f ver=5
+  [184/1000] ✗ 0.71s/t 33067df9 ver=0
+  [185/1000] ✗ 0.72s/t 332202d5 ver=0
+  [186/1000] ✓ 0.71s/t 332efdb3 ver=1 rule=cross:puzzle:grid_pattern_grid_inv_0
+  [187/1000] ✗ 0.71s/t 3345333e ver=5
+  [188/1000] ✗ 0.71s/t 337b420f ver=0
+  [189/1000] ✗ 0.70s/t 3391f8c0 ver=5
+  [190/1000] ✗ 0.71s/t 33b52de3 ver=0
+  [191/1000] ✓ 0.70s/t 3428a4f5 ver=2 rule=cross:puzzle:sep_h_xor_mark3
+  [192/1000] ✗ 0.71s/t 342ae2ed ver=1
+  [193/1000] ✗ 0.70s/t 342dd610 ver=3
+  [194/1000] ✗ 0.70s/t 3490cc26 ver=0
+  [195/1000] ✓ 0.70s/t 34b99a2b ver=3 rule=cross:puzzle:sep_v_xor_mark2
+  [196/1000] ✗ 0.70s/t 34cfa167 ver=0
+  [197/1000] ✗ 0.70s/t 351d6448 ver=0
+  [198/1000] ✓ 0.70s/t 358ba94e ver=2 rule=cross:cross3d:odd_one_out
+  [199/1000] ✓ 0.70s/t 3618c87e ver=7 rule=gravity
+  [200/1000] ✗ 0.70s/t 363442ee ver=0
+[200/1000] 55/200 (27.5%) att=118 ETA=557s
+  [201/1000] ✗ 0.69s/t 36d67576 ver=5
+  [202/1000] ✗ 0.69s/t 36fdfd69 ver=5
+  [203/1000] ✗ 0.69s/t 37ce87bb ver=3
+  [204/1000] ✓ 0.69s/t 37d3e8b2 ver=3 rule=cross:holes_to_color
+  [205/1000] ✓ 0.69s/t 3906de3d ver=8 rule=neighborhood_rule
+  [206/1000] ✗ 0.68s/t 396d80d7 ver=3
+  [207/1000] ✗ 0.68s/t 3979b1a8 ver=0
+  [208/1000] ✗ 0.68s/t 39a8645d ver=1
+  [209/1000] ✗ 0.69s/t 39e1d7f9 ver=0
+  [210/1000] ✗ 0.69s/t 3a301edc ver=2
+  [211/1000] ✓ 0.69s/t 3aa6fb7a ver=8 rule=neighborhood_rule
+  [212/1000] ✗ 0.68s/t 3ac3eb23 ver=2
+  [213/1000] ✗ 0.68s/t 3ad05f52 ver=2
+  [214/1000] ✓ 0.68s/t 3af2c5a8 ver=3 rule=corners_mirror
+  [215/1000] ✗ 0.68s/t 3b4c2228 ver=0
+  [216/1000] ✗ 0.68s/t 3bd292e8 ver=2
+  [217/1000] ✓ 0.67s/t 3bd67248 ver=2 rule=cross:puzzle:antidiag_fill
+  [218/1000] ✗ 0.67s/t 3bdb4ada ver=0
+  [219/1000] ✗ 0.67s/t 3befdf3e ver=3
+  [220/1000] ✓ 0.67s/t 3c9b0459 ver=9 rule=cross:puzzle:rotate_180_content
+  [221/1000] ✗ 0.67s/t 3cd86f4f ver=0
+  [222/1000] ✗ 0.66s/t 3d31c5b3 ver=1
+  [223/1000] ✗ 0.66s/t 3d588dc9 ver=1
+  [224/1000] ✗ 0.67s/t 3d6c6e23 ver=0
+  [225/1000] ✗ 0.66s/t 3de23699 ver=0
+  [226/1000] ✗ 0.66s/t 3e980e27 ver=0
+  [227/1000] ✗ 0.66s/t 3eda0437 ver=5
+  [228/1000] ✗ 0.66s/t 3ee1011a ver=0
+  [229/1000] ✗ 0.66s/t 3f23242b ver=0
+  [230/1000] ✗ 0.66s/t 3f7978a0 ver=0
+  [231/1000] ✗ 0.66s/t 4093f84a ver=1
+  [232/1000] ✗ 0.67s/t 40f6cd08 ver=0
+  [233/1000] ✗ 0.67s/t 412b6263 ver=0
+  [234/1000] ✗ 0.67s/t 414297c0 ver=1
+  [235/1000] ✗ 0.67s/t 41ace6b5 ver=0
+  [236/1000] ✗ 0.68s/t 41e4d17e ver=0
+  [237/1000] ✗ 0.68s/t 423a55dc ver=0
+  [238/1000] ✓ 0.67s/t 4258a5f9 ver=10 rule=neighborhood_rule
+  [239/1000] ✗ 0.67s/t 4290ef0e ver=0
+  [240/1000] ✗ 0.68s/t 42918530 ver=0
+  [241/1000] ✗ 0.68s/t 42a15761 ver=0
+  [242/1000] ✓ 0.68s/t 42a50994 ver=6 rule=neighborhood_rule
+  [243/1000] ✗ 0.68s/t 42f14c03 ver=0
+  [244/1000] ✗ 0.68s/t 42f83767 ver=0
+  [245/1000] ✓ 0.68s/t 4347f46a ver=7 rule=neighborhood_rule
+  [246/1000] ✗ 0.67s/t 4364c1c4 ver=5
+  [247/1000] ✗ 0.67s/t 444801d8 ver=5
+  [248/1000] ✓ 0.67s/t 445eab21 ver=2 rule=cross:ptree:Seq(Apply(extract_majority_bbox) → Apply(extract_summary:lar
+  [249/1000] ✗ 0.67s/t 447fd412 ver=0
+  [250/1000] ✗ 0.67s/t 44d8ac46 ver=0
+[250/1000] 65/250 (26.0%) att=145 ETA=504s
+  [251/1000] ✓ 0.67s/t 44f52bb0 ver=2 rule=cross:cross3d:1x1_h_symmetric
+  [252/1000] ✗ 0.67s/t 4522001f ver=0
+  [253/1000] ✗ 0.67s/t 456873bc ver=0
+  [254/1000] ✓ 0.66s/t 45737921 ver=6 rule=neighborhood_rule
+  [255/1000] ✗ 0.68s/t 458e3a53 ver=0
+  [256/1000] ✓ 0.68s/t 45bbe264 ver=2 rule=cross:ptree:Seq(Apply(draw_lines_same_color) → Apply(residual:multicross
+  [257/1000] ✗ 0.67s/t 4612dd53 ver=5
+  [258/1000] ✓ 0.67s/t 46442a0e ver=2 rule=cross:tile:tile_2x2_transform
+  [259/1000] ✗ 0.67s/t 465b7d93 ver=1
+  [260/1000] ✗ 0.67s/t 469497ad ver=0
+  [261/1000] ✗ 0.67s/t 46c35fc7 ver=5
+  [262/1000] ✗ 0.67s/t 46f33fce ver=1
+  [263/1000] ✗ 0.66s/t 470c91de ver=5
+  [264/1000] ✗ 0.66s/t 47c1f68c ver=0
+  [265/1000] ✓ 0.66s/t 48131b3c ver=1 rule=cross:puzzle:comp_tile_2x2
+  [266/1000] ✗ 0.70s/t 484b58aa ver=0
+  [267/1000] ✗ 0.70s/t 4852f2fa ver=0
+  [268/1000] ✗ 0.70s/t 48634b99 ver=1
+  [269/1000] ✗ 0.70s/t 48d8fb45 ver=0
+  [270/1000] ✓ 0.70s/t 48f8583b ver=1 rule=cross:cross3d:self_tile_min_color
+  [271/1000] ✗ 0.69s/t 4938f0c2 ver=0
+  [272/1000] ✗ 0.69s/t 494ef9d7 ver=5
+  [273/1000] ✓ 0.69s/t 496994bd ver=7 rule=cross:sym_h
+  [274/1000] ✓ 0.69s/t 49d1d64f ver=1 rule=cross:puzzle:frame_repeat_border_c0
+  [275/1000] ✓ 0.69s/t 4a1cacc2 ver=1 rule=cross:puzzle:fill_dot_to_corner
+  [276/1000] ✗ 0.69s/t 4acc7107 ver=0
+  [277/1000] ✗ 0.69s/t 4b6b68e5 ver=5
+  [278/1000] ✗ 0.68s/t 4be741c5 ver=0
+  [279/1000] ✗ 0.68s/t 4c177718 ver=0
+  [280/1000] ✓ 0.68s/t 4c4377d9 ver=2 rule=cross:tile:tile_2x1_transform
+  [281/1000] ✗ 0.68s/t 4c5c2cf0 ver=0
+  [282/1000] ✓ 0.68s/t 4cd1b7b2 ver=6 rule=cross:puzzle:latin_square
+  [283/1000] ✗ 0.68s/t 4df5b0ae ver=0
+  [284/1000] ✗ 0.69s/t 4e45f183 ver=0
+  [285/1000] ✗ 0.68s/t 4e469f39 ver=2
+  [286/1000] ✗ 0.68s/t 4e7e0eb9 ver=0
+  [287/1000] ✗ 0.69s/t 4f537728 ver=0
+  [288/1000] ✗ 0.69s/t 4ff4c9da ver=5
+  [289/1000] ✗ 0.69s/t 5034a0b5 ver=5
+  [290/1000] ✗ 0.69s/t 505fff84 ver=0
+  [291/1000] ✓ 0.69s/t 506d28a5 ver=2 rule=cross:puzzle:sep_h_or_mark3
+  [292/1000] ✗ 0.69s/t 50846271 ver=5
+  [293/1000] ✗ 0.69s/t 508bd3b6 ver=0
+  [294/1000] ✗ 0.70s/t 50a16a69 ver=0
+  [295/1000] ✗ 0.70s/t 50aad11f ver=0
+  [296/1000] ✗ 0.70s/t 50c07299 ver=0
+  [297/1000] ✓ 0.70s/t 50cb2852 ver=7 rule=neighborhood_rule
+  [298/1000] ✗ 0.70s/t 50f325b5 ver=5
+  [299/1000] ✗ 0.70s/t 5117e062 ver=1
+  [300/1000] ✗ 0.70s/t 5168d44c ver=5
+[300/1000] 78/300 (26.0%) att=172 ETA=490s
+  [301/1000] ✗ 0.70s/t 516b51b7 ver=0
+  [302/1000] ✓ 0.70s/t 5207a7b5 ver=2 rule=cross:stamp:stamp_by_obj_shape
+  [303/1000] ✗ 0.70s/t 522fdd07 ver=0
+  [304/1000] ✗ 0.70s/t 52364a65 ver=5
+  [305/1000] ✗ 0.70s/t 5289ad53 ver=0
+  [306/1000] ✗ 0.70s/t 52df9849 ver=5
+  [307/1000] ✗ 0.70s/t 52fd389e ver=2
+  [308/1000] ✗ 0.71s/t 538b439f ver=0
+  [309/1000] ✗ 0.71s/t 539a4f51 ver=0
+  [310/1000] ✗ 0.71s/t 53b68214 ver=0
+  [311/1000] ✗ 0.71s/t 543a7ed5 ver=6
+  [312/1000] ✓ 0.71s/t 54d82841 ver=1 rule=cross:puzzle:u_drop_ball
+  [313/1000] ✗ 0.70s/t 54d9e175 ver=3
+  [314/1000] ✗ 0.71s/t 54db823b ver=1
+  [315/1000] ✗ 0.70s/t 54dc2872 ver=3
+  [316/1000] ✗ 0.71s/t 55059096 ver=0
+  [317/1000] ✗ 0.71s/t 551d5bf1 ver=0
+  [318/1000] ✓ 0.71s/t 5521c0d9 ver=1 rule=cross:puzzle:move_obj_by_height_up
+  [319/1000] ✓ 0.71s/t 5582e5ca ver=7 rule=cross:remove_small_5
+  [320/1000] ✗ 0.70s/t 5587a8d0 ver=0
+  [321/1000] ✓ 0.70s/t 5614dbcf ver=3 rule=downscale
+  [322/1000] ✗ 0.70s/t 5623160b ver=0
+  [323/1000] ✗ 0.70s/t 56dc2b01 ver=0
+  [324/1000] ✓ 0.70s/t 56ff96f3 ver=2 rule=fill_rect
+  [325/1000] ✓ 0.70s/t 5751f35e ver=6 rule=neighborhood_rule
+  [326/1000] ✗ 0.70s/t 575b1a71 ver=5
+  [327/1000] ✓ 0.70s/t 5783df64 ver=2 rule=cross:extract_summary:grid_partition_majority
+  [328/1000] ✗ 0.69s/t 5792cb4d ver=5
+  [329/1000] ✗ 0.70s/t 57aa92db ver=0
+  [330/1000] ✗ 0.70s/t 57edb29d ver=0
+  [331/1000] ✗ 0.70s/t 5833af48 ver=0
+  [332/1000] ✗ 0.70s/t 58743b76 ver=5
+  [333/1000] ✗ 0.69s/t 58c02a16 ver=0
+  [334/1000] ✗ 0.69s/t 58e15b12 ver=0
+  [335/1000] ✓ 0.69s/t 59341089 ver=2 rule=cross:tile:tile_1x4_transform
+  [336/1000] ✗ 0.70s/t 5a5a2103 ver=0
+  [337/1000] ✗ 0.70s/t 5a719d11 ver=3
+  [338/1000] ✗ 0.70s/t 5ad4f10b ver=0
+  [339/1000] ✗ 0.70s/t 5ad8a7c0 ver=0
+  [340/1000] ✗ 0.70s/t 5adee1b2 ver=0
+  [341/1000] ✗ 0.70s/t 5af49b42 ver=0
+  [342/1000] ✗ 0.72s/t 5b37cb25 ver=5
+  [343/1000] ✗ 0.72s/t 5b526a93 ver=0
+  [344/1000] ✗ 0.72s/t 5b692c0f ver=5
+  [345/1000] ✓ 0.72s/t 5b6cbef5 ver=2 rule=cross:puzzle:cell_to_copy_block
+  [346/1000] ✓ 0.72s/t 5bd6f4ac ver=2 rule=cross:cegis:crop
+  [347/1000] ✗ 0.72s/t 5c0a986e ver=1
+  [348/1000] ✗ 0.72s/t 5c2c9af4 ver=0
+  [349/1000] ✓ 0.71s/t 5d2a5c43 ver=1 rule=cross:puzzle:sep_v_or_mark8
+  [350/1000] ✗ 0.71s/t 5d588b4d ver=0
+[350/1000] 90/350 (25.7%) att=198 ETA=463s
+  [351/1000] ✗ 0.71s/t 5daaa586 ver=0
+  [352/1000] ✗ 0.71s/t 5e6bbc0b ver=1
+  [353/1000] ✗ 0.71s/t 5ecac7f7 ver=0
+  [354/1000] ✓ 0.71s/t 5ffb2104 ver=2 rule=cross:cross3d:uniform_gravity_(0, 1)
+  [355/1000] ✗ 0.71s/t 60a26a3e ver=0
+  [356/1000] ✓ 0.71s/t 60b61512 ver=7 rule=neighborhood_rule
+  [357/1000] ✓ 0.71s/t 60c09cac ver=6 rule=cross:puzzle:upscale_2x
+  [358/1000] ✗ 0.71s/t 60d73be6 ver=2
+  [359/1000] ✓ 0.70s/t 6150a2bd ver=9 rule=cross:puzzle:rotate_180_content
+  [360/1000] ✗ 0.70s/t 6165ea8f ver=0
+  [361/1000] ✓ 0.70s/t 623ea044 ver=5 rule=cross:puzzle:ray_extend_diag
+  [362/1000] ✗ 0.70s/t 626c0bcc ver=5
+  [363/1000] ✗ 0.70s/t 62ab2642 ver=2
+  [364/1000] ✗ 0.70s/t 62b74c02 ver=0
+  [365/1000] ✓ 0.70s/t 62c24649 ver=3 rule=corners_mirror
+  [366/1000] ✗ 0.70s/t 6350f1f4 ver=5
+  [367/1000] ✗ 0.69s/t 63613498 ver=5
+  [368/1000] ✗ 0.70s/t 639f5a19 ver=0
+  [369/1000] ✗ 0.70s/t 642248e4 ver=1
+  [370/1000] ✓ 0.70s/t 642d658d ver=2 rule=cross:cross3d:1x1_n_objects
+  [371/1000] ✓ 0.69s/t 6430c8c4 ver=1 rule=cross:puzzle:sep_h_nor_mark3
+  [372/1000] ✗ 0.69s/t 6455b5f5 ver=2
+  [373/1000] ✗ 0.69s/t 64a7c07e ver=1
+  [374/1000] ✗ 0.69s/t 652646ff ver=0
+  [375/1000] ✗ 0.69s/t 662c240a ver=0
+  [376/1000] ✗ 0.69s/t 668eec9a ver=0
+  [377/1000] ✗ 0.70s/t 66ac4c3b ver=0
+  [378/1000] ✓ 0.69s/t 66e6c45b ver=5 rule=neighborhood_rule
+  [379/1000] ✓ 0.69s/t 66f2d22f ver=2 rule=cross:puzzle:split_h_nor_c5
+  [380/1000] ✓ 0.69s/t 67385a82 ver=7 rule=cond_neighbor
+  [381/1000] ✗ 0.69s/t 673ef223 ver=0
+  [382/1000] ✗ 0.69s/t 67636eac ver=0
+  [383/1000] ✓ 0.69s/t 6773b310 ver=2 rule=cross:ptree:Seq(Apply(extract_minority_bbox) → Apply(block_classify:coun
+  [384/1000] ✓ 0.69s/t 67a3c6ac ver=7 rule=cross:flip_h
+  [385/1000] ✓ 0.69s/t 67a423a3 ver=5 rule=neighborhood_rule
+  [386/1000] ✗ 0.68s/t 67c52801 ver=1
+  [387/1000] ✓ 0.68s/t 67e8384a ver=3 rule=corners_mirror
+  [388/1000] ✗ 0.68s/t 681b3aeb ver=0
+  [389/1000] ✗ 0.68s/t 6855a6e4 ver=1
+  [390/1000] ✗ 0.68s/t 689c358e ver=0
+  [391/1000] ✓ 0.68s/t 68b16354 ver=7 rule=cross:flip_v
+  [392/1000] ✓ 0.68s/t 68b67ca3 ver=3 rule=remove_empty_both
+  [393/1000] ✗ 0.68s/t 68bc2e87 ver=0
+  [394/1000] ✗ 0.68s/t 692cd3b6 ver=0
+  [395/1000] ✗ 0.68s/t 694f12f3 ver=0
+  [396/1000] ✗ 0.68s/t 695367ec ver=0
+  [397/1000] ✗ 0.68s/t 696d4842 ver=1
+  [398/1000] ✗ 0.68s/t 69889d6e ver=0
+  [399/1000] ✗ 0.68s/t 6a11f6da ver=0
+  [400/1000] ✗ 0.68s/t 6a1e5592 ver=1
+[400/1000] 107/400 (26.8%) att=228 ETA=407s
+  [401/1000] ✗ 0.68s/t 6a980be1 ver=0
+  [402/1000] ✗ 0.69s/t 6aa20dc0 ver=0
+  [403/1000] ✗ 0.68s/t 6ad5bdfd ver=5
+  [404/1000] ✗ 0.68s/t 6b9890af ver=0
+  [405/1000] ✗ 0.68s/t 6bcdb01e ver=5
+  [406/1000] ✓ 0.68s/t 6c434453 ver=5 rule=neighborhood_rule
+  [407/1000] ✗ 0.68s/t 6ca952ad ver=0
+  [408/1000] ✗ 0.68s/t 6cbe9eb8 ver=0
+  [409/1000] ✗ 0.69s/t 6cdd2623 ver=1
+  [410/1000] ✗ 0.69s/t 6cf79266 ver=5
+  [411/1000] ✗ 0.68s/t 6d0160f0 ver=5
+  [412/1000] ✓ 0.68s/t 6d0aefbc ver=3 rule=stack_h_flip
+  [413/1000] ✗ 0.68s/t 6d1d5c90 ver=0
+  [414/1000] ✗ 0.68s/t 6d58a25d ver=0
+  [415/1000] ✓ 0.68s/t 6d75e8bb ver=8 rule=neighborhood_rule
+  [416/1000] ✗ 0.68s/t 6df30ad6 ver=7
+  [417/1000] ✗ 0.68s/t 6e02f1e3 ver=5
+  [418/1000] ✗ 0.68s/t 6e19193c ver=1
+  [419/1000] ✓ 0.68s/t 6e82a1ae ver=8 rule=neighborhood_rule
+  [420/1000] ✓ 0.68s/t 6ea4a07e ver=6 rule=neighborhood_rule
+  [421/1000] ✗ 0.68s/t 6ecd11f4 ver=0
+  [422/1000] ✗ 0.68s/t 6f473927 ver=0
+  [423/1000] ✓ 0.68s/t 6f8cd79b ver=7 rule=neighborhood_rule
+  [424/1000] ✓ 0.67s/t 6fa7a44f ver=3 rule=stack_v_flip
+  [425/1000] ✗ 0.68s/t 6ffe8f07 ver=0
+  [426/1000] ✓ 0.68s/t 7039b2d7 ver=2 rule=cross:ptree:Seq(Apply(extract_minority_bbox) → Apply(block_classify:most
+  [427/1000] ✗ 0.68s/t 705a3229 ver=0
+  [428/1000] ✗ 0.68s/t 712bf12e ver=5
+  [429/1000] ✗ 0.67s/t 72207abc ver=0
+  [430/1000] ✗ 0.67s/t 72322fa7 ver=1
+  [431/1000] ✓ 0.67s/t 72a961c9 ver=2 rule=cross:ptree:Seq(Apply(draw_lines_same_color) → Apply(stamp:stamp_by_obj_
+  [432/1000] ✗ 0.67s/t 72ca375d ver=1
+  [433/1000] ✓ 0.67s/t 73182012 ver=2 rule=composite(crop_bbox+tile_to_output)
+  [434/1000] ✗ 0.67s/t 73c3b0d8 ver=1
+  [435/1000] ✗ 0.67s/t 73ccf9c2 ver=0
+  [436/1000] ✗ 0.67s/t 7447852a ver=0
+  [437/1000] ✓ 0.67s/t 7468f01a ver=2 rule=cross:cegis:flip_h+extract_largest_object
+  [438/1000] ✓ 0.67s/t 746b3537 ver=2 rule=composite(dedup_rows+dedup_cols)
+  [439/1000] ✓ 0.67s/t 74dd1130 ver=6 rule=neighborhood_rule
+  [440/1000] ✗ 0.68s/t 753ea09b ver=0
+  [441/1000] ✗ 0.68s/t 758abdf0 ver=1
+  [442/1000] ✗ 0.68s/t 759f3fd3 ver=2
+  [443/1000] ✗ 0.68s/t 75b8110e ver=0
+  [444/1000] ✗ 0.68s/t 760b3cac ver=0
+  [445/1000] ✗ 0.68s/t 762cd429 ver=0
+  [446/1000] ✗ 0.68s/t 770cc55f ver=0
+  [447/1000] ✗ 0.68s/t 776ffc46 ver=1
+  [448/1000] ✗ 0.68s/t 77fdfe62 ver=1
+  [449/1000] ✗ 0.68s/t 780d0b14 ver=0
+  [450/1000] ✗ 0.68s/t 782b5218 ver=5
+[450/1000] 120/450 (26.7%) att=258 ETA=372s
+  [451/1000] ✗ 0.68s/t 7837ac64 ver=0
+  [452/1000] ✗ 0.68s/t 78e78cff ver=0
+  [453/1000] ✗ 0.68s/t 79369cc6 ver=5
+  [454/1000] ✗ 0.68s/t 794b24be ver=5
+  [455/1000] ✓ 0.68s/t 7953d61e ver=2 rule=cross:tile:tile_2x2_transform
+  [456/1000] ✗ 0.68s/t 79cce52d ver=0
+  [457/1000] ✗ 0.68s/t 7acdf6d3 ver=0
+  [458/1000] ✗ 0.68s/t 7b6016b9 ver=2
+  [459/1000] ✓ 0.68s/t 7b7f7511 ver=2 rule=cross:cegis:dedup_rows+dedup_cols
+  [460/1000] ✗ 0.68s/t 7bb29440 ver=0
+  [461/1000] ✗ 0.68s/t 7c008303 ver=0
+  [462/1000] ✗ 0.68s/t 7c8af763 ver=1
+  [463/1000] ✗ 0.68s/t 7c9b52a0 ver=1
+  [464/1000] ✗ 0.68s/t 7d18a6fb ver=0
+  [465/1000] ✓ 0.68s/t 7d1f7ee8 ver=3 rule=cross:per_obj_recolor:shape_to_color
+  [466/1000] ✗ 0.68s/t 7d419a02 ver=0
+  [467/1000] ✗ 0.69s/t 7d7772cc ver=0
+  [468/1000] ✗ 0.69s/t 7ddcd7ec ver=1
+  [469/1000] ✗ 0.69s/t 7df24a62 ver=0
+  [470/1000] ✗ 0.69s/t 7e02026e ver=5
+  [471/1000] ✗ 0.69s/t 7e0986d6 ver=5
+  [472/1000] ✗ 0.69s/t 7e2bad24 ver=0
+  [473/1000] ✗ 0.68s/t 7e4d4f7c ver=0
+  [474/1000] ✗ 0.70s/t 7e576d6e ver=0
+  [475/1000] ✗ 0.70s/t 7ec998c9 ver=0
+  [476/1000] ✗ 0.70s/t 7ee1c6ea ver=5
+  [477/1000] ✗ 0.70s/t 7f4411dc ver=7
+  [478/1000] ✓ 0.69s/t 7fe24cdd ver=2 rule=cross:tile:tile_2x2_transform
+  [479/1000] ✗ 0.69s/t 80214e03 ver=0
+  [480/1000] ✗ 0.69s/t 80af3007 ver=0
+  [481/1000] ✓ 0.69s/t 810b9b61 ver=9 rule=neighborhood_rule
+  [482/1000] ✗ 0.69s/t 817e6c09 ver=1
+  [483/1000] ✗ 0.69s/t 81c0276b ver=0
+  [484/1000] ✗ 0.69s/t 825aa9e9 ver=5
+  [485/1000] ✗ 0.69s/t 82819916 ver=0
+  [486/1000] ✗ 0.69s/t 83302e8f ver=0
+  [487/1000] ✓ 0.69s/t 833966f4 ver=5 rule=neighborhood_rule
+  [488/1000] ✓ 0.69s/t 833dafe3 ver=2 rule=cross:puzzle:mirror_h_alt_tile
+  [489/1000] ✗ 0.69s/t 834ec97d ver=1
+  [490/1000] ✗ 0.69s/t 83b6b474 ver=0
+  [491/1000] ✗ 0.69s/t 83eb0a57 ver=0
+  [492/1000] ✗ 0.69s/t 8403a5d5 ver=2
+  [493/1000] ✗ 0.69s/t 84551f4c ver=0
+  [494/1000] ✗ 0.69s/t 845d6e51 ver=1
+  [495/1000] ✗ 0.69s/t 846bdb03 ver=0
+  [496/1000] ✗ 0.69s/t 84ba50d3 ver=0
+  [497/1000] ✗ 0.69s/t 84db8fc4 ver=5
+  [498/1000] ✓ 0.69s/t 84f2aca1 ver=7 rule=neighborhood_rule
+  [499/1000] ✗ 0.69s/t 855e0971 ver=0
+  [500/1000] ✗ 0.69s/t 8597cfd7 ver=0
+[500/1000] 128/500 (25.6%) att=282 ETA=344s
+  [501/1000] ✗ 0.69s/t 85b81ff1 ver=0
+  [502/1000] ✗ 0.69s/t 85c4e7cd ver=3
+  [503/1000] ✗ 0.69s/t 85fa5666 ver=0
+  [504/1000] ✗ 0.69s/t 8618d23e ver=0
+  [505/1000] ✗ 0.69s/t 868de0fa ver=0
+  [506/1000] ✗ 0.69s/t 8719f442 ver=0
+  [507/1000] ✗ 0.69s/t 8731374e ver=0
+  [508/1000] ✗ 0.69s/t 878187ab ver=0
+  [509/1000] ✗ 0.69s/t 87ab05b8 ver=5
+  [510/1000] ✗ 0.69s/t 880c1354 ver=3
+  [511/1000] ✗ 0.69s/t 88207623 ver=1
+  [512/1000] ✗ 0.69s/t 8886d717 ver=5
+  [513/1000] ✗ 0.69s/t 88a10436 ver=0
+  [514/1000] ✓ 0.69s/t 88a62173 ver=2 rule=extract_unique_subgrid
+  [515/1000] ✗ 0.69s/t 890034e9 ver=5
+  [516/1000] ✗ 0.69s/t 891232d6 ver=0
+  [517/1000] ✗ 0.69s/t 896d5239 ver=5
+  [518/1000] ✗ 0.69s/t 8a004b2b ver=0
+  [519/1000] ✗ 0.69s/t 8a371977 ver=0
+  [520/1000] ✗ 0.69s/t 8a6d367c ver=0
+  [521/1000] ✗ 0.69s/t 8abad3cf ver=0
+  [522/1000] ✗ 0.69s/t 8b28cd80 ver=0
+  [523/1000] ✗ 0.69s/t 8ba14f53 ver=0
+  [524/1000] ✓ 0.69s/t 8be77c9e ver=3 rule=stack_v_flip
+  [525/1000] ✗ 0.69s/t 8cb8642d ver=0
+  [526/1000] ✓ 0.69s/t 8d5021e8 ver=1 rule=cross:puzzle:mirror_h_alt_tile
+  [527/1000] ✗ 0.69s/t 8d510a79 ver=0
+  [528/1000] ✗ 0.69s/t 8dab14c2 ver=0
+  [529/1000] ✗ 0.69s/t 8dae5dfc ver=3
+  [530/1000] ✗ 0.69s/t 8e1813be ver=0
+  [531/1000] ✓ 0.69s/t 8e2edd66 ver=1 rule=cross:cross3d:self_tile_bg_cinv
+  [532/1000] ✗ 0.69s/t 8e301a54 ver=1
+  [533/1000] ✗ 0.69s/t 8e5a5113 ver=0
+  [534/1000] ✗ 0.69s/t 8eb1be9a ver=2
+  [535/1000] ✗ 0.69s/t 8ee62060 ver=1
+  [536/1000] ✗ 0.69s/t 8efcae92 ver=0
+  [537/1000] ✗ 0.69s/t 8f2ea7aa ver=0
+  [538/1000] ✗ 0.69s/t 8fbca751 ver=5
+  [539/1000] ✗ 0.68s/t 8fff9e47 ver=0
+  [540/1000] ✗ 0.68s/t 902510d5 ver=0
+  [541/1000] ✗ 0.68s/t 90347967 ver=0
+  [542/1000] ✗ 0.68s/t 90c28cc7 ver=0
+  [543/1000] ✗ 0.68s/t 90f3ed37 ver=0
+  [544/1000] ✗ 0.68s/t 9110e3c5 ver=0
+  [545/1000] ✓ 0.68s/t 913fb3ed ver=5 rule=neighborhood_rule
+  [546/1000] ✗ 0.68s/t 91413438 ver=0
+  [547/1000] ✗ 0.68s/t 91714a58 ver=5
+  [548/1000] ✓ 0.68s/t 9172f3a0 ver=6 rule=cross:puzzle:upscale_3x
+  [549/1000] ✗ 0.68s/t 917bccba ver=1
+  [550/1000] ✗ 0.68s/t 928ad970 ver=0
+[550/1000] 134/550 (24.4%) att=302 ETA=305s
+  [551/1000] ✗ 0.68s/t 92e50de0 ver=2
+  [552/1000] ✗ 0.68s/t 9344f635 ver=3
+  [553/1000] ✗ 0.68s/t 9356391f ver=0
+  [554/1000] ✗ 0.68s/t 93b4f4b3 ver=1
+  [555/1000] ✗ 0.68s/t 93b581b8 ver=3
+  [556/1000] ✗ 0.68s/t 93c31fbe ver=0
+  [557/1000] ✗ 0.68s/t 94133066 ver=0
+  [558/1000] ✗ 0.68s/t 941d9a10 ver=0
+  [559/1000] ✗ 0.68s/t 94414823 ver=1
+  [560/1000] ✗ 0.68s/t 9473c6fb ver=5
+  [561/1000] ✗ 0.68s/t 94be5b80 ver=0
+  [562/1000] ✓ 0.68s/t 94f9d214 ver=2 rule=cross:puzzle:split_v_nor_c2
+  [563/1000] ✗ 0.68s/t 952a094c ver=3
+  [564/1000] ✓ 0.68s/t 9565186b ver=6 rule=neighborhood_rule
+  [565/1000] ✗ 0.68s/t 95755ff2 ver=0
+  [566/1000] ✓ 0.68s/t 95990924 ver=5 rule=neighborhood_rule
+  [567/1000] ✗ 0.68s/t 95a58926 ver=0
+  [568/1000] ✗ 0.68s/t 963c33f8 ver=1
+  [569/1000] ✗ 0.68s/t 963e52fc ver=0
+  [570/1000] ✗ 0.68s/t 963f59bc ver=0
+  [571/1000] ✗ 0.68s/t 96a8c0cd ver=0
+  [572/1000] ✗ 0.68s/t 9720b24f ver=5
+  [573/1000] ✗ 0.68s/t 97239e3d ver=0
+  [574/1000] ✗ 0.68s/t 973e499e ver=0
+  [575/1000] ✗ 0.68s/t 9772c176 ver=2
+  [576/1000] ✗ 0.68s/t 97999447 ver=0
+  [577/1000] ✗ 0.68s/t 97a05b5b ver=0
+  [578/1000] ✗ 0.67s/t 97c75046 ver=5
+  [579/1000] ✗ 0.68s/t 981add89 ver=0
+  [580/1000] ✗ 0.68s/t 9841fdad ver=0
+  [581/1000] ✗ 0.68s/t 984d8a3e ver=5
+  [582/1000] ✗ 0.69s/t 985ae207 ver=0
+  [583/1000] ✗ 0.69s/t 98c475bf ver=0
+  [584/1000] ✗ 0.69s/t 98cf29f8 ver=1
+  [585/1000] ✗ 0.69s/t 992798f6 ver=0
+  [586/1000] ✗ 0.69s/t 99306f82 ver=2
+  [587/1000] ✗ 0.69s/t 995c5fa3 ver=0
+  [588/1000] ✗ 0.69s/t 9968a131 ver=3
+  [589/1000] ✗ 0.69s/t 996ec1f3 ver=0
+  [590/1000] ✓ 0.69s/t 99b1bc43 ver=2 rule=cross:puzzle:sep_h_xor_mark3
+  [591/1000] ✗ 0.69s/t 99caaf76 ver=0
+  [592/1000] ✗ 0.69s/t 99fa7670 ver=0
+  [593/1000] ✓ 0.69s/t 9a4bb226 ver=3 rule=cross:extract_most_colors_mc
+  [594/1000] ✗ 0.69s/t 9aec4887 ver=0
+  [595/1000] ✗ 0.69s/t 9af7a82c ver=0
+  [596/1000] ✗ 0.69s/t 9b2a60aa ver=0
+  [597/1000] ✗ 0.69s/t 9b30e358 ver=0
+  [598/1000] ✗ 0.69s/t 9b365c51 ver=1
+  [599/1000] ✗ 0.69s/t 9b4c17c4 ver=0
+  [600/1000] ✗ 0.69s/t 9b5080bb ver=3
+[600/1000] 139/600 (23.2%) att=324 ETA=276s
+  [601/1000] ✗ 0.69s/t 9ba4a9aa ver=0
+  [602/1000] ✗ 0.69s/t 9bebae7a ver=0
+  [603/1000] ✗ 0.69s/t 9c1e755f ver=0
+  [604/1000] ✗ 0.69s/t 9c56f360 ver=5
+  [605/1000] ✗ 0.69s/t 9caba7c3 ver=5
+  [606/1000] ✗ 0.69s/t 9caf5b84 ver=5
+  [607/1000] ✗ 0.69s/t 9d9215db ver=0
+  [608/1000] ✓ 0.69s/t 9ddd00f0 ver=2 rule=cross:symmetry_fill:rot90
+  [609/1000] ✗ 0.69s/t 9def23fe ver=0
+  [610/1000] ✓ 0.69s/t 9dfd6313 ver=6 rule=neighborhood_rule
+  [611/1000] ✗ 0.69s/t 9edfc990 ver=5
+  [612/1000] ✗ 0.69s/t 9f236235 ver=0
+  [613/1000] ✗ 0.69s/t 9f27f097 ver=0
+  [614/1000] ✗ 0.69s/t 9f41bd9c ver=0
+  [615/1000] ✗ 0.69s/t 9f5f939b ver=5
+  [616/1000] ✗ 0.69s/t 9f669b64 ver=5
+  [617/1000] ✗ 0.69s/t 9f8de559 ver=1
+  [618/1000] ✗ 0.69s/t a04b2602 ver=5
+  [619/1000] ✗ 0.69s/t a096bf4d ver=0
+  [620/1000] ✗ 0.70s/t a09f6c25 ver=5
+  [621/1000] ✗ 0.69s/t a1570a43 ver=5
+  [622/1000] ✗ 0.70s/t a1aa0c1e ver=0
+  [623/1000] ✗ 0.70s/t a2d730bd ver=0
+  [624/1000] ✓ 0.70s/t a2fd1cf0 ver=2 rule=cross:ptree:Seq(Apply(draw_lines_same_color) → Apply(l_connect:color_bas
+  [625/1000] ✗ 0.70s/t a3325580 ver=0
+  [626/1000] ✗ 0.70s/t a3f84088 ver=0
+  [627/1000] ✓ 0.70s/t a406ac07 ver=1 rule=cross:tiny_diff:projection_fill
+  [628/1000] ✓ 0.70s/t a416b8f3 ver=3 rule=stack_h
+  [629/1000] ✗ 0.70s/t a416fc5b ver=0
+  [630/1000] ✗ 0.70s/t a48eeaf7 ver=1
+  [631/1000] ✓ 0.70s/t a5313dff ver=9 rule=fill_enclosed
+  [632/1000] ✗ 0.70s/t a57f2f04 ver=0
+  [633/1000] ✓ 0.70s/t a59b95c0 ver=2 rule=cross:dynamic_tile:n_colors_plus1
+  [634/1000] ✗ 0.70s/t a5f85a15 ver=1
+  [635/1000] ✓ 0.70s/t a61ba2ce ver=1 rule=cross:cross3d:corner_assembly
+  [636/1000] ✗ 0.70s/t a61f2674 ver=3
+  [637/1000] ✗ 0.70s/t a644e277 ver=0
+  [638/1000] ✗ 0.70s/t a64e4611 ver=0
+  [639/1000] ✗ 0.70s/t a65b410d ver=2
+  [640/1000] ✗ 0.70s/t a680ac02 ver=0
+  [641/1000] ✓ 0.70s/t a68b268e ver=2 rule=cross:ptree:Seq(Apply(extract_majority_bbox) → Apply(panel_reduce_or))
+  [642/1000] ✗ 0.70s/t a6953f00 ver=0
+  [643/1000] ✓ 0.70s/t a699fb00 ver=9 rule=neighborhood_rule
+  [644/1000] ✓ 0.70s/t a740d043 ver=1 rule=beam_depth_2(crop+res:color_sub)
+  [645/1000] ✗ 0.70s/t a78176bb ver=0
+  [646/1000] ✓ 0.69s/t a79310a0 ver=6 rule=cross:puzzle:shift_recolor_d10
+  [647/1000] ✗ 0.69s/t a834deea ver=5
+  [648/1000] ✓ 0.69s/t a85d4709 ver=6 rule=cross:puzzle:col_color_map
+  [649/1000] ✗ 0.69s/t a8610ef7 ver=5
+  [650/1000] ✓ 0.69s/t a87f7484 ver=2 rule=extract_unique_subgrid
+[650/1000] 153/650 (23.5%) att=354 ETA=242s
+  [651/1000] ✗ 0.69s/t a8c38be5 ver=0
+  [652/1000] ✗ 0.69s/t a8d7556c ver=5
+  [653/1000] ✗ 0.69s/t a934301b ver=5
+  [654/1000] ✓ 0.69s/t a9f96cdd ver=5 rule=neighborhood_rule
+  [655/1000] ✓ 0.69s/t aa18de87 ver=4 rule=neighborhood_rule
+  [656/1000] ✗ 0.69s/t aa300dc3 ver=5
+  [657/1000] ✗ 0.69s/t aa62e3f4 ver=5
+  [658/1000] ✗ 0.69s/t aab50785 ver=0
+  [659/1000] ✓ 0.69s/t aabf363d ver=10 rule=cross:puzzle:global_color_map
+  [660/1000] ✗ 0.69s/t aaecdb9a ver=0
+  [661/1000] ✗ 0.69s/t aaef0977 ver=2
+  [662/1000] ✗ 0.69s/t aba27056 ver=2
+  [663/1000] ✗ 0.69s/t abbfd121 ver=0
+  [664/1000] ✓ 0.69s/t ac0a08a4 ver=2 rule=cross:cell_to_color_block
+  [665/1000] ✗ 0.69s/t ac0c2ac3 ver=0
+  [666/1000] ✗ 0.69s/t ac0c5833 ver=0
+  [667/1000] ✗ 0.69s/t ac2e8ecf ver=0
+  [668/1000] ✗ 0.69s/t ac3e2b04 ver=0
+  [669/1000] ✗ 0.69s/t ac605cbb ver=0
+  [670/1000] ✗ 0.69s/t ac6f9922 ver=0
+  [671/1000] ✗ 0.69s/t ad173014 ver=3
+  [672/1000] ✓ 0.69s/t ad38a9d0 ver=7 rule=neighborhood_rule
+  [673/1000] ✗ 0.69s/t ad3b40cf ver=0
+  [674/1000] ✓ 0.69s/t ad7e01d0 ver=2 rule=cross:self_stamp_c5
+  [675/1000] ✗ 0.69s/t ae3edfdc ver=1
+  [676/1000] ✗ 0.69s/t ae4f1146 ver=1
+  [677/1000] ✓ 0.68s/t ae58858e ver=8 rule=neighborhood_rule
+  [678/1000] ✓ 0.68s/t aedd82e4 ver=9 rule=neighborhood_rule
+  [679/1000] ✗ 0.68s/t aee291af ver=0
+  [680/1000] ✗ 0.68s/t af24b4cc ver=0
+  [681/1000] ✗ 0.69s/t af726779 ver=0
+  [682/1000] ✗ 0.68s/t af902bf9 ver=1
+  [683/1000] ✗ 0.69s/t afe3afe9 ver=0
+  [684/1000] ✗ 0.69s/t b0722778 ver=0
+  [685/1000] ✗ 0.69s/t b0c4d837 ver=0
+  [686/1000] ✗ 0.69s/t b0f4d537 ver=0
+  [687/1000] ✗ 0.68s/t b15fca0b ver=5
+  [688/1000] ✗ 0.68s/t b190f7f5 ver=0
+  [689/1000] ✓ 0.68s/t b1948b0a ver=20 rule=cross:puzzle:global_color_map
+  [690/1000] ✗ 0.68s/t b1986d4b ver=0
+  [691/1000] ✗ 0.68s/t b1fc8b8e ver=0
+  [692/1000] ✗ 0.68s/t b20f7c8b ver=1
+  [693/1000] ✗ 0.68s/t b230c067 ver=12
+  [694/1000] ✗ 0.68s/t b25e450b ver=5
+  [695/1000] ✗ 0.68s/t b27ca6d3 ver=5
+  [696/1000] ✓ 0.68s/t b2862040 ver=8 rule=neighborhood_rule
+  [697/1000] ✗ 0.68s/t b2bc3ffd ver=0
+  [698/1000] ✗ 0.68s/t b457fec5 ver=0
+  [699/1000] ✗ 0.68s/t b4a43f3b ver=0
+  [700/1000] ✗ 0.68s/t b527c5c6 ver=0
+[700/1000] 163/700 (23.3%) att=379 ETA=205s
+  [701/1000] ✗ 0.68s/t b548a754 ver=0
+  [702/1000] ✓ 0.68s/t b5bb5719 ver=1 rule=cross:cross3d:pyramid_converge
+  [703/1000] ✓ 0.68s/t b60334d2 ver=5 rule=neighborhood_rule
+  [704/1000] ✓ 0.68s/t b6afb2da ver=7 rule=neighborhood_rule
+  [705/1000] ✗ 0.68s/t b71a7747 ver=0
+  [706/1000] ✗ 0.68s/t b7249182 ver=0
+  [707/1000] ✗ 0.68s/t b7256dcd ver=6
+  [708/1000] ✗ 0.68s/t b745798f ver=0
+  [709/1000] ✗ 0.69s/t b74ca5d1 ver=0
+  [710/1000] ✗ 0.69s/t b775ac94 ver=1
+  [711/1000] ✗ 0.69s/t b782dc8a ver=0
+  [712/1000] ✗ 0.69s/t b7955b3c ver=5
+  [713/1000] ✗ 0.69s/t b7999b51 ver=0
+  [714/1000] ✗ 0.69s/t b7cb93ac ver=0
+  [715/1000] ✗ 0.70s/t b7f8a4d8 ver=0
+  [716/1000] ✗ 0.70s/t b7fb29bc ver=0
+  [717/1000] ✓ 0.70s/t b8825c91 ver=6 rule=neighborhood_rule
+  [718/1000] ✗ 0.70s/t b8cdaf2b ver=5
+  [719/1000] ✓ 0.70s/t b91ae062 ver=2 rule=cross:cell_to_color_block
+  [720/1000] ✗ 0.69s/t b942fd60 ver=3
+  [721/1000] ✗ 0.69s/t b94a9452 ver=0
+  [722/1000] ✗ 0.70s/t b9630600 ver=0
+  [723/1000] ✗ 0.70s/t b9b7f026 ver=2
+  [724/1000] ✗ 0.70s/t ba1aa698 ver=0
+  [725/1000] ✗ 0.70s/t ba26e723 ver=0
+  [726/1000] ✓ 0.69s/t ba97ae07 ver=6 rule=cross:puzzle:fill_intersection_gap
+  [727/1000] ✗ 0.69s/t ba9d41b8 ver=0
+  [728/1000] ✗ 0.70s/t bae5c565 ver=1
+  [729/1000] ✗ 0.70s/t baf41dbf ver=0
+  [730/1000] ✓ 0.69s/t bb43febb ver=8 rule=neighborhood_rule
+  [731/1000] ✗ 0.70s/t bb52a14b ver=5
+  [732/1000] ✗ 0.69s/t bbb1b8b6 ver=0
+  [733/1000] ✓ 0.69s/t bbc9ae5d ver=1 rule=cross:puzzle:staircase_grow
+  [734/1000] ✗ 0.69s/t bc1d5164 ver=0
+  [735/1000] ✓ 0.69s/t bc4146bd ver=2 rule=cross:tile:tile_1x5_transform
+  [736/1000] ✗ 0.69s/t bc93ec48 ver=5
+  [737/1000] ✗ 0.69s/t bcb3040b ver=5
+  [738/1000] ✗ 0.69s/t bd14c3bf ver=0
+  [739/1000] ✗ 0.69s/t bd283c4a ver=5
+  [740/1000] ✗ 0.69s/t bd4472b8 ver=2
+  [741/1000] ✗ 0.69s/t bd5af378 ver=0
+  [742/1000] ✗ 0.69s/t bda2d7a6 ver=5
+  [743/1000] ✗ 0.69s/t bdad9b1f ver=0
+  [744/1000] ✓ 0.69s/t be03b35f ver=1 rule=cross:cegis:rotate_90+crop
+  [745/1000] ✓ 0.69s/t be94b721 ver=13 rule=cross:extract_largest
+  [746/1000] ✗ 0.69s/t beb8660c ver=5
+  [747/1000] ✗ 0.68s/t bf32578f ver=5
+  [748/1000] ✓ 0.68s/t bf699163 ver=4 rule=composite(crop_to_color+crop_to_color)
+  [749/1000] ✗ 0.68s/t bf89d739 ver=0
+  [750/1000] ✗ 0.68s/t c074846d ver=0
+[750/1000] 175/750 (23.3%) att=406 ETA=171s
+  [751/1000] ✓ 0.68s/t c0f76784 ver=5 rule=neighborhood_rule
+  [752/1000] ✗ 0.68s/t c1990cce ver=0
+  [753/1000] ✗ 0.68s/t c1d99e64 ver=5
+  [754/1000] ✗ 0.68s/t c3202e5a ver=0
+  [755/1000] ✗ 0.68s/t c35c1b4c ver=5
+  [756/1000] ✓ 0.68s/t c3e719e8 ver=2 rule=cross:grow:self_stamp
+  [757/1000] ✗ 0.69s/t c3fa4749 ver=5
+  [758/1000] ✗ 0.69s/t c444b776 ver=2
+  [759/1000] ✓ 0.69s/t c48954c1 ver=2 rule=cross:tile:tile_3x3_transform
+  [760/1000] ✗ 0.69s/t c4d1a9ae ver=5
+  [761/1000] ✓ 0.68s/t c59eb873 ver=5 rule=cross:puzzle:upscale_2x
+  [762/1000] ✗ 0.69s/t c6141b15 ver=0
+  [763/1000] ✗ 0.69s/t c61be7dc ver=0
+  [764/1000] ✗ 0.69s/t c62e2108 ver=0
+  [765/1000] ✗ 0.69s/t c64f1187 ver=1
+  [766/1000] ✗ 0.69s/t c658a4bd ver=0
+  [767/1000] ✗ 0.69s/t c6e1b8da ver=1
+  [768/1000] ✗ 0.69s/t c7d4e6ad ver=5
+  [769/1000] ✗ 0.69s/t c803e39c ver=0
+  [770/1000] ✗ 0.69s/t c87289bb ver=0
+  [771/1000] ✗ 0.69s/t c8b7cc0f ver=0
+  [772/1000] ✗ 0.69s/t c8cbb738 ver=0
+  [773/1000] ✓ 0.68s/t c8f0f002 ver=15 rule=cross:puzzle:global_color_map
+  [774/1000] ✓ 0.69s/t c909285e ver=3 rule=cross:extract:extract_unique_color_obj_7x7
+  [775/1000] ✗ 0.69s/t c920a713 ver=0
+  [776/1000] ✗ 0.68s/t c92b942c ver=0
+  [777/1000] ✗ 0.68s/t c9680e90 ver=5
+  [778/1000] ✗ 0.68s/t c97c0139 ver=2
+  [779/1000] ✓ 0.68s/t c9e6f938 ver=2 rule=stack_h_flip
+  [780/1000] ✓ 0.68s/t c9f8e694 ver=2 rule=cross:ptree:Seq(Apply(conditional_obj:bg_to_color) → Apply(line_ray:h_ra
+  [781/1000] ✗ 0.68s/t ca8de6ea ver=0
+  [782/1000] ✗ 0.68s/t caa06a1f ver=0
+  [783/1000] ✗ 0.68s/t cad67732 ver=0
+  [784/1000] ✗ 0.68s/t cb227835 ver=0
+  [785/1000] ✗ 0.68s/t cbded52d ver=1
+  [786/1000] ✗ 0.68s/t cc9053aa ver=5
+  [787/1000] ✓ 0.68s/t ccd554ac ver=2 rule=cross:dynamic_tile:self_size
+  [788/1000] ✓ 0.68s/t cce03e0d ver=3 rule=cross:self_stamp_c2
+  [789/1000] ✓ 0.68s/t cd3c21df ver=4 rule=cross:extract_unique_shape
+  [790/1000] ✗ 0.68s/t cdecee7f ver=0
+  [791/1000] ✗ 0.68s/t ce039d91 ver=5
+  [792/1000] ✓ 0.68s/t ce22a75a ver=8 rule=neighborhood_rule
+  [793/1000] ✓ 0.67s/t ce4f8723 ver=2 rule=cross:puzzle:sep_h_or_mark3
+  [794/1000] ✗ 0.68s/t ce602527 ver=0
+  [795/1000] ✓ 0.67s/t ce8d95cc ver=2 rule=composite(dedup_rows+dedup_cols)
+  [796/1000] ✗ 0.67s/t ce9e57f2 ver=0
+  [797/1000] ✗ 0.67s/t cf133acc ver=0
+  [798/1000] ✓ 0.67s/t cf5fd0ad ver=2 rule=cross:tile:tile_4x4_transform
+  [799/1000] ✗ 0.67s/t cf98881b ver=0
+  [800/1000] ✗ 0.67s/t cfb2ce5a ver=0
+[800/1000] 190/800 (23.8%) att=434 ETA=135s
+  [801/1000] ✗ 0.67s/t d017b73f ver=0
+  [802/1000] ✓ 0.67s/t d037b0a7 ver=9 rule=cross:puzzle:ray_extend_down
+  [803/1000] ✗ 0.67s/t d06dbe63 ver=0
+  [804/1000] ✗ 0.67s/t d07ae81c ver=0
+  [805/1000] ✓ 0.67s/t d0f5fe59 ver=1 rule=cross:cross3d:identity_n_objects
+  [806/1000] ✓ 0.67s/t d10ecb37 ver=3 rule=tile_to_output
+  [807/1000] ✓ 0.67s/t d13f3404 ver=1 rule=cross:puzzle:diagonal_slide_1_1
+  [808/1000] ✓ 0.67s/t d19f7514 ver=2 rule=cross:puzzle:split_h_equal_or
+  [809/1000] ✗ 0.67s/t d22278a0 ver=0
+  [810/1000] ✗ 0.67s/t d23f8c26 ver=5
+  [811/1000] ✗ 0.67s/t d255d7a7 ver=0
+  [812/1000] ✓ 0.67s/t d282b262 ver=1 rule=cross:rot_cross:gravity_right
+  [813/1000] ✗ 0.67s/t d2abd087 ver=8
+  [814/1000] ✗ 0.67s/t d2acf2cb ver=5
+  [815/1000] ✗ 0.67s/t d304284e ver=2
+  [816/1000] ✓ 0.67s/t d364b489 ver=6 rule=neighborhood_rule
+  [817/1000] ✗ 0.67s/t d37a1ef5 ver=1
+  [818/1000] ✗ 0.67s/t d406998b ver=0
+  [819/1000] ✗ 0.67s/t d43fd935 ver=0
+  [820/1000] ✗ 0.67s/t d4469b4b ver=0
+  [821/1000] ✗ 0.67s/t d47aa2ff ver=0
+  [822/1000] ✗ 0.67s/t d492a647 ver=5
+  [823/1000] ✓ 0.67s/t d4a91cb9 ver=2 rule=cross:ptree:Seq(Apply(draw_lines_same_color) → Apply(l_connect:color_bas
+  [824/1000] ✓ 0.67s/t d4b1c2b1 ver=1 rule=cross:cross3d:color_count_upscale
+  [825/1000] ✗ 0.67s/t d4c90558 ver=0
+  [826/1000] ✗ 0.66s/t d4f3cd78 ver=2
+  [827/1000] ✓ 0.66s/t d511f180 ver=8 rule=cross:puzzle:global_color_map
+  [828/1000] ✗ 0.66s/t d56f2372 ver=0
+  [829/1000] ✗ 0.66s/t d5c634a2 ver=0
+  [830/1000] ✗ 0.66s/t d5d6de2d ver=5
+  [831/1000] ✓ 0.66s/t d631b094 ver=1 rule=cross:puzzle:nonzero_count_row
+  [832/1000] ✗ 0.66s/t d6542281 ver=5
+  [833/1000] ✗ 0.66s/t d687bc17 ver=1
+  [834/1000] ✗ 0.66s/t d6ad076f ver=2
+  [835/1000] ✗ 0.66s/t d6e50e54 ver=5
+  [836/1000] ✗ 0.66s/t d749d46f ver=0
+  [837/1000] ✗ 0.66s/t d753a70b ver=1
+  [838/1000] ✗ 0.66s/t d89b689b ver=1
+  [839/1000] ✗ 0.66s/t d8c310e9 ver=0
+  [840/1000] ✗ 0.66s/t d90796e8 ver=5
+  [841/1000] ✗ 0.66s/t d931c21c ver=2
+  [842/1000] ✗ 0.66s/t d93c6891 ver=1
+  [843/1000] ✗ 0.66s/t d94c3b52 ver=0
+  [844/1000] ✗ 0.66s/t d968ffd4 ver=0
+  [845/1000] ✗ 0.66s/t d9f24cd1 ver=0
+  [846/1000] ✓ 0.66s/t d9fac9be ver=4 rule=extract_smallest_region
+  [847/1000] ✗ 0.66s/t da2b0fe3 ver=2
+  [848/1000] ✗ 0.66s/t da6e95e5 ver=0
+  [849/1000] ✓ 0.66s/t dae9d2b5 ver=2 rule=cross:ext_nb:split_combine
+  [850/1000] ✗ 0.66s/t db118e2a ver=0
+[850/1000] 203/850 (23.9%) att=465 ETA=99s
+  [851/1000] ✗ 0.66s/t db3e9e38 ver=2
+  [852/1000] ✗ 0.67s/t db615bd4 ver=0
+  [853/1000] ✗ 0.67s/t db7260a4 ver=0
+  [854/1000] ✗ 0.67s/t db93a21d ver=0
+  [855/1000] ✓ 0.67s/t dbc1a6ce ver=2 rule=cross:ext_nb:between_fill
+  [856/1000] ✓ 0.67s/t dc1df850 ver=4 rule=neighborhood_rule
+  [857/1000] ✗ 0.67s/t dc2aa30b ver=5
+  [858/1000] ✗ 0.67s/t dc2e9a9d ver=2
+  [859/1000] ✓ 0.66s/t dc433765 ver=4 rule=cross:puzzle:move_toward_3_to_4
+  [860/1000] ✗ 0.67s/t dc46ea44 ver=0
+  [861/1000] ✗ 0.67s/t dce56571 ver=0
+  [862/1000] ✗ 0.67s/t dd2401ed ver=0
+  [863/1000] ✗ 0.66s/t ddf7fa4f ver=1
+  [864/1000] ✓ 0.66s/t de1cd16c ver=1 rule=cross:cegis:mirror_complete_v+crop
+  [865/1000] ✗ 0.67s/t de493100 ver=0
+  [866/1000] ✓ 0.67s/t ded97339 ver=6 rule=cross:puzzle:connect_same_color_lines
+  [867/1000] ✗ 0.67s/t df8cc377 ver=0
+  [868/1000] ✗ 0.67s/t df978a02 ver=3
+  [869/1000] ✗ 0.67s/t df9fd884 ver=0
+  [870/1000] ✗ 0.67s/t e048c9ed ver=0
+  [871/1000] ✓ 0.67s/t e0fb7511 ver=10 rule=cond_neighbor
+  [872/1000] ✓ 0.67s/t e133d23d ver=1 rule=cross:puzzle:sep_v_or_mark2
+  [873/1000] ✗ 0.67s/t e179c5f4 ver=0
+  [874/1000] ✓ 0.67s/t e1baa8a4 ver=2 rule=composite(dedup_rows+dedup_cols)
+  [875/1000] ✗ 0.67s/t e1d2900e ver=0
+  [876/1000] ✗ 0.67s/t e2092e0c ver=5
+  [877/1000] ✗ 0.67s/t e21a174a ver=5
+  [878/1000] ✗ 0.67s/t e21d9049 ver=0
+  [879/1000] ✗ 0.67s/t e26a3af2 ver=5
+  [880/1000] ✓ 0.67s/t e345f17b ver=1 rule=cross:puzzle:split_h_nor_c4
+  [881/1000] ✓ 0.67s/t e3497940 ver=2 rule=composite(symmetry_fill+subgrid_select)
+  [882/1000] ✗ 0.67s/t e39e9282 ver=3
+  [883/1000] ✗ 0.67s/t e3f79277 ver=0
+  [884/1000] ✗ 0.67s/t e3fe1151 ver=5
+  [885/1000] ✗ 0.67s/t e4075551 ver=0
+  [886/1000] ✗ 0.66s/t e40b9e2f ver=5
+  [887/1000] ✗ 0.67s/t e41c6fd3 ver=0
+  [888/1000] ✗ 0.67s/t e45ef808 ver=1
+  [889/1000] ✗ 0.67s/t e4888269 ver=0
+  [890/1000] ✗ 0.67s/t e48d4e1a ver=1
+  [891/1000] ✗ 0.67s/t e4941b18 ver=1
+  [892/1000] ✗ 0.66s/t e5062a87 ver=5
+  [893/1000] ✗ 0.66s/t e509e548 ver=2
+  [894/1000] ✗ 0.66s/t e50d258f ver=0
+  [895/1000] ✓ 0.66s/t e57337a4 ver=1 rule=cross:puzzle:scale_down_5_uniform
+  [896/1000] ✗ 0.66s/t e5790162 ver=0
+  [897/1000] ✗ 0.66s/t e5c44e8f ver=0
+  [898/1000] ✗ 0.66s/t e619ca6e ver=0
+  [899/1000] ✓ 0.66s/t e633a9e5 ver=1 rule=cross:puzzle:scale_border_dup
+  [900/1000] ✗ 0.66s/t e6721834 ver=0
+[900/1000] 215/900 (23.9%) att=493 ETA=66s
+  [901/1000] ✗ 0.66s/t e681b708 ver=0
+  [902/1000] ✓ 0.66s/t e69241bd ver=6 rule=neighborhood_rule
+  [903/1000] ✗ 0.66s/t e6de6e8f ver=0
+  [904/1000] ✓ 0.66s/t e729b7be ver=4 rule=symmetry_fill
+  [905/1000] ✗ 0.66s/t e73095fd ver=6
+  [906/1000] ✗ 0.66s/t e734a0e8 ver=5
+  [907/1000] ✗ 0.66s/t e74e1818 ver=5
+  [908/1000] ✗ 0.66s/t e760a62e ver=0
+  [909/1000] ✗ 0.66s/t e7639916 ver=0
+  [910/1000] ✗ 0.66s/t e76a88a6 ver=5
+  [911/1000] ✗ 0.66s/t e78887d1 ver=0
+  [912/1000] ✗ 0.66s/t e7a25a18 ver=0
+  [913/1000] ✗ 0.66s/t e7b06bea ver=0
+  [914/1000] ✗ 0.66s/t e7dd8335 ver=5
+  [915/1000] ✗ 0.66s/t e84fef15 ver=0
+  [916/1000] ✓ 0.66s/t e8593010 ver=8 rule=neighborhood_rule
+  [917/1000] ✗ 0.66s/t e872b94a ver=0
+  [918/1000] ✗ 0.66s/t e88171ec ver=5
+  [919/1000] ✗ 0.66s/t e8dc4411 ver=0
+  [920/1000] ✓ 0.66s/t e9614598 ver=2 rule=cross:cross3d:midpoint_cross
+  [921/1000] ✓ 0.66s/t e98196ab ver=5 rule=subgrid_overlay
+  [922/1000] ✗ 0.66s/t e99362f0 ver=0
+  [923/1000] ✗ 0.66s/t e9ac8c9e ver=0
+  [924/1000] ✓ 0.66s/t e9afcf9a ver=1 rule=cross:puzzle:two_row_interleave
+  [925/1000] ✗ 0.66s/t e9b4f6fc ver=1
+  [926/1000] ✗ 0.66s/t e9bb6954 ver=0
+  [927/1000] ✗ 0.66s/t e9c9d9a1 ver=2
+  [928/1000] ✗ 0.66s/t e9fc42f2 ver=0
+  [929/1000] ✓ 0.66s/t ea32f347 ver=4 rule=cross:per_obj_recolor:shape_to_color
+  [930/1000] ✓ 0.66s/t ea786f4a ver=7 rule=cross:puzzle:ray_extend_diag
+  [931/1000] ✗ 0.66s/t ea959feb ver=5
+  [932/1000] ✗ 0.66s/t ea9794b1 ver=1
+  [933/1000] ✗ 0.66s/t eb281b96 ver=0
+  [934/1000] ✓ 0.66s/t eb5a1d5d ver=2 rule=composite(dedup_rows+dedup_cols)
+  [935/1000] ✗ 0.66s/t ec883f72 ver=2
+  [936/1000] ✗ 0.66s/t ecaa0ec1 ver=5
+  [937/1000] ✗ 0.66s/t ecb67b6d ver=5
+  [938/1000] ✗ 0.66s/t ecdecbb3 ver=0
+  [939/1000] ✓ 0.66s/t ed36ccf7 ver=7 rule=cross:rot270
+  [940/1000] ✗ 0.66s/t ed74f2f2 ver=0
+  [941/1000] ✓ 0.66s/t ed98d772 ver=2 rule=cross:tile:tile_2x2_transform
+  [942/1000] ✗ 0.66s/t edcc2ff0 ver=0
+  [943/1000] ✗ 0.66s/t ef135b50 ver=5
+  [944/1000] ✗ 0.66s/t ef26cbf6 ver=5
+  [945/1000] ✗ 0.66s/t f0100645 ver=5
+  [946/1000] ✗ 0.66s/t f0afb749 ver=0
+  [947/1000] ✓ 0.66s/t f0df5ff0 ver=6 rule=neighborhood_rule
+  [948/1000] ✗ 0.66s/t f0f8a26d ver=5
+  [949/1000] ✗ 0.66s/t f15e1fac ver=0
+  [950/1000] ✗ 0.66s/t f18ec8cc ver=0
+[950/1000] 227/950 (23.9%) att=522 ETA=33s
+  [951/1000] ✗ 0.66s/t f1bcbc2c ver=5
+  [952/1000] ✗ 0.66s/t f1cefba8 ver=0
+  [953/1000] ✗ 0.66s/t f21745ec ver=0
+  [954/1000] ✓ 0.66s/t f25fbde4 ver=2 rule=cross:enum_d2:crop+scale_2x
+  [955/1000] ✓ 0.66s/t f25ffba3 ver=6 rule=cross:sym_h
+  [956/1000] ✓ 0.66s/t f2829549 ver=1 rule=cross:puzzle:sep_v_nor_mark3
+  [957/1000] ✗ 0.66s/t f28a3cbb ver=5
+  [958/1000] ✗ 0.66s/t f341894c ver=5
+  [959/1000] ✗ 0.66s/t f35d900a ver=0
+  [960/1000] ✗ 0.66s/t f3b10344 ver=0
+  [961/1000] ✗ 0.66s/t f3cdc58f ver=5
+  [962/1000] ✗ 0.66s/t f3e14006 ver=0
+  [963/1000] ✗ 0.66s/t f3e62deb ver=1
+  [964/1000] ✗ 0.66s/t f45f5ca7 ver=1
+  [965/1000] ✗ 0.66s/t f5aa3634 ver=2
+  [966/1000] ✗ 0.66s/t f5b8619d ver=0
+  [967/1000] ✗ 0.66s/t f5c89df1 ver=0
+  [968/1000] ✗ 0.66s/t f76d97a5 ver=5
+  [969/1000] ✗ 0.65s/t f823c43c ver=5
+  [970/1000] ✗ 0.65s/t f83cb3f6 ver=1
+  [971/1000] ✗ 0.65s/t f8a8fe49 ver=1
+  [972/1000] ✗ 0.65s/t f8b3ba0a ver=0
+  [973/1000] ✗ 0.66s/t f8be4b64 ver=0
+  [974/1000] ✗ 0.65s/t f8c80d96 ver=2
+  [975/1000] ✗ 0.66s/t f8cc533f ver=5
+  [976/1000] ✗ 0.66s/t f8f52ecc ver=0
+  [977/1000] ✗ 0.65s/t f8ff0b80 ver=0
+  [978/1000] ✗ 0.65s/t f9012d9b ver=0
+  [979/1000] ✗ 0.65s/t f9a67cb5 ver=0
+  [980/1000] ✗ 0.67s/t f9d67f8b ver=0
+  [981/1000] ✗ 0.67s/t fafd9572 ver=1
+  [982/1000] ✓ 0.66s/t fafffa47 ver=2 rule=cross:puzzle:split_v_nor_c2
+  [983/1000] ✗ 0.66s/t fb791726 ver=0
+  [984/1000] ✗ 0.66s/t fbf15a0b ver=0
+  [985/1000] ✗ 0.66s/t fc10701f ver=5
+  [986/1000] ✗ 0.67s/t fc4aaf52 ver=0
+  [987/1000] ✗ 0.66s/t fc754716 ver=5
+  [988/1000] ✗ 0.66s/t fcb5c309 ver=1
+  [989/1000] ✗ 0.66s/t fcc82909 ver=1
+  [990/1000] ✗ 0.66s/t fd02da9e ver=1
+  [991/1000] ✗ 0.67s/t fd096ab6 ver=1
+  [992/1000] ✗ 0.67s/t fd4b2b02 ver=2
+  [993/1000] ✗ 0.67s/t fe45cba4 ver=0
+  [994/1000] ✗ 0.67s/t fe9372f3 ver=0
+  [995/1000] ✗ 0.67s/t fea12743 ver=0
+  [996/1000] ✗ 0.67s/t feca6190 ver=0
+  [997/1000] ✗ 0.66s/t ff2825db ver=3
+  [998/1000] ✗ 0.66s/t ff28f65a ver=0
+  [999/1000] ✗ 0.66s/t ff72ca3e ver=0
+  [1000/1000] ✗ 0.66s/t ff805c23 ver=0
+[1000/1000] 231/1000 (23.1%) att=548 ETA=0s
+
+============================================================
+ARC-AGI-2 Cross Engine (training)
+============================================================
+Score: 231/1000 = 23.1%
+Attempted: 548/1000
+Time: 664.9s (0.66s/task)
+
+Methods:
+  neighborhood_rule: 227
+  cross:stamp:stamp_by_obj_shape: 27
+  cross:block_ir:cross_nb_r2: 25
+  iterative_cross_2(draw_lines_same_color+cross_nb_r2): 9
+  cross:block_ir:structural_nb_r2: 8
+  iterative_cross_2(region_shape_recolor+stamp:stamp_by_obj_shape): 7
+  cross:ptree:Seq(Apply(draw_lines_same_color) → Apply(stamp:stamp_by_obj_: 6
+  cross:puzzle:global_color_map: 5
+  cross:stamp:stamp_by_obj_color: 5
+  iterative_cross_2(flood_fill_enclosed+cross_nb_r2): 4
+  iterative_cross_2(draw_lines_same_color+structural_nb_r2): 4
+  cross:per_obj_recolor:shape_to_color: 4
+  cross:tile:tile_2x2_transform: 4
+  composite(dedup_rows+dedup_cols): 4
+  cross:puzzle:connect_same_color_lines: 3
+  cross:puzzle:mirror_h_alt_tile: 3
+  cross:extract_largest: 3
+  composite(crop_bbox+tile_to_output): 3
+  cross:ptree:Seq(Apply(region_shape_recolor) → Apply(stamp:stamp_by_obj_c: 3
+  corners_mirror: 3
+  cross:puzzle:cell_to_copy_block: 2
+  fill_enclosed: 2
+  iterative_cross_2(remove_obj:by_color+stamp:stamp_by_obj_shape): 2
+  cross:block_ir:cross_nb_r1: 2
+  extract_smallest_region: 2
+  iterative_cross_2(extract_obj_rank_1+cross_nb_r2): 2
+  cross:grow:self_stamp: 2
+  cross:ptree:Seq(Apply(extract_majority_bbox) → Apply(extract_summary:lar: 2
+  cross:puzzle:sep_h_xor_mark3: 2
+  cross:puzzle:rotate_180_content: 2
+  iterative_cross_2(extract_majority_bbox+cross_nb_r2): 2
+  cross:sym_h: 2
+  cross:puzzle:sep_h_or_mark3: 2
+  cross:puzzle:upscale_2x: 2
+  cross:puzzle:ray_extend_diag: 2
+  cond_neighbor: 2
+  stack_h_flip: 2
+  stack_v_flip: 2
+  extract_unique_subgrid: 2
+  cross:puzzle:split_v_nor_c2: 2
+  cross:ptree:Seq(Apply(draw_lines_same_color) → Apply(l_connect:color_bas: 2
+  cross:cell_to_color_block: 2
+  mod_copy_flip: 1
+  cross:cross3d:corner_stack_(0, 0): 1
+  cross:puzzle:sep_v_and_mark2: 1
+  diagonal_tile: 1
+  cross:puzzle:cell_to_inverted_block: 1
+  cross:block_ir:block_between_fill_same_color: 1
+  cross:rg:recolor_by_position:row: 1
+  recolor_by_size: 1
+  cross:ptree:Seq(Apply(extract_majority_bbox) → Apply(extract_minority_bb: 1
+  cross:puzzle:diagonal_extend: 1
+  cross:cross3d:panel_compact: 1
+  cross:puzzle:sep_h_nor_mark8: 1
+  cross:ptree:Seq(Apply(draw_lines_same_color) → Apply(residual:cross_mark: 1
+  cross:cross3d:self_tile_uniform: 1
+  cross:puzzle:sep_v_or_mark1: 1
+  iterative_cross_2(delete_smallest_objects+stamp:stamp_by_obj_color): 1
+  cross_compose(extract_unique_color+tile_to_output): 1
+  cross:puzzle:sep_v_nor_mark8: 1
+  cross:ptree:Seq(Apply(extract_obj_rank_0) → Apply(extract_mc_obj_rank_0): 1
+  cross:gravity_down: 1
+  cross:puzzle:connect_same_color: 1
+  cross:color_to_pattern_k2: 1
+  cross:puzzle:cross_and_fill: 1
+  cross:fill_between_h: 1
+  cross:block_ir:structural_nb_r1: 1
+  cross:ptree:Seq(Apply(recolor_by_size_rank) → Apply(residual:multicross_: 1
+  cross:cross3d:1x1_parity_bg: 1
+  cross:ptree:Seq(Apply(holes_to_color) → Apply(ext_nb:between_fill)): 1
+  cross:puzzle:uniform_row_detect_5: 1
+  cross:cluster_histogram: 1
+  cross:cross3d:1x1_binary_shape: 1
+  cross:puzzle:most_freq_center: 1
+  cross:ptree:If(is_square ? Apply(extract_color8_rank2) : Apply(extract_o: 1
+  cross:puzzle:extract_unique_panel: 1
+  cross:cegis:dedup_cols: 1
+  cross:cross3d:diagonal_shadow_tile: 1
+  cross:puzzle:split_h_equal_xor: 1
+  cross:puzzle:grid_pattern_grid_inv_0: 1
+  cross:puzzle:sep_v_xor_mark2: 1
+  cross:cross3d:odd_one_out: 1
+  gravity: 1
+  cross:holes_to_color: 1
+  cross:cegis:dedup_rows+crop: 1
+  cross:puzzle:antidiag_fill: 1
+  iterative_cross_2(extract_majority_bbox+structural_nb_r1): 1
+  cross:cross3d:1x1_h_symmetric: 1
+  cross:ptree:Seq(Apply(draw_lines_same_color) → Apply(residual:multicross: 1
+  iterative_cross_2(holes_to_color+stamp:stamp_by_obj_shape): 1
+  cross:block_ir:color_to_pattern_k2: 1
+  cross:puzzle:comp_tile_2x2: 1
+  cross:cross3d:self_tile_min_color: 1
+  cross:puzzle:frame_repeat_border_c0: 1
+  cross:puzzle:fill_dot_to_corner: 1
+  cross:tile:tile_2x1_transform: 1
+  cross:puzzle:latin_square: 1
+  iterative_cross_2(extract_most_colors_mc+per_obj_recolor:neighbor_count_to_color): 1
+  cross:puzzle:u_drop_ball: 1
+  cross:puzzle:move_obj_by_height_up: 1
+  cross:remove_small_5: 1
+  downscale: 1
+  fill_rect: 1
+  cross:extract_summary:grid_partition_majority: 1
+  cross:tile:tile_1x4_transform: 1
+  cross:cegis:crop: 1
+  cross:puzzle:sep_v_or_mark8: 1
+  cross:cross3d:uniform_gravity_(0, 1): 1
+  cross:cross3d:1x1_n_objects: 1
+  cross:puzzle:sep_h_nor_mark3: 1
+  cross:puzzle:move_obj_by_width_right: 1
+  cross:puzzle:split_h_nor_c5: 1
+  cross:ptree:Seq(Apply(extract_minority_bbox) → Apply(block_classify:coun: 1
+  cross:flip_h: 1
+  cross:flip_v: 1
+  remove_empty_both: 1
+  cross:ptree:Seq(Apply(extract_minority_bbox) → Apply(block_classify:most: 1
+  cross_compose(gravity_down+extract_densest): 1
+  cross:cegis:flip_h+extract_largest_object: 1
+  iterative_cross_2(extract_mc_obj_rank_0+cross_nb_r1): 1
+  cross:cegis:dedup_rows+dedup_cols: 1
+  iterative_cross_2(ext_nb:between_fill+cross_nb_r2): 1
+  cross:puzzle:majority_vote_fix: 1
+  iterative_cross_2(stamp:pixel_stamp_by_color+cross_nb_r2): 1
+  cross:cross3d:self_tile_bg_cinv: 1
+  cross:puzzle:upscale_3x: 1
+  iterative_cross_2(region_shape_recolor+stamp:stamp_by_obj_color): 1
+  iterative_cross_2(extract_majority_bbox+per_obj_recolor:shape_to_color): 1
+  cross:extract_most_colors_mc: 1
+  iterative_cross_2(region_shape_recolor+cross_nb_r2): 1
+  cross:symmetry_fill:rot90: 1
+  cross:block_ir:residual:mirror_axis: 1
+  cross:tiny_diff:projection_fill: 1
+  stack_h: 1
+  cross:dynamic_tile:n_colors_plus1: 1
+  cross:cross3d:corner_assembly: 1
+  composite(recolor_by_size+remove_color): 1
+  cross:ptree:Seq(Apply(extract_majority_bbox) → Apply(panel_reduce_or)): 1
+  beam_depth_2(crop+res:color_sub): 1
+  cross:puzzle:shift_recolor_d10: 1
+  cross:puzzle:col_color_map: 1
+  cross:self_stamp_c5: 1
+  iterative_cross_2(draw_lines_same_color+structural_nb_r1): 1
+  iterative_cross_2(extract_mc_obj_rank_1+cross_nb_r1): 1
+  cross:cross3d:pyramid_converge: 1
+  cross:cross3d:1x1_n_distinct: 1
+  cross:puzzle:fill_intersection_gap: 1
+  cross:puzzle:staircase_grow: 1
+  cross:tile:tile_1x5_transform: 1
+  cross:cegis:rotate_90+crop: 1
+  composite(crop_to_color+crop_to_color): 1
+  cross:tile:tile_3x3_transform: 1
+  iterative_cross_2(extract_majority_bbox+structural_nb_r2): 1
+  cross:extract:extract_unique_color_obj_7x7: 1
+  cross:ptree:Seq(Apply(conditional_obj:bg_to_color) → Apply(line_ray:h_ra: 1
+  cross:dynamic_tile:self_size: 1
+  cross:self_stamp_c2: 1
+  cross:extract_unique_shape: 1
+  cross:tile:tile_4x4_transform: 1
+  cross:puzzle:ray_extend_down: 1
+  cross:cross3d:identity_n_objects: 1
+  tile_to_output: 1
+  cross:puzzle:diagonal_slide_1_1: 1
+  cross:puzzle:split_h_equal_or: 1
+  cross:rot_cross:gravity_right: 1
+  cross:ptree:Seq(Apply(holes_to_color) → Apply(stamp:stamp_by_obj_shape)): 1
+  cross:cross3d:color_count_upscale: 1
+  cross:puzzle:nonzero_count_row: 1
+  cross:ext_nb:split_combine: 1
+  cross:ext_nb:between_fill: 1
+  cross:puzzle:move_toward_3_to_4: 1
+  cross:cegis:mirror_complete_v+crop: 1
+  cross:puzzle:sep_v_or_mark2: 1
+  cross:puzzle:split_h_nor_c4: 1
+  composite(symmetry_fill+subgrid_select): 1
+  iterative_cross_2(delete_smallest_objects+stamp:stamp_by_obj_shape): 1
+  cross:puzzle:scale_down_5_uniform: 1
+  cross:puzzle:scale_border_dup: 1
+  symmetry_fill: 1
+  cross:cross3d:midpoint_cross: 1
+  subgrid_overlay: 1
+  cross:puzzle:two_row_interleave: 1
+  iterative_cross_2(extract_majority_bbox+cross_nb_r1): 1
+  cross:rot270: 1
+  cross:enum_d2:crop+scale_2x: 1
+  cross:puzzle:sep_v_nor_mark3: 1
+  cross_compose(gravity_down+extract_multicolor_size7): 1
+  iterative_cross_2(extract_obj_rank_0+cross_nb_r2): 1
+  iterative_cross_2(stamp:pixel_stamp_by_color+cross_nb_r1): 1
+  cross:ptree:Seq(Apply(region_shape_recolor) → Apply(stamp:stamp_by_obj_s: 1
+============================================================
