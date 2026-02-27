@@ -1881,6 +1881,22 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    # === Phase 1.57b: Crop/Extract Solver ===
+    try:
+        from arc.crop_extract_solver import generate_crop_extract_pieces
+        _ce_pieces = generate_crop_extract_pieces(train_pairs)
+        all_pieces.extend(_ce_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.58a: Tiny Diff Solver ===
+    try:
+        from arc.tiny_diff_solver import generate_tiny_diff_pieces
+        _td_pieces = generate_tiny_diff_pieces(train_pairs)
+        all_pieces.extend(_td_pieces)
+    except Exception:
+        pass
+
     # === Phase 1.58b: Probe-based Gravity ===
     try:
         from arc.probe_gravity_solver import generate_probe_gravity_pieces
