@@ -1994,6 +1994,18 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    # === Phase 1.62: Object Movement Engine ===
+    try:
+        from arc.object_mover import solve_object_movement
+        _om_result = solve_object_movement(train_pairs, test_inputs)
+        if _om_result is not None:
+            def _om_fn(inp, _train=train_pairs, _test=test_inputs):
+                r = solve_object_movement(_train, [inp])
+                return r[0] if r else None
+            all_pieces.append(CrossPiece('object_mover', _om_fn))
+    except Exception:
+        pass
+
     # === Phase 1.5x: Verify all_pieces from probe/gravity/flood/symmetry solvers ===
     for _ap in all_pieces:
         try:
