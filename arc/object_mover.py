@@ -251,6 +251,18 @@ def try_slide_to_anchor(train_pairs: List[Tuple[Grid, Grid]]) -> List:
     if ok:
         results.append(('slide_toward_anchor', static_colors, mover_colors))
     
+    # Strategy C: align with anchor (move to same row/col as anchor)
+    ok = True
+    for inp, out in train_pairs:
+        h, w = grid_shape(inp)
+        bg_t = most_common_color(inp)
+        result = _apply_slide_align_anchor(inp, h, w, bg_t, static_colors)
+        if result is None or not grid_eq(result, out):
+            ok = False
+            break
+    if ok:
+        results.append(('slide_align_anchor', static_colors, mover_colors))
+    
     return results
 
 
@@ -333,6 +345,87 @@ def _apply_slide_toward_anchor(inp, h, w, bg, static_colors):
             nr, nc = r + tdr, c + tdc
             result[nr][nc] = inp[r][c]
             occupied.add((nr, nc))
+    
+    return result
+
+
+def _apply_slide_align_anchor(inp, h, w, bg, static_colors):
+    """Each mover slides to align with nearest anchor's row/col range."""
+    objects = detect_objects(inp, bg)
+    result = [[bg] * w for _ in range(h)]
+    
+    anchors = []
+    movers = []
+    for obj in objects:
+        if obj.color in static_colors:
+            anchors.append(obj)
+            for r, c in obj.cells:
+                result[r][c] = inp[r][c]
+        else:
+            movers.append(obj)
+    
+    if not anchors:
+        return None
+    
+    occupied: Set[Tuple[int, int]] = set()
+    for a in anchors:
+        occupied.update(a.cells)
+    
+    def dist_to_nearest(obj):
+        return min(abs(obj.center[0] - a.center[0]) + abs(obj.center[1] - a.center[1]) for a in anchors)
+    movers.sort(key=dist_to_nearest)
+    
+    for obj in movers:
+        nearest = min(anchors, key=lambda a: abs(obj.center[0] - a.center[0]) + abs(obj.center[1] - a.center[1]))
+        
+        obj_r1, obj_c1, obj_r2, obj_c2 = obj.bbox
+        anc_r1, anc_c1, anc_r2, anc_c2 = nearest.bbox
+        
+        # Compute minimal shift to align row-range with anchor row-range
+        # Try: align obj rows to overlap with anchor rows
+        if obj_r2 < anc_r1:
+            shift_r = anc_r1 - obj_r1  # align top of obj with top of anchor
+        elif obj_r1 > anc_r2:
+            shift_r = anc_r2 - obj_r2  # align bottom of obj with bottom of anchor
+        else:
+            shift_r = 0
+        
+        if obj_c2 < anc_c1:
+            shift_c = anc_c1 - obj_c1  # align left of obj with left of anchor
+        elif obj_c1 > anc_c2:
+            shift_c = anc_c2 - obj_c2  # align right of obj with right of anchor
+        else:
+            shift_c = 0
+        
+        # Apply shift on primary axis only, use slide to handle collisions
+        if abs(shift_r) >= abs(shift_c):
+            shift_c = 0
+        else:
+            shift_r = 0
+        
+        # Use slide to handle collisions — slide in the shift direction
+        if shift_r != 0:
+            dr = 1 if shift_r > 0 else -1
+            tdr, _ = _slide_object(obj, dr, 0, h, w, occupied)
+            # Cap at target alignment
+            if abs(tdr) > abs(shift_r):
+                tdr = shift_r
+            for r, c in obj.cells:
+                result[r + tdr][c] = inp[r][c]
+                occupied.add((r + tdr, c))
+        elif shift_c != 0:
+            dc = 1 if shift_c > 0 else -1
+            _, tdc = _slide_object(obj, 0, dc, h, w, occupied)
+            if abs(tdc) > abs(shift_c):
+                tdc = shift_c
+            for r, c in obj.cells:
+                result[r][c + tdc] = inp[r][c]
+                occupied.add((r, c + tdc))
+        else:
+            # No movement needed
+            for r, c in obj.cells:
+                result[r][c] = inp[r][c]
+                occupied.add((r, c))
     
     return result
 
@@ -1026,6 +1119,10 @@ def _apply_strategy(strat, inp: Grid, h: int, w: int, bg: int) -> Optional[Grid]
     elif name == 'slide_toward_anchor':
         _, static_colors, mover_colors = strat
         return _apply_slide_toward_anchor(inp, h, w, bg, static_colors)
+    
+    elif name == 'slide_align_anchor':
+        _, static_colors, mover_colors = strat
+        return _apply_slide_align_anchor(inp, h, w, bg, static_colors)
     
     elif name == 'converge_point':
         _, target_name = strat

@@ -1,6 +1,6 @@
 # Verantyx V6 — ARC-AGI-2 Solver
 
-## 🎯 228/1000 (22.8%) on ARC-AGI-2 Training Set
+## 🎯 235/1000 (23.5%) on ARC-AGI-2 Training Set
 
 > Zero neural networks. Zero LLM calls. Zero hardcoded answers.
 > Pure symbolic program synthesis — every solution is a verifiable, interpretable program.
@@ -156,7 +156,8 @@ These are not handcoded task solutions — they're **general-purpose spatial pri
  v51 201 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░  20.1%
  v59 222 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░  22.2%
  v62 227 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░  22.7%
- v65 228 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░  22.8% ★
+ v65 228 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░  22.8%
+ v73 235 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░  23.5% ★
          └─────────┴─────────┴─────────┘
 ```
 
@@ -182,6 +183,8 @@ These are not handcoded task solutions — they're **general-purpose spatial pri
 | v62 | 227 (22.7%) | gravity solver + cross3d geometry |
 | v64 | 227 (22.7%) | flood_fill_solver + symmetry_solver |
 | **v65** | **228 (22.8%)** | **6-axis cross probe, corner stacking** |
+| v72 | 234 (23.4%) | object_mover + cross_probe_fill + cross_classifier |
+| **v73** | **235 (23.5%)** | **periodic_fill + program_search expansion** |
 
 ---
 

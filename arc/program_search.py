@@ -296,7 +296,184 @@ SHAPE_CHANGE_OPS = [
     ('sort_c_asc', sort_cols_by_nonbg),
 ]
 
-ALL_OPS = SAME_SHAPE_OPS + SHAPE_CHANGE_OPS
+def extract_minority_color_bbox(g, bg):
+    """Extract bbox of the least common non-bg color."""
+    colors = Counter(g.flatten())
+    non_bg = {c: n for c, n in colors.items() if c != bg and n > 0}
+    if not non_bg:
+        return g
+    minority = min(non_bg, key=non_bg.get)
+    rows, cols = np.where(g == minority)
+    if len(rows) == 0:
+        return g
+    return g[rows.min():rows.max()+1, cols.min():cols.max()+1]
+
+
+def extract_unique_3x3(g, bg):
+    """Find the unique 3x3 subgrid (different from all others)."""
+    H, W = g.shape
+    if H < 3 or W < 3:
+        return g
+    patches = []
+    for r in range(H-2):
+        for c in range(W-2):
+            patches.append(((r,c), g[r:r+3, c:c+3].tobytes()))
+    
+    from collections import Counter
+    patch_counts = Counter(p[1] for p in patches)
+    # Find the rarest patch
+    for (r,c), key in patches:
+        if patch_counts[key] == 1:
+            return g[r:r+3, c:c+3]
+    return g
+
+
+def remove_bg_rows_cols(g, bg):
+    """Remove rows and columns that are entirely bg."""
+    mask_r = np.any(g != bg, axis=1)
+    mask_c = np.any(g != bg, axis=0)
+    if not mask_r.any() or not mask_c.any():
+        return g
+    return g[np.ix_(mask_r, mask_c)]
+
+
+def extract_top_left_quarter(g, bg):
+    H, W = g.shape
+    return g[:H//2, :W//2]
+
+
+def extract_top_right_quarter(g, bg):
+    H, W = g.shape
+    return g[:H//2, W//2:]
+
+
+def extract_bottom_left_quarter(g, bg):
+    H, W = g.shape
+    return g[H//2:, :W//2]
+
+
+def extract_bottom_right_quarter(g, bg):
+    H, W = g.shape
+    return g[H//2:, W//2:]
+
+
+def xor_halves_h(g, bg):
+    """XOR top and bottom halves (non-bg in one but not both)."""
+    H, W = g.shape
+    if H % 2 != 0:
+        return g
+    top = g[:H//2]
+    bot = g[H//2:]
+    result = np.full_like(top, bg)
+    for r in range(H//2):
+        for c in range(W):
+            t, b = top[r,c], bot[r,c]
+            if t != bg and b == bg:
+                result[r,c] = t
+            elif b != bg and t == bg:
+                result[r,c] = b
+    return result
+
+
+def xor_halves_v(g, bg):
+    """XOR left and right halves."""
+    H, W = g.shape
+    if W % 2 != 0:
+        return g
+    left = g[:, :W//2]
+    right = g[:, W//2:]
+    result = np.full_like(left, bg)
+    for r in range(H):
+        for c in range(W//2):
+            l, ri = left[r,c], right[r,c]
+            if l != bg and ri == bg:
+                result[r,c] = l
+            elif ri != bg and l == bg:
+                result[r,c] = ri
+    return result
+
+
+def or_halves_h(g, bg):
+    """OR top and bottom halves."""
+    H, W = g.shape
+    if H % 2 != 0:
+        return g
+    top = g[:H//2]
+    bot = g[H//2:]
+    result = np.full_like(top, bg)
+    for r in range(H//2):
+        for c in range(W):
+            if top[r,c] != bg:
+                result[r,c] = top[r,c]
+            elif bot[r,c] != bg:
+                result[r,c] = bot[r,c]
+    return result
+
+
+def or_halves_v(g, bg):
+    """OR left and right halves."""
+    H, W = g.shape
+    if W % 2 != 0:
+        return g
+    left = g[:, :W//2]
+    right = g[:, W//2:]
+    result = np.full_like(left, bg)
+    for r in range(H):
+        for c in range(W//2):
+            if left[r,c] != bg:
+                result[r,c] = left[r,c]
+            elif right[r,c] != bg:
+                result[r,c] = right[r,c]
+    return result
+
+
+def and_halves_h(g, bg):
+    """AND top and bottom halves (keep cells non-bg in both)."""
+    H, W = g.shape
+    if H % 2 != 0:
+        return g
+    top = g[:H//2]
+    bot = g[H//2:]
+    result = np.full_like(top, bg)
+    for r in range(H//2):
+        for c in range(W):
+            if top[r,c] != bg and bot[r,c] != bg:
+                result[r,c] = top[r,c]
+    return result
+
+
+def and_halves_v(g, bg):
+    """AND left and right halves."""
+    H, W = g.shape
+    if W % 2 != 0:
+        return g
+    left = g[:, :W//2]
+    right = g[:, W//2:]
+    result = np.full_like(left, bg)
+    for r in range(H):
+        for c in range(W//2):
+            if left[r,c] != bg and right[r,c] != bg:
+                result[r,c] = left[r,c]
+    return result
+
+
+SHAPE_CHANGE_OPS_EXTRA = [
+    ('ext_minority_bbox', extract_minority_color_bbox),
+    ('ext_unique_3x3', extract_unique_3x3),
+    ('rm_bg_rc', remove_bg_rows_cols),
+    ('ext_tl', extract_top_left_quarter),
+    ('ext_tr', extract_top_right_quarter),
+    ('ext_bl', extract_bottom_left_quarter),
+    ('ext_br', extract_bottom_right_quarter),
+    ('xor_h', xor_halves_h),
+    ('xor_v', xor_halves_v),
+    ('or_h', or_halves_h),
+    ('or_v', or_halves_v),
+    ('and_h', and_halves_h),
+    ('and_v', and_halves_v),
+]
+
+ALL_OPS = SAME_SHAPE_OPS + SHAPE_CHANGE_OPS + SHAPE_CHANGE_OPS_EXTRA
 
 
 def _compose(ops):
@@ -335,7 +512,7 @@ def _verify_program(fn, train_pairs, bg=None):
     return True
 
 
-def search_programs(train_pairs, max_depth=2, time_limit_ops=500):
+def search_programs(train_pairs, max_depth=2, time_limit_ops=2000):
     """Search for programs that solve all train examples.
     
     Returns list of (name, fn) that work.
@@ -366,9 +543,8 @@ def search_programs(train_pairs, max_depth=2, time_limit_ops=500):
         return []
     
     # Depth 2: compose two ops
-    # First op must be shape-preserving if output is same shape
-    first_ops = SAME_SHAPE_OPS
-    second_ops = SAME_SHAPE_OPS if same_shape else ALL_OPS
+    first_ops = SAME_SHAPE_OPS if same_shape else ALL_OPS
+    second_ops = ALL_OPS
     
     for n1, f1 in first_ops:
         for n2, f2 in second_ops:

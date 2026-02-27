@@ -2022,6 +2022,14 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    # === Phase 1.62d: Extend to Divider Solver ===
+    try:
+        from arc.extend_to_divider_solver import generate_extend_to_divider_pieces
+        _etd_pieces = generate_extend_to_divider_pieces(train_pairs)
+        all_pieces.extend(_etd_pieces)
+    except Exception:
+        pass
+
     # === Phase 1.62c: Concentric Fill Solver ===
     try:
         from arc.concentric_fill_solver import generate_concentric_fill_pieces
