@@ -1871,11 +1871,21 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    all_pieces = []
+
     # === Phase 1.58: Cross3D Geometry ===
     try:
         from arc.cross3d_geometry import generate_cross3d_geometry_pieces
         _c3d_pieces = generate_cross3d_geometry_pieces(train_pairs)
         all_pieces.extend(_c3d_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.58b: Probe-based Gravity ===
+    try:
+        from arc.probe_gravity_solver import generate_probe_gravity_pieces
+        _pg_pieces = generate_probe_gravity_pieces(train_pairs)
+        all_pieces.extend(_pg_pieces)
     except Exception:
         pass
 
@@ -1902,6 +1912,21 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
         all_pieces.extend(_sym_pieces)
     except Exception:
         pass
+
+    # === Phase 1.5x: Verify all_pieces from probe/gravity/flood/symmetry solvers ===
+    for _ap in all_pieces:
+        try:
+            if CrossSimulator.verify(_ap, train_pairs):
+                _existing = {getattr(p, 'name', '') for _, p in verified}
+                if _ap.name not in _existing:
+                    verified.append(('cross', _ap))
+                    if len(verified) >= 2:
+                        break
+        except Exception:
+            pass
+
+    if len(verified) >= 2:
+        return _apply_verified(verified, test_inputs), verified
 
     # === Phase 1.6: Convergent stamp application ===
     if cross_pieces:

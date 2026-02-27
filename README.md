@@ -1,6 +1,6 @@
 # Verantyx V6 — ARC-AGI-2 Solver
 
-## 🎯 227/1000 (22.7%) on ARC-AGI-2 Training Set
+## 🎯 228/1000 (22.8%) on ARC-AGI-2 Training Set
 
 > Zero neural networks. Zero LLM calls. Zero hardcoded answers.
 > Pure symbolic program synthesis — every solution is a verifiable, interpretable program.
@@ -154,7 +154,8 @@ These are not handcoded task solutions — they're **general-purpose spatial pri
  v49 199 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░  19.9%
  v50 200 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░  20.0%
  v51 201 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░  20.1%
- v59 222 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░  22.2% ★
+ v59 222 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░  22.2%
+ v62 228 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░  22.8% ★
          └─────────┴─────────┴─────────┘
 ```
 
@@ -176,7 +177,8 @@ These are not handcoded task solutions — they're **general-purpose spatial pri
 | v49 | 199 (19.9%) | scale_border_dup |
 | **v50** | **200 (20.0%)** | **CrossUniverse: separator_propagate** |
 | v51 | 201 (20.1%) | self_stamp: input-as-stamp spatial placement |
-| **v59** | **222 (22.2%)** | **3D cross structure: 8 new primitives, self-tile, odd-one-out** |
+| v59 | 222 (22.2%) | 3D cross structure: 8 new primitives, self-tile, odd-one-out |
+| **v62** | **228 (22.8%)** | **6-axis cross probe, corner stacking, gravity solver** |
 
 ---
 
@@ -231,6 +233,28 @@ The entire development process — architecture design, implementation, debuggin
 Every design decision comes from kofdai. The AI implements, tests, and iterates on those designs. No LLM is used in the actual solving pipeline — Verantyx is 100% symbolic. The AI assists only in the development process itself.
 
 This is what human-AI collaboration looks like: human intuition and architectural vision, combined with AI's ability to rapidly implement and test ideas.
+
+---
+
+## 💜 Support This Research
+
+Verantyx remains **fully open-source** — the core engine, latest scores, and all solving logic are public. However, pushing the boundaries of symbolic AGI is a 24/7 research effort.
+
+**GitHub Sponsors** get access to exclusive research data and early insights:
+
+| Tier | What You Get |
+|---|---|
+| **☕ Supporter** ($5/mo) | Sponsors badge, early access to release notes, shoutout in README |
+| **🔬 Researcher** ($20/mo) | Detailed inference logs (1,000 tasks), per-task failure analysis, private Discord channel |
+| **🏗️ Architect** ($50/mo) | Early access to experimental branches, DSL design drafts, monthly development roadmap, direct Q&A |
+
+**Why sponsor?** The detailed inference logs — showing exactly how Verantyx reasons through each of the 1,000 ARC-AGI-2 tasks, where it succeeds, and why it fails — are invaluable for anyone working on program synthesis, neuro-symbolic AI, or ARC itself.
+
+<a href="https://github.com/sponsors/Ag3497120">
+  <img src="https://img.shields.io/badge/Sponsor-💜-ea4aaa?style=for-the-badge" alt="Sponsor">
+</a>
+
+---
 
 ## License
 
