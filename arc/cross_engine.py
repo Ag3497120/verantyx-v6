@@ -2022,6 +2022,14 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    # === Phase 1.62e: Proximity Recolor Solver ===
+    try:
+        from arc.proximity_recolor_solver import generate_proximity_recolor_pieces
+        _pr_pieces = generate_proximity_recolor_pieces(train_pairs)
+        all_pieces.extend(_pr_pieces)
+    except Exception:
+        pass
+
     # === Phase 1.62d: Extend to Divider Solver ===
     try:
         from arc.extend_to_divider_solver import generate_extend_to_divider_pieces
