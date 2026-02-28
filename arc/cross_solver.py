@@ -1290,7 +1290,18 @@ class WholeGridProgram:
                                     elif matched != mval:
                                         matched = None  # ambiguous
                                         break
-                        row.append(matched if matched is not None else inp[r][c])
+                        if matched is not None:
+                            row.append(matched)
+                        else:
+                            # Nearest-neighbor fallback: find closest known pattern
+                            best_dist = 9999
+                            best_val = inp[r][c]
+                            for mkey, mval in mapping.items():
+                                dist = sum(1 for a, b in zip(key, mkey) if a != b and a != -1 and b != -1)
+                                if dist < best_dist:
+                                    best_dist = dist
+                                    best_val = mval
+                            row.append(best_val if best_dist <= 2 else inp[r][c])
                 result.append(row)
             return result
         
