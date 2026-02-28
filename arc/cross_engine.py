@@ -22,6 +22,8 @@ from arc.nb_abstract import (
     learn_count_based_rule, apply_count_based_rule,
     learn_structural_nb_rule, apply_structural_nb_rule,
     learn_cross_nb_rule, apply_cross_nb_rule,
+    learn_rotation_invariant_nb_rule, apply_rotation_invariant_nb_rule,
+    learn_rotsym_count_nb_rule, apply_rotsym_count_nb_rule,
 )
 from arc.conditional import (
     learn_conditional_color_rule, apply_conditional_color_rule,
@@ -141,6 +143,24 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
             ))
             break
     
+    # Priority 3.5: Rotation-invariant NB (best generalization for unseen patterns)
+    rule = learn_rotation_invariant_nb_rule(train_pairs, radius=1)
+    if rule is not None:
+        r = rule
+        pieces.insert(0, CrossPiece(
+            'rot_inv_nb',
+            lambda inp, _r=r: apply_rotation_invariant_nb_rule(inp, _r)
+        ))
+    
+    # Priority 3.7: Ultra-coarse rotation-symmetric count NB
+    rule = learn_rotsym_count_nb_rule(train_pairs)
+    if rule is not None:
+        r = rule
+        pieces.append(CrossPiece(
+            'rotsym_count_nb',
+            lambda inp, _r=r: apply_rotsym_count_nb_rule(inp, _r)
+        ))
+
     # Count-based rule
     rule = learn_count_based_rule(train_pairs)
     if rule is not None:
@@ -2062,6 +2082,38 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    # === Phase 1.61: Role-aware NB Rule (Object IR) ===
+    try:
+        from arc.role_nb import generate_role_nb_pieces
+        _rnb_pieces = generate_role_nb_pieces(train_pairs)
+        all_pieces.extend(_rnb_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.61b: Topology-based Fill Solver ===
+    try:
+        from arc.topology_solver import generate_topology_pieces
+        _topo_pieces = generate_topology_pieces(train_pairs)
+        all_pieces.extend(_topo_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.61c: Object Program Synthesis ===
+    try:
+        from arc.object_program import generate_object_program_pieces
+        _op_pieces = generate_object_program_pieces(train_pairs)
+        all_pieces.extend(_op_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.62e: Fill Enclosed / Connect / Pattern Projection ===
+    try:
+        from arc.fill_enclosed_solver import generate_fill_enclosed_pieces
+        _fe_pieces = generate_fill_enclosed_pieces(train_pairs)
+        all_pieces.extend(_fe_pieces)
+    except Exception:
+        pass
+
     # === Phase 1.62: Object Movement Engine ===
     try:
         from arc.object_mover import solve_object_movement
@@ -2087,6 +2139,14 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
         from arc.pattern_tiling_solver import generate_pattern_tiling_pieces
         _pt_pieces = generate_pattern_tiling_pieces(train_pairs)
         all_pieces.extend(_pt_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.65: Parallel Cross Layer Engine (kofdai 6構想) ===
+    try:
+        from arc.cross_parallel_engine import generate_parallel_cross_pieces
+        _pcl_pieces = generate_parallel_cross_pieces(train_pairs)
+        all_pieces.extend(_pcl_pieces)
     except Exception:
         pass
 

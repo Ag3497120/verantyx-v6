@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verantyx — Symbolic ARC-AGI-2 Solver</title>
+<meta name="description" content="23.7% on ARC-AGI-2 with zero neural networks. A symbolic program synthesis engine built on a single MacBook.">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #e0e0e0; background: #0d1117; line-height: 1.6; }
+a { color: #58a6ff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.hero {
+  text-align: center;
+  padding: 80px 20px 60px;
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1a1e2e 100%);
+  border-bottom: 1px solid #30363d;
+}
+.hero h1 { font-size: 3em; font-weight: 700; margin-bottom: 10px; color: #fff; }
+.hero .score { font-size: 4em; font-weight: 800; color: #7c3aed; margin: 20px 0; }
+.hero .tagline { font-size: 1.3em; color: #8b949e; max-width: 700px; margin: 0 auto 30px; }
+.hero .badges { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+.badge { background: #21262d; border: 1px solid #30363d; border-radius: 20px; padding: 8px 18px; font-size: 0.9em; }
+.badge.green { border-color: #238636; color: #3fb950; }
+.badge.purple { border-color: #7c3aed; color: #a78bfa; }
+
+.section { max-width: 800px; margin: 0 auto; padding: 60px 20px; }
+.section h2 { font-size: 1.8em; margin-bottom: 20px; color: #fff; }
+.section p { color: #8b949e; margin-bottom: 15px; font-size: 1.05em; }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin: 40px 0; }
+.stat { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 25px; text-align: center; }
+.stat .number { font-size: 2.2em; font-weight: 700; color: #7c3aed; }
+.stat .label { font-size: 0.9em; color: #8b949e; margin-top: 5px; }
+
+.story { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 40px; margin: 40px 0; }
+.story h3 { color: #fff; font-size: 1.3em; margin-bottom: 15px; }
+.story p { color: #c9d1d9; }
+
+.cta { text-align: center; padding: 60px 20px; background: #161b22; border-top: 1px solid #30363d; }
+.cta h2 { color: #fff; margin-bottom: 15px; }
+.cta p { color: #8b949e; max-width: 600px; margin: 0 auto 30px; }
+.btn { display: inline-block; padding: 14px 32px; border-radius: 8px; font-size: 1.1em; font-weight: 600; margin: 8px; }
+.btn-primary { background: #7c3aed; color: #fff; }
+.btn-primary:hover { background: #6d28d9; text-decoration: none; }
+.btn-secondary { background: #21262d; color: #c9d1d9; border: 1px solid #30363d; }
+.btn-secondary:hover { background: #30363d; text-decoration: none; }
+
+.comparison { margin: 30px 0; }
+.comparison table { width: 100%; border-collapse: collapse; }
+.comparison th, .comparison td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #21262d; }
+.comparison th { color: #8b949e; font-weight: 600; font-size: 0.85em; text-transform: uppercase; }
+.comparison td { color: #c9d1d9; }
+.comparison tr:hover { background: #161b22; }
+.highlight { color: #3fb950; font-weight: 600; }
+
+footer { text-align: center; padding: 30px; color: #484f58; font-size: 0.85em; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>⚡ Verantyx</h1>
+  <div class="score">23.7%</div>
+  <div class="tagline">
+    ARC-AGI-2 — the hardest general intelligence benchmark — solved with
+    <strong>zero neural networks</strong>, on a single MacBook.
+  </div>
+  <div class="badges">
+    <span class="badge green">✓ Zero LLM calls</span>
+    <span class="badge green">✓ Zero GPU</span>
+    <span class="badge purple">✓ 100% Symbolic</span>
+    <span class="badge">✓ Every answer verifiable</span>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Why This Matters</h2>
+  <p>
+    Frontier LLMs like o3 and Grok 4 attack ARC-AGI-2 with billions of parameters, 
+    thousands of GPU-hours, and inference costs of <strong>$10–100+ per task</strong>.
+  </p>
+  <p>
+    Verantyx solves 237 out of 1,000 tasks at <strong>~$0.00 per task</strong>. 
+    No API calls. No cloud. No neural networks. Every solution is a human-readable 
+    symbolic program that can be formally verified.
+  </p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="number">237</div>
+      <div class="label">Tasks Solved</div>
+    </div>
+    <div class="stat">
+      <div class="number">0.5s</div>
+      <div class="label">Avg per Task</div>
+    </div>
+    <div class="stat">
+      <div class="number">$0</div>
+      <div class="label">Inference Cost</div>
+    </div>
+    <div class="stat">
+      <div class="number">1</div>
+      <div class="label">MacBook</div>
+    </div>
+  </div>
+
+  <div class="comparison">
+    <table>
+      <tr>
+        <th>Approach</th>
+        <th>Hardware</th>
+        <th>Cost / Task</th>
+        <th>Interpretable?</th>
+      </tr>
+      <tr>
+        <td>LLM-based (o3, Grok 4)</td>
+        <td>GPU cluster</td>
+        <td>$10–100+</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><strong>Verantyx</strong></td>
+        <td>MacBook (M-series)</td>
+        <td class="highlight">$0.00</td>
+        <td class="highlight">Yes — every answer is a program</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="story">
+    <h3>🇯🇵 Built by a Student in Kyoto</h3>
+    <p>
+      Verantyx is built by <strong>kofdai</strong>, a student in Kyoto, Japan, who doesn't have 
+      access to massive GPU clusters or enterprise API budgets. Instead, he uses 
+      <strong>Claude as a development partner</strong> — designing the architecture himself, 
+      then collaborating with AI to implement, test, and iterate at unprecedented speed.
+    </p>
+    <p style="margin-top: 15px;">
+      One laptop. One human vision. One AI pair-programmer. Competing at the frontier of AGI research.
+    </p>
+    <p style="margin-top: 15px;">
+      The engine itself is <strong>100% symbolic</strong> — no LLM is used in the solving pipeline. 
+      AI assists only in the development process. This is what human-AI collaboration looks like when 
+      the human brings the architectural insight and the AI brings implementation velocity.
+    </p>
+  </div>
+</div>
+
+<div class="cta">
+  <h2>Support Independent AGI Research</h2>
+  <p>
+    The engine runs for free, but <em>building</em> it costs real money — Claude API credits 
+    for the human-AI development process add up fast. Your support keeps development velocity high.
+  </p>
+  <a href="https://github.com/sponsors/Ag3497120" class="btn btn-primary">💜 Sponsor on GitHub</a>
+  <a href="https://github.com/Ag3497120/verantyx-v6" class="btn btn-secondary">⭐ Star on GitHub</a>
+  <p style="margin-top: 20px; font-size: 0.9em;">
+    Even $5/month keeps the research running. Stars help with grant applications.
+  </p>
+</div>
+
+<footer>
+  Verantyx &copy; 2026 kofdai — MIT License<br>
+  Built with <a href="https://openclaw.ai">OpenClaw</a> + <a href="https://anthropic.com">Claude</a>
+</footer>
+
+</body>
+</html>

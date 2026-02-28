@@ -626,3 +626,276 @@ def apply_count_based_rule(inp: Grid, rule: Dict) -> Grid:
         result.append(row)
     
     return result
+
+
+# === Rotation-Invariant NB Rule ===
+
+def _rotate_3x3(pat: tuple) -> tuple:
+    """Rotate 3x3 pattern 90° clockwise."""
+    m = [list(pat[0:3]), list(pat[3:6]), list(pat[6:9])]
+    r = [[m[2][0], m[1][0], m[0][0]],
+         [m[2][1], m[1][1], m[0][1]],
+         [m[2][2], m[1][2], m[0][2]]]
+    return tuple(r[0] + r[1] + r[2])
+
+def _flip_h_3x3(pat: tuple) -> tuple:
+    """Flip 3x3 pattern horizontally."""
+    m = [list(pat[0:3]), list(pat[3:6]), list(pat[6:9])]
+    return tuple(m[0][::-1] + m[1][::-1] + m[2][::-1])
+
+def _canonical_3x3(pat: tuple) -> tuple:
+    """Get canonical form (min of all 8 rotations/flips)."""
+    variants = []
+    p = pat
+    for _ in range(4):
+        variants.append(p)
+        variants.append(_flip_h_3x3(p))
+        p = _rotate_3x3(p)
+    return min(variants)
+
+def _get_struct_nb(inp, r, c, bg, radius=1):
+    """Get structural 3x3 neighborhood pattern."""
+    h = len(inp)
+    w = len(inp[0]) if h > 0 else 0
+    center = inp[r][c]
+    nb = []
+    local_other_map = {}
+    local_next = 2
+    raw_nb = []
+    for dr in range(-radius, radius + 1):
+        for dc in range(-radius, radius + 1):
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < h and 0 <= nc < w:
+                v = inp[nr][nc]
+                raw_nb.append(v)
+                if v == bg:
+                    nb.append(0)
+                elif v == center:
+                    nb.append(1)
+                else:
+                    if v not in local_other_map:
+                        local_other_map[v] = local_next
+                        local_next += 1
+                    nb.append(local_other_map[v])
+            else:
+                raw_nb.append(-1)
+                nb.append(-1)
+    return tuple(nb), raw_nb, local_other_map
+
+def _get_output_role(out_val, center, bg, local_other_map):
+    """Get abstract output role."""
+    if out_val == bg:
+        return 'bg'
+    elif out_val == center:
+        return 'keep'
+    elif out_val in local_other_map:
+        return f'other_{local_other_map[out_val]}'
+    else:
+        return f'abs_{out_val}'
+
+def _resolve_role(role, center, bg, local_id_to_color):
+    """Resolve abstract role back to concrete color."""
+    if role == 'bg':
+        return bg
+    elif role == 'keep':
+        return center
+    elif role.startswith('other_'):
+        oid = int(role.split('_')[1])
+        return local_id_to_color.get(oid, center)
+    elif role.startswith('abs_'):
+        return int(role.split('_')[1])
+    return center
+
+
+def learn_rotation_invariant_nb_rule(train_pairs: List[Tuple[Grid, Grid]],
+                                      radius: int = 1) -> Optional[Dict]:
+    """Learn NB rule with rotation/flip invariance.
+    
+    Patterns are canonicalized under the 8 symmetries of the square (D4 group).
+    This dramatically improves generalization to unseen test patterns.
+    """
+    bg = most_common_color(train_pairs[0][0])
+    
+    if not all(grid_shape(i) == grid_shape(o) for i, o in train_pairs):
+        return None
+    if radius != 1:
+        return None  # Only support radius=1 for now (3x3)
+    
+    canonical_map = {}  # canonical_pattern -> role
+    
+    for inp, out in train_pairs:
+        h, w = grid_shape(inp)
+        for r in range(h):
+            for c in range(w):
+                struct_nb, raw_nb, local_other_map = _get_struct_nb(inp, r, c, bg, radius)
+                cpat = _canonical_3x3(struct_nb)
+                role = _get_output_role(out[r][c], inp[r][c], bg, local_other_map)
+                
+                if cpat in canonical_map:
+                    if canonical_map[cpat] != role:
+                        return None  # inconsistent
+                else:
+                    canonical_map[cpat] = role
+    
+    if not canonical_map:
+        return None
+    if grid_eq(train_pairs[0][0], train_pairs[0][1]):
+        return None
+    
+    roles_used = set(canonical_map.values())
+    if roles_used == {'keep'}:
+        return None
+    
+    return {'canonical_map': canonical_map, 'radius': radius, 'bg': bg}
+
+
+def apply_rotation_invariant_nb_rule(inp: Grid, rule: Dict) -> Grid:
+    """Apply rotation-invariant NB rule."""
+    canonical_map = rule['canonical_map']
+    radius = rule['radius']
+    bg = rule['bg']
+    h, w = grid_shape(inp)
+    
+    result = []
+    for r in range(h):
+        row = []
+        for c in range(w):
+            center = inp[r][c]
+            struct_nb, raw_nb, local_other_map = _get_struct_nb(inp, r, c, bg, radius)
+            
+            # Build reverse map
+            local_id_to_color = {v: k for k, v in local_other_map.items()}
+            
+            cpat = _canonical_3x3(struct_nb)
+            
+            if cpat in canonical_map:
+                role = canonical_map[cpat]
+                row.append(_resolve_role(role, center, bg, local_id_to_color))
+            else:
+                row.append(center)  # fallback
+        result.append(row)
+    
+    return result
+
+
+def learn_rotsym_count_nb_rule(train_pairs: List[Tuple[Grid, Grid]]) -> Optional[Dict]:
+    """Ultra-coarse NB rule: only uses counts of bg/self/other in 4-connected + 8-connected.
+    
+    Key = (is_bg, n4_bg, n4_self, n4_other, n8_bg, n8_self, n8_other)
+    
+    Even coarser than rotation-invariant, but with maximum generalization.
+    """
+    bg = most_common_color(train_pairs[0][0])
+    mapping = {}
+    
+    for inp, out in train_pairs:
+        h, w = grid_shape(inp)
+        if grid_shape(out) != (h, w):
+            return None
+        
+        for r in range(h):
+            for c in range(w):
+                center = inp[r][c]
+                
+                n4 = {'bg': 0, 'self': 0, 'other': 0, 'edge': 0}
+                for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                    nr, nc = r+dr, c+dc
+                    if 0 <= nr < h and 0 <= nc < w:
+                        v = inp[nr][nc]
+                        if v == bg: n4['bg'] += 1
+                        elif v == center: n4['self'] += 1
+                        else: n4['other'] += 1
+                    else:
+                        n4['edge'] += 1
+                
+                n8 = {'bg': 0, 'self': 0, 'other': 0, 'edge': 0}
+                for dr in [-1,0,1]:
+                    for dc in [-1,0,1]:
+                        if dr == 0 and dc == 0: continue
+                        nr, nc = r+dr, c+dc
+                        if 0 <= nr < h and 0 <= nc < w:
+                            v = inp[nr][nc]
+                            if v == bg: n8['bg'] += 1
+                            elif v == center: n8['self'] += 1
+                            else: n8['other'] += 1
+                        else:
+                            n8['edge'] += 1
+                
+                key = (center == bg,
+                       n4['bg'], n4['self'], n4['other'],
+                       n8['bg'], n8['self'], n8['other'])
+                
+                ov = out[r][c]
+                if ov == bg: role = 'bg'
+                elif ov == center: role = 'keep'
+                else: role = f'abs_{ov}'
+                
+                if key in mapping:
+                    if mapping[key] != role:
+                        return None
+                else:
+                    mapping[key] = role
+    
+    if not mapping:
+        return None
+    if grid_eq(train_pairs[0][0], train_pairs[0][1]):
+        return None
+    
+    roles = set(mapping.values())
+    if roles == {'keep'}:
+        return None
+    
+    return {'mapping': mapping, 'bg': bg}
+
+
+def apply_rotsym_count_nb_rule(inp: Grid, rule: Dict) -> Grid:
+    """Apply ultra-coarse rotation-symmetric count NB rule."""
+    mapping = rule['mapping']
+    bg = rule['bg']
+    h, w = grid_shape(inp)
+    
+    result = []
+    for r in range(h):
+        row = []
+        for c in range(w):
+            center = inp[r][c]
+            
+            n4 = {'bg': 0, 'self': 0, 'other': 0, 'edge': 0}
+            for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                nr, nc = r+dr, c+dc
+                if 0 <= nr < h and 0 <= nc < w:
+                    v = inp[nr][nc]
+                    if v == bg: n4['bg'] += 1
+                    elif v == center: n4['self'] += 1
+                    else: n4['other'] += 1
+                else:
+                    n4['edge'] += 1
+            
+            n8 = {'bg': 0, 'self': 0, 'other': 0, 'edge': 0}
+            for dr in [-1,0,1]:
+                for dc in [-1,0,1]:
+                    if dr == 0 and dc == 0: continue
+                    nr, nc = r+dr, c+dc
+                    if 0 <= nr < h and 0 <= nc < w:
+                        v = inp[nr][nc]
+                        if v == bg: n8['bg'] += 1
+                        elif v == center: n8['self'] += 1
+                        else: n8['other'] += 1
+                    else:
+                        n8['edge'] += 1
+            
+            key = (center == bg,
+                   n4['bg'], n4['self'], n4['other'],
+                   n8['bg'], n8['self'], n8['other'])
+            
+            if key in mapping:
+                role = mapping[key]
+                if role == 'bg': row.append(bg)
+                elif role == 'keep': row.append(center)
+                elif role.startswith('abs_'): row.append(int(role.split('_')[1]))
+                else: row.append(center)
+            else:
+                row.append(center)
+        result.append(row)
+    
+    return result
