@@ -2072,6 +2072,14 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
 
     # === Phase 1.62f: Contextual Recolor Solver === (DISABLED — testing regression)
 
+    # === Phase 1.62g: Object-level DSL Solver ===
+    try:
+        from arc.object_dsl_solver import generate_object_dsl_pieces
+        _odsl_pieces = generate_object_dsl_pieces(train_pairs)
+        all_pieces.extend(_odsl_pieces)
+    except Exception:
+        pass
+
     # === Phase 1.62e: Proximity Recolor Solver ===
     try:
         from arc.proximity_recolor_solver import generate_proximity_recolor_pieces
