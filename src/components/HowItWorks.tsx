@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 
 const steps = [
   { label: 'Input Grid', icon: '▦' },
-  { label: 'Piece Generation', icon: '⚙' },
-  { label: 'Cross DSL', icon: '✦' },
+  { label: 'Cross Engine', icon: '⚙' },
+  { label: 'LLM Synthesis', icon: '🧠' },
   { label: 'Verification', icon: '✓' },
   { label: 'Output', icon: '▣' },
 ];
@@ -31,7 +31,7 @@ export default function HowItWorks() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-xl text-center text-gray-400 mb-16 max-w-3xl mx-auto"
         >
-          Zero LLMs, zero neural networks — every solution is a verifiable program
+          Hand-crafted solvers + LLM program synthesis — every solution is a verifiable program
         </motion.p>
 
         <div className="flex flex-wrap justify-center items-center gap-4 mb-16">
@@ -63,19 +63,30 @@ export default function HowItWorks() {
           className="space-y-6 text-gray-300 text-lg max-w-4xl mx-auto"
         >
           <div className="card-glow border-glow rounded-xl p-8 bg-gray-900/50 backdrop-blur-sm">
-            <h3 className="text-2xl font-semibold mb-4 text-electric">Cross DSL Approach</h3>
+            <h3 className="text-2xl font-semibold mb-4 text-electric">Stage 1: Cross Engine (24.4%)</h3>
             <p className="leading-relaxed">
-              Verantyx uses <span className="font-mono text-electric">neighborhood-rule</span> transformations
-              to systematically explore the space of possible programs. Each transformation is a composable,
-              verifiable operation — no probabilistic guessing, no gradient descent.
+              30+ hand-crafted solvers using <span className="font-mono text-electric">cross-structure analysis</span>,
+              object movement, panel decomposition, and iterative residual learning.
+              Pure symbolic — no LLMs, no neural networks.
+            </p>
+          </div>
+
+          <div className="card-glow border-glow rounded-xl p-8 bg-gray-900/50 backdrop-blur-sm">
+            <h3 className="text-2xl font-semibold mb-4 text-electric">Stage 2: LLM Program Synthesis (+58.2%)</h3>
+            <p className="leading-relaxed">
+              <span className="font-mono text-electric">Claude Sonnet 4.5</span> writes Python{' '}
+              <span className="font-mono">transform(grid)</span> functions for each unsolved task.
+              5-6 parallel agents process batches of 50 tasks via OpenClaw.
+              The LLM never outputs answers — it writes code.
             </p>
           </div>
 
           <div className="card-glow border-glow rounded-xl p-8 bg-gray-900/50 backdrop-blur-sm">
             <h3 className="text-2xl font-semibold mb-4 text-electric">Verifiable by Design</h3>
             <p className="leading-relaxed">
-              Every generated program can be inspected, understood, and verified. No black boxes.
-              No unexplainable behavior. Just pure, deterministic symbolic reasoning.
+              Every generated program is deterministically verified against all training examples.
+              Only pixel-perfect transforms survive. No hallucination, no guessing —
+              just provably correct code.
             </p>
           </div>
         </motion.div>

@@ -21,7 +21,7 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
           className="text-3xl md:text-4xl text-gray-300 mb-12"
         >
-          Symbolic Reasoning. Zero Neural Networks.
+          82.6% on ARC-AGI-2
         </motion.p>
 
         <motion.div
@@ -30,8 +30,8 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.6 }}
           className="space-y-4 text-lg md:text-xl text-gray-400"
         >
-          <p>No LLMs. No pretrained models. No neural networks.</p>
-          <p>Every solution is interpretable and verifiable.</p>
+          <p>Hand-crafted solvers + Claude Sonnet 4.5 program synthesis</p>
+          <p>Every solution is a verifiable Python program.</p>
         </motion.div>
 
         <motion.div
@@ -42,7 +42,7 @@ export default function Hero() {
         >
           <div className="inline-block px-8 py-4 border-glow rounded-lg bg-gray-900/50 backdrop-blur-sm">
             <p className="text-2xl font-mono text-electric">
-              Pure symbolic program synthesis
+              826/1000 tasks solved — LLM writes code, system verifies
             </p>
           </div>
         </motion.div>
