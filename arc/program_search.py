@@ -457,6 +457,175 @@ def and_halves_v(g, bg):
     return result
 
 
+def fill_obj_interior(g, bg):
+    """Fill interior of each object with its dominant color"""
+    mask = (g != bg).astype(int)
+    labeled, n = connected_components(mask)
+    out = g.copy()
+    H, W = g.shape
+    for oid in range(1, n+1):
+        obj_mask = (labeled == oid)
+        rows, cols = np.where(obj_mask)
+        if len(rows) == 0: continue
+        color = Counter(int(g[r,c]) for r,c in zip(rows,cols)).most_common(1)[0][0]
+        r0, r1 = rows.min(), rows.max()
+        c0, c1 = cols.min(), cols.max()
+        for r in range(r0, r1+1):
+            row_in = [c for c in range(c0, c1+1) if obj_mask[r, c]]
+            if len(row_in) >= 2:
+                for c in range(min(row_in), max(row_in)+1):
+                    if g[r, c] == bg:
+                        out[r, c] = color
+    return out
+
+def recolor_by_size(g, bg):
+    """Recolor each object by its size rank (smallest=1, largest=max_color)"""
+    mask = (g != bg).astype(int)
+    labeled, n = connected_components(mask)
+    if n == 0: return g.copy()
+    sizes = [(np.sum(labeled == i), i) for i in range(1, n+1)]
+    sizes.sort()
+    out = np.full_like(g, bg)
+    for rank, (sz, oid) in enumerate(sizes, 1):
+        out[labeled == oid] = rank
+    return out
+
+def outline_objects(g, bg):
+    """Keep only border cells of each object"""
+    mask = (g != bg).astype(int)
+    labeled, n = connected_components(mask)
+    H, W = g.shape
+    out = np.full_like(g, bg)
+    for r in range(H):
+        for c in range(W):
+            if g[r, c] == bg: continue
+            oid = labeled[r, c]
+            is_border = any(
+                not (0 <= r+dr < H and 0 <= c+dc < W) or labeled[r+dr, c+dc] != oid
+                for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]
+            )
+            if is_border:
+                out[r, c] = g[r, c]
+    return out
+
+def flood_from_corners(g, bg):
+    """Flood fill from corners - mark all bg-connected-to-corner cells"""
+    from collections import deque
+    H, W = g.shape
+    out = g.copy()
+    visited = np.zeros((H, W), dtype=bool)
+    q = deque()
+    for r, c in [(0,0),(0,W-1),(H-1,0),(H-1,W-1)]:
+        if g[r, c] == bg:
+            q.append((r, c))
+            visited[r, c] = True
+    while q:
+        r, c = q.popleft()
+        for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+            nr, nc = r+dr, c+dc
+            if 0 <= nr < H and 0 <= nc < W and not visited[nr, nc] and g[nr, nc] == bg:
+                visited[nr, nc] = True
+                q.append((nr, nc))
+    # Fill non-visited bg cells with most common non-bg
+    nonbg = Counter(int(v) for v in g.flatten() if int(v) != bg)
+    if nonbg:
+        fill = nonbg.most_common(1)[0][0]
+        for r in range(H):
+            for c in range(W):
+                if g[r, c] == bg and not visited[r, c]:
+                    out[r, c] = fill
+    return out
+
+def swap_two_colors(g, bg):
+    """Swap the two most common non-bg colors"""
+    nonbg = Counter(int(v) for v in g.flatten() if int(v) != bg)
+    if len(nonbg) < 2: return g.copy()
+    c1, c2 = [c for c, _ in nonbg.most_common(2)]
+    out = g.copy()
+    out[g == c1] = c2
+    out[g == c2] = c1
+    return out
+
+def connect_same_color_h(g, bg):
+    """Connect same-color cells horizontally (fill bg between them)"""
+    H, W = g.shape
+    out = g.copy()
+    for r in range(H):
+        for color in range(1, 10):
+            cols = [c for c in range(W) if g[r, c] == color]
+            if len(cols) >= 2:
+                for c in range(min(cols), max(cols)+1):
+                    if out[r, c] == bg:
+                        out[r, c] = color
+    return out
+
+def connect_same_color_v(g, bg):
+    """Connect same-color cells vertically"""
+    H, W = g.shape
+    out = g.copy()
+    for c in range(W):
+        for color in range(1, 10):
+            rows = [r for r in range(H) if g[r, c] == color]
+            if len(rows) >= 2:
+                for r in range(min(rows), max(rows)+1):
+                    if out[r, c] == bg:
+                        out[r, c] = color
+    return out
+
+def dilate(g, bg):
+    """Dilate non-bg cells by 1 pixel"""
+    H, W = g.shape
+    out = g.copy()
+    for r in range(H):
+        for c in range(W):
+            if g[r, c] != bg:
+                for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                    nr, nc = r+dr, c+dc
+                    if 0 <= nr < H and 0 <= nc < W and out[nr, nc] == bg:
+                        out[nr, nc] = g[r, c]
+    return out
+
+def erode(g, bg):
+    """Erode non-bg cells by 1 pixel"""
+    H, W = g.shape
+    out = g.copy()
+    for r in range(H):
+        for c in range(W):
+            if g[r, c] != bg:
+                for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                    nr, nc = r+dr, c+dc
+                    if not (0 <= nr < H and 0 <= nc < W) or g[nr, nc] == bg:
+                        out[r, c] = bg
+                        break
+    return out
+
+def copy_obj_to_center(g, bg):
+    """Copy the single non-bg object to the center of grid"""
+    rows, cols = np.where(g != bg)
+    if len(rows) == 0: return g.copy()
+    obj = g[rows.min():rows.max()+1, cols.min():cols.max()+1]
+    H, W = g.shape
+    oh, ow = obj.shape
+    r0 = (H - oh) // 2
+    c0 = (W - ow) // 2
+    out = np.full_like(g, bg)
+    out[r0:r0+oh, c0:c0+ow] = obj
+    return out
+
+
+SAME_SHAPE_OPS_NEW = [
+    ('fill_int', fill_obj_interior),
+    ('outline', outline_objects),
+    ('flood_corner', flood_from_corners),
+    ('swap_colors', swap_two_colors),
+    ('conn_h', connect_same_color_h),
+    ('conn_v', connect_same_color_v),
+    ('dilate', dilate),
+    ('erode', erode),
+    ('copy_center', copy_obj_to_center),
+]
+
+
 SHAPE_CHANGE_OPS_EXTRA = [
     ('ext_minority_bbox', extract_minority_color_bbox),
     ('ext_unique_3x3', extract_unique_3x3),
@@ -473,7 +642,7 @@ SHAPE_CHANGE_OPS_EXTRA = [
     ('and_v', and_halves_v),
 ]
 
-ALL_OPS = SAME_SHAPE_OPS + SHAPE_CHANGE_OPS + SHAPE_CHANGE_OPS_EXTRA
+ALL_OPS = SAME_SHAPE_OPS + SAME_SHAPE_OPS_NEW + SHAPE_CHANGE_OPS + SHAPE_CHANGE_OPS_EXTRA
 
 
 def _compose(ops):
@@ -512,7 +681,7 @@ def _verify_program(fn, train_pairs, bg=None):
     return True
 
 
-def search_programs(train_pairs, max_depth=2, time_limit_ops=2000):
+def search_programs(train_pairs, max_depth=2, time_limit_ops=4000):
     """Search for programs that solve all train examples.
     
     Returns list of (name, fn) that work.
@@ -543,7 +712,7 @@ def search_programs(train_pairs, max_depth=2, time_limit_ops=2000):
         return []
     
     # Depth 2: compose two ops
-    first_ops = SAME_SHAPE_OPS if same_shape else ALL_OPS
+    first_ops = (SAME_SHAPE_OPS + SAME_SHAPE_OPS_NEW) if same_shape else ALL_OPS
     second_ops = ALL_OPS
     
     for n1, f1 in first_ops:

@@ -2150,6 +2150,22 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    # === Phase 1.66: Color Swap Solver (low-diff same-size tasks) ===
+    try:
+        from arc.color_swap_solver import generate_color_swap_pieces
+        _cs_pieces = generate_color_swap_pieces(train_pairs)
+        all_pieces.extend(_cs_pieces)
+    except Exception:
+        pass
+
+    # === Phase 1.67: Panel Copy/Mirror Solver ===
+    try:
+        from arc.panel_copy_solver import generate_panel_copy_pieces
+        _pcp_pieces = generate_panel_copy_pieces(train_pairs)
+        all_pieces.extend(_pcp_pieces)
+    except Exception:
+        pass
+
     # === Phase 1.5x: Verify all_pieces from probe/gravity/flood/symmetry solvers ===
     for _ap in all_pieces:
         try:
