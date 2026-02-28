@@ -875,6 +875,176 @@ SHAPE_CHANGE_OPS_NEW2 = [
     ('overlay_v', overlay_halves_v),
 ]
 
+def diagonal_fill_tl_br(g, bg):
+    """Fill diagonal (top-left to bottom-right) between same-color cells"""
+    H, W = g.shape
+    out = g.copy()
+    for color in range(1, 10):
+        pts = list(zip(*np.where(g == color)))
+        if len(pts) < 2: continue
+        for i in range(len(pts)):
+            for j in range(i+1, len(pts)):
+                r1,c1 = pts[i]; r2,c2 = pts[j]
+                if r2-r1 == c2-c1 and r2 > r1:
+                    for k in range(1, r2-r1):
+                        if out[r1+k, c1+k] == bg:
+                            out[r1+k, c1+k] = color
+    return out
+
+def diagonal_fill_tr_bl(g, bg):
+    """Fill anti-diagonal between same-color cells"""
+    H, W = g.shape
+    out = g.copy()
+    for color in range(1, 10):
+        pts = list(zip(*np.where(g == color)))
+        if len(pts) < 2: continue
+        for i in range(len(pts)):
+            for j in range(i+1, len(pts)):
+                r1,c1 = pts[i]; r2,c2 = pts[j]
+                if r2-r1 == c1-c2 and r2 > r1:
+                    for k in range(1, r2-r1):
+                        if out[r1+k, c1-k] == bg:
+                            out[r1+k, c1-k] = color
+    return out
+
+def majority_color_per_row(g, bg):
+    """Replace each row's non-bg cells with the row's majority non-bg color"""
+    H, W = g.shape
+    out = g.copy()
+    for r in range(H):
+        nonbg = [int(g[r,c]) for c in range(W) if g[r,c] != bg]
+        if not nonbg: continue
+        majority = Counter(nonbg).most_common(1)[0][0]
+        for c in range(W):
+            if g[r,c] != bg:
+                out[r,c] = majority
+    return out
+
+def majority_color_per_col(g, bg):
+    """Replace each col's non-bg cells with the col's majority non-bg color"""
+    H, W = g.shape
+    out = g.copy()
+    for c in range(W):
+        nonbg = [int(g[r,c]) for r in range(H) if g[r,c] != bg]
+        if not nonbg: continue
+        majority = Counter(nonbg).most_common(1)[0][0]
+        for r in range(H):
+            if g[r,c] != bg:
+                out[r,c] = majority
+    return out
+
+def project_row_pattern(g, bg):
+    """Find the row with most non-bg cells, project it to all rows that have any non-bg"""
+    H, W = g.shape
+    best_row = max(range(H), key=lambda r: sum(1 for c in range(W) if g[r,c] != bg))
+    pattern = g[best_row].copy()
+    if not any(pattern != bg): return g.copy()
+    out = g.copy()
+    for r in range(H):
+        if any(g[r,c] != bg for c in range(W)):
+            out[r] = pattern
+    return out
+
+def project_col_pattern(g, bg):
+    """Find the col with most non-bg cells, project it to all cols that have any non-bg"""
+    H, W = g.shape
+    best_col = max(range(W), key=lambda c: sum(1 for r in range(H) if g[r,c] != bg))
+    pattern = g[:, best_col].copy()
+    if not any(pattern != bg): return g.copy()
+    out = g.copy()
+    for c in range(W):
+        if any(g[r,c] != bg for r in range(H)):
+            out[:, c] = pattern
+    return out
+
+def dilate_diagonal(g, bg):
+    """Dilate non-bg cells diagonally by 1 pixel"""
+    H, W = g.shape
+    out = g.copy()
+    for r in range(H):
+        for c in range(W):
+            if g[r, c] != bg:
+                for dr, dc in [(-1,-1),(-1,1),(1,-1),(1,1)]:
+                    nr, nc = r+dr, c+dc
+                    if 0 <= nr < H and 0 <= nc < W and out[nr, nc] == bg:
+                        out[nr, nc] = g[r, c]
+    return out
+
+def fill_row_gaps(g, bg):
+    """Fill bg gaps within rows between non-bg cells (any color)"""
+    H, W = g.shape
+    out = g.copy()
+    for r in range(H):
+        first = -1
+        last = -1
+        for c in range(W):
+            if g[r,c] != bg:
+                if first == -1: first = c
+                last = c
+        if first >= 0:
+            for c in range(first, last+1):
+                if out[r,c] == bg:
+                    # Use nearest non-bg color
+                    left_c = bg
+                    for cc in range(c-1, -1, -1):
+                        if g[r,cc] != bg:
+                            left_c = int(g[r,cc])
+                            break
+                    out[r,c] = left_c if left_c != bg else int(g[r,first])
+    return out
+
+def fill_col_gaps(g, bg):
+    """Fill bg gaps within cols between non-bg cells"""
+    H, W = g.shape
+    out = g.copy()
+    for c in range(W):
+        first = -1
+        last = -1
+        for r in range(H):
+            if g[r,c] != bg:
+                if first == -1: first = r
+                last = r
+        if first >= 0:
+            for r in range(first, last+1):
+                if out[r,c] == bg:
+                    top_c = bg
+                    for rr in range(r-1, -1, -1):
+                        if g[rr,c] != bg:
+                            top_c = int(g[rr,c])
+                            break
+                    out[r,c] = top_c if top_c != bg else int(g[first,c])
+    return out
+
+def recolor_by_object_size(g, bg):
+    """Recolor each connected component based on its size (larger=color1, smaller=color2)"""
+    mask = (g != bg).astype(int)
+    labeled, n = connected_components(mask)
+    if n == 0: return g.copy()
+    
+    sizes = {}
+    for oid in range(1, n+1):
+        sizes[oid] = int(np.sum(labeled == oid))
+    
+    # Sort by size
+    sorted_objs = sorted(sizes.keys(), key=lambda x: -sizes[x])
+    
+    # Get unique non-bg colors in order
+    colors = []
+    for oid in sorted_objs:
+        cells = g[labeled == oid]
+        c = int(Counter(cells.flatten()).most_common(1)[0][0])
+        if c not in colors:
+            colors.append(c)
+    
+    if len(colors) < 2: return g.copy()
+    
+    out = g.copy()
+    for oid in sorted_objs:
+        idx = sorted_objs.index(oid) % len(colors)
+        mask_oid = labeled == oid
+        out[mask_oid] = colors[idx]
+    return out
+
 SAME_SHAPE_OPS_V77 = [
     ('exp2x2', expand_2x2_corner),
     ('l_ray2', l_ray_nearest2),
@@ -884,6 +1054,19 @@ SAME_SHAPE_OPS_V77 = [
     ('conn_hv', connect_same_color_hv),
     ('rm_border', remove_border_ring),
     ('keep_border', keep_border_ring),
+]
+
+SAME_SHAPE_OPS_V78 = [
+    ('diag_fill_tlbr', diagonal_fill_tl_br),
+    ('diag_fill_trbl', diagonal_fill_tr_bl),
+    ('maj_row', majority_color_per_row),
+    ('maj_col', majority_color_per_col),
+    ('proj_row', project_row_pattern),
+    ('proj_col', project_col_pattern),
+    ('dilate_diag', dilate_diagonal),
+    ('fill_row_gap', fill_row_gaps),
+    ('fill_col_gap', fill_col_gaps),
+    ('recolor_size', recolor_by_object_size),
 ]
 
 SHAPE_CHANGE_OPS_EXTRA = [
@@ -902,7 +1085,7 @@ SHAPE_CHANGE_OPS_EXTRA = [
     ('and_v', and_halves_v),
 ]
 
-ALL_OPS = SAME_SHAPE_OPS + SAME_SHAPE_OPS_NEW + SAME_SHAPE_OPS_V77 + SHAPE_CHANGE_OPS + SHAPE_CHANGE_OPS_NEW2 + SHAPE_CHANGE_OPS_EXTRA
+ALL_OPS = SAME_SHAPE_OPS + SAME_SHAPE_OPS_NEW + SAME_SHAPE_OPS_V77 + SAME_SHAPE_OPS_V78 + SHAPE_CHANGE_OPS + SHAPE_CHANGE_OPS_NEW2 + SHAPE_CHANGE_OPS_EXTRA
 
 
 def _compose(ops):
@@ -972,7 +1155,7 @@ def search_programs(train_pairs, max_depth=2, time_limit_ops=6000):
         return []
     
     # Depth 2: compose two ops
-    first_ops = (SAME_SHAPE_OPS + SAME_SHAPE_OPS_NEW) if same_shape else ALL_OPS
+    first_ops = (SAME_SHAPE_OPS + SAME_SHAPE_OPS_NEW + SAME_SHAPE_OPS_V78) if same_shape else ALL_OPS
     second_ops = ALL_OPS
     
     for n1, f1 in first_ops:
