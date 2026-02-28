@@ -12,6 +12,7 @@ const data = [
   { version: 'v47', score: 18.9 },
   { version: 'v53', score: 20.7 },
   { version: 'v59', score: 22.1 },
+  { version: 'v74', score: 23.7 },
 ];
 
 export default function ScoreChart() {

@@ -10,6 +10,7 @@ import HowItWorks from '@/components/HowItWorks';
 import ArchitecturePipeline from '@/components/ArchitecturePipeline';
 import ScoreChart from '@/components/ScoreChart';
 import LinkReveal from '@/components/LinkReveal';
+import SupportSection from '@/components/SupportSection';
 import Stats from '@/components/Stats';
 import Footer from '@/components/Footer';
 
@@ -55,6 +56,9 @@ export default function Home() {
       <section className="relative min-h-screen flex items-center justify-center">
         <LinkReveal />
       </section>
+
+      {/* Section 8: Support */}
+      <SupportSection />
 
       {/* Stats + Footer */}
       <Stats />
