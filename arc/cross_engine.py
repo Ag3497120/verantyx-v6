@@ -210,34 +210,11 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
     except Exception:
         pass
     
-    # === Module 1d: V78 Pattern Pieces ===
-    try:
-        from arc.program_search import (diagonal_fill_tl_br, diagonal_fill_tr_bl,
-            majority_color_per_row, majority_color_per_col,
-            project_row_pattern, project_col_pattern,
-            dilate_diagonal, fill_row_gaps, fill_col_gaps,
-            recolor_by_object_size, _bg as _ps_bg78)
-        for v78_name, v78_fn in [
-            ('diagonal_fill_tl_br', diagonal_fill_tl_br),
-            ('diagonal_fill_tr_bl', diagonal_fill_tr_bl),
-            ('majority_color_per_row', majority_color_per_row),
-            ('majority_color_per_col', majority_color_per_col),
-            ('project_row_pattern', project_row_pattern),
-            ('project_col_pattern', project_col_pattern),
-            ('dilate_diagonal', dilate_diagonal),
-            ('fill_row_gaps', fill_row_gaps),
-            ('fill_col_gaps', fill_col_gaps),
-            ('recolor_by_object_size', recolor_by_object_size),
-        ]:
-            _v78fn = v78_fn
-            def _make_v78_piece(inp, fn=_v78fn):
-                import numpy as _np
-                g = _np.array(inp)
-                bg = _ps_bg78(g)
-                return fn(g, bg).tolist()
-            pieces.append(CrossPiece(v78_name, _make_v78_piece))
-    except Exception:
-        pass
+    # === Module 1d: V78 Pattern Pieces === (DISABLED — testing regression)
+    # try:
+    #     from arc.program_search import (diagonal_fill_tl_br, diagonal_fill_tr_bl, ...
+    # except Exception:
+    #     pass
 
     # === Module 2: Conditional Rules (Wall 3) ===
     rule = learn_conditional_color_rule(train_pairs)
@@ -2092,6 +2069,8 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
         all_pieces.extend(_cpf_pieces)
     except Exception:
         pass
+
+    # === Phase 1.62f: Contextual Recolor Solver === (DISABLED — testing regression)
 
     # === Phase 1.62e: Proximity Recolor Solver ===
     try:
