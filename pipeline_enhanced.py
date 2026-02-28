@@ -874,6 +874,20 @@ class VerantyxV6Enhanced:
                 except Exception as _dir_e:
                     trace.append(f"step1_5_9_5:atom_cross_error:{_dir_e}")
 
+                # 4. mcq_direct (Qwen 7B直接MCQ — 最終フォールバック)
+                if not _mcq_candidates or max(c for _, c, _ in _mcq_candidates) < 0.50:
+                    try:
+                        from executors.mcq_direct_solver import solve_mcq_directly
+                        _qwen_result = solve_mcq_directly(ir_dict, _choices, _knowledge_facts)
+                        if _qwen_result:
+                            _q_ans, _q_conf, _q_method = _qwen_result
+                            trace.append(f"step1_5_9_7:mcq_direct:{_q_method} label={_q_ans} conf={_q_conf:.2f}")
+                            _mcq_candidates.append((_q_ans, _q_conf, _q_method))
+                        else:
+                            trace.append("step1_5_9_7:mcq_direct:INCONCLUSIVE")
+                    except Exception as _q_e:
+                        trace.append(f"step1_5_9_7:mcq_direct_error:{_q_e}")
+
                 # ─── Step 1.5.10-pre: MCQ候補から最高confidence選択 ───
                 if _mcq_candidates:
                     _mcq_candidates.sort(key=lambda x: x[1], reverse=True)

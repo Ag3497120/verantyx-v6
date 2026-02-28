@@ -8074,10 +8074,10 @@
   {
     "idx": 1009,
     "category": "Engineering",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1010,
@@ -8866,10 +8866,10 @@
   {
     "idx": 1108,
     "category": "Engineering",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "E",
     "expected": "E",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1109,
@@ -11355,9 +11355,9 @@
     "idx": 1419,
     "category": "Computer Science/AI",
     "correct": false,
-    "answer": null,
+    "answer": "B",
     "expected": "E",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1420,
@@ -12074,10 +12074,10 @@
   {
     "idx": 1509,
     "category": "Chemistry",
-    "correct": false,
-    "answer": null,
+    "correct": true,
+    "answer": "A",
     "expected": "A",
-    "method": "unknown"
+    "method": "math_cross_sim"
   },
   {
     "idx": 1510,

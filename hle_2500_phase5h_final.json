@@ -1,8 +1,8 @@
 {
   "total": 2500,
-  "correct": 213,
-  "accuracy": 8.52,
-  "time": 55.40787887573242,
+  "correct": 216,
+  "accuracy": 8.64,
+  "time": 60.52839779853821,
   "category_stats": {
     "Other": {
       "total": 233,
@@ -30,15 +30,15 @@
     },
     "Chemistry": {
       "total": 165,
-      "correct": 16
+      "correct": 17
     },
     "Engineering": {
       "total": 111,
-      "correct": 6
+      "correct": 8
     }
   },
   "method_stats": {
-    "math_cross_sim": 124,
+    "math_cross_sim": 127,
     "cegis_proved": 69,
     "unknown": 17,
     "puzzle_reasoning": 1,
