@@ -613,6 +613,214 @@ def copy_obj_to_center(g, bg):
     return out
 
 
+def replace_color(g, bg):
+    """Replace all non-bg minority color with majority non-bg color"""
+    nonbg = Counter(int(v) for v in g.flatten() if int(v) != bg)
+    if len(nonbg) < 2: return g.copy()
+    colors = nonbg.most_common()
+    majority = colors[0][0]
+    minority = colors[-1][0]
+    out = g.copy()
+    out[g == minority] = majority
+    return out
+
+def replace_bg_neighbor(g, bg):
+    """Replace bg cells that have exactly 1 non-bg neighbor with that neighbor's color"""
+    H, W = g.shape
+    out = g.copy()
+    for r in range(H):
+        for c in range(W):
+            if g[r, c] != bg: continue
+            neighbors = []
+            for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+                nr, nc = r+dr, c+dc
+                if 0 <= nr < H and 0 <= nc < W and g[nr, nc] != bg:
+                    neighbors.append(g[nr, nc])
+            if len(neighbors) == 1:
+                out[r, c] = neighbors[0]
+    return out
+
+def fill_between_objects(g, bg):
+    """Fill bg cells between same-color non-bg cells in each row"""
+    H, W = g.shape
+    out = g.copy()
+    for r in range(H):
+        for color in range(1, 10):
+            cols = [c for c in range(W) if g[r, c] == color]
+            if len(cols) >= 2:
+                for c in range(min(cols), max(cols) + 1):
+                    if out[r, c] == bg:
+                        out[r, c] = color
+    for c in range(W):
+        for color in range(1, 10):
+            rows = [r for r in range(H) if g[r, c] == color]
+            if len(rows) >= 2:
+                for r in range(min(rows), max(rows) + 1):
+                    if out[r, c] == bg:
+                        out[r, c] = color
+    return out
+
+def shrink_2x(g, bg):
+    """Shrink grid by 2x (take every other cell)"""
+    return g[::2, ::2].copy()
+
+def upscale_2x(g, bg):
+    """Upscale grid by 2x"""
+    return np.repeat(np.repeat(g, 2, axis=0), 2, axis=1)
+
+def l_ray_nearest2(g, bg):
+    """Each non-bg cell extends lines toward its 2 nearest grid edges"""
+    H, W = g.shape
+    out = g.copy()
+    for r in range(H):
+        for c in range(W):
+            if g[r, c] != bg:
+                color = int(g[r, c])
+                dists = [('top', r), ('bot', H-1-r), ('left', c), ('right', W-1-c)]
+                dists.sort(key=lambda x: x[1])
+                for edge, _ in dists[:2]:
+                    if edge == 'top':
+                        out[:r, c] = color
+                    elif edge == 'bot':
+                        out[r+1:, c] = color
+                    elif edge == 'left':
+                        out[r, :c] = color
+                    elif edge == 'right':
+                        out[r, c+1:] = color
+    return out
+
+def l_ray_nearest1(g, bg):
+    """Each non-bg cell extends a line toward its nearest grid edge"""
+    H, W = g.shape
+    out = g.copy()
+    for r in range(H):
+        for c in range(W):
+            if g[r, c] != bg:
+                color = int(g[r, c])
+                dists = [('top', r), ('bot', H-1-r), ('left', c), ('right', W-1-c)]
+                dists.sort(key=lambda x: x[1])
+                edge = dists[0][0]
+                if edge == 'top':
+                    out[:r, c] = color
+                elif edge == 'bot':
+                    out[r+1:, c] = color
+                elif edge == 'left':
+                    out[r, :c] = color
+                elif edge == 'right':
+                    out[r, c+1:] = color
+    return out
+
+def cross_ray_full(g, bg):
+    """Each non-bg cell extends lines in all 4 cardinal directions to edges"""
+    H, W = g.shape
+    out = g.copy()
+    for r in range(H):
+        for c in range(W):
+            if g[r, c] != bg:
+                color = int(g[r, c])
+                out[r, :] = np.where(out[r, :] == bg, color, out[r, :])
+                out[:, c] = np.where(out[:, c] == bg, color, out[:, c])
+    return out
+
+def per_color_bbox_fill(g, bg):
+    """Fill the bounding box of each non-bg color"""
+    out = g.copy()
+    for c in range(10):
+        if c == bg:
+            continue
+        mask = g == c
+        if not np.any(mask):
+            continue
+        rows, cols = np.where(mask)
+        out[min(rows):max(rows)+1, min(cols):max(cols)+1] = c
+    return out
+
+def connect_same_color_hv(g, bg):
+    """Connect same-color cells with lines (horizontal + vertical)"""
+    out = g.copy()
+    H, W = g.shape
+    for color in range(10):
+        if color == bg:
+            continue
+        pts = list(zip(*np.where(g == color)))
+        if len(pts) < 2:
+            continue
+        row_pts = {}
+        for r, c in pts:
+            row_pts.setdefault(r, []).append(c)
+        for r, cols in row_pts.items():
+            cols.sort()
+            for i in range(len(cols) - 1):
+                out[r, cols[i]:cols[i+1]+1] = color
+        col_pts = {}
+        for r, c in pts:
+            col_pts.setdefault(c, []).append(r)
+        for c, rows in col_pts.items():
+            rows.sort()
+            for i in range(len(rows) - 1):
+                out[rows[i]:rows[i+1]+1, c] = color
+    return out
+
+def remove_border_ring(g, bg):
+    """Set border cells to bg"""
+    H, W = g.shape
+    if H < 3 or W < 3:
+        return g
+    out = g.copy()
+    out[0, :] = bg
+    out[-1, :] = bg
+    out[:, 0] = bg
+    out[:, -1] = bg
+    return out
+
+def keep_border_ring(g, bg):
+    """Keep only border cells, set interior to bg"""
+    H, W = g.shape
+    out = np.full_like(g, bg)
+    out[0, :] = g[0, :]
+    out[-1, :] = g[-1, :]
+    out[:, 0] = g[:, 0]
+    out[:, -1] = g[:, -1]
+    return out
+
+def color_count_to_grid(g, bg):
+    """Replace each non-bg object with a single cell of its color (compress)"""
+    mask = (g != bg).astype(int)
+    labeled, n = connected_components(mask)
+    if n == 0: return g.copy()
+    colors = []
+    for oid in range(1, n + 1):
+        cells = g[labeled == oid]
+        colors.append(int(Counter(cells.flatten()).most_common(1)[0][0]))
+    # Create 1xN grid
+    out = np.array([colors], dtype=int)
+    return out
+
+def overlay_halves_h(g, bg):
+    """Overlay left half onto right half (non-bg wins)"""
+    H, W = g.shape
+    hw = W // 2
+    left = g[:, :hw]
+    right = g[:, hw:hw+hw] if W % 2 == 0 else g[:, hw+1:hw+1+hw]
+    if left.shape != right.shape: return g.copy()
+    out = right.copy()
+    mask = left != bg
+    out[mask] = left[mask]
+    return out
+
+def overlay_halves_v(g, bg):
+    """Overlay top half onto bottom half (non-bg wins)"""
+    H, W = g.shape
+    hh = H // 2
+    top = g[:hh, :]
+    bot = g[hh:hh+hh, :] if H % 2 == 0 else g[hh+1:hh+1+hh, :]
+    if top.shape != bot.shape: return g.copy()
+    out = bot.copy()
+    mask = top != bg
+    out[mask] = top[mask]
+    return out
+
+
 SAME_SHAPE_OPS_NEW = [
     ('fill_int', fill_obj_interior),
     ('outline', outline_objects),
@@ -623,8 +831,28 @@ SAME_SHAPE_OPS_NEW = [
     ('dilate', dilate),
     ('erode', erode),
     ('copy_center', copy_obj_to_center),
+    ('repl_color', replace_color),
+    ('repl_bg_nb', replace_bg_neighbor),
+    ('fill_between', fill_between_objects),
 ]
 
+
+SHAPE_CHANGE_OPS_NEW2 = [
+    ('shrink2x', shrink_2x),
+    ('upscale2x', upscale_2x),
+    ('overlay_h', overlay_halves_h),
+    ('overlay_v', overlay_halves_v),
+]
+
+SAME_SHAPE_OPS_V77 = [
+    ('l_ray2', l_ray_nearest2),
+    ('l_ray1', l_ray_nearest1),
+    ('cross_ray', cross_ray_full),
+    ('bbox_fill', per_color_bbox_fill),
+    ('conn_hv', connect_same_color_hv),
+    ('rm_border', remove_border_ring),
+    ('keep_border', keep_border_ring),
+]
 
 SHAPE_CHANGE_OPS_EXTRA = [
     ('ext_minority_bbox', extract_minority_color_bbox),
@@ -642,7 +870,7 @@ SHAPE_CHANGE_OPS_EXTRA = [
     ('and_v', and_halves_v),
 ]
 
-ALL_OPS = SAME_SHAPE_OPS + SAME_SHAPE_OPS_NEW + SHAPE_CHANGE_OPS + SHAPE_CHANGE_OPS_EXTRA
+ALL_OPS = SAME_SHAPE_OPS + SAME_SHAPE_OPS_NEW + SAME_SHAPE_OPS_V77 + SHAPE_CHANGE_OPS + SHAPE_CHANGE_OPS_NEW2 + SHAPE_CHANGE_OPS_EXTRA
 
 
 def _compose(ops):
@@ -681,7 +909,7 @@ def _verify_program(fn, train_pairs, bg=None):
     return True
 
 
-def search_programs(train_pairs, max_depth=2, time_limit_ops=4000):
+def search_programs(train_pairs, max_depth=2, time_limit_ops=6000):
     """Search for programs that solve all train examples.
     
     Returns list of (name, fn) that work.

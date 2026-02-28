@@ -2061,23 +2061,11 @@ class MathCrossSimulator:
         # 0. 専門パターン検出 (最優先) - Specialized pattern detectors
         # These are high-precision rules that take priority over general simulation
         specialized_detectors = [
-            # 計算ベースソルバー (高精度): 問題から数値を抽出 → 計算 → 照合
+            # 汎用計算ソルバーのみ (ハードコード検出器は全削除)
             _solve_mcq_number_theory_compute,
             _solve_mcq_combinatorics_exact_compute,
             _solve_mcq_linear_algebra_det_compute,
             _solve_mcq_graph_chromatic_compute,
-            # パターンベース専用検出器 (高精度)
-            _detect_trefoil_knot,
-            _detect_graph_laplacian_degree,
-            _detect_euro_coin_game,
-            _detect_rubiks_cube,
-            _solve_24point_mcq,
-            _detect_alice_boxes,
-            _detect_domino_game_misere,
-            _detect_steel_tube_balls,
-            _detect_inspection_paradox,
-            _detect_logic_entailment,
-            _detect_fred_lying_day,
         ]
         for detector in specialized_detectors:
             try:

@@ -188,6 +188,27 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
     except ImportError:
         pass
     
+    # === Module 1c: Ray Extension Pieces ===
+    try:
+        from arc.program_search import l_ray_nearest2, l_ray_nearest1, cross_ray_full, \
+            per_color_bbox_fill, connect_same_color_hv, _bg as _ps_bg
+        for ray_name, ray_fn in [
+            ('l_ray_nearest2', l_ray_nearest2),
+            ('l_ray_nearest1', l_ray_nearest1),
+            ('cross_ray_full', cross_ray_full),
+            ('per_color_bbox_fill', per_color_bbox_fill),
+            ('connect_same_color_hv', connect_same_color_hv),
+        ]:
+            _rfn = ray_fn
+            def _make_ray_piece(inp, fn=_rfn):
+                import numpy as _np
+                g = _np.array(inp)
+                bg = _ps_bg(g)
+                return fn(g, bg).tolist()
+            pieces.append(CrossPiece(ray_name, _make_ray_piece))
+    except Exception:
+        pass
+    
     # === Module 2: Conditional Rules (Wall 3) ===
     rule = learn_conditional_color_rule(train_pairs)
     if rule is not None:

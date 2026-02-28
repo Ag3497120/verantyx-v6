@@ -186,7 +186,7 @@ class VerantyxV6Enhanced:
 
         # ── Knowledge Pipeline 初期化 ──
         self._knowledge_pipeline = None
-        if _knowledge_pipeline_available:
+        if False and _knowledge_pipeline_available:  # Wikipedia無効化（クリーンeval用）
             try:
                 self._knowledge_pipeline = KnowledgePipeline(piece_db=None)
                 # piece_db は PieceDB インスタンスだが、KnowledgePipeline の PieceDBInterface に合わせる必要がある
@@ -634,61 +634,30 @@ class VerantyxV6Enhanced:
                         trace.append("step1_5:pattern_detectors:DISABLED_BY_ENV")
                         raise ImportError("pattern detectors disabled by env")
                     from puzzle.math_cross_sim import (
-                        # --- パターンベース専用検出器 (既存) ---
-                        _detect_trefoil_knot, _detect_graph_laplacian_degree,
-                        _detect_euro_coin_game, _detect_rubiks_cube, _solve_24point_mcq,
-                        _detect_alice_boxes, _detect_domino_game_misere,
-                        _detect_inspection_paradox, _detect_steel_tube_balls,
-                        _detect_logic_entailment, _detect_fred_lying_day, _detect_nim_game,
-                        # --- 計算ベース exactMatch ソルバー (A強化: 未接続だったものを追加) ---
-                        _solve_mcq_number_theory_compute,       # GCD/LCM/phi, precision ~92%
-                        _solve_mcq_combinatorics_exact_compute, # Stirling/Bell/Catalan/binomial, ~93%
-                        _solve_mcq_linear_algebra_det_compute,  # det/trace, ~94%
-                        _solve_mcq_graph_chromatic_compute,     # chromatic/Petersen/K_n, ~89%
-                        # --- 新規追加: ODE系 + 容器パズル + DFA最小化 + 量子ゲート (2026-02-21) ---
-                        _solve_ode_system_mcq,          # ODE数値シミュ: idx=1792(E), idx=1865(C)
-                        _solve_container_pouring_mcq,   # 容器パズルBFS: idx=1023(F)
-                        _solve_minimal_dfa_states_mcq,  # 正規表現→最小DFA状態数: idx=50(D)
-                        _solve_quantum_gate_consistency_mcq,  # 量子ゲート整合性: idx=138(Q)
-                        _detect_cap_set_size_mcq,             # cap set サイズ lookup: idx=655(C)
-                        _solve_cs_specific_facts_mcq,         # CS facts: vtable/Edmonds/bundle_adj
-                        _solve_chess_mate_mcq,                # chess FEN+Stockfish: idx=435(D)
-                        _solve_ejr_approval_voting_mcq,       # EJR approval voting: idx=711(H)
-                        # --- Full MathCrossSimulator (A強化: 未接続だったものを追加) ---
+                        # --- 汎用計算ソルバーのみ (ハードコード/特定問題検出器は全削除) ---
+                        _solve_mcq_number_theory_compute,       # GCD/LCM/phi 計算
+                        _solve_mcq_combinatorics_exact_compute, # Stirling/Bell/Catalan
+                        _solve_mcq_linear_algebra_det_compute,  # det/trace 計算
+                        _solve_mcq_graph_chromatic_compute,     # chromatic number 計算
+                        _solve_ode_system_mcq,                  # ODE数値シミュレーション
+                        _solve_container_pouring_mcq,           # 容器パズルBFS
+                        _solve_minimal_dfa_states_mcq,          # 正規表現→最小DFA状態数
+                        _solve_quantum_gate_consistency_mcq,    # 量子ゲート整合性検証
+                        # --- Full MathCrossSimulator (汎用仮説検証) ---
                         MathCrossSimulator,
                     )
                     _choice_pairs = list(_choices.items())
-                    # 計算ベースソルバーを最優先 (高精度・決定論的)
-                    _computation_solvers = [
+                    # 汎用計算ソルバーのみ (ハードコード検出器は全削除)
+                    _specialized_detectors = [
                         _solve_mcq_number_theory_compute,
                         _solve_mcq_combinatorics_exact_compute,
                         _solve_mcq_linear_algebra_det_compute,
                         _solve_mcq_graph_chromatic_compute,
-                        _solve_ode_system_mcq,          # NEW: ODE系数値ソルバー
-                        _solve_container_pouring_mcq,   # NEW: 容器パズルBFS
-                        _solve_minimal_dfa_states_mcq,  # NEW: 正規表現→最小DFA状態数
-                        _solve_quantum_gate_consistency_mcq,  # NEW: 量子ゲート整合性
-                        _detect_cap_set_size_mcq,             # NEW: cap set サイズ静的lookup
-                        _solve_cs_specific_facts_mcq,         # NEW: CS facts vtable/Edmonds/bundle_adj
-                        _solve_chess_mate_mcq,                # NEW: chess FEN+Stockfish
-                        _solve_ejr_approval_voting_mcq,       # NEW: EJR approval voting
+                        _solve_ode_system_mcq,
+                        _solve_container_pouring_mcq,
+                        _solve_minimal_dfa_states_mcq,
+                        _solve_quantum_gate_consistency_mcq,
                     ]
-                    # パターンベース専用検出器
-                    _pattern_detectors = [
-                        _detect_trefoil_knot,
-                        _solve_24point_mcq,
-                        _detect_rubiks_cube,
-                        _detect_graph_laplacian_degree,
-                        _detect_euro_coin_game,
-                        _detect_alice_boxes,
-                        _detect_domino_game_misere,
-                        _detect_inspection_paradox,
-                        _detect_steel_tube_balls,
-                        _detect_logic_entailment,
-                        _detect_fred_lying_day,
-                        _detect_nim_game,
-                    ]
-                    _specialized_detectors = _computation_solvers + _pattern_detectors
                     for _det in _specialized_detectors:
                         try:
                             _r = _det(problem_text, _choice_pairs)
@@ -763,52 +732,15 @@ class VerantyxV6Enhanced:
                 except Exception as _sim_e:
                     trace.append(f"step1_5:math_cross_sim_error:{_sim_e}")
 
-                # 2. hle_boost_engine: 全カテゴリ専門ディテクター
-                # ⚠️ 統計的バイアス（position prior / letter bias）は使用禁止
-                # ⚠️ DISABLE_PATTERN_DETECTORS=1 でカンニング無効化
-                try:
-                    if os.environ.get('DISABLE_PATTERN_DETECTORS'):
-                        raise ImportError("boost detectors disabled by env")
-                    from puzzle.hle_boost_engine import solve_mcq as _boost_solve_mcq
-                    _boost_result = _boost_solve_mcq(problem_text, _choices)
-                    if _boost_result is not None:
-                        _boost_ans, _boost_conf, _boost_method = _boost_result
-                        trace.append(f"step1_5:boost:{_boost_method} label={_boost_ans} conf={_boost_conf:.2f}")
-                        self.stats["executed"] += 1
-                        status = self._validate_answer(_boost_ans, expected_answer, trace)
-                        return {
-                            "status": status,
-                            "answer": _boost_ans,
-                            "expected": expected_answer,
-                            "confidence": _boost_conf,
-                            "method": f"hle_boost:{_boost_method}",
-                            "ir": ir_dict,
-                            "trace": trace
-                        }
-                    else:
-                        # 推論不能: 通常パイプラインへ継続（バイアス推測しない）
-                        trace.append("step1_5:boost:no_confident_answer → fallthrough")
-                except Exception as _boost_e:
-                    trace.append(f"step1_5:boost_error:{_boost_e}")
+                # 2. hle_boost_engine: 永久無効化（position bias + ハードコード知識含む）
+                trace.append("step1_5:boost:PERMANENTLY_DISABLED")
 
                 # ─── Step 1.5.8-9: MCQ 並列ソルバー（全候補を集めて最高confを採用） ───
                 # cross_decompose, km_v2, mcq_direct を全て実行し、最もconfidenceが高い結果を採用
                 _mcq_candidates = []  # [(answer, confidence, method)]
 
-                # 1. cross_decompose (ルールベース)
-                try:
-                    from executors.mcq_cross_decompose_solver import solve_by_cross_decomposition
-                    _xd_result = solve_by_cross_decomposition(
-                        _stem, _choices, _knowledge_facts, ir_dict
-                    )
-                    if _xd_result:
-                        _xd_ans, _xd_conf, _xd_method = _xd_result
-                        trace.append(f"step1_5_8:cross_decompose:{_xd_method} label={_xd_ans} conf={_xd_conf:.2f}")
-                        _mcq_candidates.append((_xd_ans, _xd_conf, _xd_method))
-                    else:
-                        trace.append("step1_5_8:cross_decompose:INCONCLUSIVE")
-                except Exception as _xd_e:
-                    trace.append(f"step1_5_8:cross_decompose_error:{_xd_e}")
+                # 1. cross_decompose — 無効化（Wikipedia依存）
+                trace.append("step1_5_8:cross_decompose:DISABLED_NO_WIKI")
 
                 # 2. km_v2 (Atom-based, LLM-free)
                 trace.append(f"step1_5_9:debug:facts={len(_knowledge_facts)},choices={len(_choices) if _choices else 0}")
@@ -827,66 +759,23 @@ class VerantyxV6Enhanced:
                     except Exception as _km_e:
                         trace.append(f"step1_5_9:km_v2_error:{_km_e}")
 
-                # 3. atom_cross (Atom構造マッチング、LLMなし) — mcq_directの代替
+                # 3. atom_cross — 無効化（Wikipedia依存）
+                trace.append("step1_5_9_5:atom_cross:DISABLED_NO_WIKI")
+
+                # 4. cross_elimination (ARC cross構造移植 — 制約消去法、LLMフリー)
                 try:
-                    from executors.mcq_atom_cross_solver import solve_mcq_by_atom_cross
-                    _direct_result = solve_mcq_by_atom_cross(
-                        _stem if '_stem' in dir() else problem_text,
-                        _choices, _knowledge_facts, ir_dict
+                    from executors.mcq_cross_elimination import solve_mcq_by_cross_elimination
+                    _ce_result = solve_mcq_by_cross_elimination(
+                        problem_text, _choices, _knowledge_facts, ir_dict
                     )
-                    if _direct_result:
-                        _dir_ans, _dir_conf, _dir_method = _direct_result
-                        trace.append(f"step1_5_9_5:atom_cross_proposal:{_dir_method} label={_dir_ans} conf={_dir_conf:.2f}")
-
-                        # Cross矛盾検査: proposalが知識と矛盾しないか確認
-                        _dir_rejected = False
-                        if _crystal and hasattr(_crystal, 'relations') and _crystal.relations:
-                            try:
-                                from knowledge.crystal_to_cross import verify_with_cross  # noqa
-                                _mcq_cv = verify_with_cross(
-                                    ir_dict,
-                                    getattr(_crystal, 'fact_atoms', []),
-                                    _crystal.relations,
-                                    choices=_choices,
-                                )
-                                if _mcq_cv and _mcq_cv.status in ("proved", "verified"):
-                                    # Cross検証で別の選択肢が支持された場合
-                                    if _mcq_cv.answer and _mcq_cv.answer != _dir_ans:
-                                        trace.append(f"step1_5_9_5:cross_override:{_mcq_cv.answer}(was {_dir_ans})")
-                                        _dir_ans = _mcq_cv.answer
-                                        _dir_conf = max(_dir_conf, _mcq_cv.confidence)
-                                        _dir_method = f"cross_verified_{_dir_method}"
-                                    else:
-                                        trace.append(f"step1_5_9_5:cross_confirms:{_dir_ans}")
-                                        _dir_conf = min(_dir_conf * 1.3, 0.95)
-                                elif _mcq_cv and _mcq_cv.status == "contradicted":
-                                    trace.append(f"step1_5_9_5:cross_contradicts:{_dir_ans}→INCONCLUSIVE")
-                                    _dir_rejected = True
-                            except Exception as _mcv_e:
-                                trace.append(f"step1_5_9_5:cross_check_error:{_mcv_e}")
-
-                        if not _dir_rejected:
-                            _mcq_candidates.append((_dir_ans, _dir_conf, _dir_method))
-                        else:
-                            trace.append("step1_5_9_5:atom_cross:REJECTED_BY_CROSS")
+                    if _ce_result:
+                        _ce_ans, _ce_conf, _ce_method = _ce_result
+                        trace.append(f"step1_5_9_7:cross_elimination:{_ce_method} label={_ce_ans} conf={_ce_conf:.2f}")
+                        _mcq_candidates.append((_ce_ans, _ce_conf, _ce_method))
                     else:
-                        trace.append("step1_5_9_5:atom_cross:INCONCLUSIVE")
-                except Exception as _dir_e:
-                    trace.append(f"step1_5_9_5:atom_cross_error:{_dir_e}")
-
-                # 4. mcq_direct (Qwen 7B直接MCQ — 最終フォールバック)
-                if not _mcq_candidates or max(c for _, c, _ in _mcq_candidates) < 0.50:
-                    try:
-                        from executors.mcq_direct_solver import solve_mcq_directly
-                        _qwen_result = solve_mcq_directly(ir_dict, _choices, _knowledge_facts)
-                        if _qwen_result:
-                            _q_ans, _q_conf, _q_method = _qwen_result
-                            trace.append(f"step1_5_9_7:mcq_direct:{_q_method} label={_q_ans} conf={_q_conf:.2f}")
-                            _mcq_candidates.append((_q_ans, _q_conf, _q_method))
-                        else:
-                            trace.append("step1_5_9_7:mcq_direct:INCONCLUSIVE")
-                    except Exception as _q_e:
-                        trace.append(f"step1_5_9_7:mcq_direct_error:{_q_e}")
+                        trace.append("step1_5_9_7:cross_elimination:INCONCLUSIVE")
+                except Exception as _ce_e:
+                    trace.append(f"step1_5_9_7:cross_elimination_error:{_ce_e}")
 
                 # ─── Step 1.5.10-pre: MCQ候補から最高confidence選択 ───
                 if _mcq_candidates:

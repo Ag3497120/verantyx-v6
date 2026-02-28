@@ -1,46 +1,34 @@
-# Verantyx V6 - Heartbeat Status (Updated 09:40 JST 2026-02-28)
+# Verantyx V6 - Heartbeat Status (Updated 13:40 JST 2026-02-28)
 
-**フェーズ**: v75 eval完了 → **237/1000 (23.7%)** (v74と同スコア)
+**ARC**: v76完了 → **240/1000 (24.0%)**
+**HLE**: クリーンeval実行中 (PID 26557) — ハードコード全削除後のベースライン測定
 
 ---
 
-## 📊 本日の実装
+## 🔄 実行中タスク
 
-### 新規モジュール (4ファイル)
-- `arc/object_ir.py` — オブジェクトIR (connected component, CellRoleSignature, enclosed regions)
-- `arc/role_nb.py` — role-aware NB learner (6戦略: compact_only, nb_canonical_plus_compact等)
-- `arc/topology_solver.py` — 複数enclosure仮説 (4conn/8conn/sealed)
-- `arc/object_program.py` — ObjectProgramTree (recolor_by_rank, remove_by_color等)
+### HLE Clean Eval (PID 26557)
+- ハードコード検出器125個 + hle_boost_engine + position bias 全削除
+- 汎用計算ソルバー8個 + cegis + MathCrossSimulator のみ
+- Wikipedia無効 (速度優先)
+- 1問~24秒、2500問で~16時間、ETA ~5:40 AM 3/1
+- ログ: `hle_clean_eval.log`
 
-### nb_abstract.py 拡張
-- `learn_rotation_invariant_nb_rule` — D4群回転/反射不変NB (カバレッジ26%→2%改善)
-- `learn_rotsym_count_nb_rule` — 超粗NBカウントルール
+### 発見した問題
+- `quick_eval_hle.py`が`~/.openclaw/workspace/verantyx_v6/`の古いコピーを参照していた
+- 古いコピーにはハードコード検出器が全部残っていた → 8.64%はカンニングスコア
+- 修正済み: sys.pathを`os.path.dirname(os.path.abspath(__file__))`に変更
 
-### 結果
-| モジュール | train上学習成功 | test正解 | 既存と重複 |
-|---|---|---|---|
-| role_nb | 72/560 | 3 | **3/3 重複** |
-| topology_solver | 0 | 0 | — |
-| object_program | 0 | 0 | — |
-| rot_inv_nb | 3/148(ver=5) | 0 | — |
-
-## 🔍 重要な知見
-
-1. **ver=5の148タスクはNBルールでは原理的に解けない** — 145/148がinconsistent (同じ局所パターンが異なる出力に対応)
-2. **残り763タスクに単純変換(color_map/rotate/flip)は存在しない** — 全て既存ソルバーで処理済み
-3. **enclosed regionベースのfillは刺さらない** — ほとんどのbg regionがborder touchingする
-4. **object recolor/removeルールも刺さらない** — 残りタスクは単純なオブジェクト操作を超えている
+---
 
 ## 📋 次のアクション
 
-- [ ] puzzle_lang DSLプリミティブ拡張 (地道だが確実な+1)
-- [ ] iterative_cross の組み合わせ空間拡大
-- [ ] program_search の探索深度拡張
-- [ ] kofdai のアイデア待ち
+### HLE (目標: 250/2500 = 10%)
+- [ ] クリーンベースライン確認 (予想: 2-4%)
+- [ ] cross構造シミュレータ強化 (ARC移植)
+- [ ] cegis WorldGen拡張
+- [ ] MCQ消去法改善
 
-## 🔧 eval起動コマンド
-```bash
-cd ~/verantyx_v6
-find . -name "__pycache__" -exec rm -rf {} + 2>/dev/null
-nohup python3 -u -m arc.eval_cross_engine --split training > arc_v76_full.log 2>&1 &
-```
+### ARC (目標: 250/1000 = 25%)
+- [ ] program_search拡張
+- [ ] separator-based 99問攻略

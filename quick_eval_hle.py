@@ -12,7 +12,7 @@ from collections import Counter
 # (live SVD search は ~0.07s/問 = 2500問で約175s の遅延)
 os.environ.setdefault('DISABLE_CONCEPT_BOOST', '1')
 
-sys.path.insert(0, '/Users/motonishikoudai/.openclaw/workspace/verantyx_v6')
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from pipeline_enhanced import VerantyxV6Enhanced
 from core.answer_matcher import flexible_match
