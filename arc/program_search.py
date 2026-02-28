@@ -668,6 +668,37 @@ def upscale_2x(g, bg):
     """Upscale grid by 2x"""
     return np.repeat(np.repeat(g, 2, axis=0), 2, axis=1)
 
+def expand_2x2_corner(g, bg):
+    """2x2 kernel: each cell's color fills the diagonally opposite corner region"""
+    H, W = g.shape
+    mask = g != bg
+    rows, cols = np.where(mask)
+    if len(rows) != 4:
+        return g
+    r1, r2 = int(min(rows)), int(max(rows))
+    c1, c2 = int(min(cols)), int(max(cols))
+    if r2 - r1 != 1 or c2 - c1 != 1:
+        return g
+    tl, tr = int(g[r1, c1]), int(g[r1, c2])
+    bl, br = int(g[r2, c1]), int(g[r2, c2])
+    kh, kw = 2, 2
+    dt, db = r1, H - 1 - r2
+    dl, dr = c1, W - 1 - c2
+    out = g.copy()
+    fh, fw = min(dt, kh), min(dl, kw)
+    if fh > 0 and fw > 0:
+        out[r1 - fh:r1, c1 - fw:c1] = br
+    fh, fw = min(dt, kh), min(dr, kw)
+    if fh > 0 and fw > 0:
+        out[r1 - fh:r1, c2 + 1:c2 + 1 + fw] = bl
+    fh, fw = min(db, kh), min(dl, kw)
+    if fh > 0 and fw > 0:
+        out[r2 + 1:r2 + 1 + fh, c1 - fw:c1] = tr
+    fh, fw = min(db, kh), min(dr, kw)
+    if fh > 0 and fw > 0:
+        out[r2 + 1:r2 + 1 + fh, c2 + 1:c2 + 1 + fw] = tl
+    return out
+
 def l_ray_nearest2(g, bg):
     """Each non-bg cell extends lines toward its 2 nearest grid edges"""
     H, W = g.shape
@@ -845,6 +876,7 @@ SHAPE_CHANGE_OPS_NEW2 = [
 ]
 
 SAME_SHAPE_OPS_V77 = [
+    ('exp2x2', expand_2x2_corner),
     ('l_ray2', l_ray_nearest2),
     ('l_ray1', l_ray_nearest1),
     ('cross_ray', cross_ray_full),

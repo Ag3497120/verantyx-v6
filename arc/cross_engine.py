@@ -191,13 +191,14 @@ def _generate_cross_pieces(train_pairs: List[Tuple[Grid, Grid]]) -> List[CrossPi
     # === Module 1c: Ray Extension Pieces ===
     try:
         from arc.program_search import l_ray_nearest2, l_ray_nearest1, cross_ray_full, \
-            per_color_bbox_fill, connect_same_color_hv, _bg as _ps_bg
+            per_color_bbox_fill, connect_same_color_hv, expand_2x2_corner, _bg as _ps_bg
         for ray_name, ray_fn in [
             ('l_ray_nearest2', l_ray_nearest2),
             ('l_ray_nearest1', l_ray_nearest1),
             ('cross_ray_full', cross_ray_full),
             ('per_color_bbox_fill', per_color_bbox_fill),
             ('connect_same_color_hv', connect_same_color_hv),
+            ('expand_2x2_corner', expand_2x2_corner),
         ]:
             _rfn = ray_fn
             def _make_ray_piece(inp, fn=_rfn):
