@@ -1,0 +1,1073 @@
+
+# arc/abstract_nb_solver.py
+  learn_abstract_nb(train_pairs)  # Learn abstract neighborhood rule from train pairs
+  apply_abstract_nb(inp_g, rule)
+  generate_abstract_nb_pieces(train_pairs)
+
+# arc/advanced_detectors.py
+  detect_conditional_fill(inp, out)  # Detect rules like: if cell==X, change to Y; if neighbor==Z, change to W
+  apply_conditional_fill(atom, inp)  # Apply a conditional fill transform
+  detect_region_transforms(inp, out)  # Detect per-region operations: move, copy, transform individual regions
+  apply_region_transform(atom, inp)
+  detect_pattern_completion(inp, out)  # Detect symmetry completion: fill holes to make grid symmetric
+  apply_pattern_completion(atom, inp)
+  detect_count_based(inp, out)  # Detect transforms based on counting: color frequency, region size, etc.
+  apply_count_based(atom, inp)
+  detect_composite(inp, out)  # Detect multi-step transforms (applied last, lowest priority)
+  apply_composite(atom, inp)
+
+# arc/arc_cegis.py
+  class CEGISResult  # CEGIS の結果
+  class ARCCEGISLoop  # ARC用CEGISループ
+  solve_arc_task(task)  # ARC タスク（JSON形式）を解く。
+  solve(train_pairs, test_input)  # ARC問題を解く。
+
+# arc/beam_search.py
+  beam_search_solve(train_pairs, generate_pieces_fn, max_depth, beam_width, time_limit, min_improvement)  # Multi-arm beam search.
+  beam_search_with_residual_learners(train_pairs, generate_pieces_fn, max_depth, beam_width, time_limit)  # Enhanced beam search that also tries residual learners at each depth.
+  generate_with_residual(residual_pairs)
+
+# arc/block_ir.py
+  detect_block_grid(grid, bg)  # Detect if grid is a block grid with separators.
+  block_colors_to_grid(block_colors, block_h, block_w, sep_w, sep_color)  # Convert block color grid back to pixel grid.
+  blocks_to_grid(blocks, block_h, block_w, sep_w, sep_color)  # Convert block content grid back to pixel grid.
+  solve_at_block_level(train_pairs, test_inputs)  # Try to solve by detecting block grid and solving at block color level.
+
+# arc/brute_rule_solver.py
+  generate_brute_pieces(train_pairs)
+
+# arc/color_map_solver.py
+  learn_global_color_map(train_pairs)  # Each color in input maps to exactly one color in output
+  apply_global_color_map(inp_g, cmap)
+  learn_color_swap(train_pairs)  # Two specific colors are swapped
+  apply_color_swap(inp_g, rule)
+  learn_recolor_by_size(train_pairs)  # Each object gets a color based on its size rank
+  apply_recolor_by_size(inp_g, rule)
+  learn_minority_to_majority(train_pairs)  # Cells with rare colors get replaced by most common neighbor color
+  apply_minority_to_majority(inp_g, rule)
+  learn_fill_enclosed(train_pairs)  # Fill enclosed background regions with the color that surrounds them
+  apply_fill_enclosed(inp_g, rule)
+  generate_color_map_pieces(train_pairs)
+
+# arc/color_swap_solver.py
+  learn_color_swap_rule(train_pairs, bg)  # Learn which color swap rule applies
+  apply_color_swap_rule(inp, rule)  # Apply learned color swap rule
+  generate_color_swap_pieces(train_pairs)  # Generate CrossPiece objects for cross_engine integration
+
+# arc/concentric_fill_solver.py
+  generate_concentric_fill_pieces(train_pairs)  # Generate concentric/distance fill solver pieces.
+  compute_distances(grid, bg)
+  apply_fn(inp_grid)
+  border_dist(r, c, h, w)
+  apply_fn(inp_grid)
+  make_fill(ring_cols)
+  make_apply(ring_cols)
+  fill_rect(grid, r1, c1, r2, c2, bg)
+  apply_fn(inp_grid)
+
+# arc/concept_layer.py
+  class ConceptSignature  # タスクの概念的特徴ベクトル
+  compute_concept_signature(train_pairs)  # 訓練ペアからConceptSignatureを計算
+  class ModuleGate  # モジュールのゲート関数: 概念シグネチャからスコアを計算
+  class MoERouter  # Mixture of Experts Router: 概念スコアに基づいてモジュールを選択
+  class ConceptMiner  # 訓練ペアから新しい概念を発見する。
+  to_vector()  # 特徴ベクトルに変換
+  field_names()
+  score(sig)  # ゲートスコア = Σ(weight_i * feature_i)
+  should_activate(sig)
+  route(sig)  # 活性化するモジュール名をスコア降順で返す
+  route_with_scores(sig)  # スコア付きで返す
+  register(name, sig)  # 解けたタスクの概念を登録
+  find_similar(sig, top_k)  # 最も類似した既知概念を返す
+
+# arc/conditional.py
+  learn_conditional_color_rule(train_pairs)  # Learn: if cell has N neighbors of color X, change to color Y.
+  apply_conditional_color_rule(inp, rule)  # Apply conditional color rule
+  learn_region_property_rule(train_pairs)  # Learn: recolor objects based on their properties.
+  apply_region_property_rule(inp, rule)  # Apply region property-based recoloring
+  learn_object_sort_rule(train_pairs)  # Learn: output is objects sorted/arranged by some property
+
+# arc/conditional_transform.py
+  learn_fill_object_interior(train_pairs)  # Learn to fill hollow object interiors
+  apply_fill_object_interior(inp, params)  # Apply interior fill transform
+  learn_line_extension_from_objects(train_pairs)  # Learn to extend lines from objects in specific directions
+  apply_line_extension_from_objects(inp, params)  # Apply line extension from objects
+  learn_bg_to_nearby_color(train_pairs)  # Learn to color background cells based on nearby objects
+  apply_bg_to_nearby_color(inp, params)  # Apply background to color transform
+  learn_complete_boundaries(train_pairs)  # Learn to complete partial rectangles/shapes
+  apply_complete_boundaries(inp, params)  # Apply boundary completion
+  learn_move_objects_to_edge(train_pairs)  # Learn to move objects to grid edges based on position
+  apply_move_objects_to_edge(inp, params)  # Apply move inward from edge transform
+  learn_conditional_object_transform(train_pairs)  # Learn property→transform mapping for conditional object transforms
+  apply_conditional_object_transform(inp, params)  # Apply learned conditional object transform
+
+# arc/contextual_recolor_solver.py
+  generate_contextual_recolor_pieces(train_pairs)  # Generate pieces that recolor based on local context
+  apply_4nb_recolor(inp_raw, rules)
+  apply_8nb_recolor(inp_raw, rules)
+  apply_row_recolor(inp_raw, rules)
+  apply_col_recolor(inp_raw, rules)
+
+# arc/crop_extract_solver.py
+  learn_extract_nonbg(train_pairs)  # Output = bounding box of all non-bg cells
+  learn_extract_color_bbox(train_pairs)  # Output = bbox of cells with a specific color
+  learn_extract_by_size(train_pairs)  # Output = the smallest or largest connected component
+  learn_extract_unique(train_pairs)  # Find the object that is unique (different shape/color from others)
+  apply_extract_unique(inp_g, rule)
+  generate_crop_extract_pieces(train_pairs)
+
+# arc/cross2.py
+  grid_eq(a, b)
+  copy_grid(g)
+  bg_color(g)
+  grid_colors(g)
+  color_counts(g)
+  class Decomposition
+  class CrossDecomposer
+  class CrossTool
+  class CrossRouter
+  solve_cross2(train_pairs, test_inputs, timeout)
+  decompose_all(g)
+  apply(g, d)
+  rot90(g, d)
+  rot180(g, d)
+  rot270(g, d)
+  flip_h(g, d)
+  flip_v(g, d)
+  transp(g, d)
+  crop_largest(g, d)
+  crop_smallest(g, d)
+
+# arc/cross3d_geometry.py
+  class Cross3DArm  # One arm of a 3D cross structure
+  class Cross3DNode  # A 3D cross structure: center cube + up to 6 arms
+  class Cross3DGraph  # Connected graph of Cross3DNodes
+  grid_to_np(grid)  # Convert grid to numpy array
+  np_to_grid(arr)  # Convert numpy array to grid
+  decompose_grid_to_cross3d(grid, bg)  # Cut a 2D grid into 3D cross structures.
+  fit_cross_node_to_component(comp_mask, color, grid)  # Fit a Cross3DNode to a connected component
+  compute_convexity_profile(node, grid)  # For each face of the cross structure, compute the concave/convex pattern.
+  build_adjacency(graph, grid)  # Build adjacency edges between nodes that are spatially close
+  find_stamp_positions(graph)  # Find nodes where connections exist in multiple directions.
+  gravity_slide(graph, node_id, direction, grid_shape)  # Slide a node in the given direction until it collides.
+  extract_objects_by_convexity(graph, grid)  # Extract objects detected via convex/concave profiles.
+  apply_gravity_transform(inp_grid, direction)  # Apply gravity transformation: detect objects and slide them
+  apply_stamp_at_junctions(inp_grid, pattern)  # Stamp a pattern at junction positions
+  learn_gravity_direction(train_pairs)  # Learn gravity direction from training pairs
+  learn_stamp_pattern(train_pairs)  # Learn stamp pattern from training pairs
+  learn_object_extraction(train_pairs)  # Learn object extraction parameters
+  learn_simple_transforms(train_pairs)  # Learn simple transform variants using cross3d decomposition
+  generate_cross3d_geometry_pieces(train_pairs)  # Generate CrossPiece transformations using 3D cross geometry.
+  apply_gravity_fn(inp, direction)
+
+# arc/cross3d_probe.py
+  class ProbeResult  # Result of inserting a cross probe at a position
+  class ProbeMap  # Collection of probe results across a grid
+  class Cross3DProbe  # A 6-axis cross probe with configurable dimensions
+  probe(grid, center, arm_length, arm_width, bg)  # Insert a cross probe at center and measure in 4 planar directions.
+  scan_grid(grid, arm_length, arm_width, bg, stride)  # Scan entire grid with cross probes at every position (or with stride).
+  multi_scale_scan(grid, bg)  # Scan at multiple z-levels (scales).
+  measure_objects(grid, bg)  # Use probes to detect and measure objects.
+  faces_interlock(face_a, face_b)  # Check if two face profiles interlock (凹凸が噛み合う).
+  measure_gaps(grid, bg)  # Measure gaps (empty regions) between objects using probes.
+  count_probe_fits(grid, arm_length, arm_width, bg)  # Count how many times a cross probe of given size fits in the grid.
+  learn_transform_from_probes(train_pairs, bg)  # Compare probe measurements between input and output to learn transformation.
+  reach_grid(direction)  # Build a 2D grid of reach values for a given direction
+  hit_color_grid(direction)  # Build a 2D grid of hit colors for a given direction
+  z_level()
+
+# arc/cross_classifier.py
+  classify_task_cross(task_data)  # Classify a task by its cross-structural properties.
+  classify_all_unsolved(task_dir, solved_ids)  # Classify all unsolved tasks by cross type.
+
+# arc/cross_compose.py
+  analyze_diff(inp, out, bg)  # Decompose input→output diff into structural description
+  learn_spatial_condition(positions, inp, bg)  # Learn what spatial condition selects exactly these positions
+  apply_spatial_condition(condition, inp, bg)  # Return positions matching the spatial condition
+  learn_value_mapping(adds, inp, bg)  # Learn what determines the output color at added positions
+  apply_value_mapping(mapping, positions, inp, bg)  # Apply value mapping to selected positions
+  class CrossProgram  # A multi-step program defined by Cross-Structure decomposition
+  learn_cross_program(train_pairs)  # Learn a Cross-Structure multi-step program from training pairs.
+  apply(inp)
+
+# arc/cross_engine.py
+  class CrossPiece  # A piece in the Cross structure — an atomic transformation
+  class CrossSimulator  # Verify pieces against training constraints (small-world verification)
+  solve_cross_engine(train_pairs, test_inputs)  # Full Cross-Structure solver with puzzle reasoning.
+  apply(inp)
+  verify(piece, train_pairs)  # CEGIS: verify piece against ALL training pairs
+  partial_verify(piece, train_pairs)  # Partial match score (0.0 to 1.0) — for puzzle reasoning
+  fn(inp)
+
+# arc/cross_multiscale.py
+  class CrossBlock  # グリッド内の矩形領域をcross構造の1ブロックとして表現
+  class MultiScaleCross  # 多スケールCross構造
+  generate_multiscale_cross_pieces(train_pairs)  # 多スケールCross構造に基づく変換候補を生成
+  bottom()
+  right()
+  center()
+  contains(other)  # このブロックが他のブロックを完全に包含するか
+  overlaps(other)
+  hole_positions(bg)  # ブロック内の穴（bg色の矩形領域）を検出
+  probe_holes(bg)  # プローブ方式による穴検出 — cross構造交差認識
+  cross_descriptor(bg)  # 6軸Cross記述子: 図形をcross構造として正確にマッピング
+  denoise()  # ノイズ除去したグリッドを返す
+  find_hole_fillers()  # 6軸Cross記述子ベースの穴-filler マッチング
+  find_dot_to_cross_mapping()  # ドット（micro）の位置 → cross構造の空間配置を学習
+
+# arc/cross_parallel_engine.py
+  class CrossNode  # Cross構造の1ノード (中心 + 4方向腕)
+  class CrossLayer  # 同一サイズのcrossノードで構成される1層
+  class NestedCross  # 入れ子cross構造 — 大きいcrossの中に小さいcrossが入る
+  build_cross_layer(grid, size, bg)  # グリッド全体にcrossノードを配置して1層を構築
+  build_parallel_layers(grid, sizes, bg)  # 複数サイズの並列cross層を構築 (構想1)
+  class SpatialFeature  # 段層的に抽出された空間特徴
+  extract_hierarchical_features(grid, layers, bg)  # 画像認識的な階層特徴抽出 (構想2)
+  class CrossPattern  # 3×3ベースcrossパターン — 学習された変換ルール
+  learn_cross_based_rules(train_pairs, layers_per_pair, bg)  # 3×3ベースcrossパターンから変換ルールを学習 (構想3)
+  build_nested_crosses(grid, layers, bg, max_depth)  # 入れ子cross構造の構築 (構想4)
+  class Position3D  # crossに基づく3D座標
+  compute_3d_positions(grid, layers, bg)  # crossの接続構造から3D位置を計算 (構想5)
+  class FlowEdge  # フローグラフの辺
+  build_flow_graph(grid, layers, positions, bg)  # オブジェクト特性からcross層上にフローグラフを描画 (構想6)
+  learn_parallel_cross_rule(train_pairs, bg)  # 並列cross層を使った変換ルールの学習
+  apply_parallel_cross(inp, rule_set)  # CrossPiece用のapply関数
+  generate_parallel_cross_pieces(train_pairs)  # cross_engineに統合するためのCrossPiece生成
+  feature_vector()  # このノードの特徴ベクトル (ハッシュ可能)
+  get_node(r, c)
+
+# arc/cross_plus_solver.py
+  learn_cross_plus_rule(train_pairs)  # Learn cross/plus pattern rule from training examples.
+  apply_cross_plus_rule(inp, rule)  # Apply learned cross/plus pattern rule
+
+# arc/cross_probe_fill.py
+  generate_cross_probe_pieces(train_pairs)  # Generate CrossPiece candidates from cross probe fill strategies.
+  fn(inp)
+  fn(inp)
+  fn(inp)
+  fn(inp, _mode)
+  fn(inp, _mode)
+  fn(inp, _mode)
+  fn(inp, _mode)
+  fn(inp, _mode)
+
+# arc/cross_solver.py
+  class CellRule  # A rule that computes output[r][c] from input grid
+  class SynthesizedProgram  # A complete program = output shape + cell rule
+  generate_candidates(train_pairs)  # Generate candidate programs from training pairs.
+  class CompositeProgram  # Two-step pipeline: apply step1, then step2 to the result
+  class WholeGridProgram  # Program that operates on the whole grid (not cell-by-cell)
+  verify_whole_grid(prog, train_pairs)
+  verify_program(prog, train_pairs)  # CEGIS verification: does program produce correct output for ALL training pairs?
+  solve_cross(train_pairs, test_inputs)  # Solve ARC task using Cross-structure synthesis + CEGIS verification.
+  solve_task_cross(task_path)  # Solve a single ARC task file using Cross solver
+  apply(inp, r, c, out_h, out_w)  # Compute output value for cell (r,c). Returns None if rule doesn't apply.
+  apply(inp)  # Apply program to generate output grid
+  apply(inp)
+  apply(inp)
+
+# arc/cross_universe.py
+  class CrossNode  # 1セルのcross構造ノード。4方向のフロー状態を持つ。
+  class CrossLayer  # 1レベルのcross構造レイヤー。グリッド上の全セルにcross nodeを配置。
+  class CrossUniverse  # 多重cross構造の宇宙。各レベルが異なるスケールのcross構造。
+  learn_flow_rule(train_pairs)  # 訓練ペアからフロー伝播ルールを学習する。
+  apply_flow_rule(inp, rule)  # 学習したフロールールを適用する。
+  generate_cross_universe_pieces(train_pairs)  # CrossUniverse由来のCrossPieceを生成する。
+  propagate_color(max_steps)  # 色の伝播: 非bgセルから4方向にフローを送り、bgセルを埋める。
+  propagate_nearest(max_steps)  # 最近接伝播: 各bgセルに最も近い非bgセルの色を割り当てる。
+  depth()
+  observe(level)  # 指定レベルのcross構造を観察（現在の状態を返す）。
+  propagate(level, mode)  # 指定レベルでフロー伝播を実行。
+  set_barrier(level, barriers)  # 遮断を設定。barriers = [(row, col, direction), ...]
+  reconstruct(level, result)  # 上位レベルの結果をピクセルレベルに戻す。
+
+# arc/cross_universe_3d.py
+  class Object3D  # 立体cross構造上の1オブジェクト。2Dマスク + 3Dプロパティ。
+  class Panel3D  # 立体cross構造上の1パネル。separator分割された矩形領域。
+  class CrossUniverse3D  # 入力グリッドを立体cross構造にマッピングする。
+  learn_3d_cross_rule(train_pairs)  # 訓練ペアから立体cross構造ベースのルールを学習する。
+  apply_3d_cross_rule(inp, rule)  # 学習した立体crossルールを適用
+  apply_panel_compact(inp, bg)  # panel_compactの適用
+  apply_symmetrize_4fold(inp, bg)  # Complete 4-fold symmetry around center of non-bg region.
+  apply_invert_recolor(inp, bg, color_map)
+  apply_identity_n_objects(inp, bg)
+  apply_corner_assembly(inp, bg)
+  apply_color_count_upscale(inp)
+  apply_denoise_majority(inp, bg)
+  apply_odd_one_out(inp, bg)
+  apply_midpoint_cross(inp, bg, new_color)
+  generate_3d_cross_pieces(train_pairs)  # 立体cross構造由来のCrossPieceを生成する。
+  apply_pyramid_converge(inp, bg, c1, c2)  # Apply pyramid convergence: f(a,b) = flip(a) if a==b else b.
+  apply_diagonal_shadow_tile(inp, bg)  # Apply diagonal shadow tile: NxN → 3Nx3N.
+  apply_panel_binary_or(inp, bg)  # Apply panel binary OR: overlay all panels, last nonzero wins.
+  largest_object()  # 最大体積のオブジェクト
+  smallest_object()  # 最小体積のオブジェクト
+
+# arc/cross_world_model.py
+  class SimResult  # シミュレーション結果
+  class CrossWorldModel  # Cross Engine全体を世界モデルとして使う。
+  solve(train_pairs, test_inputs, timeout_s)
+  conv(grid)
+  fill_enclosed(g)
+  grow(g)
+  shrink(g)
+  extend_h(g)
+  extend_v(g)
+  crop(g)
+  rm_bg_rows(g)
+  rm_bg_cols(g)
+  keep_largest(g)
+  keep_smallest(g)
+  fill_bbox(g)
+  outline(g)
+  repl_minority(g)
+  mk_grav(direction)
+  mk_sym(s)
+  mk_up(sc)
+
+# arc/crystallization.py
+  class Crystal  # 結晶化された変換パターン
+  class CrystalStore  # 結晶ストア: 成功パターンの保存・検索
+  confidence()
+  add(crystal)  # 結晶を追加
+  find_matching(concept_features, top_k)  # 概念特徴が類似する結晶を検索
+  record_success(name)  # 成功を記録
+  record_failure(name)  # 失敗を記録
+
+# arc/diff_pattern_solver.py
+  generate_diff_pattern_pieces(train_pairs, bg)  # Generate CrossPiece candidates using diff-based pattern learning.
+  abstract_color(c)
+  apply_fn(inp_grid)
+
+# arc/enumerator.py
+  enumerate_depth1(train_pairs, time_limit)  # Try all single primitives.
+  enumerate_depth2(train_pairs, time_limit)  # Try all pairs of primitives (p1 → p2).
+  enumerate_depth3(train_pairs, time_limit)  # Try all triples of primitives (p1 → p2 → p3).
+  enumerate_solve(train_pairs, max_depth, time_limit)  # Main entry point: enumerate programs up to max_depth.
+  composed(inp, f1, f2)
+  composed(inp, f1, f2, f3)
+
+# arc/eval_arc.py
+  evaluate(data_dir, split, limit, verbose)
+
+# arc/eval_cross.py
+  evaluate(data_dir, split, limit)
+
+# arc/eval_cross_engine.py
+  solve_task_engine(task_path)  # Solve a single ARC task using the full Cross Engine
+  print_banner()
+  evaluate(data_dir, split, limit)
+
+# arc/extend_to_divider_solver.py
+  generate_extend_to_divider_pieces(train_pairs)  # Generate extend-to-divider solver pieces.
+  apply_all_dirs(inp_grid)
+  make_apply(d)
+  make_bbox_apply(d)
+  apply_fn(inp_grid)
+  apply_fn(inp_grid)
+
+# arc/extract_patch.py
+  learn_extract_rule(train_pairs)  # Learn a patch extraction rule from training pairs.
+  apply_extract_rule(inp, rule)  # Apply an extraction rule to get the output.
+
+# arc/extract_summary.py
+  learn_fixed_output_summary(train_pairs)  # Learn fixed-output summary transformation.
+  apply_fixed_output_summary(inp, params)  # Apply learned fixed-output summary transformation.
+
+# arc/fill_enclosed_solver.py
+  generate_fill_enclosed_pieces(train_pairs, bg)  # Generate CrossPiece candidates for enclosed-region filling tasks.
+  apply_fn(inp_grid)
+  apply_fn(inp_grid)
+  apply_fn(inp_grid)
+  fn(inp_grid)
+
+# arc/flood_fill.py
+  learn_flood_fill_region(train_pairs)  # Learn flood fill rule: fill enclosed bg regions with color from nearby/enclosed 
+  apply_flood_fill_region(inp, params)  # Apply learned flood fill rule
+
+# arc/flood_fill_solver.py
+  try_line_extend_to_wall(train_pairs, bg)  # Colored line segments extend to grid boundary or to another color.
+  try_enclosed_fill(train_pairs, bg)  # Fill enclosed regions: areas surrounded by non-bg cells get filled.
+  try_pattern_repair(train_pairs, bg)  # Repair damaged tiling patterns: find the tile period and fill holes.
+  generate_flood_fill_pieces(train_pairs)  # Generate flood fill transform pieces.
+
+# arc/gravity_solver.py
+  class GravObj  # A colored connected component in the grid.
+  extract_objects(grid, bg)  # Extract all colored connected components as GravObj.
+  match_objects(objs_in, objs_out)  # Match input objects to output objects by color + shape.
+  detect_movements(matches)  # For each matched pair, compute (obj, dr, dc).
+  slide_object(obj, dr, dc, obstacles, grid_shape)  # Slide object in direction (dr, dc) one step at a time until collision.
+  build_obstacle_mask(grid_shape, objects, exclude)  # Build a boolean mask of all object pixels except the excluded one.
+  try_uniform_gravity(train_pairs, bg)  # Try: all objects slide in the same direction until hitting wall.
+  try_diagonal_stack(train_pairs, bg)  # Try: objects slide diagonally and stack against each other.
+  try_static_anchor_gravity(train_pairs, bg)  # Try: some objects are static (walls/anchors), others slide toward them.
+  try_per_color_gravity(train_pairs, bg)  # Try: each color slides in a different direction.
+  generate_gravity_pieces(train_pairs)  # Generate gravity/slide transform pieces.
+  shifted(dr, dc, grid_shape)  # Return a new GravObj shifted by (dr, dc), or None if out of bounds.
+  shape_sig()  # Normalized shape signature (pixels shifted to origin).
+
+# arc/grid.py
+  class GridInfo  # Static analysis of a grid — Verantyx IR for ARC
+  parse_grid(raw)  # Ensure grid is well-formed
+  grid_shape(g)  # (height, width)
+  grid_colors(g)
+  grid_eq(a, b)
+  rotate_90(g)  # Rotate 90° clockwise
+  rotate_180(g)
+  rotate_270(g)
+  flip_h(g)  # Flip horizontally (left-right)
+  flip_v(g)  # Flip vertically (top-bottom)
+  transpose(g)
+  tile(g, repeat_h, repeat_w)  # Tile grid repeat_h × repeat_w
+  tile_with_flip(g, repeat_h, repeat_w)  # Tile with alternating row flips
+  tile_checkerboard(g, repeat_h, repeat_w)  # Tile with checkerboard flip pattern
+  recolor(g, color_map)  # Apply color mapping
+  mask_color(g, color)  # Keep only specified color, rest → 0
+  flood_fill_regions(g, ignore_bg)  # Find connected regions (4-connected) in grid
+  most_common_color(g)  # Most frequent color in grid
+  extract_subgrid(g, r1, c1, r2, c2)  # Extract subgrid [r1:r2+1, c1:c2+1]
+  place_subgrid(g, sub, r, c)  # Place subgrid at position (r, c), returns new grid
+
+# arc/grid_ir.py
+  class GridObject  # グリッド上の連結オブジェクト
+  class Symmetry  # 検出された対称性
+  class Pattern  # 検出されたパターン
+  class GridIR  # グリッドの内部表現 — Decomposerの出力
+  class GridDecomposer  # グリッドを構造分解してGridIRを生成する。
+  decompose_pair(input_grid, output_grid)  # 入力/出力ペアを分解して差分を分析する。
+  size()
+  width()
+  height()
+  centroid()
+  is_rectangular()
+  is_line()
+  is_single_pixel()
+  summary()
+  decompose(grid)  # グリッド(2D list) → GridIR
+
+# arc/grid_partition.py
+  detect_separators(g)  # Detect separator lines (full row/col of single non-bg color)
+  extract_panels(g, partition)  # Extract panels as 2D array of grids
+  reassemble(panels, partition)  # Reassemble panels back into a grid with separators
+  panel_nonbg_count(panel, bg)
+  panel_overlay(base, overlay, bg)  # Overlay non-bg cells of overlay onto base
+  panel_and(a, b, bg, fill)  # AND: keep cells where both are non-bg
+  panel_or(a, b, bg)  # OR: keep cells where either is non-bg
+  panel_xor(a, b, bg, fill)  # XOR: keep cells where exactly one is non-bg
+  learn_panel_transform(train_pairs)  # Learn a panel-based transformation rule.
+  apply_panel_transform(inp, rule)  # Apply learned panel transform
+
+# arc/grid_summarize.py
+  find_separator_lines(grid, bg)  # Find rows and columns that act as separators (all same non-bg color).
+  extract_blocks(grid, sep_rows, sep_cols)  # Extract sub-grids between separator lines.
+  learn_block_classifier(train_pairs)  # Learn a block-based grid-to-summary rule.
+  apply_block_classifier(rule, inp)  # Apply a learned block classifier rule.
+  learn_fold_rule(train_pairs)  # Learn grid folding/reduction rules.
+  apply_fold_rule(rule, inp)  # Apply a learned fold rule.
+  learn_count_summary(train_pairs)  # Learn count-based grid → Kx1 summary.
+  apply_count_summary(rule, inp)  # Apply a count-based summary rule.
+  count_fn(block)
+  mc_fn(block)
+  min_fn(block)
+  make_fn(t, l, h)
+  make_fn(col, l, h)
+  make_fn(t, l, h)
+  fn(block)
+  fn(block)
+  fn(block)
+
+# arc/grow_primitives.py
+  learn_grow_via_self_stamp(train_pairs)  # Learn: output = HxW grid of input-sized blocks, where each block at (r,c)
+  apply_grow_via_self_stamp(inp, params)  # Apply self-stamp growth
+  learn_grow_color_template(train_pairs)  # Learn: each input cell → KxK block with per-cell-position pattern.
+  apply_grow_color_template(inp, params)  # Apply position-based template growth
+  learn_grow_fixed_color_template(train_pairs)  # Learn: each color → fixed KxK block pattern (color-specific, not position-specif
+  apply_grow_fixed_color_template(inp, params)  # Apply color-based template growth
+
+# arc/line_connect.py
+  learn_l_connect(train_pairs)  # Learn L-shaped line connection between two non-bg cells.
+  apply_l_connect(rule, inp)  # Apply L-connect rule.
+  learn_cross_projection(train_pairs)  # Learn cross/line projection from non-bg cells.
+  apply_cross_projection(rule, inp)  # Apply cross projection rule.
+  learn_line_extension(train_pairs)  # Learn line extension: short line segments get extended to grid border.
+  apply_line_extension(rule, inp)  # Apply line extension rule.
+  learn_connect_objects(train_pairs)  # Learn connecting same-color objects with lines.
+  apply_connect_objects(rule, inp)  # Apply object connection rule.
+  path_obstacles(order_try)
+
+# arc/line_ray_primitives.py
+  learn_line_ray_from_objects(train_pairs)  # Learn: draw lines/rays from colored cells along rows/cols until hitting boundary
+  apply_line_ray_from_objects(inp, params)  # Apply line/ray extension
+  learn_fill_object_interior(train_pairs)  # Learn: fill interior (enclosed) regions of objects
+  apply_fill_object_interior(inp, params)  # Apply interior fill
+
+# arc/llm_deepseek.py
+  grid_to_text(grid)
+  text_to_grid(text)  # Parse text into a grid, robustly.
+  call_deepseek(messages, model, temperature, max_tokens, timeout)  # Call DeepSeek API.
+  solve_task_deepseek(train_pairs, test_inputs, model, n_attempts)  # Solve ARC task using DeepSeek direct grid generation.
+
+# arc/llm_direct.py
+  grid_to_text(grid)
+  text_to_grid(text)  # Parse text into a grid.
+  query_ollama_direct(prompt, model, timeout)  # Query Ollama for direct grid output.
+  solve_direct_llm(train_pairs, test_inputs, model, n_attempts)  # Ask LLM to directly generate test output.
+  solve_hybrid(train_pairs, test_inputs, model)  # Combined approach:
+
+# arc/llm_hypothesis.py
+  grid_to_text(grid, compact)  # Convert grid to compact text representation.
+  task_to_prompt(train_pairs, test_input)  # Format ARC task as a prompt for the LLM.
+  query_ollama(prompt, system, model, timeout)  # Query Ollama and return response text.
+  parse_hypothesis(response)  # Parse LLM response into structured hypothesis.
+  generate_hypothesis(train_pairs, test_input, model)  # Generate a transformation hypothesis for an ARC task.
+  hypothesis_to_pieces(hypothesis, train_pairs)  # Translate an LLM hypothesis into candidate CrossPieces.
+  solve_with_llm_hypothesis(train_pairs, test_inputs, model)  # LLM-guided solving:
+  find_json_objects(text)
+
+# arc/llm_router.py
+  grid_to_text(grid)
+  call_deepseek(messages, model, temperature, max_tokens, timeout)  # Call DeepSeek API.
+  classify_task(train_pairs, model)  # Classify an ARC task into Verantyx primitive categories.
+  route_to_phases(classification)  # Convert LLM classification to ordered list of Verantyx phases to try.
+  batch_classify(task_ids, data_dir, model, output_file)  # Batch classify multiple tasks and cache results.
+
+# arc/llm_solver.py
+  solve_with_llm(train_pairs, model, max_attempts)  # Try to solve a task using LLM-generated code.
+  generate_llm_pieces(train_pairs, model)  # Generate CrossPiece from LLM-solved task.
+  apply_fn(inp_grid)
+
+# arc/meta_cross.py
+  class ConceptSignature  # Describes what structural concepts are present in a task.
+  detect_concepts(inp, bg)  # Detect structural concepts in a grid.
+  class RoleAssignment  # Assigns roles to objects/colors in the input.
+  assign_roles(inp, bg, sig)  # Assign roles to colors/objects based on detected concepts.
+  generate_operation_trees(train_pairs, sig, roles)  # Generate operation trees based on concept + role analysis.
+  generate_meta_cross_pieces(train_pairs)  # Main entry: detect concepts → assign roles → generate operations.
+
+# arc/nb_abstract.py
+  learn_abstract_nb_rule(train_pairs, radius)  # Learn an abstract neighborhood rule from training pairs.
+  apply_abstract_nb_rule(inp, rule)  # Apply an abstract neighborhood rule to a grid
+  learn_structural_nb_rule(train_pairs, radius)  # Learn a neighborhood rule with structural abstraction for fallback.
+  apply_structural_nb_rule(inp, rule)  # Apply structural neighborhood rule with fallback
+  learn_cross_nb_rule(train_pairs, radius)  # Cross-structure neighborhood rule.
+  apply_cross_nb_rule(inp, rule)  # Apply cross-structure neighborhood rule
+  learn_count_based_rule(train_pairs)  # Learn a rule based on neighbor counts rather than exact patterns.
+  apply_count_based_rule(inp, rule)  # Apply a count-based neighborhood rule
+  learn_rotation_invariant_nb_rule(train_pairs, radius)  # Learn NB rule with rotation/flip invariance.
+  apply_rotation_invariant_nb_rule(inp, rule)  # Apply rotation-invariant NB rule.
+  learn_rotsym_count_nb_rule(train_pairs)  # Ultra-coarse NB rule: only uses counts of bg/self/other in 4-connected + 8-conne
+  apply_rotsym_count_nb_rule(inp, rule)  # Apply ultra-coarse rotation-symmetric count NB rule.
+
+# arc/nb_extended.py
+  learn_count_nb_rule(train_pairs)  # Learn a rule based on neighborhood counts.
+  apply_count_nb_rule(inp, rule)
+  learn_between_fill_rule(train_pairs)  # Learn: fill bg cells that are 'between' non-bg cells in same row/col.
+  apply_between_fill_rule(inp, rule)
+  learn_multipass_nb_rule(train_pairs, max_passes)  # Learn a simple NB rule applied multiple times until convergence.
+  apply_multipass_nb_rule(inp, rule)
+  learn_multipass_copy_rule(train_pairs, max_passes)  # Multi-pass rule where bg cells copy the color of adjacent non-bg cells.
+  apply_multipass_copy_rule(inp, rule)
+  learn_split_combine_rule(train_pairs)  # Learn: split grid into two equal halves, combine with XOR/OR/AND logic.
+  apply_split_combine_rule(inp, rule)
+  learn_panel_extract_unique(train_pairs)  # Grid divided by separator lines (any full-row/col color).
+  apply_panel_extract_unique(inp, rule)
+
+# arc/obj_correspondence.py
+  learn_object_program(train_pairs)  # Learn an object-level transformation program from training pairs.
+  apply_object_program(inp, rule)  # Apply an object-level transformation program.
+
+# arc/obj_transform.py
+  learn_obj_transform(train_pairs)  # Learn an object position/placement transform.
+  apply_obj_transform(inp, rule)  # Apply an object position/placement transform.
+
+# arc/object_dsl_solver.py
+  generate_object_dsl_pieces(train_pairs)  # Generate object-level transformation pieces
+  apply_size_recolor(inp_raw, sm, bg_val)
+  apply_fill_bbox(inp_raw, bg_val)
+  apply_remove_smallest(inp_raw, bg_val)
+  apply_remove_largest(inp_raw, bg_val)
+  apply_keep_most_color(inp_raw, bg_val)
+  apply_nb_recolor(inp_raw, nm, bg_val)
+  apply_pos_recolor(inp_raw, pm, bg_val, k)
+
+# arc/object_ir.py
+  class ArcObject  # Represents a connected component in an ARC grid.
+  class CellRole  # Role signature for a single cell in the grid.
+  class ObjectIR  # Complete object-level intermediate representation of an ARC grid.
+  build_object_ir(grid, bg, connectivity)  # Build ObjectIR from a grid.
+  get_role_signature(r, c)  # Get a hashable role signature for a cell.
+  get_compact_role(r, c)  # Get a more compact (coarser) role signature — better for generalization.
+  get_nb_plus_role(r, c, inp_grid)  # Get combined NB pattern + role signature.
+
+# arc/object_mover.py
+  class Obj  # A connected component (object) in the grid.
+  detect_objects(grid, bg)  # Detect connected components (4-connected, same color).
+  detect_objects_multicolor(grid, bg)  # Detect connected components (4-connected, any non-bg color).
+  try_gravity_objects(train_pairs)  # Try sliding all objects in one direction (gravity), with obstacle stopping.
+  try_slide_to_anchor(train_pairs)  # Try: some objects are static anchors, others slide toward them.
+  try_converge_point(train_pairs)  # Try: all objects move toward a specific point (center, corner, etc).
+  try_reflect_line(train_pairs)  # Try: objects reflect across a horizontal or vertical separator line.
+  try_move_to_contact(train_pairs)  # Try: each object slides until it touches another object (any direction per objec
+  try_per_object_gravity(train_pairs)  # Try: different objects get different gravity directions based on their position/
+  try_gravity_multicolor(train_pairs)  # Try gravity with multicolor objects (all non-bg cells as one connected component
+  try_slide_toward_anchor_mc(train_pairs)  # Try slide toward anchor with multicolor objects.
+  try_color_grouped_gravity(train_pairs)  # Try: each color group gets its own gravity direction.
+  try_wall_absorb(train_pairs)  # Cross mutual monitoring: objects slide toward same-color wall (edge row/col).
+  try_sort_objects(train_pairs)  # Try: objects are sorted (by color, size, etc.) and placed in order.
+  solve_object_movement(train_pairs, test_inputs)  # Try all object movement strategies. Returns test outputs if any strategy works.
+  size()
+  bbox()
+  center()
+  shape_key()  # Normalized shape (translated to origin).
+  dist_to_nearest_anchor(obj)
+
+# arc/object_program.py
+  generate_object_program_pieces(train_pairs, bg)  # Generate CrossPiece candidates from object-level programs.
+  make_recolor_fn(r_, bg_)
+  make_remove_fn(r_, bg_)
+
+# arc/objects.py
+  class ArcObject  # A connected region in an ARC grid
+  detect_objects(g, bg, multicolor)  # Detect connected objects in grid via flood fill
+  detect_objects_multicolor(g, bg)  # Detect multi-color connected objects
+  find_matching_objects(objs_in, objs_out)  # Match input objects to output objects by shape or position
+  object_transform_type(obj_in, obj_out, inp, out, bg)  # Detect what transform was applied to an object
+  move_object(g, obj, dr, dc, bg)  # Move an object by (dr, dc)
+  copy_object(g, obj, dr, dc)  # Copy an object to (dr, dc) offset
+  remove_object(g, obj, bg)  # Remove an object (fill with bg)
+  recolor_object(g, obj, new_color)  # Change object color
+  fill_object_bbox(g, obj, fill_color)  # Fill object's bounding box with a color
+  scale_object(g, obj, factor, bg)  # Scale an object by factor, keeping position
+  stamp_pattern(g, pattern, r0, c0, bg)  # Stamp a pattern grid onto g at position (r0, c0)
+  extract_pattern_at_dots(g, dot_color, pattern, bg)  # Place pattern at every occurrence of dot_color
+  size()
+  height()
+  width()
+  center()
+  shape()  # Relative coordinates (translation-invariant)
+  as_grid(bg)  # Extract object as a small grid
+  as_multicolor_grid(source, bg)  # Extract object bbox from source grid
+
+# arc/opus_simulator_pipeline.py
+  grid_eq(a, b)
+  grid_shape(g)
+  grid_colors(g)
+  to_list(obj)  # Convert numpy arrays or nested structures to plain lists
+  check_invariants(train_pairs, fn)  # Analyze structural properties of a transform function
+  score_candidate(invariants)  # Score a candidate based on invariant analysis
+  holdout_validate(fn, train_pairs)  # Leave-one-out cross validation on train examples
+  timeout_handler(signum, frame)
+  execute_code(code, grid, timeout_sec)  # Execute generated transform code safely
+  load_transform(code)  # Load transform function from code string
+  format_grid_visual(grid)  # Format grid as visual ASCII for better LLM understanding
+  format_task_prompt(train_pairs, test_input, strategy)  # Create prompt for Opus to generate transform code
+  call_opus(prompt, api_key, model)  # Call Anthropic API
+  extract_code(response)  # Extract Python code from LLM response
+  extract_grid(response)  # Extract grid from direct prediction response
+  solve_task(task_data, api_key, n_candidates, model)  # Full pipeline: Opus hypotheses → Simulator verification → Best prediction
+  evaluate(data_dir, split, api_key, limit, offset, n_candidates, model)
+
+# arc/panel_copy_solver.py
+  learn_panel_copy_rule(train_pairs, bg)  # Learn panel copy/propagation rule
+  apply_panel_copy_rule(inp, rule)  # Apply panel copy/propagation rule
+  generate_panel_copy_pieces(train_pairs)
+
+# arc/panel_extract_solver.py
+  generate_panel_extract_pieces(train_pairs)  # Generate panel-based solver pieces.
+  find_unique(panels)  # Find the panel that differs from the majority.
+  apply_fn(inp_grid)
+  or_overlay(panels, bg)
+  and_overlay(panels, bg)
+  xor_overlay(panels, bg)
+  intersection_overlay(panels, bg)
+  check_solid_panels(train_pairs)
+  make_apply(score_fn)
+  make_apply(op)
+  apply_fill_majority(inp_grid)
+  apply_fn(inp_grid)
+  apply_fn(inp_grid)
+
+# arc/panel_ops.py
+  split_into_panels(g, bg)  # Auto-detect panels via separators or equal partitions.
+  learn_panel_reduce(train_pairs)  # Learn panel split + reduction rule from training pairs.
+  apply_panel_reduce(inp, params)  # Apply learned panel reduce rule
+  learn_crop_to_objects(train_pairs)  # Learn: output is the bounding box of non-bg cells in input
+  apply_crop_to_objects(inp, params)
+  learn_extract_by_frame(train_pairs)  # Learn: find rectangular frame in input, extract contents
+  apply_extract_by_frame(inp, params)
+  learn_gravity(train_pairs)  # Learn gravity direction: cells fall in a direction until hitting obstacle
+  apply_gravity(inp, params)
+  learn_gravity_with_obstacles(train_pairs)  # Gravity where cells stop when hitting other non-bg cells
+  apply_gravity_with_obstacles(inp, params)
+  learn_symmetry_fill(train_pairs)  # Learn: complete a partially symmetric pattern
+  apply_symmetry_fill(inp, params)
+  learn_flood_fill_enclosed(train_pairs)  # Learn: flood fill enclosed regions with a specific color
+  panel_key(p)
+  n_colors(p)
+  n_filled(p)
+  n_filled(p)
+
+# arc/panel_solver.py
+  learn_panel_majority_fill(train_pairs)
+  learn_panel_logic(train_pairs)  # Two or more input panels combined with logic op → output panel
+  learn_panel_count_color(train_pairs)  # Each panel's output color = f(count of non-bg cells in panel)
+  learn_panel_position_rule(train_pairs)  # Learn mapping: (panel_row, panel_col) → transformation
+  learn_panel_pattern_map(train_pairs)  # Each panel's non-bg pattern (as binary mask) maps to a specific color output
+  generate_panel_pieces(train_pairs)
+
+# arc/pattern_atoms.py
+  class TransformAtom  # An atomic transformation detected between input→output
+  detect_transforms(inp, out)  # Detect all possible transform atoms between input and output grids.
+  find_common_transforms(train_pairs)  # Find transforms that appear in ALL training pairs
+
+# arc/pattern_tiling_solver.py
+  learn_pattern_tiling_rule(train_pairs)  # Learn if the task involves tiling/repeating patterns.
+  apply_vertical_stripe_tiling(inp, period)  # Apply vertical stripe pattern tiling.
+  apply_horizontal_stripe_tiling(inp, period)  # Apply horizontal stripe pattern tiling.
+  apply_object_tiling(inp)  # Detect objects and tile them across the grid.
+  generate_pattern_tiling_pieces(train_pairs)  # Generate CrossPiece candidates for pattern tiling.
+
+# arc/per_object.py
+  learn_per_object_recolor(train_pairs)  # Learn per-object recolor rule: objects keep position/shape, change color based o
+  apply_per_object_recolor(inp, params)  # Apply learned per-object recolor rule
+  learn_fill_object_bbox(train_pairs)  # Learn: fill each object's bounding box
+  apply_fill_object_bbox(inp, params)
+  learn_remove_objects(train_pairs)  # Learn which objects get removed (replaced with bg)
+  apply_remove_objects(inp, params)
+  learn_cross_projection(train_pairs)  # Learn: project lines from dots in 4 directions (cross pattern)
+  apply_cross_projection(inp, params)
+  learn_extract_object(train_pairs)  # Learn: output is a specific object extracted from input.
+  apply_extract_object(inp, params)
+  learn_mask_apply(train_pairs)  # Learn: split grid into regions, use one as mask for another.
+  apply_mask_apply(inp, params)
+  learn_holes_to_color(train_pairs)  # Learn holes→color mapping from training pairs.
+  apply_holes_to_color(inp, params)  # Apply holes→color recoloring.
+  learn_cluster_histogram(train_pairs)  # Learn cluster-count histogram rule: sort colors by n_clusters desc,
+  apply_cluster_histogram(inp, params)  # Apply cluster histogram transformation.
+  learn_recolor_by_nearest_object(train_pairs)  # Learn: each object is recolored to the color of its nearest other object.
+  apply_recolor_by_nearest_object(inp, params)  # Apply: recolor each object to its nearest other object's color.
+  learn_dynamic_tile(train_pairs)  # Learn dynamic tiling rule: tile(k,k) where k depends on input.
+  apply_dynamic_tile(inp, params)  # Apply dynamic tiling.
+
+# arc/per_object_stamp.py
+  learn_per_object_stamp(train_pairs)  # Learn a per-object stamp rule.
+  apply_per_object_stamp(inp, rule)  # Apply a per-object stamp rule to an input grid.
+
+# arc/periodic_fill_solver.py
+  generate_periodic_fill_pieces(train_pairs)  # Generate periodic fill solver pieces.
+  apply_fn(inp_grid)
+  apply_fn(inp_grid)
+  find_enclosed_regions(grid, bg)  # Find bg regions and whether they touch the border.
+  apply_enclosed_fill(inp_grid)
+  apply_enclosed_fill_v2(inp_grid)
+  apply_row_repeat(inp_grid)
+  make_apply(dirs)
+  make_apply(mode)
+  apply_fn(inp_grid)
+  apply_fn(inp_grid)
+
+# arc/primitives.py
+  remove_color(grid, color)  # Replace all cells of `color` with bg (most common color).
+  swap_colors(grid, a, b)  # Swap two colors.
+  recolor_all_nonbg(grid, new_color)  # Recolor all non-bg cells to new_color.
+  keep_only_color(grid, color)  # Keep only cells of `color`, replace rest with bg.
+  flip_horizontal(grid)
+  flip_vertical(grid)
+  rotate_90(grid)
+  rotate_180(grid)
+  rotate_270(grid)
+  transpose(grid)
+  fill_enclosed_regions(grid)  # Fill enclosed bg regions with the surrounding color.
+  remove_isolated_cells(grid)  # Remove cells with no same-color neighbors (noise removal).
+  remove_small_components(grid, min_size)  # Remove connected components smaller than min_size.
+  keep_largest_component(grid)  # Keep only the largest connected component.
+  draw_diagonals_from_dots(grid)  # From each non-bg cell, draw diagonal lines (X pattern).
+  draw_cross_from_dots(grid)  # From each non-bg cell, draw horizontal+vertical lines.
+  fill_between_h(grid)  # Fill gaps between same-color cells horizontally.
+  fill_between_v(grid)  # Fill gaps between same-color cells vertically.
+  outline_objects(grid)  # Draw border around each non-bg object (expand by 1 pixel).
+  erode_objects(grid)  # Remove border pixels of objects (shrink by 1 pixel).
+
+# arc/probe_gravity_solver.py
+  apply_corner_stack(inp_grid, corner, bg)
+  apply_uniform_gravity(inp_grid, direction, bg)
+  generate_probe_gravity_pieces(train_pairs)
+
+# arc/program_search.py
+  rot90(g, bg)
+  rot180(g, bg)
+  rot270(g, bg)
+  flip_h(g, bg)
+  flip_v(g, bg)
+  transpose(g, bg)
+  gravity_down(g, bg)
+  gravity_up(g, bg)
+  gravity_right(g, bg)
+  gravity_left(g, bg)
+  sort_rows_by_nonbg(g, bg)
+  sort_rows_by_nonbg_desc(g, bg)
+  sort_cols_by_nonbg(g, bg)
+  fill_enclosed(g, bg)  # Fill enclosed bg regions with surrounding color
+  remove_isolated(g, bg)  # Remove cells with no same-color neighbor
+  keep_largest_object(g, bg)  # Keep only the largest connected component
+  keep_smallest_object(g, bg)  # Keep only the smallest connected component
+  mirror_h_complete(g, bg)  # Mirror left half to right
+  mirror_v_complete(g, bg)  # Mirror top half to bottom
+  extend_lines_h(g, bg)  # Extend horizontal lines of non-bg to fill the row
+
+# arc/program_tree.py
+  class ProgramNode  # プログラム木のノード基底クラス
+  class ApplyNode  # 単一変換ノード
+  class SequenceNode  # 順次適用: children[0] → children[1] → ... → children[n]
+  class ConditionNode  # 条件分岐: if predicate(inp) then true_branch else false_branch
+  class LoopNode  # 収束まで繰り返し: while body changes grid, keep applying
+  class SelectBestNode  # 複数候補から訓練スコア最良を選択（ランタイム選択）
+  class ProgramTreeSynthesizer  # CEGIS-based synthesizer: 訓練ペアから ProgramTree を合成する。
+  apply(inp)
+  describe()
+  apply(inp)
+  describe()
+  apply(inp)
+  describe()
+  apply(inp)
+  describe()
+  apply(inp)
+  describe()
+  apply(inp)
+  describe()
+  synthesize()  # メインエントリ: ProgramTreeを合成
+
+# arc/proximity_recolor_solver.py
+  generate_proximity_recolor_pieces(train_pairs)  # Generate proximity-based recolor solver pieces.
+  apply_fn(inp_grid)
+  apply_fn(inp_grid)
+
+# arc/puzzle_lang.py
+  class CellSet  # セル座標の集合 + メタデータ
+  class Object  # 連結成分オブジェクト
+  class Region  # セパレータで区切られた矩形領域
+  select_objects(grid, bg, connectivity)  # 連結成分を抽出
+  select_objects_multicolor(grid, bg, connectivity)  # 多色オブジェクト: bg以外の隣接セルをまとめる
+  select_cells(grid, color)  # 特定色のセルを全て選択
+  select_regions(grid, bg)  # セパレータ色で区切られた領域を返す
+  op_fill(grid, cells, color)  # セル群を指定色で塗りつぶす
+  op_draw_line(grid, start, direction, color, length)  # 始点から方向に線を引く (length=-1で端まで)
+  op_connect(grid, p1, p2, color)  # 2点間を直線で接続 (水平/垂直/対角)
+  op_reflect_4fold(grid, obj, anchor, bg)  # オブジェクトをアンカー点を中心に4回対称反射
+  op_extend_line(grid, cells, color, bg)  # 水平ラインを端まで延長
+  op_flood_fill(grid, seeds, color, bg, barrier)  # シードセルからフラッドフィル
+  op_crop_bbox(grid, bg)  # 非bgセルのバウンディングボックスで切り出し
+  op_extract_region(grid, region)  # 領域を切り出す
+  pattern_cross_through_points(grid, bg)  # 2点を通る十字線を引き、囲まれた領域を塗りつぶす
+  pattern_reflect_around_anchor(grid, bg)  # オブジェクトをアンカー(異色)を中心に4回反射
+  pattern_fill_between_objects(grid, bg)  # オブジェクト間の空間を塗りつぶす
+  pattern_count_per_region(grid, bg, out_shape)  # 各領域の非bgセル数をカウントし、小さいグリッドに要約
+  pattern_draw_cross_and_fill(grid, bg)  # 2点を通る十字線 + 囲まれた矩形をfill
+
+# arc/r1_program_synth.py
+  grid_to_text(grid)
+  solve_with_r1_synth(train_pairs, test_inputs, n_attempts, temperature)  # Use R1 to synthesize a transform function, verify on train, apply to test.
+  solve_task_r1_program(task_path)  # Solve a single ARC task using R1 program synthesis.
+  handler(signum, frame)
+
+# arc/rect_boundary_solver.py
+  learn_rect_boundary_rule(train_pairs)  # Learn if the task draws rectangular boundaries between colored markers.
+  apply_rect_boundary_rule(inp, boundary_color)  # Apply rectangular boundary drawing:
+  generate_rect_boundary_pieces(train_pairs)  # Generate CrossPiece candidates for rectangular boundary drawing.
+
+# arc/residual_guided.py
+  analyze_residual(inp, out, bg)  # Analyze the structural difference between input and output.
+  generate_residual_guided_pieces(train_pairs)  # Generate pieces based on residual analysis of train pairs.
+
+# arc/residual_learner.py
+  learn_color_substitution(train_pairs)  # Learn: simple color replacement map (not 1:1 necessarily)
+  apply_color_substitution(inp, params)
+  learn_fill_between_same_color(train_pairs)  # Learn: fill gaps between same-color cells along rows, cols, or both.
+  apply_fill_between(inp, params)
+  learn_project_rows_or_cols(train_pairs)  # Learn: project non-bg cells across entire row or column.
+  apply_project(inp, params)
+  learn_cross_from_dots(train_pairs)  # Learn: draw cross lines (full row + col) from each non-bg cell.
+  apply_cross_dots(inp, params)
+  learn_expand_objects(train_pairs)  # Learn: expand each non-bg object to fill its bounding box.
+  apply_expand_objects(inp, params)
+  learn_mirror_across_axis(train_pairs)  # Learn: mirror non-bg content across a separator line.
+  apply_mirror_across_axis(inp, params)
+  learn_residual(train_pairs)  # Try all residual learners, return first that works.
+  learn_cross_with_marker(train_pairs)  # Learn: draw cross from dots, replace dot with marker color, add diag color.
+  apply_cross_with_marker(inp, params)
+  learn_multicross_intersection(train_pairs)  # Multiple dots → cross from each in own color; intersections → color 2 (or learne
+  apply_multicross_intersection(inp, params)
+
+# arc/role_nb.py
+  learn_role_nb_rule(train_pairs)  # Try multiple abstraction levels and return the best (most general) consistent on
+  apply_role_nb_rule(inp, rule)  # Apply role-aware NB rule.
+  generate_role_nb_pieces(train_pairs)  # Generate CrossPiece candidates from role-aware NB rules.
+
+# arc/rotating_cross.py
+  rotate_piece(piece_fn, orient_name, fwd, inv)  # Wrap a piece function to work in a rotated frame.
+  detect_objects(grid, bg)  # Detect connected components as objects with bbox and properties
+  move_to_wall(grid, obj, bg, direction)  # Move object to the wall in given direction
+  move_toward_nearest(grid, obj, objects, bg)  # Move object toward its nearest neighbor until touching
+  move_all_gravity(grid, bg, direction)  # Move ALL objects in one direction (gravity)
+  make_conditional_piece(condition_fn, action_a_fn, action_b_fn, name)  # Create a CrossPiece that applies action_a if condition, else action_b.
+  cond_has_color(color)
+  cond_size_gt(threshold)
+  cond_size_lt(threshold)
+  cond_is_largest(grid, obj, bg)
+  cond_is_smallest(grid, obj, bg)
+  cond_single_color(grid, obj, bg)
+  cond_multi_color(grid, obj, bg)
+  cond_touches_border(grid, obj, bg)
+  cond_is_square(grid, obj, bg)
+  learn_gravity_with_collision(train_pairs)  # Learn gravity direction with proper object collision handling
+  learn_rotated_rules(train_pairs)  # Try existing rules in all 8 orientations
+  generate_rotating_cross_pieces(train_pairs)  # Main entry: generate pieces using rotating cross structure
+  rotated_fn(inp_g)
+  apply(inp_g)
+
+# arc/scale_solver.py
+  learn_simple_upscale(train_pairs)  # Output = each cell of input expanded to NxN block
+  learn_upscale_with_pattern(train_pairs)  # Output = each cell mapped to an NxN pattern block based on cell value
+  learn_upscale_with_border(train_pairs)  # Output = each cell expanded to NxN with border of different color
+  generate_scale_pieces(train_pairs)
+
+# arc/smart_crop_solver.py
+  learn_crop_most_colorful(train_pairs)
+  learn_crop_largest(train_pairs)
+  learn_crop_smallest(train_pairs)
+  learn_crop_unique_color_obj(train_pairs)
+  learn_crop_nonbg_bbox(train_pairs)
+  learn_crop_tile_unit(train_pairs)  # If output size divides input, extract the repeating unit
+  learn_crop_by_position(train_pairs)  # Crop to object at specific relative position (top-left, center, etc.)
+  generate_smart_crop_pieces(train_pairs)
+
+# arc/solver.py
+  class ArcTask
+  class SolveResult
+  load_task(path)  # Load ARC task from JSON file
+  apply_transform(atom, inp)  # Apply a detected transform atom to a new input grid
+  verify_transform(atom, train_pairs)  # Verify transform produces correct output for ALL training examples
+  solve_task(task)  # Solve an ARC-AGI-2 task.
+
+# arc/stripe_fill_solver.py
+  learn_stripe_fill_rule(train_pairs)  # Learn stripe fill rule from training examples.
+  apply_stripe_fill_rule(inp, rule)  # Apply learned stripe fill rule
+
+# arc/symmetry_solver.py
+  try_symmetry_repair(train_pairs, bg)  # Try: output is input with symmetry enforced/repaired.
+  try_make_symmetric(train_pairs, bg)  # Try: output is a fully symmetric version derived from input.
+  try_complete_pattern(train_pairs, bg)  # Try: input has a partial pattern, output completes it.
+  generate_symmetry_pieces(train_pairs)  # Generate symmetry-based transform pieces.
+
+# arc/tile_transform.py
+  rotate90(g)
+  flip_h(g)
+  flip_v(g)
+  learn_tile_transform(train_pairs)  # Learn a tile+transform rule.
+  apply_tile_transform(inp, rule)  # Apply tile+transform rule.
+
+# arc/tiny_diff_solver.py
+  learn_color_stamp(train_pairs)  # Learn: for each color, what pattern is added around it?
+  apply_color_stamp(inp_g, stamp_rules)  # Apply stamp rules: for each colored cell, add the pattern
+  learn_intersection_fill(train_pairs)  # Learn: fill intersection points of row/col projections
+  apply_intersection_fill(inp_g, rule)  # Fill cells at row/col intersections of colored objects
+  learn_neighbor_recolor(train_pairs)  # Learn: recolor cells based on their neighbor count/pattern
+  apply_neighbor_recolor(inp_g, rule)
+  learn_diagonal_stamp(train_pairs)  # Learn: specific colors get diagonal(X) or cross(+) stamps
+  apply_diagonal_stamp(inp_g, color_patterns)
+  learn_projection_fill(train_pairs)  # Fill bg cells that are in the same row AND col as non-bg cells of specific color
+  apply_projection_fill(inp_g, rule)
+  generate_tiny_diff_pieces(train_pairs)  # Generate pieces for tiny-diff tasks
+
+# arc/topology_solver.py
+  generate_topology_pieces(train_pairs, bg)  # Generate CrossPiece candidates using topology-based fill rules.
+  make_apply(rfn_, frule_, fc_, bg_)
+  apply_fn(inp_grid)
+
+# arc/transforms.py
+  class Transform  # 原子的変換
+  rotate_90(grid)
+  rotate_180(grid)
+  rotate_270(grid)
+  flip_horizontal(grid)
+  flip_vertical(grid)
+  transpose(grid)
+  flip_diagonal(grid)  # 副対角線で反転
+  make_color_swap(a, b)
+  make_color_map(mapping)
+  make_fill_color(color)
+  make_replace_color(old, new)
+  make_scale(factor)
+  make_crop(r1, c1, r2, c2)
+  make_pad(top, bottom, left, right, color)
+  make_tile(rows, cols)
+  make_repeat_pattern_h(target_width)  # 水平方向にパターンを繰り返して target_width にする
+  make_repeat_pattern_v(target_height)  # 垂直方向にパターンを繰り返して target_height にする
+  make_gravity(direction, bg)  # オブジェクトを指定方向に落とす (gravity)
+  fill_enclosed(grid, bg, fill_color)  # 背景色で囲まれた領域を塗りつぶす
+
+# arc/world_commands.py
+  rot90(g)
+  rot180(g)
+  rot270(g)
+  flip_h(g)
+  flip_v(g)
+  transpose(g)
+  anti_transpose(g)
+  rot90_ccw(g)
+  gravity_down_per_color(g)  # 各色を独立に下に落とす
+  gravity_to_wall(g)  # 各オブジェクトを最寄りの壁（非bg）まで移動
+  compact_down(g)  # bg行を除去して下詰め
+  compact_up(g)
+  compact_left(g)
+  compact_right(g)
+  fill_enclosed(g)
+  fill_enclosed_with_color(g, color)
+  fill_row_gaps(g)  # 行内の非bgセル間のbgを塗る
+  fill_col_gaps(g)  # 列内の非bgセル間のbgを塗る
+  fill_between_same_color(g)  # 同色オブジェクト間を塗る（行列両方）
+  flood_from_edges(g)  # 辺から非bgまで特定色で塗る
+
+# arc/world_model.py
+  class SimCommand  # 1つのシミュレーションコマンド（世界の法則1つ）
+  class SimProgram  # コマンドの列（パイプライン）
+  build_physics_commands()  # 世界の物理法則をシミュレーションコマンドとして定義。
+  build_parametric_commands(train_pairs)  # trainから学習するパラメトリックコマンド。
+  class WorldModel  # 世界モデル = 物理法則コマンド群 + プログラム合成 + シミュレーション検証
+  apply(grid)
+  flood_fill_enclosed(g)
+  sym_h(g)
+  sym_v(g)
+  sym_4fold(g)
+  sym_diag(g)  # 対角対称 (r,c) ↔ (c,r)
+  crop_content(g)
+  extend_h(g)
+  extend_v(g)
+  extend_full_h(g)  # 行の非bg色が1種なら行全体をその色にする
+  extend_full_v(g)
+  remove_largest(g)
+  remove_smallest(g)
+  keep_largest(g)
+  keep_smallest(g)
+
+# arc/world_priors.py
+  class WorldPiece  # A candidate transformation with a name and apply function.
+  generate_world_prior_pieces(train_pairs)  # Generate all world-prior candidates for a task.
+  apply(grid)
+  learn_color_map(pairs)  # Learn a consistent color → color mapping.
+  learn_role_map(pairs)  # bg→bg', fg_i→fg_i' by frequency rank.
+  flood_fill_enclosed(g)
+  sort_rows(g)
+  sort_cols(g)
+  replace_minority_color(g)
+  extend_lines_h(g)
+  extend_lines_v(g)
+  keep_largest_obj(g)
+  keep_smallest_obj(g)
+  fill_object_bboxes(g)
+  connect_objects(g)
+  crop_to_content(g)
+  crop_largest(g)
+  crop_smallest(g)
+  rotate_each_obj(g)
+  flip_each_obj_h(g)

@@ -2128,6 +2128,14 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
+    # === Phase 1.62: World Priors (universal transforms) ===
+    try:
+        from arc.world_priors import generate_world_prior_pieces
+        _wp_pieces = generate_world_prior_pieces(train_pairs)
+        all_pieces.extend(_wp_pieces)
+    except Exception:
+        pass
+
     # === Phase 1.61b: Topology-based Fill Solver ===
     try:
         from arc.topology_solver import generate_topology_pieces
@@ -2204,7 +2212,80 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
     except Exception:
         pass
 
-    # === Phase 1.5x: Verify all_pieces from probe/gravity/flood/symmetry solvers ===
+    # === Phase 1.63: World Commands (216コマンド — crossの道具セット) ===
+    try:
+        from arc.world_commands import build_all_commands as _build_wc
+        _wc_cmds = _build_wc(train_pairs)
+        _wc_inp0, _wc_out0 = train_pairs[0]
+        
+        # D1: 単体コマンド (train[0]フィルタ)
+        for _wn, _wfn in _wc_cmds:
+            try:
+                _wr = _wfn(_wc_inp0)
+                if _wr is not None and grid_eq(_wr, _wc_out0):
+                    all_pieces.append(CrossPiece(f'wc:{_wn}', _wfn))
+            except Exception:
+                pass
+        
+        # Converge (サイズ爆発ガード付き)
+        _wc_no_conv = {"repeat_2x2","repeat_3x3","up_2x","up_3x","up_h2x","up_v2x",
+                       "tile_2x2","tile_3x3","tile_2x1","tile_1x2","down_2x","down_3x",
+                       "stack_v","stack_h","sort_objs_size"}
+        for _wn, _wfn in _wc_cmds:
+            if _wn in _wc_no_conv:
+                continue
+            try:
+                _cur = _wc_inp0
+                for _ in range(20):
+                    _nxt = _wfn(_cur)
+                    if _nxt is None or (isinstance(_nxt, list) and len(_nxt) > 100):
+                        _cur = None; break
+                    if grid_eq(_cur, _nxt): break
+                    _cur = _nxt
+                if _cur is not None and grid_eq(_cur, _wc_out0):
+                    def _mk_wconv(f):
+                        def _c(g):
+                            x = g
+                            for _ in range(20):
+                                try: n = f(x)
+                                except: return None
+                                if n is None or (isinstance(n, list) and len(n) > 100): return None
+                                if grid_eq(x, n): return x
+                                x = n
+                            return x
+                        return _c
+                    all_pieces.append(CrossPiece(f'wc_conv:{_wn}', _mk_wconv(_wfn)))
+            except Exception:
+                pass
+        
+        # D2: 2コマンド合成 (active上位20 x 全コマンド、train[0]フィルタ)
+        _wc_active = []
+        for _wi, (_wn, _wfn) in enumerate(_wc_cmds):
+            try:
+                _mid = _wfn(_wc_inp0)
+                if _mid is not None and isinstance(_mid, list) and len(_mid) > 0 and not grid_eq(_mid, _wc_inp0):
+                    _wc_active.append((_wn, _wfn, _mid))
+            except:
+                pass
+        _wc_active = _wc_active[:20]
+        
+        for _wn1, _wf1, _wmid in _wc_active:
+            for _wn2, _wf2 in _wc_cmds:
+                try:
+                    _wr2 = _wf2(_wmid)
+                    if _wr2 is not None and grid_eq(_wr2, _wc_out0):
+                        def _mk_wpipe(a, b):
+                            def _p(g):
+                                m = a(g)
+                                return b(m) if m is not None else None
+                            return _p
+                        all_pieces.append(CrossPiece(f'wc2:{_wn1}->{_wn2}', _mk_wpipe(_wf1, _wf2)))
+                except:
+                    pass
+    except Exception:
+        pass
+
+        # === Phase 1.5x: Verify all_pieces from probe/gravity/flood/symmetry solvers ===
     for _ap in all_pieces:
         try:
             if CrossSimulator.verify(_ap, train_pairs):
@@ -2384,7 +2465,60 @@ def solve_cross_engine(train_pairs: List[Tuple[Grid, Grid]],
                         if len(verified) >= 2:
                             break
     
-    # === Phase 3b: cross_piece → cross_piece composition ===
+    # === Phase 3a: cross_piece × world_commands 合成 ===
+    # 既存crossピースの中間出力にworld commandsを適用
+    if len(verified) < 2 and cross_pieces:
+        try:
+            from arc.world_commands import build_all_commands as _build_wc3a
+            _wc3a = _build_wc3a(train_pairs)
+            _inp0_3a, _out0_3a = train_pairs[0]
+            
+            # cross_piece → world_command
+            for _cp in cross_pieces[:15]:  # 上位15ピース
+                if len(verified) >= 2: break
+                _mid0 = _cp.apply(_inp0_3a)
+                if _mid0 is None: continue
+                for _wn, _wfn in _wc3a:
+                    try:
+                        _wr = _wfn(_mid0)
+                        if _wr is None or not grid_eq(_wr, _out0_3a): continue
+                    except: continue
+                    def _mk_cw(cp_ref, wfn_ref):
+                        def _fn(g):
+                            m = cp_ref.apply(g)
+                            return wfn_ref(m) if m is not None else None
+                        return _fn
+                    _cw_piece = CrossPiece(f'cx_wc:{_cp.name}+{_wn}', _mk_cw(_cp, _wfn))
+                    if CrossSimulator.verify(_cw_piece, train_pairs):
+                        verified.append(('cross', _cw_piece))
+                        if len(verified) >= 2: break
+            
+            # world_command → cross_piece
+            if len(verified) < 2:
+                for _wn, _wfn in _wc3a[:30]:  # 上位30コマンド
+                    if len(verified) >= 2: break
+                    try:
+                        _wmid = _wfn(_inp0_3a)
+                        if _wmid is None: continue
+                    except: continue
+                    for _cp in cross_pieces[:15]:
+                        try:
+                            _wr = _cp.apply(_wmid)
+                            if _wr is None or not grid_eq(_wr, _out0_3a): continue
+                        except: continue
+                        def _mk_wc(wfn_ref, cp_ref):
+                            def _fn(g):
+                                m = wfn_ref(g)
+                                return cp_ref.apply(m) if m is not None else None
+                            return _fn
+                        _wc_piece = CrossPiece(f'wc_cx:{_wn}+{_cp.name}', _mk_wc(_wfn, _cp))
+                        if CrossSimulator.verify(_wc_piece, train_pairs):
+                            verified.append(('cross', _wc_piece))
+                            if len(verified) >= 2: break
+        except Exception:
+            pass
+
+        # === Phase 3b: cross_piece → cross_piece composition ===
     if len(verified) < 2 and cross_pieces:
         # Pre-compute intermediate results for first train pair to prune
         inp0, out0 = train_pairs[0]

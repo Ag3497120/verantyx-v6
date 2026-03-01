@@ -1305,6 +1305,74 @@ class WholeGridProgram:
                 result.append(row)
             return result
         
+        elif self.name == 'abstract_nb_rule':
+            # Color-independent neighborhood rule using abstract encoding
+            abs_mapping = self.params['abs_mapping']
+            radius = self.params.get('radius', 1)
+            
+            from collections import Counter as _Ctr
+            color_counts = _Ctr()
+            for row in inp:
+                color_counts.update(row)
+            inp_bg = color_counts.most_common(1)[0][0]
+            non_bg_sorted = sorted(set(color_counts.keys()) - {inp_bg},
+                                   key=lambda x: (-color_counts[x], x))
+            fwd = {inp_bg: 0}
+            for i_c, col in enumerate(non_bg_sorted):
+                fwd[col] = i_c + 1
+            inv = {v: k for k, v in fwd.items()}
+            
+            result = []
+            for r in range(h):
+                row = []
+                for c in range(w):
+                    nb = []
+                    for dr in range(-radius, radius + 1):
+                        for dc in range(-radius, radius + 1):
+                            nr, nc = r + dr, c + dc
+                            if 0 <= nr < h and 0 <= nc < w:
+                                nb.append(fwd.get(inp[nr][nc], inp[nr][nc]))
+                            else:
+                                nb.append(-1)
+                    key = tuple(nb)
+                    if key in abs_mapping:
+                        row.append(inv.get(abs_mapping[key], abs_mapping[key]))
+                    else:
+                        matched = None
+                        oob = [idx2 for idx2, v in enumerate(key) if v == -1]
+                        if oob:
+                            for mkey, mval in abs_mapping.items():
+                                ok2 = True
+                                for idx2, (a2, b2) in enumerate(zip(key, mkey)):
+                                    if idx2 in oob:
+                                        continue
+                                    if a2 != b2:
+                                        ok2 = False
+                                        break
+                                if ok2:
+                                    if matched is None:
+                                        matched = mval
+                                    elif matched != mval:
+                                        matched = None
+                                        break
+                        if matched is not None:
+                            row.append(inv.get(matched, matched))
+                        else:
+                            best_dist = 9999
+                            best_val = fwd.get(inp[r][c], 0)
+                            for mkey, mval in abs_mapping.items():
+                                dist = sum(1 for a2, b2 in zip(key, mkey)
+                                           if a2 != b2 and a2 != -1 and b2 != -1)
+                                if dist < best_dist:
+                                    best_dist = dist
+                                    best_val = mval
+                            if best_dist <= 2:
+                                row.append(inv.get(best_val, best_val))
+                            else:
+                                row.append(inp[r][c])
+                result.append(row)
+            return result
+        
         elif self.name == 'replace_color':
             fr, to = self.params['from'], self.params['to']
             return [[to if c == fr else c for c in row] for row in inp]
@@ -1643,6 +1711,63 @@ def _generate_whole_grid_candidates(train_pairs: List[Tuple[Grid, Grid]]) -> Lis
                 if has_change:
                     candidates.append(WholeGridProgram('neighborhood_rule',
                         {'mapping': mapping, 'radius': radius}))
+                    break
+        
+        # === Abstract Neighborhood Rule (color-independent) ===
+        for radius in [1, 2]:
+            from collections import Counter as _AbsCtr
+            abs_mapping = {}
+            abs_consistent = True
+            for inp_t, out_t in train_pairs:
+                ht, wt = grid_shape(inp_t)
+                # Build per-example color map: bg=0, others by frequency
+                _cc = _AbsCtr()
+                for _row in inp_t:
+                    _cc.update(_row)
+                _bg = _cc.most_common(1)[0][0]
+                _non_bg = sorted(set(_cc.keys()) - {_bg}, key=lambda x: (-_cc[x], x))
+                _fwd_in = {_bg: 0}
+                for _i, _col in enumerate(_non_bg):
+                    _fwd_in[_col] = _i + 1
+                
+                # Same for output
+                _oc = _AbsCtr()
+                for _row in out_t:
+                    _oc.update(_row)
+                _obg = _oc.most_common(1)[0][0]
+                _non_obg = sorted(set(_oc.keys()) - {_obg}, key=lambda x: (-_oc[x], x))
+                _fwd_out = {_obg: 0}
+                for _i, _col in enumerate(_non_obg):
+                    _fwd_out[_col] = _i + 1
+                
+                for r in range(ht):
+                    for c in range(wt):
+                        nb = []
+                        for dr in range(-radius, radius + 1):
+                            for dc in range(-radius, radius + 1):
+                                nr, nc = r + dr, c + dc
+                                if 0 <= nr < ht and 0 <= nc < wt:
+                                    nb.append(_fwd_in.get(inp_t[nr][nc], inp_t[nr][nc]))
+                                else:
+                                    nb.append(-1)
+                        key = tuple(nb)
+                        abs_out = _fwd_out.get(out_t[r][c], out_t[r][c])
+                        if key in abs_mapping:
+                            if abs_mapping[key] != abs_out:
+                                abs_consistent = False
+                                break
+                        else:
+                            abs_mapping[key] = abs_out
+                    if not abs_consistent:
+                        break
+                if not abs_consistent:
+                    break
+            
+            if abs_consistent and abs_mapping:
+                has_change = any(not grid_eq(i, o) for i, o in train_pairs[:1])
+                if has_change:
+                    candidates.append(WholeGridProgram('abstract_nb_rule',
+                        {'abs_mapping': abs_mapping, 'radius': radius}))
                     break
     
     # Rotations (for square grids or transposed sizes)

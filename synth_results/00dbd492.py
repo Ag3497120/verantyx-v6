@@ -1,57 +1,60 @@
 def transform(grid):
-    import numpy as np
-    from scipy.ndimage import label
+    """
+    Find rectangles bounded by 2s, fill interiors with colors based on area.
+    Small area (~12) -> 8, medium (~25-30) -> 4, large (>40) -> 3
+    """
+    import copy
+    from collections import deque
     
-    g = np.array(grid)
-    rows, cols = g.shape
-    result = g.copy()
+    result = copy.deepcopy(grid)
+    rows = len(grid)
+    cols = len(grid[0])
     
-    # Interior size (width=height) -> fill color
-    # Derived from training: 3->8, 5->4, 7->3
-    color_map = {3: 8, 5: 4, 7: 3, 1: 9, 9: 2, 11: 1}
+    visited = [[False] * cols for _ in range(rows)]
     
-    # Find all rectangular frames made of 2s
-    # Look for rows/cols that form a border
-    visited = np.zeros_like(g, dtype=bool)
+    def bfs_region(start_r, start_c):
+        """Find a region of 0s."""
+        queue = deque([(start_r, start_c)])
+        visited[start_r][start_c] = True
+        cells = [(start_r, start_c)]
+        
+        while queue:
+            r, c = queue.popleft()
+            for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < rows and 0 <= nc < cols:
+                    if not visited[nr][nc] and grid[nr][nc] == 0:
+                        visited[nr][nc] = True
+                        queue.append((nr, nc))
+                        cells.append((nr, nc))
+        
+        return cells
     
-    for r in range(rows):
-        for c in range(cols):
-            if g[r,c] == 2 and not visited[r,c]:
-                # Try to find rectangular frame starting here
-                # Find the extent of this frame
-                # Look right for top edge
-                if r+1 < rows and c+1 < cols:
-                    # Find bottom-right corner
-                    # Find right edge: scan right from (r,c)
-                    c2 = c
-                    while c2+1 < cols and g[r, c2+1] == 2:
-                        c2 += 1
-                    # Find bottom edge: scan down from (r,c)
-                    r2 = r
-                    while r2+1 < rows and g[r2+1, c] == 2:
-                        r2 += 1
+    def is_enclosed(region):
+        """Check if region doesn't touch grid edges."""
+        for r, c in region:
+            if r == 0 or r == rows - 1 or c == 0 or c == cols - 1:
+                return False
+        return True
+    
+    # Find all enclosed regions
+    for i in range(rows):
+        for j in range(cols):
+            if grid[i][j] == 0 and not visited[i][j]:
+                region = bfs_region(i, j)
+                
+                if is_enclosed(region):
+                    area = len(region)
                     
-                    if r2 > r and c2 > c:
-                        # Check if it's a valid rectangle border
-                        # Top and bottom rows all 2
-                        top_ok = all(g[r,c:c2+1] == 2)
-                        bot_ok = all(g[r2,c:c2+1] == 2)
-                        left_ok = all(g[r:r2+1,c] == 2)
-                        right_ok = all(g[r:r2+1,c2] == 2)
-                        
-                        if top_ok and bot_ok and left_ok and right_ok:
-                            # Interior region
-                            inner_h = r2 - r - 1
-                            inner_w = c2 - c - 1
-                            dim = min(inner_h, inner_w)
-                            fill = color_map.get(dim, dim)
-                            
-                            # Fill interior (keep any 2s inside as 2)
-                            for ir in range(r+1, r2):
-                                for ic in range(c+1, c2):
-                                    if g[ir, ic] == 0:
-                                        result[ir, ic] = fill
-                            
-                            visited[r:r2+1, c:c2+1] = True
+                    # Determine color based on area
+                    if area > 40:
+                        color = 3
+                    elif area > 20:
+                        color = 4
+                    else:
+                        color = 8
+                    
+                    for r, c in region:
+                        result[r][c] = color
     
-    return result.tolist()
+    return result

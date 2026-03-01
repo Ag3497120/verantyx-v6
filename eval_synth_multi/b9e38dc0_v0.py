@@ -1,49 +1,48 @@
 import numpy as np
-from collections import Counter
+from collections import Counter, deque
 
 def transform(grid):
     g = np.array(grid)
     H, W = g.shape
     out = g.copy()
     
-    # Find background (most common color)
-    counts = Counter(g.flatten())
-    bg = counts.most_common(1)[0][0]
+    bg = Counter(g.flatten().tolist()).most_common(1)[0][0]
     
-    # Find non-bg colors
-    non_bg_colors = {}
+    # Find non-bg colors and their cell counts
+    colors = {}
     for r in range(H):
         for c in range(W):
-            if g[r,c] != bg:
-                v = int(g[r,c])
-                if v not in non_bg_colors:
-                    non_bg_colors[v] = []
-                non_bg_colors[v].append((r,c))
+            v = int(g[r, c])
+            if v != bg:
+                if v not in colors:
+                    colors[v] = []
+                colors[v].append((r, c))
     
-    # Fill color = the color with fewest cells that's not the main boundary
-    # Actually: find the single cell (or small cluster) that acts as seed
-    # Sort by count; the one with fewest is likely the fill seed
-    sorted_colors = sorted(non_bg_colors.items(), key=lambda x: len(x[1]))
+    if not colors:
+        return out.tolist()
     
-    # The fill color is the one with fewest cells
-    fill_color = sorted_colors[0][0]
-    seeds = sorted_colors[0][1]
+    # Fill color = the color with fewest cells (excluding the boundary)
+    sorted_colors = sorted(colors.keys(), key=lambda c: len(colors[c]))
+    fill_color = sorted_colors[0]
+    fill_cells = colors[fill_color]
     
-    # Flood fill from seeds, replacing bg with fill_color
-    # Walls = all non-bg, non-fill cells
-    visited = set()
-    queue = list(seeds)
-    for s in queue:
-        visited.add(s)
+    # Flood fill from fill cells, treating all non-bg non-fill cells as walls
+    visited = np.zeros((H, W), dtype=bool)
+    queue = deque()
+    
+    for r, c in fill_cells:
+        visited[r, c] = True
+        queue.append((r, c))
     
     while queue:
-        r, c = queue.pop(0)
-        out[r, c] = fill_color
+        r, c = queue.popleft()
         for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
-            nr, nc = r+dr, c+dc
-            if 0 <= nr < H and 0 <= nc < W and (nr, nc) not in visited:
-                if g[nr, nc] == bg:
-                    visited.add((nr, nc))
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < H and 0 <= nc < W and not visited[nr, nc]:
+                v = int(g[nr, nc])
+                if v == bg:
+                    visited[nr, nc] = True
+                    out[nr, nc] = fill_color
                     queue.append((nr, nc))
     
     return out.tolist()

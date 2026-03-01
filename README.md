@@ -18,6 +18,39 @@ The LLM never outputs grids directly — it writes code. The code is executed an
 
 ---
 
+
+## 🧪 Evaluation Set: Verantyx as External Brain for DeepSeek V3
+
+### The Experiment
+
+**DeepSeek V3 alone: 0/120 (0.0%)** on the ARC-AGI2 evaluation set.
+
+**DeepSeek V3 + Verantyx analysis: 1/120 so far** (25/120 processed, still running).
+
+Verantyx's 170K+ lines of ARC-solving code serve as an **external brain** for DeepSeek V3 — performing structural pre-analysis on each task before the LLM writes code:
+
+```
+Task → Verantyx Analysis → DeepSeek V3 + Analysis → Code → Verify → ✅/❌
+```
+
+### What Verantyx Provides (per task)
+
+- **Structural decomposition**: Objects (4-conn, 8-conn, mono-color), panels (H/V separators), enclosed regions, color masks
+- **Size & color analysis**: Input/output dimensions, color changes, background shifts
+- **Cell-level diff analysis**: Exactly which cells change and how (for same-size tasks)
+- **Partial-match scan**: 216 world commands tested against train[0], ranked by cell match %
+- **Color mapping detection**: Systematic color substitution patterns
+
+### First Solved Task: `1818057f`
+
+Solved on attempt #2 (temperature 0.0). DeepSeek V3 alone cannot solve this — Verantyx's structural analysis (object detection, panel decomposition, color analysis) gave V3 the context needed to write the correct `transform()` function.
+
+### Key Insight
+
+The LLM is not stronger. **The analysis makes it smarter.** Verantyx doesn't generate answers — it generates understanding. The 170K lines of hand-crafted ARC knowledge become a lens through which the LLM sees the problem.
+
+---
+
 ## How It Works
 
 ### Stage 1: Cross Engine (24.4% — No LLM)
