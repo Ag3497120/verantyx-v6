@@ -132,6 +132,41 @@ These represent the hardest tasks where Claude Sonnet 4.5 could not find a corre
 - 26/120 tasks attempted, 11 test-correct (42.3% generalization rate)
 - Generalization = train-verified code also passes unseen test inputs
 
+---
+
+## 🚨 Help Us Break 85% — Support This Project
+
+Verantyx has reached **84.0%** on ARC-AGI2 — built by a solo student in Kyoto, Japan.
+
+But the final push to **85% (the Grand Prize threshold)** requires resources I can't sustain alone:
+
+- **Full 400-task evaluation runs** on the private test set cost significant API credits
+- **Upgrading to Claude Opus 4** for harder tasks multiplies costs by 10-15x
+- **Multi-attempt voting** (3-5 independent solutions per task) further increases compute needs
+- Each full experiment costs more than a month of student living expenses
+
+### What I'm asking for
+
+I've been honest about the method — no tricks, no leaderboard gaming. Just a student who figured out that **LLMs writing verifiable code** beats hand-crafted pattern matching. The architecture works. The bottleneck is compute.
+
+If you believe in this approach — *"challenging brute-force compute with the efficiency of intelligence"* — I'd deeply appreciate any support:
+
+- **API credits** (Anthropic, OpenAI, or other providers)
+- **Compute sponsorship** (cloud credits, GPU time)
+- **Financial support** to keep the project running
+
+**🎯 Goal**: Break 85% on ARC-AGI2 and compete for the [ARC Prize](https://arcprize.org/)
+
+| Support | Link |
+|---|---|
+| ☕ Buy Me a Coffee | [buymeacoffee.com/kofdai](https://buymeacoffee.com/kofdai) |
+| 💖 GitHub Sponsors | [github.com/sponsors/kofdai](https://github.com/sponsors/kofdai) |
+| 📩 Contact | [DM on X/Twitter](https://x.com/Koffdai) |
+
+*A student in Kyoto trying to reach the top of the world. Lend me the last piece of the puzzle.*
+
+---
+
 ## Repository
 
 - **GitHub**: https://github.com/Ag3497120/verantyx-v6
