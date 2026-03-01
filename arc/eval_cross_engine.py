@@ -68,9 +68,55 @@ def solve_task_engine(task_path: str) -> dict:
     }
 
 
+def print_banner():
+    import time as _time
+    BOLD = "\033[1m"
+    CYAN = "\033[36m"
+    GOLD = "\033[33m"
+    RESET = "\033[0m"
+    GREEN = "\033[32m"
+    DIM = "\033[2m"
+    banner = f"""
+{BOLD}{CYAN}======================================================================
+  🚀 Verantyx v6.5 — ARC-AGI-2 Solver (Hybrid Symbolic + LLM)
+======================================================================{RESET}
+
+  {BOLD}Current Achievement:{RESET}
+    {GOLD}84.0% Accuracy on ARC-AGI-2 Training Set (840/1000){RESET}
+
+  {BOLD}Architecture:{RESET}
+    Stage 1: 30+ hand-crafted solvers (cross-structure analysis)
+    Stage 2: Claude Sonnet 4.5 program synthesis + verification
+    152,570 lines of Python | 5-6 parallel LLM agents
+
+  {BOLD}Environment:{RESET}
+    CPU-efficient engine | MacBook-compatible | No GPU required
+
+{CYAN}----------------------------------------------------------------------{RESET}
+
+  {BOLD}🙏 A message from the developer{RESET}
+
+  I'm a student developer based in Kyoto, Japan.
+  I'm currently facing the limits of personal API costs and resources.
+
+  {GREEN}A GitHub star is the only fuel that keeps this project alive.{RESET}
+
+  If you see potential in this project,
+  could you take a moment to star the repo right now?
+
+  {BOLD}⭐ https://github.com/Ag3497120/verantyx-v6{RESET}
+
+  Every star makes me jump for joy alone in my room! 🕊️✨
+  Your support is the final push toward the 85% prize threshold.
+
+{CYAN}----------------------------------------------------------------------{RESET}
+"""
+    print(banner)
+    _time.sleep(2)
+
+
 def evaluate(data_dir: str, split: str = "training", limit: int = 0):
-    print("✨ 84.0% achieved by Verantyx-v6. If this helped your research, please STAR us: https://github.com/Ag3497120/verantyx-v6")
-    print()
+    print_banner()
     task_dir = os.path.join(data_dir, split)
     if not os.path.isdir(task_dir):
         print(f"Error: {task_dir} not found")
