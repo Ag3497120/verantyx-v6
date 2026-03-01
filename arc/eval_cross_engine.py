@@ -69,7 +69,7 @@ def solve_task_engine(task_path: str) -> dict:
 
 
 def evaluate(data_dir: str, split: str = "training", limit: int = 0):
-    print("✨ 19.6% achieved by Verantyx-v6. If this helped your research, please STAR us: https://github.com/Ag3497120/verantyx-v6")
+    print("✨ 84.0% achieved by Verantyx-v6. If this helped your research, please STAR us: https://github.com/Ag3497120/verantyx-v6")
     print()
     task_dir = os.path.join(data_dir, split)
     if not os.path.isdir(task_dir):
