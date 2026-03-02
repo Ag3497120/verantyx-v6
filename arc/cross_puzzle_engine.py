@@ -635,6 +635,251 @@ def prim_recolor_by_object_property(grid, property_name, value_map):
     return g.tolist() if changed else None
 
 
+
+def prim_select_panel(grid, criterion='monochrome'):
+    """パネル構造から条件に合うパネルを選択して出力"""
+    g = np.array(grid); h, w = g.shape; bg = _bg(g)
+    
+    # セパレータ検出
+    h_seps = []; v_seps = []
+    for r in range(h):
+        vals = [int(v) for v in g[r]]
+        if len(set(vals)) == 1 and vals[0] != bg:
+            h_seps.append(r)
+    for c in range(w):
+        vals = [int(g[r,c]) for r in range(h)]
+        if len(set(vals)) == 1 and vals[0] != bg:
+            v_seps.append(c)
+    if not h_seps and not v_seps: return None
+    
+    rows = [-1] + sorted(h_seps) + [h]
+    cols = [-1] + sorted(v_seps) + [w]
+    panels = []
+    for i in range(len(rows)-1):
+        for j in range(len(cols)-1):
+            r1, r2 = rows[i]+1, rows[i+1]
+            c1, c2 = cols[j]+1, cols[j+1]
+            if r2 > r1 and c2 > c1:
+                panels.append(g[r1:r2, c1:c2].copy())
+    if len(panels) < 2: return None
+    
+    if criterion == 'monochrome':
+        mono = [(i,p) for i,p in enumerate(panels) 
+                if len(set(int(v) for v in p.flatten()) - {bg}) == 1]
+        if len(mono) == 1: return mono[0][1].tolist()
+    
+    elif criterion == 'most_non_bg':
+        best = max(panels, key=lambda p: np.sum(p != bg))
+        return best.tolist()
+    
+    elif criterion == 'least_non_bg':
+        candidates = [p for p in panels if np.any(p != bg)]
+        if candidates:
+            best = min(candidates, key=lambda p: int(np.sum(p != bg)))
+            return best.tolist()
+    
+    elif criterion == 'most_colors':
+        best = max(panels, key=lambda p: len(set(int(v) for v in p.flatten()) - {bg}))
+        return best.tolist()
+    
+    elif criterion == 'least_colors':
+        candidates = [p for p in panels if np.any(p != bg)]
+        if candidates:
+            best = min(candidates, key=lambda p: len(set(int(v) for v in p.flatten()) - {bg}))
+            return best.tolist()
+    
+    elif criterion == 'unique':
+        # 他のパネルと異なる唯一のパネル
+        sigs = [frozenset((r,c,int(p[r,c])) for r in range(p.shape[0]) 
+                for c in range(p.shape[1]) if p[r,c]!=bg) for p in panels]
+        from collections import Counter as C2
+        sig_counts = C2(sigs)
+        unique = [(i,p) for i,(p,s) in enumerate(zip(panels,sigs)) if sig_counts[s]==1]
+        if len(unique) == 1: return unique[0][1].tolist()
+    
+    return None
+
+
+def prim_panel_logic_op(grid, op='xor'):
+    """パネル間の論理演算（2パネル限定）"""
+    g = np.array(grid); h, w = g.shape; bg = _bg(g)
+    h_seps = []; v_seps = []
+    for r in range(h):
+        vals = [int(v) for v in g[r]]
+        if len(set(vals)) == 1 and vals[0] != bg:
+            h_seps.append(r)
+    for c in range(w):
+        vals = [int(g[r,c]) for r in range(h)]
+        if len(set(vals)) == 1 and vals[0] != bg:
+            v_seps.append(c)
+    if not h_seps and not v_seps: return None
+    
+    rows = [-1] + sorted(h_seps) + [h]
+    cols = [-1] + sorted(v_seps) + [w]
+    panels = []
+    for i in range(len(rows)-1):
+        for j in range(len(cols)-1):
+            r1, r2 = rows[i]+1, rows[i+1]
+            c1, c2 = cols[j]+1, cols[j+1]
+            if r2 > r1 and c2 > c1:
+                panels.append(g[r1:r2, c1:c2].copy())
+    
+    if len(panels) != 2: return None
+    pa, pb = panels[0], panels[1]
+    if pa.shape != pb.shape: return None
+    ph, pw = pa.shape
+    
+    result = np.full((ph, pw), bg, dtype=int)
+    for r in range(ph):
+        for c in range(pw):
+            a_on = pa[r,c] != bg
+            b_on = pb[r,c] != bg
+            if op == 'xor':
+                if a_on and not b_on: result[r,c] = pa[r,c]
+                elif b_on and not a_on: result[r,c] = pb[r,c]
+            elif op == 'or_a':
+                if a_on: result[r,c] = pa[r,c]
+                elif b_on: result[r,c] = pb[r,c]
+            elif op == 'or_b':
+                if b_on: result[r,c] = pb[r,c]
+                elif a_on: result[r,c] = pa[r,c]
+            elif op == 'and_a':
+                if a_on and b_on: result[r,c] = pa[r,c]
+            elif op == 'and_b':
+                if a_on and b_on: result[r,c] = pb[r,c]
+            elif op == 'diff_a':
+                if a_on and not b_on: result[r,c] = pa[r,c]
+            elif op == 'diff_b':
+                if b_on and not a_on: result[r,c] = pb[r,c]
+    return result.tolist()
+
+
+
+def prim_conditional_recolor(grid, color_map, condition_type, condition_params):
+    """条件付きrecolor: 条件を満たすセルのみ色マップを適用"""
+    g = np.array(grid).copy()
+    h, w = g.shape
+    bg = _bg(g)
+    changed = False
+    
+    if condition_type == 'in_object_with_color':
+        # 特定色を含むオブジェクト内のセルのみ
+        target_color = condition_params['color']
+        objs = _objs(g, bg)
+        target_cells = set()
+        for obj in objs:
+            if target_color in obj['colors']:
+                target_cells.update(obj['cells'])
+        for r in range(h):
+            for c in range(w):
+                if (r,c) in target_cells and int(g[r,c]) in color_map:
+                    g[r,c] = color_map[int(g[r,c])]; changed = True
+    
+    elif condition_type == 'distance_to_color':
+        # 特定色からの距離が閾値以内
+        target_color = condition_params['color']
+        max_dist = condition_params['max_dist']
+        t_pos = [(r,c) for r in range(h) for c in range(w) if g[r,c]==target_color]
+        for r in range(h):
+            for c in range(w):
+                if int(g[r,c]) in color_map:
+                    min_d = min((abs(r-tr)+abs(c-tc) for tr,tc in t_pos), default=999)
+                    if min_d <= max_dist:
+                        g[r,c] = color_map[int(g[r,c])]; changed = True
+    
+    elif condition_type == 'same_row_or_col_as_color':
+        target_color = condition_params['color']
+        t_rows = set(r for r in range(h) for c in range(w) if g[r,c]==target_color)
+        t_cols = set(c for r in range(h) for c in range(w) if g[r,c]==target_color)
+        for r in range(h):
+            for c in range(w):
+                if int(g[r,c]) in color_map and (r in t_rows or c in t_cols):
+                    g[r,c] = color_map[int(g[r,c])]; changed = True
+    
+    elif condition_type == 'component_size':
+        min_size = condition_params.get('min', 0)
+        max_size = condition_params.get('max', 99999)
+        for old_c in color_map:
+            mask = (g == old_c).astype(int)
+            labeled, n = scipy_label(mask, structure=np.ones((3,3), dtype=int))
+            for i in range(1, n+1):
+                cells = list(zip(*np.where(labeled == i)))
+                if min_size <= len(cells) <= max_size:
+                    for r,c in cells:
+                        g[r,c] = color_map[old_c]; changed = True
+    
+    elif condition_type == 'not_on_border':
+        for r in range(1, h-1):
+            for c in range(1, w-1):
+                if int(g[r,c]) in color_map:
+                    g[r,c] = color_map[int(g[r,c])]; changed = True
+    
+    return g.tolist() if changed else None
+
+
+def auto_discover_condition(train_pairs):
+    """trainペアから色マップと最適な条件を自動発見"""
+    # 色マップ抽出
+    color_map = {}
+    for inp, out in train_pairs:
+        ga, go = np.array(inp), np.array(out)
+        if ga.shape != go.shape: return None, None, None
+        for r in range(ga.shape[0]):
+            for c in range(ga.shape[1]):
+                if ga[r,c] != go[r,c]:
+                    ov, nv = int(ga[r,c]), int(go[r,c])
+                    if ov in color_map and color_map[ov] != nv:
+                        return None, None, None
+                    color_map[ov] = nv
+    
+    if not color_map: return None, None, None
+    
+    bg = _bg(np.array(train_pairs[0][0]))
+    
+    # 各条件タイプを試す
+    conditions_to_try = []
+    
+    # in_object_with_color: 各非BG色を試す
+    all_colors = set()
+    for inp, _ in train_pairs:
+        ga = np.array(inp)
+        all_colors.update(int(v) for v in ga.flatten())
+    all_colors -= {bg}
+    all_colors -= set(color_map.keys())
+    
+    for tc in all_colors:
+        conditions_to_try.append(('in_object_with_color', {'color': tc}))
+    
+    # distance_to_color
+    for tc in all_colors:
+        for md in [1, 2, 3, 5]:
+            conditions_to_try.append(('distance_to_color', {'color': tc, 'max_dist': md}))
+    
+    # same_row_or_col
+    for tc in all_colors:
+        conditions_to_try.append(('same_row_or_col_as_color', {'color': tc}))
+    
+    # component_size
+    for sz in [1, 2, 3, 4, 5]:
+        conditions_to_try.append(('component_size', {'min': sz, 'max': sz}))
+        conditions_to_try.append(('component_size', {'min': 1, 'max': sz}))
+    
+    conditions_to_try.append(('not_on_border', {}))
+    
+    # 各条件をtrain全体で検証
+    for ctype, cparams in conditions_to_try:
+        ok = True
+        for inp, out in train_pairs:
+            pred = prim_conditional_recolor(inp, color_map, ctype, cparams)
+            if pred is None or not grid_eq(np.array(pred), np.array(out)):
+                ok = False
+                break
+        if ok:
+            return color_map, ctype, cparams
+    
+    return None, None, None
+
+
 # ══════════════════════════════════════════════════════════════
 # Level 1-N: 仮説生成 + 検証 + 層遷移
 # ══════════════════════════════════════════════════════════════
@@ -646,6 +891,12 @@ def _generate_hypotheses(diffs, weights=None):
     if not diffs or not diffs[0].same_size:
         # サイズ変化 → crop系
         hypotheses.append(('crop_largest', lambda g: prim_crop_object(g, 'largest')))
+        # パネル選択
+        for crit in ['monochrome', 'most_non_bg', 'least_non_bg', 'most_colors', 'least_colors', 'unique']:
+            hypotheses.append((f'panel_select:{crit}', lambda g, c=crit: prim_select_panel(g, c)))
+        # パネル論理演算
+        for op in ['xor', 'or_a', 'or_b', 'and_a', 'and_b', 'diff_a', 'diff_b']:
+            hypotheses.append((f'panel_logic:{op}', lambda g, o=op: prim_panel_logic_op(g, o)))
         hypotheses.append(('crop_smallest', lambda g: prim_crop_object(g, 'smallest')))
         hypotheses.append(('crop_unique_color', lambda g: prim_crop_object(g, 'unique_color')))
         hypotheses.append(('crop_unique_shape', lambda g: prim_crop_object(g, 'unique_shape')))
@@ -786,6 +1037,15 @@ def _generate_hypotheses(diffs, weights=None):
                 f'enclosed_{ov}→{nv}_by{tc}',
                 lambda g, t=tc, o=ov, n=nv: prim_recolor_enclosed_by(g, t, o, n)
             ))
+
+    # === 条件付きrecolor (auto-discovered) ===
+    cmap, ctype, cparams = auto_discover_condition(
+        [(d.ga.tolist(), d.go.tolist()) for d in diffs])
+    if cmap is not None and ctype is not None:
+        hypotheses.insert(0, (
+            f'cond_recolor:{ctype}',
+            lambda g, m=cmap, t=ctype, p=cparams: prim_conditional_recolor(g, m, t, p)
+        ))
 
     # LOO交差検証nb8
     loo_nb = prim_leave_one_out_nb([(d.ga.tolist(), d.go.tolist()) for d in diffs])
