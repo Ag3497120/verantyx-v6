@@ -636,6 +636,113 @@ def prim_recolor_by_object_property(grid, property_name, value_map):
 
 
 
+
+def prim_symmetry_complete(grid, mode='any'):
+    """対称性を検出して欠けた部分を補完"""
+    g = np.array(grid); h, w = g.shape; bg = _bg(g)
+    
+    flips = {
+        'h': np.fliplr, 'v': np.flipud,
+        'hv': lambda x: np.flipud(np.fliplr(x)),
+    }
+    if mode in flips:
+        flipped = flips[mode](g)
+        mask = (g == bg) & (flipped != bg)
+        if np.any(mask):
+            r = g.copy(); r[mask] = flipped[mask]
+            return r.tolist()
+        return None
+    
+    if mode == 'rot90' and h == w:
+        for k in [1, 2, 3]:
+            rotated = np.rot90(g, k)
+            mask = (g == bg) & (rotated != bg)
+            if np.any(mask):
+                r = g.copy(); r[mask] = rotated[mask]
+                return r.tolist()
+    
+    if mode == 'any':
+        for m in ['h', 'v', 'hv', 'rot90']:
+            r = prim_symmetry_complete(grid, m)
+            if r is not None: return r
+    return None
+
+
+def prim_gravity(grid, direction='down'):
+    """非BGセルを指定方向に落とす"""
+    g = np.array(grid); h, w = g.shape; bg = _bg(g)
+    result = np.full((h, w), bg, dtype=int)
+    if direction == 'down':
+        for c in range(w):
+            nb = [int(g[r, c]) for r in range(h) if g[r, c] != bg]
+            for i, v in enumerate(reversed(nb)): result[h-1-i, c] = v
+    elif direction == 'up':
+        for c in range(w):
+            nb = [int(g[r, c]) for r in range(h) if g[r, c] != bg]
+            for i, v in enumerate(nb): result[i, c] = v
+    elif direction == 'left':
+        for r in range(h):
+            nb = [int(g[r, c]) for c in range(w) if g[r, c] != bg]
+            for i, v in enumerate(nb): result[r, i] = v
+    elif direction == 'right':
+        for r in range(h):
+            nb = [int(g[r, c]) for c in range(w) if g[r, c] != bg]
+            for i, v in enumerate(reversed(nb)): result[r, w-1-i] = v
+    return result.tolist()
+
+
+def prim_fill_enclosed_bg(grid, fill_color=None):
+    """端から到達できないBGセルを塗る"""
+    g = np.array(grid); h, w = g.shape; bg = _bg(g)
+    visited = np.zeros((h, w), dtype=bool)
+    queue = []
+    for r in range(h):
+        for c in [0, w-1]:
+            if g[r, c] == bg and not visited[r, c]:
+                visited[r, c] = True; queue.append((r, c))
+    for c in range(w):
+        for r in [0, h-1]:
+            if g[r, c] == bg and not visited[r, c]:
+                visited[r, c] = True; queue.append((r, c))
+    while queue:
+        r, c = queue.pop(0)
+        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < h and 0 <= nc < w and not visited[nr, nc] and g[nr, nc] == bg:
+                visited[nr, nc] = True; queue.append((nr, nc))
+    enclosed = [(r, c) for r in range(h) for c in range(w) if g[r, c] == bg and not visited[r, c]]
+    if not enclosed: return None
+    result = g.copy()
+    if fill_color is not None:
+        for r, c in enclosed: result[r, c] = fill_color
+    else:
+        from collections import Counter as C2
+        for r, c in enclosed:
+            nbs = [int(g[r+dr, c+dc]) for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]
+                   if 0<=r+dr<h and 0<=c+dc<w and g[r+dr, c+dc] != bg]
+            if nbs: result[r, c] = C2(nbs).most_common(1)[0][0]
+    return result.tolist()
+
+
+def prim_mirror_half(grid, axis='vertical', keep='left'):
+    """半分をミラーして全体を生成"""
+    g = np.array(grid); h, w = g.shape
+    result = g.copy()
+    if axis == 'vertical':
+        mid = w // 2
+        if keep == 'left':
+            for c in range(mid): result[:, w-1-c] = g[:, c]
+        else:
+            for c in range(mid): result[:, c] = g[:, w-1-c]
+    elif axis == 'horizontal':
+        mid = h // 2
+        if keep == 'top':
+            for r in range(mid): result[h-1-r, :] = g[r, :]
+        else:
+            for r in range(mid): result[r, :] = g[h-1-r, :]
+    return result.tolist()
+
+
 def prim_select_panel(grid, criterion='monochrome'):
     """パネル構造から条件に合うパネルを選択して出力"""
     g = np.array(grid); h, w = g.shape; bg = _bg(g)
@@ -1037,6 +1144,17 @@ def _generate_hypotheses(diffs, weights=None):
                 f'enclosed_{ov}→{nv}_by{tc}',
                 lambda g, t=tc, o=ov, n=nv: prim_recolor_enclosed_by(g, t, o, n)
             ))
+
+    # === 対称性/重力/塗りつぶし/ミラー ===
+    for sm in ['h', 'v', 'hv', 'rot90', 'any']:
+        hypotheses.append((f'sym:{sm}', lambda g, m=sm: prim_symmetry_complete(g, m)))
+    for gd in ['down', 'up', 'left', 'right']:
+        hypotheses.append((f'gravity:{gd}', lambda g, d=gd: prim_gravity(g, d)))
+    hypotheses.append(('fill_enclosed', lambda g: prim_fill_enclosed_bg(g)))
+    for fc in range(10):
+        hypotheses.append((f'fill_enc:{fc}', lambda g, c=fc: prim_fill_enclosed_bg(g, c)))
+    for ax, kp in [('vertical','left'),('vertical','right'),('horizontal','top'),('horizontal','bottom')]:
+        hypotheses.append((f'mirror:{ax}:{kp}', lambda g, a=ax, k=kp: prim_mirror_half(g, a, k)))
 
     # === 条件付きrecolor (auto-discovered) ===
     cmap, ctype, cparams = auto_discover_condition(
