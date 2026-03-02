@@ -1276,22 +1276,61 @@ def _adjust_weights(weights, failures):
 MAX_LAYERS = 5
 
 def _cell_feats_light(ga, r, c):
-    """軽量セル特徴"""
+    """拡張セル特徴（Cross 6軸対応）"""
     h, w = ga.shape; bg = _bg(ga); v = int(ga[r, c])
     f = set()
+    
+    # 近傍色
     for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
         nr, nc = r+dr, c+dc
         if 0<=nr<h and 0<=nc<w: f.add(f'n4:{int(ga[nr,nc])}')
+    
+    # 境界
     f.add(f'border:{r==0 or r==h-1 or c==0 or c==w-1}')
+    
+    # 連結成分
     mask = (ga==v).astype(int)
     labeled, _ = scipy_label(mask, structure=np.ones((3,3),dtype=int))
-    f.add(f'csize:{int(np.sum(labeled==labeled[r,c]))}')
+    csz = int(np.sum(labeled==labeled[r,c]))
+    f.add(f'csize:{csz}')
+    
+    # オブジェクト内色
     obj_mask = (ga!=bg).astype(int)
     obj_lab, _ = scipy_label(obj_mask, structure=np.ones((3,3),dtype=int))
     if obj_lab[r,c] > 0:
         obj_cells = list(zip(*np.where(obj_lab==obj_lab[r,c])))
         for oc in set(int(ga[rr,cc]) for rr,cc in obj_cells):
             if oc != v: f.add(f'obj_has:{oc}')
+        f.add(f'obj_ncolors:{len(set(int(ga[rr,cc]) for rr,cc in obj_cells))}')
+    
+    # 行/列の色
+    for cc in range(w):
+        cv = int(ga[r,cc])
+        if cv != bg and cv != v: f.add(f'row:{cv}')
+    for rr in range(h):
+        rv = int(ga[rr,c])
+        if rv != bg and rv != v: f.add(f'col:{rv}')
+    
+    # 色の出現頻度
+    color_counts = Counter(int(vv) for vv in ga.flatten())
+    non_bg = {c_: v_ for c_, v_ in color_counts.items() if c_ != bg}
+    if non_bg:
+        min_c = min(non_bg.values())
+        if color_counts[v] == min_c: f.add('freq:rarest')
+    
+    # 相対位置
+    f.add(f'rpos:{"t" if r<h/3 else "m" if r<2*h/3 else "b"}')
+    f.add(f'cpos:{"l" if c<w/3 else "m" if c<2*w/3 else "r"}')
+    
+    # 8近傍多様性
+    n8c = set()
+    for dr in [-1,0,1]:
+        for dc in [-1,0,1]:
+            if dr==0 and dc==0: continue
+            nr, nc = r+dr, c+dc
+            if 0<=nr<h and 0<=nc<w: n8c.add(int(ga[nr,nc]))
+    f.add(f'n8v:{len(n8c)}')
+    
     return f
 
 
