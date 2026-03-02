@@ -1157,58 +1157,185 @@ def _adjust_weights(weights, failures):
 
 MAX_LAYERS = 5
 
-def cross_puzzle_solve(train_pairs, test_input):
-    """Cross入れ子構造のパズル推論エンジン"""
+def _cell_feats_light(ga, r, c):
+    """軽量セル特徴"""
+    h, w = ga.shape; bg = _bg(ga); v = int(ga[r, c])
+    f = set()
+    for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+        nr, nc = r+dr, c+dc
+        if 0<=nr<h and 0<=nc<w: f.add(f'n4:{int(ga[nr,nc])}')
+    f.add(f'border:{r==0 or r==h-1 or c==0 or c==w-1}')
+    mask = (ga==v).astype(int)
+    labeled, _ = scipy_label(mask, structure=np.ones((3,3),dtype=int))
+    f.add(f'csize:{int(np.sum(labeled==labeled[r,c]))}')
+    obj_mask = (ga!=bg).astype(int)
+    obj_lab, _ = scipy_label(obj_mask, structure=np.ones((3,3),dtype=int))
+    if obj_lab[r,c] > 0:
+        obj_cells = list(zip(*np.where(obj_lab==obj_lab[r,c])))
+        for oc in set(int(ga[rr,cc]) for rr,cc in obj_cells):
+            if oc != v: f.add(f'obj_has:{oc}')
+    return f
 
-    # Level 0: 全trainペアの差分をCrossで記述
+
+def cross_puzzle_solve(train_pairs, test_input):
+    """Cross入れ子構造のパズル推論エンジン (v3: 失敗蓄積型)"""
+
     diffs = []
     for inp, out in train_pairs:
         diffs.append(DiffCross(inp, out))
 
-    # 層を繰り返す
     weights = {'color': 1.0, 'spatial': 1.0, 'object': 1.0,
                'pattern': 1.0, 'relation': 1.0, 'scope': 1.0}
-    tried = set()
 
-    for layer in range(MAX_LAYERS):
-        # 仮説生成
-        hypotheses = _generate_hypotheses(diffs, weights)
+    # Level 0: 全プリミティブを試す
+    hypotheses = _generate_hypotheses(diffs, weights)
+    
+    near_misses = []  # (wrong, name, fn)
+    
+    for name, h_fn in hypotheses:
+        ok = True
+        total_wrong = 0
+        for inp, out in train_pairs:
+            pred = h_fn(inp)
+            if pred is None:
+                ok = False; total_wrong += 999; break
+            if not grid_eq(pred, out):
+                ok = False
+                pa, oa = np.array(pred), np.array(out)
+                if pa.shape == oa.shape:
+                    total_wrong += int(np.sum(pa != oa))
+                else:
+                    total_wrong += 999; break
 
-        for name, h_fn in hypotheses:
-            if name in tried:
-                continue
-            tried.add(name)
+        if ok:
+            result = h_fn(test_input)
+            if result is not None:
+                return result, f'puzzle:L0:{name}'
+        elif total_wrong < 80:
+            near_misses.append((total_wrong, name, h_fn))
 
-            # Train検証
-            ok = True
-            for inp, out in train_pairs:
-                pred = h_fn(inp)
-                if pred is None or not grid_eq(pred, out):
-                    ok = False
-                    break
+    # Level 1: 失敗蓄積 → 制約付き仮説
+    near_misses.sort(key=lambda x: x[0])
+    
+    # 色マップ学習
+    cmap = {}
+    for inp, out in train_pairs:
+        ga, go = np.array(inp), np.array(out)
+        if ga.shape != go.shape: continue
+        for r in range(ga.shape[0]):
+            for c in range(ga.shape[1]):
+                if ga[r,c] != go[r,c]:
+                    ov, nv = int(ga[r,c]), int(go[r,c])
+                    if ov not in cmap: cmap[ov] = nv
 
+    for _, name, h_fn in near_misses[:5]:
+        # over/underセルの特徴収集
+        over_feats = []
+        under_feats = []
+        correct_feats = []
+        
+        for inp, out in train_pairs:
+            pred = h_fn(inp)
+            if pred is None: break
+            ga, go, pa = np.array(inp), np.array(out), np.array(pred)
+            if pa.shape != go.shape: break
+            
+            for r in range(pa.shape[0]):
+                for c in range(pa.shape[1]):
+                    if pa[r,c] != go[r,c]:
+                        if ga[r,c] == go[r,c]:
+                            over_feats.append(_cell_feats_light(ga, r, c))
+                        elif ga[r,c] == pa[r,c]:
+                            under_feats.append(_cell_feats_light(ga, r, c))
+                    elif pa[r,c] != ga[r,c]:
+                        correct_feats.append(_cell_feats_light(ga, r, c))
+        
+        if not over_feats and not under_feats:
+            continue
+        
+        over_common = set.intersection(*over_feats) if over_feats else set()
+        correct_common = set.intersection(*correct_feats) if correct_feats else set()
+        
+        # over除外候補: overにあってcorrectにない
+        excl_cands = list(over_common - correct_common) if over_feats and correct_feats else list(over_common)
+        
+        # under追加候補
+        under_common = set.intersection(*under_feats) if under_feats else set()
+        all_over_union = set.union(*over_feats) if over_feats else set()
+        incl_cands = list(under_common - all_over_union) if under_feats else []
+        
+        # 除外のみ
+        for ef in excl_cands:
+            def make_excl(bf, ef_):
+                def fn(grid):
+                    pred = bf(grid)
+                    if pred is None: return None
+                    go_ = np.array(grid); gp = np.array(pred)
+                    h, w = gp.shape
+                    for r in range(h):
+                        for c in range(w):
+                            if gp[r,c] != go_[r,c]:
+                                if ef_ in _cell_feats_light(go_, r, c):
+                                    gp[r,c] = go_[r,c]
+                    return gp.tolist()
+                return fn
+            
+            corrected = make_excl(h_fn, ef)
+            ok = all(grid_eq(corrected(inp), out) for inp, out in train_pairs)
             if ok:
-                # Test適用
-                result = h_fn(test_input)
+                result = corrected(test_input)
                 if result is not None:
-                    return result, f'puzzle:L{layer}:{name}'
-
-        # 全仮説が失敗 → 失敗分析 → 重み調整
-        # 最も「惜しかった」仮説の失敗パターンで調整
-        best_failure = None
-        min_wrong = float('inf')
-
-        for name, h_fn in hypotheses:
-            failures = _analyze_failure(h_fn, train_pairs)
-            total_wrong = sum(f.get('n_wrong', 999) for f in failures)
-            if total_wrong < min_wrong:
-                min_wrong = total_wrong
-                best_failure = failures
-
-        if best_failure:
-            weights = _adjust_weights(weights, best_failure)
-        else:
-            break  # 改善の余地なし
+                    return result, f'puzzle:L1:{name}+excl({ef})'
+        
+        # 追加のみ
+        for af in incl_cands:
+            def make_incl(bf, af_, cm):
+                def fn(grid):
+                    pred = bf(grid)
+                    if pred is None: return None
+                    go_ = np.array(grid); gp = np.array(pred)
+                    h, w = gp.shape
+                    for r in range(h):
+                        for c in range(w):
+                            if gp[r,c] == go_[r,c] and int(go_[r,c]) in cm:
+                                if af_ in _cell_feats_light(go_, r, c):
+                                    gp[r,c] = cm[int(go_[r,c])]
+                    return gp.tolist()
+                return fn
+            
+            augmented = make_incl(h_fn, af, cmap)
+            ok = all(grid_eq(augmented(inp), out) for inp, out in train_pairs)
+            if ok:
+                result = augmented(test_input)
+                if result is not None:
+                    return result, f'puzzle:L1:{name}+incl({af})'
+        
+        # 除外+追加の同時
+        for ef in excl_cands[:3]:
+            for af in incl_cands[:3]:
+                def make_both(bf, ef_, af_, cm):
+                    def fn(grid):
+                        pred = bf(grid)
+                        if pred is None: return None
+                        go_ = np.array(grid); gp = np.array(pred)
+                        h, w = gp.shape
+                        for r in range(h):
+                            for c in range(w):
+                                if gp[r,c] != go_[r,c]:
+                                    if ef_ in _cell_feats_light(go_, r, c):
+                                        gp[r,c] = go_[r,c]
+                                elif int(go_[r,c]) in cm:
+                                    if af_ in _cell_feats_light(go_, r, c):
+                                        gp[r,c] = cm[int(go_[r,c])]
+                        return gp.tolist()
+                    return fn
+                
+                both = make_both(h_fn, ef, af, cmap)
+                ok = all(grid_eq(both(inp), out) for inp, out in train_pairs)
+                if ok:
+                    result = both(test_input)
+                    if result is not None:
+                        return result, f'puzzle:L1:{name}+excl({ef})+incl({af})'
 
     return None, None
 
