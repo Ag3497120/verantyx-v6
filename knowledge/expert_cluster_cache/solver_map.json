@@ -1,0 +1,1598 @@
+{
+  "9": {
+    "_total": {
+      "count": 1000,
+      "solved": 91,
+      "success_rate": 0.091
+    },
+    "neighborhood_rule": {
+      "count": 29,
+      "success_rate": 0.029
+    },
+    "composite": {
+      "count": 10,
+      "success_rate": 0.01
+    },
+    "colormap": {
+      "count": 4,
+      "success_rate": 0.004
+    },
+    "corners_mirror": {
+      "count": 3,
+      "success_rate": 0.003
+    },
+    "symmetry_fill": {
+      "count": 3,
+      "success_rate": 0.003
+    },
+    "self_tile": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "fill_enclosed": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cross_extract_minority_bbox": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cross_compose": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "extract_largest_region": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "mirror_hv": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "upscale": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cond_neighbor": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "stack_h_flip": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "stack_v_flip": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "extract_unique_subgrid": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "mod_copy_flip": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "diagonal_tile": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_recolor_by_size_rank": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "crop_bbox": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "connect_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "extract_smallest_region": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "gravity": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "downscale": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "fill_rect": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "extract_at": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "diag_lines": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "mirror_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "mirror_v": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "remove_empty_both": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "scale": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "stack_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_extract_unique_shape": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "tile_to_output": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "subgrid_overlay": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_region_shape_recolor": {
+      "count": 1,
+      "success_rate": 0.001
+    }
+  },
+  "10": {
+    "_total": {
+      "count": 1000,
+      "solved": 91,
+      "success_rate": 0.091
+    },
+    "neighborhood_rule": {
+      "count": 29,
+      "success_rate": 0.029
+    },
+    "composite": {
+      "count": 10,
+      "success_rate": 0.01
+    },
+    "colormap": {
+      "count": 4,
+      "success_rate": 0.004
+    },
+    "corners_mirror": {
+      "count": 3,
+      "success_rate": 0.003
+    },
+    "symmetry_fill": {
+      "count": 3,
+      "success_rate": 0.003
+    },
+    "self_tile": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "fill_enclosed": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cross_extract_minority_bbox": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cross_compose": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "extract_largest_region": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "mirror_hv": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "upscale": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cond_neighbor": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "stack_h_flip": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "stack_v_flip": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "extract_unique_subgrid": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "mod_copy_flip": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "diagonal_tile": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_recolor_by_size_rank": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "crop_bbox": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "connect_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "extract_smallest_region": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "gravity": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "downscale": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "fill_rect": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "extract_at": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "diag_lines": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "mirror_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "mirror_v": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "remove_empty_both": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "scale": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "stack_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_extract_unique_shape": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "tile_to_output": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "subgrid_overlay": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_region_shape_recolor": {
+      "count": 1,
+      "success_rate": 0.001
+    }
+  },
+  "21": {
+    "_total": {
+      "count": 1000,
+      "solved": 91,
+      "success_rate": 0.091
+    },
+    "neighborhood_rule": {
+      "count": 29,
+      "success_rate": 0.029
+    },
+    "composite": {
+      "count": 10,
+      "success_rate": 0.01
+    },
+    "colormap": {
+      "count": 4,
+      "success_rate": 0.004
+    },
+    "corners_mirror": {
+      "count": 3,
+      "success_rate": 0.003
+    },
+    "symmetry_fill": {
+      "count": 3,
+      "success_rate": 0.003
+    },
+    "self_tile": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "fill_enclosed": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cross_extract_minority_bbox": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cross_compose": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "extract_largest_region": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "mirror_hv": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "upscale": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cond_neighbor": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "stack_h_flip": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "stack_v_flip": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "extract_unique_subgrid": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "mod_copy_flip": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "diagonal_tile": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_recolor_by_size_rank": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "crop_bbox": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "connect_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "extract_smallest_region": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "gravity": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "downscale": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "fill_rect": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "extract_at": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "diag_lines": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "mirror_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "mirror_v": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "remove_empty_both": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "scale": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "stack_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_extract_unique_shape": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "tile_to_output": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "subgrid_overlay": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_region_shape_recolor": {
+      "count": 1,
+      "success_rate": 0.001
+    }
+  },
+  "23": {
+    "_total": {
+      "count": 1000,
+      "solved": 91,
+      "success_rate": 0.091
+    },
+    "neighborhood_rule": {
+      "count": 29,
+      "success_rate": 0.029
+    },
+    "composite": {
+      "count": 10,
+      "success_rate": 0.01
+    },
+    "colormap": {
+      "count": 4,
+      "success_rate": 0.004
+    },
+    "corners_mirror": {
+      "count": 3,
+      "success_rate": 0.003
+    },
+    "symmetry_fill": {
+      "count": 3,
+      "success_rate": 0.003
+    },
+    "self_tile": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "fill_enclosed": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cross_extract_minority_bbox": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cross_compose": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "extract_largest_region": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "mirror_hv": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "upscale": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cond_neighbor": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "stack_h_flip": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "stack_v_flip": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "extract_unique_subgrid": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "mod_copy_flip": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "diagonal_tile": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_recolor_by_size_rank": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "crop_bbox": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "connect_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "extract_smallest_region": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "gravity": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "downscale": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "fill_rect": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "extract_at": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "diag_lines": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "mirror_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "mirror_v": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "remove_empty_both": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "scale": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "stack_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_extract_unique_shape": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "tile_to_output": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "subgrid_overlay": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_region_shape_recolor": {
+      "count": 1,
+      "success_rate": 0.001
+    }
+  },
+  "24": {
+    "_total": {
+      "count": 22,
+      "solved": 10,
+      "success_rate": 0.4545
+    },
+    "neighborhood_rule": {
+      "count": 4,
+      "success_rate": 0.1818
+    },
+    "mirror_hv": {
+      "count": 2,
+      "success_rate": 0.0909
+    },
+    "colormap": {
+      "count": 1,
+      "success_rate": 0.0455
+    },
+    "gravity": {
+      "count": 1,
+      "success_rate": 0.0455
+    },
+    "remove_empty_both": {
+      "count": 1,
+      "success_rate": 0.0455
+    },
+    "scale": {
+      "count": 1,
+      "success_rate": 0.0455
+    }
+  },
+  "26": {
+    "_total": {
+      "count": 222,
+      "solved": 11,
+      "success_rate": 0.0495
+    },
+    "neighborhood_rule": {
+      "count": 8,
+      "success_rate": 0.036
+    },
+    "diag_lines": {
+      "count": 1,
+      "success_rate": 0.0045
+    },
+    "cond_neighbor": {
+      "count": 1,
+      "success_rate": 0.0045
+    },
+    "cross_region_shape_recolor": {
+      "count": 1,
+      "success_rate": 0.0045
+    }
+  },
+  "28": {
+    "_total": {
+      "count": 848,
+      "solved": 69,
+      "success_rate": 0.0814
+    },
+    "neighborhood_rule": {
+      "count": 21,
+      "success_rate": 0.0248
+    },
+    "composite": {
+      "count": 7,
+      "success_rate": 0.0083
+    },
+    "corners_mirror": {
+      "count": 3,
+      "success_rate": 0.0035
+    },
+    "symmetry_fill": {
+      "count": 3,
+      "success_rate": 0.0035
+    },
+    "self_tile": {
+      "count": 2,
+      "success_rate": 0.0024
+    },
+    "fill_enclosed": {
+      "count": 2,
+      "success_rate": 0.0024
+    },
+    "cross_compose": {
+      "count": 2,
+      "success_rate": 0.0024
+    },
+    "extract_largest_region": {
+      "count": 2,
+      "success_rate": 0.0024
+    },
+    "upscale": {
+      "count": 2,
+      "success_rate": 0.0024
+    },
+    "cond_neighbor": {
+      "count": 2,
+      "success_rate": 0.0024
+    },
+    "stack_h_flip": {
+      "count": 2,
+      "success_rate": 0.0024
+    },
+    "stack_v_flip": {
+      "count": 2,
+      "success_rate": 0.0024
+    },
+    "colormap": {
+      "count": 2,
+      "success_rate": 0.0024
+    },
+    "mod_copy_flip": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "diagonal_tile": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "cross_recolor_by_size_rank": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "cross_extract_minority_bbox": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "crop_bbox": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "connect_h": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "extract_smallest_region": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "fill_rect": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "diag_lines": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "mirror_h": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "mirror_v": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "extract_unique_subgrid": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "stack_h": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "cross_extract_unique_shape": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "tile_to_output": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "subgrid_overlay": {
+      "count": 1,
+      "success_rate": 0.0012
+    },
+    "cross_region_shape_recolor": {
+      "count": 1,
+      "success_rate": 0.0012
+    }
+  },
+  "30": {
+    "_total": {
+      "count": 1000,
+      "solved": 91,
+      "success_rate": 0.091
+    },
+    "neighborhood_rule": {
+      "count": 29,
+      "success_rate": 0.029
+    },
+    "composite": {
+      "count": 10,
+      "success_rate": 0.01
+    },
+    "colormap": {
+      "count": 4,
+      "success_rate": 0.004
+    },
+    "corners_mirror": {
+      "count": 3,
+      "success_rate": 0.003
+    },
+    "symmetry_fill": {
+      "count": 3,
+      "success_rate": 0.003
+    },
+    "self_tile": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "fill_enclosed": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cross_extract_minority_bbox": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cross_compose": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "extract_largest_region": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "mirror_hv": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "upscale": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cond_neighbor": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "stack_h_flip": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "stack_v_flip": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "extract_unique_subgrid": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "mod_copy_flip": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "diagonal_tile": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_recolor_by_size_rank": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "crop_bbox": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "connect_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "extract_smallest_region": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "gravity": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "downscale": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "fill_rect": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "extract_at": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "diag_lines": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "mirror_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "mirror_v": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "remove_empty_both": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "scale": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "stack_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_extract_unique_shape": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "tile_to_output": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "subgrid_overlay": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_region_shape_recolor": {
+      "count": 1,
+      "success_rate": 0.001
+    }
+  },
+  "31": {
+    "_total": {
+      "count": 2,
+      "solved": 0,
+      "success_rate": 0.0
+    }
+  },
+  "32": {
+    "_total": {
+      "count": 1,
+      "solved": 0,
+      "success_rate": 0.0
+    }
+  },
+  "37": {
+    "_total": {
+      "count": 951,
+      "solved": 91,
+      "success_rate": 0.0957
+    },
+    "neighborhood_rule": {
+      "count": 29,
+      "success_rate": 0.0305
+    },
+    "composite": {
+      "count": 10,
+      "success_rate": 0.0105
+    },
+    "colormap": {
+      "count": 4,
+      "success_rate": 0.0042
+    },
+    "corners_mirror": {
+      "count": 3,
+      "success_rate": 0.0032
+    },
+    "symmetry_fill": {
+      "count": 3,
+      "success_rate": 0.0032
+    },
+    "self_tile": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "fill_enclosed": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "cross_extract_minority_bbox": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "cross_compose": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "extract_largest_region": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "mirror_hv": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "upscale": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "cond_neighbor": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "stack_h_flip": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "stack_v_flip": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "extract_unique_subgrid": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "mod_copy_flip": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "diagonal_tile": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "cross_recolor_by_size_rank": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "crop_bbox": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "connect_h": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "extract_smallest_region": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "gravity": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "downscale": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "fill_rect": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "extract_at": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "diag_lines": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "mirror_h": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "mirror_v": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "remove_empty_both": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "scale": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "stack_h": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "cross_extract_unique_shape": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "tile_to_output": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "subgrid_overlay": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "cross_region_shape_recolor": {
+      "count": 1,
+      "success_rate": 0.0011
+    }
+  },
+  "42": {
+    "_total": {
+      "count": 725,
+      "solved": 77,
+      "success_rate": 0.1062
+    },
+    "neighborhood_rule": {
+      "count": 21,
+      "success_rate": 0.029
+    },
+    "composite": {
+      "count": 9,
+      "success_rate": 0.0124
+    },
+    "colormap": {
+      "count": 4,
+      "success_rate": 0.0055
+    },
+    "corners_mirror": {
+      "count": 3,
+      "success_rate": 0.0041
+    },
+    "symmetry_fill": {
+      "count": 3,
+      "success_rate": 0.0041
+    },
+    "self_tile": {
+      "count": 2,
+      "success_rate": 0.0028
+    },
+    "fill_enclosed": {
+      "count": 2,
+      "success_rate": 0.0028
+    },
+    "cross_extract_minority_bbox": {
+      "count": 2,
+      "success_rate": 0.0028
+    },
+    "cross_compose": {
+      "count": 2,
+      "success_rate": 0.0028
+    },
+    "extract_largest_region": {
+      "count": 2,
+      "success_rate": 0.0028
+    },
+    "mirror_hv": {
+      "count": 2,
+      "success_rate": 0.0028
+    },
+    "upscale": {
+      "count": 2,
+      "success_rate": 0.0028
+    },
+    "stack_h_flip": {
+      "count": 2,
+      "success_rate": 0.0028
+    },
+    "stack_v_flip": {
+      "count": 2,
+      "success_rate": 0.0028
+    },
+    "extract_unique_subgrid": {
+      "count": 2,
+      "success_rate": 0.0028
+    },
+    "mod_copy_flip": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "diagonal_tile": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "cross_recolor_by_size_rank": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "crop_bbox": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "extract_smallest_region": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "gravity": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "downscale": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "extract_at": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "cond_neighbor": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "mirror_h": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "mirror_v": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "remove_empty_both": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "scale": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "stack_h": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "cross_extract_unique_shape": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "tile_to_output": {
+      "count": 1,
+      "success_rate": 0.0014
+    },
+    "subgrid_overlay": {
+      "count": 1,
+      "success_rate": 0.0014
+    }
+  },
+  "43": {
+    "_total": {
+      "count": 147,
+      "solved": 14,
+      "success_rate": 0.0952
+    },
+    "neighborhood_rule": {
+      "count": 4,
+      "success_rate": 0.0272
+    },
+    "composite": {
+      "count": 3,
+      "success_rate": 0.0204
+    },
+    "connect_h": {
+      "count": 1,
+      "success_rate": 0.0068
+    },
+    "downscale": {
+      "count": 1,
+      "success_rate": 0.0068
+    },
+    "fill_rect": {
+      "count": 1,
+      "success_rate": 0.0068
+    },
+    "extract_at": {
+      "count": 1,
+      "success_rate": 0.0068
+    },
+    "extract_unique_subgrid": {
+      "count": 1,
+      "success_rate": 0.0068
+    },
+    "cross_extract_minority_bbox": {
+      "count": 1,
+      "success_rate": 0.0068
+    },
+    "colormap": {
+      "count": 1,
+      "success_rate": 0.0068
+    }
+  },
+  "45": {
+    "_total": {
+      "count": 941,
+      "solved": 85,
+      "success_rate": 0.0903
+    },
+    "neighborhood_rule": {
+      "count": 25,
+      "success_rate": 0.0266
+    },
+    "composite": {
+      "count": 10,
+      "success_rate": 0.0106
+    },
+    "colormap": {
+      "count": 4,
+      "success_rate": 0.0043
+    },
+    "corners_mirror": {
+      "count": 3,
+      "success_rate": 0.0032
+    },
+    "symmetry_fill": {
+      "count": 3,
+      "success_rate": 0.0032
+    },
+    "self_tile": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "fill_enclosed": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "cross_extract_minority_bbox": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "cross_compose": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "extract_largest_region": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "mirror_hv": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "upscale": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "cond_neighbor": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "stack_h_flip": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "stack_v_flip": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "extract_unique_subgrid": {
+      "count": 2,
+      "success_rate": 0.0021
+    },
+    "mod_copy_flip": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "diagonal_tile": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "cross_recolor_by_size_rank": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "crop_bbox": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "connect_h": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "extract_smallest_region": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "gravity": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "downscale": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "fill_rect": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "extract_at": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "mirror_h": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "mirror_v": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "remove_empty_both": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "scale": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "stack_h": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "cross_extract_unique_shape": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "tile_to_output": {
+      "count": 1,
+      "success_rate": 0.0011
+    },
+    "subgrid_overlay": {
+      "count": 1,
+      "success_rate": 0.0011
+    }
+  },
+  "48": {
+    "_total": {
+      "count": 1000,
+      "solved": 91,
+      "success_rate": 0.091
+    },
+    "neighborhood_rule": {
+      "count": 29,
+      "success_rate": 0.029
+    },
+    "composite": {
+      "count": 10,
+      "success_rate": 0.01
+    },
+    "colormap": {
+      "count": 4,
+      "success_rate": 0.004
+    },
+    "corners_mirror": {
+      "count": 3,
+      "success_rate": 0.003
+    },
+    "symmetry_fill": {
+      "count": 3,
+      "success_rate": 0.003
+    },
+    "self_tile": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "fill_enclosed": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cross_extract_minority_bbox": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cross_compose": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "extract_largest_region": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "mirror_hv": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "upscale": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "cond_neighbor": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "stack_h_flip": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "stack_v_flip": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "extract_unique_subgrid": {
+      "count": 2,
+      "success_rate": 0.002
+    },
+    "mod_copy_flip": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "diagonal_tile": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_recolor_by_size_rank": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "crop_bbox": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "connect_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "extract_smallest_region": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "gravity": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "downscale": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "fill_rect": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "extract_at": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "diag_lines": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "mirror_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "mirror_v": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "remove_empty_both": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "scale": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "stack_h": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_extract_unique_shape": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "tile_to_output": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "subgrid_overlay": {
+      "count": 1,
+      "success_rate": 0.001
+    },
+    "cross_region_shape_recolor": {
+      "count": 1,
+      "success_rate": 0.001
+    }
+  },
+  "52": {
+    "_total": {
+      "count": 141,
+      "solved": 7,
+      "success_rate": 0.0496
+    },
+    "neighborhood_rule": {
+      "count": 4,
+      "success_rate": 0.0284
+    },
+    "composite": {
+      "count": 1,
+      "success_rate": 0.0071
+    },
+    "diag_lines": {
+      "count": 1,
+      "success_rate": 0.0071
+    },
+    "cross_region_shape_recolor": {
+      "count": 1,
+      "success_rate": 0.0071
+    }
+  }
+}

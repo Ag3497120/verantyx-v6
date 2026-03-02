@@ -29,6 +29,11 @@ from pathlib import Path
 # ── Grid helpers ──────────────────────────────────────────────
 Grid = List[List[int]]
 
+try:
+    from arc.hint_generator import generate_hints
+except ImportError:
+    generate_hints = None
+
 def grid_eq(a: Grid, b: Grid) -> bool:
     if a is None or b is None:
         return False
@@ -190,7 +195,8 @@ def format_grid_visual(grid: Grid) -> str:
 
 def format_task_prompt(train_pairs: List[Tuple[Grid, Grid]], 
                        test_input: Grid,
-                       strategy: str = "default") -> str:
+                       strategy: str = "default",
+                       hints: str = "") -> str:
     """Create prompt for Opus to generate transform code"""
     
     examples = ""
@@ -203,13 +209,23 @@ def format_task_prompt(train_pairs: List[Tuple[Grid, Grid]],
     
     th, tw = grid_shape(test_input)
     
+    hint_block = ""
+    if hints:
+        hint_block = f"""
+=== ANALYSIS HINTS (from Verantyx structural analysis) ===
+{hints}
+=== END HINTS ===
+
+Use these hints to guide your solution. They describe structural properties detected in the examples.
+"""
+    
     if strategy == "default":
         return f"""You are solving an ARC-AGI puzzle. Study the input→output examples and write a Python function `def transform(grid):` that implements the transformation rule.
 
 {examples}
 Test Input ({th}x{tw}):
 {format_grid_visual(test_input)}
-
+{hint_block}
 RULES:
 - grid is a list of lists of ints (0-9)
 - Return a list of lists of ints
@@ -223,6 +239,7 @@ Write ONLY the Python function, nothing else:"""
         return f"""Analyze this ARC-AGI puzzle step by step, then write the transform function.
 
 {examples}
+{hint_block}
 Step 1: What changes between input and output? (size, colors, structure)
 Step 2: What is the general rule?
 Step 3: Write `def transform(grid):` implementing this rule.
@@ -234,6 +251,7 @@ Write your analysis briefly, then the function:"""
         return f"""Study these grid transformations carefully:
 
 {examples}
+{hint_block}
 Think about: symmetry, rotation, reflection, color mapping, region extraction, pattern tiling, flood fill, object movement, scaling.
 
 Write `def transform(grid):` — pure Python, no numpy, returns list of lists of ints.
@@ -339,10 +357,18 @@ def solve_task(task_data: dict, api_key: str,
     
     candidates = []  # (code, fn, score, invariants)
     
+    # Generate Verantyx hints
+    hints_text = ""
+    if generate_hints is not None:
+        try:
+            hints_text = generate_hints(task_data, include_partial=True)
+        except Exception:
+            hints_text = ""
+    
     # Phase 1: Generate candidates via program synthesis
     for i, strategy in enumerate(strategies):
         try:
-            prompt = format_task_prompt(train_pairs, test_input, strategy)
+            prompt = format_task_prompt(train_pairs, test_input, strategy, hints=hints_text)
             response = call_opus(prompt, api_key, model)
             code = extract_code(response)
             
