@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>.jcross Language — Complete Guide | Verantyx</title>
+<meta name="description" content="Master .jcross: A revolutionary language where code, data, and logic coexist. Complete tutorial from basics to advanced Cross Structure programming.">
+<meta property="og:title" content=".jcross Language — The Future of Data + Code Integration">
+<meta property="og:description" content="Learn the language that powers Verantyx's 6-axis memory system. Code and data unified.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://verantyx.ai/jcross-language.html">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'SF Mono', Monaco, monospace;
+  color: #e0e0e0;
+  background: #0d1117;
+  line-height: 1.7;
+}
+a { color: #58a6ff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ===== HEADER ===== */
+header {
+  background: linear-gradient(135deg, #1a1520, #1e1530);
+  border-bottom: 2px solid #7c3aed;
+  padding: 20px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 20px rgba(124,58,237,0.3);
+}
+header h1 {
+  font-size: 2.5em;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: -1px;
+}
+header .subtitle {
+  color: #a78bfa;
+  font-size: 1.1em;
+}
+header .nav {
+  margin-top: 15px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+header .nav a {
+  color: #c9d1d9;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+header .nav a:hover {
+  background: rgba(124,58,237,0.2);
+  text-decoration: none;
+}
+
+/* ===== TOC ===== */
+.toc {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 30px;
+  margin: 40px auto;
+  max-width: 900px;
+}
+.toc h2 {
+  color: #fff;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+.toc ul {
+  list-style: none;
+  padding: 0;
+}
+.toc li {
+  margin: 10px 0;
+}
+.toc li a {
+  color: #58a6ff;
+  font-size: 1.05em;
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.toc li a:hover {
+  background: rgba(88,166,255,0.1);
+  text-decoration: none;
+  padding-left: 20px;
+}
+
+/* ===== SECTIONS ===== */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+.section {
+  margin: 60px 0;
+  scroll-margin-top: 100px;
+}
+.section h2 {
+  font-size: 2em;
+  color: #fff;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #7c3aed;
+}
+.section h3 {
+  font-size: 1.5em;
+  color: #a78bfa;
+  margin: 30px 0 15px;
+}
+.section h4 {
+  font-size: 1.2em;
+  color: #c9d1d9;
+  margin: 25px 0 12px;
+}
+.section p {
+  color: #8b949e;
+  margin-bottom: 15px;
+  font-size: 1.05em;
+  line-height: 1.8;
+}
+.section ul, .section ol {
+  color: #8b949e;
+  margin: 15px 0 15px 30px;
+  line-height: 1.8;
+}
+.section li {
+  margin: 8px 0;
+}
+
+/* ===== CODE BLOCKS ===== */
+pre {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 20px;
+  overflow-x: auto;
+  margin: 20px 0;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  font-size: 0.95em;
+  line-height: 1.6;
+}
+code {
+  background: rgba(124,58,237,0.15);
+  color: #a78bfa;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-family: 'SF Mono', Monaco, monospace;
+  font-size: 0.9em;
+}
+pre code {
+  background: none;
+  padding: 0;
+  color: #c9d1d9;
+}
+
+/* ===== CALLOUTS ===== */
+.callout {
+  background: rgba(124,58,237,0.08);
+  border-left: 4px solid #7c3aed;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 25px 0;
+}
+.callout.tip {
+  border-left-color: #3fb950;
+  background: rgba(63,185,80,0.08);
+}
+.callout.warning {
+  border-left-color: #f59e0b;
+  background: rgba(245,158,11,0.08);
+}
+.callout h4 {
+  color: #a78bfa;
+  margin: 0 0 10px 0;
+  font-size: 1.1em;
+}
+.callout p {
+  margin: 0;
+  color: #c9d1d9;
+}
+
+/* ===== TABLES ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+}
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #21262d;
+}
+th {
+  color: #a78bfa;
+  font-weight: 600;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  background: #161b22;
+}
+td {
+  color: #c9d1d9;
+}
+tr:hover {
+  background: #161b22;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  color: #484f58;
+  font-size: 0.9em;
+  border-top: 1px solid #21262d;
+  margin-top: 80px;
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <h1>📚 .jcross Language Guide</h1>
+  <p class="subtitle">The Language Where Code, Data, and Logic Coexist</p>
+  <div class="nav">
+    <a href="index.html">← Back to Verantyx</a>
+    <a href="https://github.com/Ag3497120/verantyx-cli">GitHub</a>
+    <a href="#quickstart">Quick Start</a>
+    <a href="#syntax">Syntax</a>
+    <a href="#examples">Examples</a>
+  </div>
+</header>
+
+<!-- ===== TABLE OF CONTENTS ===== -->
+<div class="container">
+  <div class="toc">
+    <h2>📖 Table of Contents</h2>
+    <ul>
+      <li><a href="#introduction">1. Introduction: What is .jcross?</a></li>
+      <li><a href="#philosophy">2. Core Philosophy</a></li>
+      <li><a href="#cross-structure">3. The 6-Axis Cross Structure</a></li>
+      <li><a href="#syntax">4. Syntax Fundamentals</a></li>
+      <li><a href="#data-types">5. Data Types & Variables</a></li>
+      <li><a href="#control-flow">6. Control Flow & Patterns</a></li>
+      <li><a href="#functions">7. Functions & Procedures</a></li>
+      <li><a href="#storage">8. Using .jcross as Data Storage</a></li>
+      <li><a href="#examples">9. Real-World Examples</a></li>
+      <li><a href="#best-practices">10. Best Practices</a></li>
+      <li><a href="#advanced">11. Advanced Techniques</a></li>
+    </ul>
+  </div>
+
+  <!-- ===== 1. INTRODUCTION ===== -->
+  <div id="introduction" class="section">
+    <h2>1. Introduction: What is .jcross?</h2>
+    <p>
+      <strong>.jcross</strong> (pronounced "jay-cross") is a revolutionary programming language
+      developed as part of the Verantyx project. Unlike traditional languages that separate
+      code from data, .jcross <em>unifies</em> them into a single, coherent structure.
+    </p>
+    <p>
+      Think of it as JSON meets Python, meets a database — but designed from the ground up
+      for AI memory systems and symbolic reasoning.
+    </p>
+
+    <div class="callout">
+      <h4>🎯 Key Insight</h4>
+      <p>
+        In .jcross, <strong>your data IS your code, and your code IS your data</strong>.
+        A .jcross file can be executed as a program, read as a database, or analyzed
+        as a knowledge graph — all at the same time.
+      </p>
+    </div>
+
+    <h3>Why .jcross Exists</h3>
+    <p>Traditional AI systems face a fundamental problem:</p>
+    <ul>
+      <li><strong>Code</strong> lives in .py, .js, .cpp files</li>
+      <li><strong>Data</strong> lives in .json, .db, .csv files</li>
+      <li><strong>Logic</strong> lives in YAML configs or hardcoded rules</li>
+    </ul>
+    <p>
+      This separation creates friction. When you want to reason about data, you need parsers.
+      When you want to store code, you need serializers. When you want to combine them,
+      you need complex architectures.
+    </p>
+    <p>
+      <strong>.jcross eliminates this friction by making code and data first-class citizens
+      of the same syntax.</strong>
+    </p>
+  </div>
+
+  <!-- ===== 2. PHILOSOPHY ===== -->
+  <div id="philosophy" class="section">
+    <h2>2. Core Philosophy</h2>
+
+    <h3>Design Principles</h3>
+
+    <h4>1. Unified Representation</h4>
+    <p>
+      Every .jcross file is simultaneously:
+    </p>
+    <ul>
+      <li>A <strong>program</strong> that can be executed</li>
+      <li>A <strong>data structure</strong> that can be queried</li>
+      <li>A <strong>knowledge base</strong> that can be reasoned over</li>
+    </ul>
+
+    <h4>2. Human-Readable</h4>
+    <p>
+      Unlike binary formats or dense JSON, .jcross files are meant to be read, understood,
+      and modified by humans. The syntax resembles natural language constructs.
+    </p>
+
+    <h4>3. Cross Structure Native</h4>
+    <p>
+      .jcross is built around the <strong>6-axis Cross Structure</strong> — a spatial
+      organization of data that mirrors how humans think about information:
+      past/future, input/output, context/action.
+    </p>
+
+    <h4>4. No Compilation Required</h4>
+    <p>
+      .jcross files are directly interpreted. Changes take effect immediately.
+      No build step. No transpilation. Just write and run.
+    </p>
+
+    <div class="callout tip">
+      <h4>💡 Philosophy in Practice</h4>
+      <p>
+        Imagine a database that can execute functions, or a program that stores its own
+        state inline. That's .jcross. It's Lisp's "code-as-data" principle, evolved
+        for the AI era.
+      </p>
+    </div>
+  </div>
+
+  <!-- ===== 3. CROSS STRUCTURE ===== -->
+  <div id="cross-structure" class="section">
+    <h2>3. The 6-Axis Cross Structure</h2>
+    <p>
+      At the heart of .jcross is the <strong>Cross Structure</strong> — a 6-dimensional
+      spatial organization of information. Think of it as a coordinate system for knowledge.
+    </p>
+
+    <h3>The Six Axes</h3>
+    <table>
+      <tr>
+        <th>Axis</th>
+        <th>Direction</th>
+        <th>Meaning</th>
+        <th>Typical Use</th>
+      </tr>
+      <tr>
+        <td><code>UP</code></td>
+        <td>↑ Upward</td>
+        <td>Input / Questions</td>
+        <td>User inputs, queries, requests</td>
+      </tr>
+      <tr>
+        <td><code>DOWN</code></td>
+        <td>↓ Downward</td>
+        <td>Output / Answers</td>
+        <td>AI responses, results, solutions</td>
+      </tr>
+      <tr>
+        <td><code>LEFT</code></td>
+        <td>← Past</td>
+        <td>Temporal / Historical</td>
+        <td>Timestamps, chronological data</td>
+      </tr>
+      <tr>
+        <td><code>RIGHT</code></td>
+        <td>→ Future</td>
+        <td>Actions / Plans</td>
+        <td>Tool calls, operations, side effects</td>
+      </tr>
+      <tr>
+        <td><code>FRONT</code></td>
+        <td>⬆ Current</td>
+        <td>Active Context</td>
+        <td>Ongoing conversations, current state</td>
+      </tr>
+      <tr>
+        <td><code>BACK</code></td>
+        <td>⬇ Archive</td>
+        <td>Metadata / History</td>
+        <td>Raw logs, metadata, backups</td>
+      </tr>
+    </table>
+
+    <h3>Why 6 Axes?</h3>
+    <p>
+      Traditional databases organize data in tables (2D) or trees (hierarchical).
+      The Cross Structure uses <strong>six orthogonal dimensions</strong> because human
+      knowledge naturally spans multiple perspectives:
+    </p>
+    <ul>
+      <li><strong>Vertical</strong> (UP/DOWN) — Information flow</li>
+      <li><strong>Horizontal</strong> (LEFT/RIGHT) — Time and action</li>
+      <li><strong>Depth</strong> (FRONT/BACK) — Context layers</li>
+    </ul>
+
+    <div class="callout">
+      <h4>🧠 Cognitive Mapping</h4>
+      <p>
+        The 6-axis structure mirrors how your brain organizes memories: you recall
+        <em>what</em> (UP/DOWN), <em>when</em> (LEFT/RIGHT), and <em>context</em> (FRONT/BACK)
+        simultaneously. .jcross makes this natural cognitive structure programmable.
+      </p>
+    </div>
+  </div>
+
+  <!-- ===== 4. SYNTAX ===== -->
+  <div id="syntax" class="section">
+    <h2>4. Syntax Fundamentals</h2>
+
+    <h3>Basic Structure</h3>
+    <p>Every .jcross file starts with a <code>CROSS</code> declaration:</p>
+
+<pre><code>"""
+My First .jcross Program
+A simple example to demonstrate syntax
+"""
+
+CROSS my_program {
+    // Your code goes here
+}
+</code></pre>
+
+    <h3>Comments</h3>
+    <p>.jcross supports two comment styles:</p>
+<pre><code>// Single-line comment
+
+/*
+   Multi-line comment
+   Useful for documentation
+*/
+</code></pre>
+
+    <h3>Defining Axes</h3>
+    <p>Within a CROSS block, you define axes using the <code>AXIS</code> keyword:</p>
+<pre><code>CROSS example {
+    AXIS UP {
+        messages: []
+        count: 0
+    }
+
+    AXIS DOWN {
+        responses: []
+    }
+}
+</code></pre>
+
+    <h3>Keywords Reference</h3>
+    <table>
+      <tr>
+        <th>Keyword</th>
+        <th>Purpose</th>
+        <th>Example</th>
+      </tr>
+      <tr>
+        <td><code>CROSS</code></td>
+        <td>Defines a Cross Structure</td>
+        <td><code>CROSS my_data { ... }</code></td>
+      </tr>
+      <tr>
+        <td><code>AXIS</code></td>
+        <td>Defines one of the 6 axes</td>
+        <td><code>AXIS UP { ... }</code></td>
+      </tr>
+      <tr>
+        <td><code>PATTERN</code></td>
+        <td>Defines a pattern-matching rule</td>
+        <td><code>PATTERN detect(text) { ... }</code></td>
+      </tr>
+      <tr>
+        <td><code>FUNCTION</code></td>
+        <td>Defines a function</td>
+        <td><code>FUNCTION process(input) { ... }</code></td>
+      </tr>
+      <tr>
+        <td><code>MATCH</code></td>
+        <td>Pattern matching expression</td>
+        <td><code>MATCH value { ... }</code></td>
+      </tr>
+      <tr>
+        <td><code>IF / ELSE</code></td>
+        <td>Conditional branching</td>
+        <td><code>IF score > 0.5 { ... }</code></td>
+      </tr>
+      <tr>
+        <td><code>RETURN</code></td>
+        <td>Returns a value</td>
+        <td><code>RETURN result</code></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ===== 5. DATA TYPES ===== -->
+  <div id="data-types" class="section">
+    <h2>5. Data Types & Variables</h2>
+
+    <h3>Primitive Types</h3>
+
+    <h4>Numbers</h4>
+<pre><code>count: 42
+score: 0.85
+temperature: -5
+</code></pre>
+
+    <h4>Strings</h4>
+<pre><code>name: "Verantyx"
+message: 'Hello, World!'
+multiline: """
+    This is a
+    multi-line string
+"""
+</code></pre>
+
+    <h4>Booleans</h4>
+<pre><code>is_active: true
+has_error: false
+</code></pre>
+
+    <h4>Null</h4>
+<pre><code>optional_value: null
+</code></pre>
+
+    <h3>Collection Types</h3>
+
+    <h4>Arrays</h4>
+<pre><code>numbers: [1, 2, 3, 4, 5]
+names: ["Alice", "Bob", "Charlie"]
+mixed: [42, "text", true, null]
+</code></pre>
+
+    <h4>Objects/Dictionaries</h4>
+<pre><code>user: {
+    name: "kofdai",
+    age: 22,
+    location: "Kyoto",
+    skills: ["AI", "Python", "AGI Research"]
+}
+</code></pre>
+
+    <h4>Nested Structures</h4>
+<pre><code>conversation: {
+    id: "conv_001",
+    messages: [
+        { role: "user", content: "Hello" },
+        { role: "assistant", content: "Hi there!" }
+    ],
+    metadata: {
+        created: "2026-03-12",
+        language: "en"
+    }
+}
+</code></pre>
+
+    <h3>Variable Assignment</h3>
+<pre><code>FUNCTION example() {
+    // Assign variables
+    x = 10
+    y = 20
+    result = x + y
+
+    // Reassign
+    x = x * 2
+
+    RETURN result
+}
+</code></pre>
+  </div>
+
+  <!-- ===== 6. CONTROL FLOW ===== -->
+  <div id="control-flow" class="section">
+    <h2>6. Control Flow & Patterns</h2>
+
+    <h3>Conditionals</h3>
+<pre><code>FUNCTION check_score(score) {
+    IF score >= 0.8 {
+        RETURN "excellent"
+    }
+    ELSE IF score >= 0.5 {
+        RETURN "good"
+    }
+    ELSE {
+        RETURN "needs improvement"
+    }
+}
+</code></pre>
+
+    <h3>Pattern Matching</h3>
+    <p>
+      One of .jcross's most powerful features is pattern matching with <code>MATCH</code>:
+    </p>
+<pre><code>PATTERN classify_text(text) {
+    MATCH text {
+        CONTAINS ["error", "fail"] -> "error_report"
+        CONTAINS ["success", "complete"] -> "success_message"
+        STARTS_WITH "Question:" -> "user_query"
+        DEFAULT -> "unknown"
+    }
+}
+</code></pre>
+
+    <h3>Loops (Implicit)</h3>
+    <p>.jcross uses functional iteration instead of traditional loops:</p>
+<pre><code>FUNCTION process_all(items) {
+    // Process each item
+    results = items.MAP(item -> process_item(item))
+
+    // Filter results
+    valid = results.FILTER(r -> r.score > 0.5)
+
+    // Reduce to summary
+    total = valid.REDUCE((acc, r) -> acc + r.value, 0)
+
+    RETURN total
+}
+</code></pre>
+
+    <h3>Built-in Operators</h3>
+    <table>
+      <tr>
+        <th>Operator</th>
+        <th>Description</th>
+        <th>Example</th>
+      </tr>
+      <tr>
+        <td><code>CONTAINS</code></td>
+        <td>Check if text contains keywords</td>
+        <td><code>CONTAINS ["AI", "AGI"]</code></td>
+      </tr>
+      <tr>
+        <td><code>REGEX_MATCH</code></td>
+        <td>Regular expression matching</td>
+        <td><code>REGEX_MATCH(r"\\d+")</code></td>
+      </tr>
+      <tr>
+        <td><code>ANY_IN</code></td>
+        <td>Check if any element matches</td>
+        <td><code>ANY_IN(text, keywords)</code></td>
+      </tr>
+      <tr>
+        <td><code>SPLIT</code></td>
+        <td>Split string by delimiter</td>
+        <td><code>SPLIT(text, ",")</code></td>
+      </tr>
+      <tr>
+        <td><code>JOIN</code></td>
+        <td>Join array elements</td>
+        <td><code>JOIN(parts, " ")</code></td>
+      </tr>
+      <tr>
+        <td><code>LENGTH</code></td>
+        <td>Get length of collection</td>
+        <td><code>LENGTH(array)</code></td>
+      </tr>
+      <tr>
+        <td><code>APPEND</code></td>
+        <td>Add to array</td>
+        <td><code>array.APPEND(item)</code></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ===== 7. FUNCTIONS ===== -->
+  <div id="functions" class="section">
+    <h2>7. Functions & Procedures</h2>
+
+    <h3>Defining Functions</h3>
+<pre><code>FUNCTION calculate_score(text, structure_type) {
+    pieces = detect_pieces(text, structure_type)
+    score = LENGTH(pieces) / REQUIRED_PIECES
+    RETURN score
+}
+</code></pre>
+
+    <h3>Functions vs Patterns</h3>
+    <p>
+      <strong>FUNCTION</strong> — Procedural logic with explicit returns<br>
+      <strong>PATTERN</strong> — Declarative matching with implicit returns
+    </p>
+<pre><code>// FUNCTION: Explicit procedural logic
+FUNCTION process_data(input) {
+    step1 = transform(input)
+    step2 = validate(step1)
+    RETURN step2
+}
+
+// PATTERN: Declarative matching
+PATTERN detect_type(text) {
+    MATCH text {
+        CONTAINS ["error"] -> "error"
+        CONTAINS ["info"] -> "info"
+        DEFAULT -> "unknown"
+    }
+}
+</code></pre>
+
+    <h3>Calling Functions</h3>
+<pre><code>FUNCTION main() {
+    result = calculate_score("sample text", "definition")
+    classification = detect_type("error occurred")
+
+    RETURN {
+        score: result,
+        type: classification
+    }
+}
+</code></pre>
+
+    <h3>Accessing Axis Data</h3>
+    <p>Functions can directly access axis data:</p>
+<pre><code>CROSS memory {
+    AXIS UP {
+        messages: []
+    }
+
+    FUNCTION add_message(msg) {
+        UP.messages.APPEND(msg)
+        RETURN LENGTH(UP.messages)
+    }
+
+    FUNCTION get_latest() {
+        IF LENGTH(UP.messages) > 0 {
+            RETURN UP.messages[-1]
+        }
+        RETURN null
+    }
+}
+</code></pre>
+  </div>
+
+  <!-- ===== 8. STORAGE ===== -->
+  <div id="storage" class="section">
+    <h2>8. Using .jcross as Data Storage</h2>
+
+    <p>
+      One of .jcross's revolutionary features: <strong>the file itself is the database</strong>.
+      No need for separate .json or .db files.
+    </p>
+
+    <h3>Self-Storing Programs</h3>
+<pre><code>"""
+User Preferences Storage
+Automatically persists changes
+"""
+
+CROSS user_prefs {
+    AXIS UP {
+        username: "kofdai"
+        theme: "dark"
+        language: "en"
+    }
+
+    AXIS LEFT {
+        created: "2026-03-12"
+        last_modified: null
+    }
+
+    FUNCTION update_theme(new_theme) {
+        UP.theme = new_theme
+        LEFT.last_modified = NOW()
+
+        // Auto-save to this file
+        SAVE_TO_FILE(SELF.file_path)
+
+        RETURN UP.theme
+    }
+}
+</code></pre>
+
+    <p>
+      When you call <code>update_theme("light")</code>, the .jcross file <em>rewrites itself</em>
+      with the updated data. The next time you load it, the changes persist.
+    </p>
+
+    <h3>Conversation Memory Example</h3>
+<pre><code>CROSS conversation_memory {
+    AXIS UP {
+        user_inputs: []
+        total_messages: 0
+    }
+
+    AXIS DOWN {
+        ai_responses: []
+    }
+
+    AXIS LEFT {
+        timestamps: []
+    }
+
+    FUNCTION log_exchange(user_input, ai_response) {
+        timestamp = NOW()
+
+        // Store in axes
+        UP.user_inputs.APPEND(user_input)
+        UP.total_messages = UP.total_messages + 1
+        DOWN.ai_responses.APPEND(ai_response)
+        LEFT.timestamps.APPEND(timestamp)
+
+        // Auto-persist
+        SAVE_TO_FILE(SELF.file_path)
+
+        RETURN {
+            total: UP.total_messages,
+            latest: user_input
+        }
+    }
+}
+</code></pre>
+
+    <div class="callout tip">
+      <h4>💡 Key Insight</h4>
+      <p>
+        Traditional apps: <strong>Code (app.py) + Data (db.json)</strong><br>
+        .jcross apps: <strong>Code + Data (app.jcross)</strong><br><br>
+        One file. One source of truth. Code and data evolve together.
+      </p>
+    </div>
+  </div>
+
+  <!-- ===== 9. EXAMPLES ===== -->
+  <div id="examples" class="section">
+    <h2>9. Real-World Examples</h2>
+
+    <h3>Example 1: Puzzle Completion Detector</h3>
+<pre><code>"""
+Response Completion Detector
+Detects when a text response is complete using puzzle reasoning
+"""
+
+CROSS response_detector {
+    AXIS structure_patterns {
+        UP: definition {
+            required: [subject, is_statement, explanation]
+            optional: [examples, technical_details]
+        }
+        DOWN: explanation {
+            required: [introduction, main_points]
+            optional: [conclusion]
+        }
+    }
+
+    PATTERN detect_structure_type(text) {
+        MATCH text {
+            CONTAINS ["とは", "には", "は、"] -> "definition"
+            CONTAINS ["比較", "compared to"] -> "comparison"
+            DEFAULT -> "explanation"
+        }
+    }
+
+    FUNCTION is_complete(text) {
+        // Detect structure type
+        struct_type = detect_structure_type(text)
+
+        // Calculate completion score
+        pieces = detect_pieces(text, struct_type)
+        pattern = structure_patterns[struct_type]
+        required = SET(pattern.required)
+
+        score = LENGTH(pieces & required) / LENGTH(required)
+
+        // Complete if score >= 80%
+        IF score >= 0.8 {
+            RETURN true
+        }
+
+        RETURN false
+    }
+}
+</code></pre>
+
+    <h3>Example 2: Todo List Manager</h3>
+<pre><code>"""
+Todo List with Auto-Save
+Manages tasks with automatic persistence
+"""
+
+CROSS todo_manager {
+    AXIS UP {
+        tasks: []
+        next_id: 1
+    }
+
+    AXIS LEFT {
+        created_at: "2026-03-12"
+    }
+
+    FUNCTION add_task(description, priority) {
+        task = {
+            id: UP.next_id,
+            description: description,
+            priority: priority,
+            completed: false,
+            created: NOW()
+        }
+
+        UP.tasks.APPEND(task)
+        UP.next_id = UP.next_id + 1
+
+        SAVE_TO_FILE(SELF.file_path)
+
+        RETURN task
+    }
+
+    FUNCTION complete_task(task_id) {
+        task = UP.tasks.FIND(t -> t.id == task_id)
+
+        IF task {
+            task.completed = true
+            task.completed_at = NOW()
+            SAVE_TO_FILE(SELF.file_path)
+            RETURN true
+        }
+
+        RETURN false
+    }
+
+    FUNCTION get_pending() {
+        RETURN UP.tasks.FILTER(t -> !t.completed)
+    }
+}
+</code></pre>
+
+    <h3>Example 3: Learning System</h3>
+<pre><code>"""
+Skill Learning System
+Tracks and improves skills over time
+"""
+
+CROSS skill_learner {
+    AXIS UP {
+        skills: {}
+    }
+
+    AXIS LEFT {
+        history: []
+    }
+
+    FUNCTION practice_skill(skill_name, performance_score) {
+        timestamp = NOW()
+
+        // Initialize skill if new
+        IF !(skill_name IN UP.skills) {
+            UP.skills[skill_name] = {
+                level: 0,
+                practices: 0,
+                average_score: 0
+            }
+        }
+
+        skill = UP.skills[skill_name]
+
+        // Update stats
+        skill.practices = skill.practices + 1
+        skill.average_score = (skill.average_score * (skill.practices - 1) + performance_score) / skill.practices
+
+        // Level up if average >= 80%
+        IF skill.average_score >= 0.8 {
+            skill.level = skill.level + 1
+        }
+
+        // Log to history
+        LEFT.history.APPEND({
+            skill: skill_name,
+            score: performance_score,
+            timestamp: timestamp
+        })
+
+        SAVE_TO_FILE(SELF.file_path)
+
+        RETURN skill
+    }
+}
+</code></pre>
+  </div>
+
+  <!-- ===== 10. BEST PRACTICES ===== -->
+  <div id="best-practices" class="section">
+    <h2>10. Best Practices</h2>
+
+    <h3>1. Use Meaningful Axis Names</h3>
+    <div class="callout warning">
+      <h4>❌ Bad</h4>
+      <p><code>AXIS data1 { ... }</code></p>
+    </div>
+    <div class="callout tip">
+      <h4>✅ Good</h4>
+      <p><code>AXIS user_inputs { ... }</code></p>
+    </div>
+
+    <h3>2. Document Your Structure</h3>
+    <p>Always include a docstring at the top:</p>
+<pre><code>"""
+User Authentication System
+
+This Cross Structure manages user sessions and auth tokens.
+- UP: Active sessions
+- DOWN: Auth logs
+- LEFT: Session history
+- RIGHT: Token operations
+"""
+
+CROSS auth_system {
+    // ...
+}
+</code></pre>
+
+    <h3>3. Leverage Pattern Matching</h3>
+    <p>Use <code>PATTERN</code> instead of nested <code>IF</code> statements when matching multiple conditions:</p>
+
+    <div class="callout warning">
+      <h4>❌ Verbose</h4>
+<pre><code>FUNCTION classify(text) {
+    IF CONTAINS(text, ["error"]) {
+        RETURN "error"
+    }
+    ELSE IF CONTAINS(text, ["warning"]) {
+        RETURN "warning"
+    }
+    ELSE {
+        RETURN "info"
+    }
+}
+</code></pre>
+    </div>
+
+    <div class="callout tip">
+      <h4>✅ Clean</h4>
+<pre><code>PATTERN classify(text) {
+    MATCH text {
+        CONTAINS ["error"] -> "error"
+        CONTAINS ["warning"] -> "warning"
+        DEFAULT -> "info"
+    }
+}
+</code></pre>
+    </div>
+
+    <h3>4. Keep Axes Focused</h3>
+    <p>Each axis should have a clear, single responsibility:</p>
+    <ul>
+      <li>UP — User-facing inputs only</li>
+      <li>DOWN — System outputs only</li>
+      <li>LEFT — Temporal/historical data</li>
+      <li>RIGHT — Action/operation logs</li>
+    </ul>
+
+    <h3>5. Use Auto-Save Sparingly</h3>
+    <p>
+      Don't call <code>SAVE_TO_FILE</code> on every minor change. Batch updates
+      or save only on significant operations to avoid I/O overhead.
+    </p>
+
+    <h3>6. Validate Before Saving</h3>
+<pre><code>FUNCTION update_user(user_id, new_data) {
+    // Validate first
+    IF !validate_user_data(new_data) {
+        RETURN { error: "Invalid data" }
+    }
+
+    // Then update
+    UP.users[user_id] = new_data
+    SAVE_TO_FILE(SELF.file_path)
+
+    RETURN { success: true }
+}
+</code></pre>
+  </div>
+
+  <!-- ===== 11. ADVANCED ===== -->
+  <div id="advanced" class="section">
+    <h2>11. Advanced Techniques</h2>
+
+    <h3>Cross Structure Composition</h3>
+    <p>You can reference other .jcross files from within a Cross Structure:</p>
+<pre><code>CROSS main {
+    // Import another Cross Structure
+    IMPORT "user_prefs.jcross" AS prefs
+    IMPORT "skills.jcross" AS skills
+
+    FUNCTION get_user_skills(user_id) {
+        theme = prefs.UP.users[user_id].theme
+        user_skills = skills.UP.skills.FILTER(s -> s.user_id == user_id)
+
+        RETURN {
+            theme: theme,
+            skills: user_skills
+        }
+    }
+}
+</code></pre>
+
+    <h3>Dynamic Axis Generation</h3>
+    <p>Generate axes programmatically based on runtime data:</p>
+<pre><code>CROSS dynamic_memory {
+    FUNCTION create_user_axis(user_id) {
+        // Dynamically create an axis for each user
+        SELF.axes["user_" + user_id] = {
+            messages: [],
+            preferences: {},
+            history: []
+        }
+
+        SAVE_TO_FILE(SELF.file_path)
+    }
+}
+</code></pre>
+
+    <h3>Cross-Axis Queries</h3>
+    <p>Query across multiple axes simultaneously:</p>
+<pre><code>FUNCTION get_user_activity(user_id) {
+    // Query UP (inputs) and DOWN (responses) together
+    user_inputs = UP.messages.FILTER(m -> m.user_id == user_id)
+    related_responses = DOWN.responses.FILTER(r -> r.request_id IN user_inputs.MAP(i -> i.id))
+
+    // Join with LEFT (timestamps)
+    timeline = ZIP(user_inputs, related_responses, LEFT.timestamps)
+
+    RETURN timeline
+}
+</code></pre>
+
+    <h3>Streaming Updates</h3>
+    <p>Handle real-time data streams:</p>
+<pre><code>CROSS stream_processor {
+    AXIS FRONT {
+        buffer: []
+        processing: false
+    }
+
+    FUNCTION on_data_chunk(chunk) {
+        FRONT.buffer.APPEND(chunk)
+
+        // Process when buffer is full
+        IF LENGTH(FRONT.buffer) >= 100 {
+            process_batch(FRONT.buffer)
+            FRONT.buffer = []
+        }
+    }
+
+    FUNCTION process_batch(chunks) {
+        // Batch processing logic
+        results = chunks.MAP(c -> analyze(c))
+        DOWN.results.EXTEND(results)
+        SAVE_TO_FILE(SELF.file_path)
+    }
+}
+</code></pre>
+
+    <h3>Error Handling</h3>
+<pre><code>FUNCTION safe_operation(input) {
+    TRY {
+        result = risky_operation(input)
+        RETURN { success: true, data: result }
+    }
+    CATCH error {
+        // Log error to BACK axis
+        BACK.error_log.APPEND({
+            error: error,
+            input: input,
+            timestamp: NOW()
+        })
+
+        RETURN { success: false, error: error.message }
+    }
+}
+</code></pre>
+
+    <div class="callout">
+      <h4>🚀 Going Further</h4>
+      <p>
+        These advanced techniques unlock .jcross's full potential. Explore the
+        <a href="https://github.com/Ag3497120/verantyx-cli">Verantyx-CLI source code</a>
+        to see real-world implementations in production.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>
+    .jcross Language © 2026 Verantyx Project<br>
+    <a href="index.html">Back to Verantyx.ai</a> ·
+    <a href="https://github.com/Ag3497120/verantyx-cli">GitHub</a> ·
+    <a href="https://github.com/Ag3497120">@kofdai</a>
+  </p>
+  <p style="margin-top: 15px; color: #6e7681;">
+    Built in Kyoto, Japan 🇯🇵 · Powered by symbolic reasoning
+  </p>
+</footer>
+
+</body>
+</html>
