@@ -6,20 +6,19 @@ import { useRef } from 'react';
 
 const data = [
   { version: 'v19', score: 11.3 },
-  { version: 'v25', score: 13.8 },
   { version: 'v32', score: 15.5 },
-  { version: 'v40', score: 17.2 },
   { version: 'v47', score: 18.9 },
-  { version: 'v53', score: 20.7 },
-  { version: 'v59', score: 22.1 },
-  { version: 'v74', score: 23.7 },
+  { version: 'v57', score: 21.6 },
+  { version: 'v72', score: 23.4 },
+  { version: 'v82', score: 24.4 },
+  { version: '+Synth', score: 82.6 },
 ];
 
 export default function ScoreChart() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
-  const maxScore = 30;
+  const maxScore = 100;
   const chartHeight = 300;
   const chartWidth = 600;
   const padding = 40;
@@ -45,7 +44,7 @@ export default function ScoreChart() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-xl text-center text-gray-400 mb-16"
         >
-          From 11.3% to 22.1% — continuous improvement through symbolic refinement
+          From 11.3% to 82.6% — hand-crafted plateau at 24%, then Claude Sonnet 4.5 synthesis
         </motion.p>
 
         <div className="card-glow border-glow rounded-2xl p-10 bg-gray-900/50 backdrop-blur-sm overflow-x-auto">
@@ -55,7 +54,7 @@ export default function ScoreChart() {
             style={{ minWidth: '500px' }}
           >
             {/* Grid lines */}
-            {[0, 5, 10, 15, 20, 25].map((tick) => {
+            {[0, 20, 40, 60, 80, 100].map((tick) => {
               const y = chartHeight - (tick / maxScore) * chartHeight + 30;
               return (
                 <g key={tick}>
@@ -143,7 +142,7 @@ export default function ScoreChart() {
           className="mt-12 text-center"
         >
           <p className="text-lg text-gray-400">
-            Each version introduces new symbolic transformations and reasoning strategies
+            v19–v82: hand-crafted solvers · +Synth: Claude Sonnet 4.5 program synthesis (+58.2%)
           </p>
         </motion.div>
       </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-
+import ClientProviders from '@/components/ClientProviders';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -10,9 +10,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Verantyx - Symbolic Reasoning. Zero Neural Networks.',
-  description: 'LLM-free symbolic reasoning engine achieving 22.1% on ARC-AGI-2 through pure program synthesis.',
-  keywords: ['symbolic reasoning', 'ARC-AGI', 'program synthesis', 'no neural networks'],
+  title: 'Verantyx - Symbolic Reasoning & iOS Apps',
+  description: 'Symbolic reasoning engine and innovative iOS games using facial recognition. PakuPaku Fishing, MouthEat.',
+  keywords: ['symbolic reasoning', 'ARC-AGI', 'iOS game', 'face tracking', 'fishing game', 'mouth game'],
 };
 
 export default function RootLayout({
@@ -23,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="font-sans antialiased">
-        {children}
+        <ClientProviders>
+          {children}
+        </ClientProviders>
       </body>
     </html>
   );

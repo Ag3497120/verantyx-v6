@@ -59,9 +59,9 @@ export default function BenchmarkCounters() {
         >
           <div className="counter-label">ARC-AGI-2</div>
           <div className="counter-value">
-            <AnimatedCounter end={23.7} suffix="%" decimals={1} />
+            <AnimatedCounter end={82.6} suffix="%" decimals={1} />
           </div>
-          <div className="counter-detail">237/1000 tasks</div>
+          <div className="counter-detail">826/1000 tasks</div>
           <div className="counter-glow arc-glow" />
         </motion.div>
 
@@ -74,7 +74,7 @@ export default function BenchmarkCounters() {
           <div className="counter-value">
             <AnimatedCounter end={4.6} suffix="%" decimals={1} />
           </div>
-          <div className="counter-detail">Hard Logic Evaluation</div>
+          <div className="counter-detail">Humanity&apos;s Last Exam</div>
           <div className="counter-glow hle-glow" />
         </motion.div>
       </motion.div>
@@ -88,7 +88,7 @@ export default function BenchmarkCounters() {
       >
         <div className="tagline-icon">⚡</div>
         <div className="tagline-text">
-          Zero neural networks. Every solution is a verifiable program.
+          Hand-crafted solvers + Claude Sonnet 4.5. Every solution is a verifiable program.
         </div>
       </motion.div>
 

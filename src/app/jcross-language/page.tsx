@@ -1,7 +1,7 @@
 export default function JCrossLanguage() {
   return (
     <iframe
-      src="/jcross-language.html"
+      src="/jcross-language-guide.html"
       style={{
         position: 'fixed',
         top: 0,

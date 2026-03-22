@@ -1,7 +1,7 @@
 export default function VerantyxCLI() {
   return (
     <iframe
-      src="/verantyx-cli.html"
+      src="/verantyx-cli-docs.html"
       style={{
         position: 'fixed',
         top: 0,

@@ -740,6 +740,62 @@ PATTERN detect_type(text) {
     }
 }
 </code></pre>
+
+    <h3>Helper Functions</h3>
+    <p>Break down complex logic into smaller, reusable helper functions:</p>
+<pre><code>FUNCTION calculate_score(pieces) {
+    score = 0
+
+    // Call helper functions
+    score = score + check_required_pieces(pieces)
+    score = score + check_optional_pieces(pieces)
+
+    RETURN score / 100.0
+}
+
+FUNCTION check_required_pieces(pieces) {
+    points = 0
+    required = ["subject", "explanation"]
+
+    FOR piece IN required {
+        IF piece IN pieces {
+            points = points + 40
+        }
+    }
+
+    RETURN points
+}
+
+FUNCTION check_optional_pieces(pieces) {
+    points = 0
+    optional = ["examples", "details"]
+
+    FOR piece IN optional {
+        IF piece IN pieces {
+            points = points + 10
+        }
+    }
+
+    RETURN points
+}
+</code></pre>
+
+    <h3>Recursive Functions</h3>
+    <p>.jcross supports recursion for algorithms like factorial, fibonacci, and tree traversal:</p>
+<pre><code>FUNCTION factorial(n) {
+    IF n <= 1 {
+        RETURN 1
+    }
+    RETURN n * factorial(n - 1)
+}
+
+FUNCTION fibonacci(n) {
+    IF n <= 1 {
+        RETURN n
+    }
+    RETURN fibonacci(n - 1) + fibonacci(n - 2)
+}
+</code></pre>
   </div>
 
   <!-- ===== 8. STORAGE ===== -->
@@ -884,104 +940,287 @@ CROSS response_detector {
 
     <h3>Example 2: Todo List Manager</h3>
 <pre><code>"""
-Todo List with Auto-Save
-Manages tasks with automatic persistence
+Todo List Manager
+Organizes tasks using 6-axis Cross structure
 """
 
 CROSS todo_manager {
+    // UP: Tasks to do
     AXIS UP {
-        tasks: []
-        next_id: 1
+        pending_tasks: []
+        total_added: 0
     }
 
+    // DOWN: Completed tasks
+    AXIS DOWN {
+        completed_tasks: []
+        total_completed: 0
+    }
+
+    // LEFT: Time tracking
     AXIS LEFT {
-        created_at: "2026-03-12"
+        task_created_times: {}
+        task_completed_times: {}
+    }
+
+    // RIGHT: Actions taken
+    AXIS RIGHT {
+        action_log: []
+    }
+
+    // FRONT: Current focus
+    AXIS FRONT {
+        active_task: null
+        current_priority: "medium"
+    }
+
+    // BACK: Metadata
+    AXIS BACK {
+        user_id: ""
+        settings: {
+            auto_save: true,
+            remind: false
+        }
     }
 
     FUNCTION add_task(description, priority) {
+        task_id = UP.total_added + 1
+        timestamp = NOW()
+
         task = {
-            id: UP.next_id,
+            id: task_id,
             description: description,
             priority: priority,
-            completed: false,
-            created: NOW()
+            created: timestamp
         }
 
-        UP.tasks.APPEND(task)
-        UP.next_id = UP.next_id + 1
+        // Store in UP axis
+        UP.pending_tasks.APPEND(task)
+        UP.total_added = UP.total_added + 1
 
-        SAVE_TO_FILE(SELF.file_path)
+        // Track creation time
+        LEFT.task_created_times[task_id] = timestamp
 
-        RETURN task
+        // Log action
+        RIGHT.action_log.APPEND({
+            action: "add_task",
+            task_id: task_id,
+            timestamp: timestamp
+        })
+
+        SELF.save()
+        RETURN task_id
     }
 
     FUNCTION complete_task(task_id) {
-        task = UP.tasks.FIND(t -> t.id == task_id)
+        // Find task in pending
+        FOR i, task IN UP.pending_tasks {
+            IF task.id == task_id {
+                // Move to completed
+                timestamp = NOW()
+                task.completed = timestamp
 
-        IF task {
-            task.completed = true
-            task.completed_at = NOW()
-            SAVE_TO_FILE(SELF.file_path)
-            RETURN true
+                DOWN.completed_tasks.APPEND(task)
+                DOWN.total_completed = DOWN.total_completed + 1
+
+                UP.pending_tasks.REMOVE(i)
+
+                // Track completion time
+                LEFT.task_completed_times[task_id] = timestamp
+
+                // Log action
+                RIGHT.action_log.APPEND({
+                    action: "complete_task",
+                    task_id: task_id,
+                    timestamp: timestamp
+                })
+
+                SELF.save()
+                RETURN true
+            }
         }
 
         RETURN false
     }
 
-    FUNCTION get_pending() {
-        RETURN UP.tasks.FILTER(t -> !t.completed)
+    FUNCTION get_pending_by_priority(priority) {
+        filtered = []
+
+        FOR task IN UP.pending_tasks {
+            IF task.priority == priority {
+                filtered.APPEND(task)
+            }
+        }
+
+        RETURN filtered
+    }
+
+    FUNCTION get_statistics() {
+        total_time = 0
+        count = 0
+
+        FOR task_id, completed_time IN LEFT.task_completed_times {
+            IF task_id IN LEFT.task_created_times {
+                created_time = LEFT.task_created_times[task_id]
+                duration = completed_time - created_time
+                total_time = total_time + duration
+                count = count + 1
+            }
+        }
+
+        average_time = 0
+        IF count > 0 {
+            average_time = total_time / count
+        }
+
+        RETURN {
+            total_added: UP.total_added,
+            total_completed: DOWN.total_completed,
+            pending: LENGTH(UP.pending_tasks),
+            average_completion_time: average_time
+        }
     }
 }
 </code></pre>
 
     <h3>Example 3: Learning System</h3>
 <pre><code>"""
-Skill Learning System
-Tracks and improves skills over time
+Learning Progress Tracker
+Tracks concept mastery using Cross structure
 """
 
-CROSS skill_learner {
+CROSS learning_system {
+    // UP: Concepts to learn
     AXIS UP {
-        skills: {}
+        concepts_to_learn: [
+            "variables", "functions", "loops",
+            "classes", "async", "patterns"
+        ]
+        total_concepts: 6
     }
 
+    // DOWN: Mastered concepts
+    AXIS DOWN {
+        mastered_concepts: []
+        mastery_scores: {}
+    }
+
+    // LEFT: Learning timeline
     AXIS LEFT {
-        history: []
+        learning_sessions: []
+        time_spent: {}
     }
 
-    FUNCTION practice_skill(skill_name, performance_score) {
+    // RIGHT: Practice exercises completed
+    AXIS RIGHT {
+        exercises_completed: []
+        exercises_passed: 0
+        exercises_failed: 0
+    }
+
+    // FRONT: Current learning state
+    AXIS FRONT {
+        current_concept: null
+        current_difficulty: "beginner"
+        focus_area: ""
+    }
+
+    // BACK: User profile
+    AXIS BACK {
+        user_id: ""
+        learning_style: "visual"
+        preferred_pace: "moderate"
+    }
+
+    FUNCTION start_learning(concept) {
         timestamp = NOW()
 
-        // Initialize skill if new
-        IF !(skill_name IN UP.skills) {
-            UP.skills[skill_name] = {
-                level: 0,
-                practices: 0,
-                average_score: 0
-            }
-        }
+        FRONT.current_concept = concept
 
-        skill = UP.skills[skill_name]
+        LEFT.learning_sessions.APPEND({
+            concept: concept,
+            started: timestamp,
+            status: "in_progress"
+        })
 
-        // Update stats
-        skill.practices = skill.practices + 1
-        skill.average_score = (skill.average_score * (skill.practices - 1) + performance_score) / skill.practices
+        SELF.save()
+        RETURN true
+    }
 
-        // Level up if average >= 80%
-        IF skill.average_score >= 0.8 {
-            skill.level = skill.level + 1
-        }
+    FUNCTION complete_exercise(concept, passed) {
+        timestamp = NOW()
 
-        // Log to history
-        LEFT.history.APPEND({
-            skill: skill_name,
-            score: performance_score,
+        RIGHT.exercises_completed.APPEND({
+            concept: concept,
+            passed: passed,
             timestamp: timestamp
         })
 
-        SAVE_TO_FILE(SELF.file_path)
+        IF passed {
+            RIGHT.exercises_passed = RIGHT.exercises_passed + 1
 
-        RETURN skill
+            // Update mastery score
+            IF concept NOT IN DOWN.mastery_scores {
+                DOWN.mastery_scores[concept] = 0
+            }
+            DOWN.mastery_scores[concept] = DOWN.mastery_scores[concept] + 10
+
+            // Check if mastered (score >= 80)
+            IF DOWN.mastery_scores[concept] >= 80 {
+                IF concept NOT IN DOWN.mastered_concepts {
+                    DOWN.mastered_concepts.APPEND(concept)
+                    UP.concepts_to_learn.REMOVE(concept)
+                }
+            }
+        }
+        ELSE {
+            RIGHT.exercises_failed = RIGHT.exercises_failed + 1
+        }
+
+        SELF.save()
+        RETURN DOWN.mastery_scores[concept]
+    }
+
+    FUNCTION get_progress() {
+        total = UP.total_concepts
+        mastered = LENGTH(DOWN.mastered_concepts)
+        remaining = LENGTH(UP.concepts_to_learn)
+
+        progress_percent = (mastered / total) * 100
+
+        RETURN {
+            total_concepts: total,
+            mastered: mastered,
+            remaining: remaining,
+            progress_percent: progress_percent,
+            current_concept: FRONT.current_concept,
+            exercises_passed: RIGHT.exercises_passed,
+            exercises_failed: RIGHT.exercises_failed
+        }
+    }
+
+    FUNCTION recommend_next_concept() {
+        // Find concept with lowest mastery score
+        lowest_score = 100
+        recommended = null
+
+        FOR concept IN UP.concepts_to_learn {
+            score = 0
+            IF concept IN DOWN.mastery_scores {
+                score = DOWN.mastery_scores[concept]
+            }
+
+            IF score < lowest_score {
+                lowest_score = score
+                recommended = concept
+            }
+        }
+
+        RETURN {
+            concept: recommended,
+            current_score: lowest_score,
+            reason: "This concept needs the most practice"
+        }
     }
 }
 </code></pre>
@@ -991,54 +1230,191 @@ CROSS skill_learner {
   <div id="best-practices" class="section">
     <h2>10. Best Practices</h2>
 
-    <h3>1. Use Meaningful Axis Names</h3>
+    <h3>1. Naming Conventions</h3>
+    <p>Use clear, descriptive names for all Cross structures, axes, and functions:</p>
     <div class="callout warning">
-      <h4>❌ Bad</h4>
-      <p><code>AXIS data1 { ... }</code></p>
+      <h4>❌ Bad: Vague, abbreviated names</h4>
+<pre><code>CROSS cm { ... }
+AXIS A { ui: [] }
+FUNCTION log(t) { ... }
+</code></pre>
     </div>
     <div class="callout tip">
-      <h4>✅ Good</h4>
-      <p><code>AXIS user_inputs { ... }</code></p>
+      <h4>✅ Good: Clear, descriptive names</h4>
+<pre><code>CROSS conversation_memory { ... }
+AXIS UP { user_inputs: [] }
+FUNCTION log_user_input(text) { ... }
+</code></pre>
     </div>
 
-    <h3>2. Document Your Structure</h3>
-    <p>Always include a docstring at the top:</p>
-<pre><code>"""
-User Authentication System
+    <h3>2. Axis Organization</h3>
+    <p><strong>Rule:</strong> Put data where it logically belongs.</p>
+    <div class="callout tip">
+      <h4>✅ Good: Logical axis placement</h4>
+<pre><code>CROSS chat_system {
+    AXIS UP {
+        user_messages: []      // Users provide input → UP
+    }
+    AXIS DOWN {
+        ai_responses: []       // AI provides output → DOWN
+    }
+    AXIS LEFT {
+        timestamps: []         // Time is historical → LEFT
+    }
+    AXIS RIGHT {
+        actions_taken: []      // Actions are future-oriented → RIGHT
+    }
+}
+</code></pre>
+    </div>
+    <div class="callout warning">
+      <h4>❌ Bad: Illogical axis placement</h4>
+<pre><code>CROSS chat_system {
+    AXIS UP {
+        timestamps: []         // Time is not "upward"
+    }
+    AXIS DOWN {
+        user_messages: []      // Users don't provide "downward" input
+    }
+}
+</code></pre>
+    </div>
 
-This Cross Structure manages user sessions and auth tokens.
-- UP: Active sessions
-- DOWN: Auth logs
-- LEFT: Session history
-- RIGHT: Token operations
+    <h3>3. Function Purity</h3>
+    <p>Distinguish between pure functions and functions with side effects:</p>
+    <div class="callout tip">
+      <h4>✅ Good: Pure calculation function</h4>
+<pre><code>FUNCTION calculate_score(pieces) {
+    score = 0
+    FOR piece IN pieces {
+        score = score + 10
+    }
+    RETURN score
+}
+
+// Clearly named side-effect function
+FUNCTION save_score_to_down(score) {
+    DOWN.last_score = score
+    SELF.save()
+    RETURN true
+}
+</code></pre>
+    </div>
+    <div class="callout warning">
+      <h4>❌ Bad: Hidden side effects</h4>
+<pre><code>FUNCTION calculate_score(pieces) {
+    score = 0
+    FOR piece IN pieces {
+        score = score + 10
+    }
+    // Surprise! This function also saves
+    DOWN.last_score = score
+    SELF.save()
+    RETURN score
+}
+</code></pre>
+    </div>
+
+    <h3>4. Error Handling</h3>
+    <p>Always handle errors explicitly and return meaningful error messages:</p>
+<pre><code>FUNCTION get_task(task_id) {
+    FOR task IN UP.pending_tasks {
+        IF task.id == task_id {
+            RETURN task
+        }
+    }
+
+    // Explicit error return
+    RETURN {
+        error: true,
+        message: "Task not found",
+        task_id: task_id
+    }
+}
+
+// Caller checks for errors
+FUNCTION complete_task(task_id) {
+    task = get_task(task_id)
+
+    IF task.error {
+        RETURN task  // Propagate error
+    }
+
+    // Process task...
+}
+</code></pre>
+
+    <h3>5. Documentation</h3>
+    <p>Always include docstrings at the file level and for complex functions:</p>
+<pre><code>"""
+Conversation Memory System
+
+This .jcross file stores all conversation data and provides
+functions to log inputs, responses, and query history.
+
+Axes:
+  UP: User inputs
+  DOWN: AI responses
+  LEFT: Timestamps
+  RIGHT: Actions taken
+  FRONT: Current conversation thread
+  BACK: Session metadata
 """
 
-CROSS auth_system {
-    // ...
+CROSS conversation_memory {
+    AXIS UP {
+        user_inputs: []
+    }
+
+    /**
+     * Log a user input to the conversation history
+     *
+     * @param user_input: String - The user's message
+     * @return: Object with total_inputs and total_responses counts
+     */
+    FUNCTION log_user_input(user_input) {
+        // Implementation...
+    }
 }
 </code></pre>
 
-    <h3>3. Leverage Pattern Matching</h3>
-    <p>Use <code>PATTERN</code> instead of nested <code>IF</code> statements when matching multiple conditions:</p>
+    <h3>6. Keep Functions Small</h3>
+    <p>Break complex logic into small, focused functions:</p>
+    <div class="callout tip">
+      <h4>✅ Good: Small, focused functions</h4>
+<pre><code>FUNCTION add_task(description) {
+    task = create_task_object(description)
+    store_task(task)
+    log_action("add_task", task.id)
+    RETURN task.id
+}
 
+FUNCTION create_task_object(description) {
+    RETURN {
+        id: UP.total_added + 1,
+        description: description,
+        created: NOW()
+    }
+}
+
+FUNCTION store_task(task) {
+    UP.pending_tasks.APPEND(task)
+    UP.total_added = UP.total_added + 1
+}
+</code></pre>
+    </div>
     <div class="callout warning">
-      <h4>❌ Verbose</h4>
-<pre><code>FUNCTION classify(text) {
-    IF CONTAINS(text, ["error"]) {
-        RETURN "error"
-    }
-    ELSE IF CONTAINS(text, ["warning"]) {
-        RETURN "warning"
-    }
-    ELSE {
-        RETURN "info"
-    }
+      <h4>❌ Bad: Monolithic function</h4>
+<pre><code>FUNCTION add_task(description) {
+    // 50 lines of logic all in one function...
 }
 </code></pre>
     </div>
 
+    <h3>7. Leverage Pattern Matching</h3>
+    <p>Use <code>PATTERN</code> instead of nested <code>IF</code> statements:</p>
     <div class="callout tip">
-      <h4>✅ Clean</h4>
+      <h4>✅ Clean with PATTERN</h4>
 <pre><code>PATTERN classify(text) {
     MATCH text {
         CONTAINS ["error"] -> "error"
@@ -1049,72 +1425,173 @@ CROSS auth_system {
 </code></pre>
     </div>
 
-    <h3>4. Keep Axes Focused</h3>
-    <p>Each axis should have a clear, single responsibility:</p>
-    <ul>
-      <li>UP — User-facing inputs only</li>
-      <li>DOWN — System outputs only</li>
-      <li>LEFT — Temporal/historical data</li>
-      <li>RIGHT — Action/operation logs</li>
-    </ul>
-
-    <h3>5. Use Auto-Save Sparingly</h3>
+    <h3>8. Use Auto-Save Sparingly</h3>
     <p>
       Don't call <code>SAVE_TO_FILE</code> on every minor change. Batch updates
       or save only on significant operations to avoid I/O overhead.
     </p>
-
-    <h3>6. Validate Before Saving</h3>
-<pre><code>FUNCTION update_user(user_id, new_data) {
-    // Validate first
-    IF !validate_user_data(new_data) {
-        RETURN { error: "Invalid data" }
-    }
-
-    // Then update
-    UP.users[user_id] = new_data
-    SAVE_TO_FILE(SELF.file_path)
-
-    RETURN { success: true }
-}
-</code></pre>
   </div>
 
   <!-- ===== 11. ADVANCED ===== -->
   <div id="advanced" class="section">
     <h2>11. Advanced Techniques</h2>
 
-    <h3>Cross Structure Composition</h3>
-    <p>You can reference other .jcross files from within a Cross Structure:</p>
-<pre><code>CROSS main {
-    // Import another Cross Structure
-    IMPORT "user_prefs.jcross" AS prefs
-    IMPORT "skills.jcross" AS skills
+    <h3>11.1 Self-Modifying Code</h3>
+    <p>.jcross files can modify their own structure during runtime:</p>
+<pre><code>CROSS self_improving {
+    AXIS UP {
+        learning_data: []
+    }
 
-    FUNCTION get_user_skills(user_id) {
-        theme = prefs.UP.users[user_id].theme
-        user_skills = skills.UP.skills.FILTER(s -> s.user_id == user_id)
+    AXIS DOWN {
+        learned_patterns: []
+    }
 
-        RETURN {
-            theme: theme,
-            skills: user_skills
+    FUNCTION learn_pattern(data) {
+        // Analyze data
+        pattern = analyze(data)
+
+        // Store learned pattern
+        DOWN.learned_patterns.APPEND(pattern)
+
+        // Modify own behavior based on learning
+        IF LENGTH(DOWN.learned_patterns) > 10 {
+            SELF.add_function("detect_" + pattern.name, pattern.logic)
         }
+
+        SELF.save()
+        RETURN pattern
     }
 }
 </code></pre>
 
-    <h3>Dynamic Axis Generation</h3>
-    <p>Generate axes programmatically based on runtime data:</p>
-<pre><code>CROSS dynamic_memory {
-    FUNCTION create_user_axis(user_id) {
-        // Dynamically create an axis for each user
-        SELF.axes["user_" + user_id] = {
-            messages: [],
-            preferences: {},
-            history: []
+    <h3>11.2 Cross-to-Cross Communication</h3>
+    <p>Multiple .jcross files can interact and share data:</p>
+<pre><code>// File: user_profile.jcross
+CROSS user_profile {
+    AXIS UP {
+        preferences: {
+            language: "en",
+            theme: "dark"
+        }
+    }
+
+    FUNCTION get_preference(key) {
+        RETURN UP.preferences[key]
+    }
+}
+
+// File: chat_system.jcross
+CROSS chat_system {
+    AXIS BACK {
+        user_profile_path: "user_profile.jcross"
+    }
+
+    FUNCTION get_user_language() {
+        // Load other .jcross file
+        profile = LOAD_CROSS(BACK.user_profile_path)
+        language = profile.run("get_preference", key="language")
+        RETURN language
+    }
+}
+</code></pre>
+
+    <h3>11.3 Dynamic Pattern Creation</h3>
+    <p>Create and use patterns dynamically at runtime:</p>
+<pre><code>CROSS dynamic_classifier {
+    AXIS DOWN {
+        learned_patterns: {}
+    }
+
+    FUNCTION add_pattern(name, keywords) {
+        // Dynamically create a new pattern
+        DOWN.learned_patterns[name] = keywords
+        SELF.save()
+    }
+
+    PATTERN classify_dynamic(text) {
+        // Use dynamically created patterns
+        FOR pattern_name, keywords IN DOWN.learned_patterns {
+            IF CONTAINS(text, keywords) {
+                RETURN pattern_name
+            }
+        }
+        DEFAULT -> "unknown"
+    }
+}
+</code></pre>
+
+    <h3>11.4 Fractal Cross Structures</h3>
+    <p>Cross structures can contain other Cross structures, creating recursive hierarchies:</p>
+<pre><code>CROSS outer {
+    AXIS UP {
+        // Nested Cross structure
+        inner_system: CROSS {
+            AXIS UP {
+                data: []
+            }
+            FUNCTION process() {
+                RETURN "inner"
+            }
+        }
+    }
+
+    FUNCTION use_inner() {
+        result = UP.inner_system.process()
+        RETURN result
+    }
+}
+</code></pre>
+
+    <h3>11.5 Meta-Programming</h3>
+    <p>Generate .jcross code from .jcross code:</p>
+<pre><code>CROSS code_generator {
+    FUNCTION generate_todo_function(field_name) {
+        code = """
+        FUNCTION add_to_""" + field_name + """(item) {
+            UP.""" + field_name + """.APPEND(item)
+            SELF.save()
+            RETURN LENGTH(UP.""" + field_name + """)
+        }
+        """
+
+        // Write new function to file
+        SELF.add_function_from_string(code)
+        SELF.save()
+
+        RETURN code
+    }
+}
+</code></pre>
+
+    <h3>11.6 Time-Based Patterns</h3>
+    <p>Detect patterns and behaviors based on temporal data:</p>
+<pre><code>CROSS time_aware {
+    AXIS LEFT {
+        event_timestamps: []
+    }
+
+    FUNCTION detect_pattern_over_time() {
+        now = NOW()
+        recent_events = []
+
+        // Get events from last hour
+        FOR timestamp IN LEFT.event_timestamps {
+            IF now - timestamp < 3600 {
+                recent_events.APPEND(timestamp)
+            }
         }
 
-        SAVE_TO_FILE(SELF.file_path)
+        // Detect frequency pattern
+        IF LENGTH(recent_events) > 10 {
+            RETURN "high_frequency"
+        }
+        ELSE IF LENGTH(recent_events) > 5 {
+            RETURN "medium_frequency"
+        }
+        ELSE {
+            RETURN "low_frequency"
+        }
     }
 }
 </code></pre>
@@ -1156,25 +1633,6 @@ CROSS auth_system {
         results = chunks.MAP(c -> analyze(c))
         DOWN.results.EXTEND(results)
         SAVE_TO_FILE(SELF.file_path)
-    }
-}
-</code></pre>
-
-    <h3>Error Handling</h3>
-<pre><code>FUNCTION safe_operation(input) {
-    TRY {
-        result = risky_operation(input)
-        RETURN { success: true, data: result }
-    }
-    CATCH error {
-        // Log error to BACK axis
-        BACK.error_log.APPEND({
-            error: error,
-            input: input,
-            timestamp: NOW()
-        })
-
-        RETURN { success: false, error: error.message }
     }
 }
 </code></pre>
