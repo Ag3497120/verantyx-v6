@@ -69,6 +69,29 @@ export default function AppsPage() {
             lang={lang}
           />
 
+          {/* TalkiePress */}
+          <AppCard
+            icon="🗞️"
+            title="TalkiePress"
+            subtitle=""
+            description={lang === 'ja' ? 'M1 Max + Cloudflareによる完全自律型1930年代新聞ジェネレーター' : 'Autonomous 1930s Newspaper Generator via M1 Max + Cloudflare'}
+            features={lang === 'ja' ? [
+              'Verantyx V7 JCross Spatial Memory',
+              'Gemma4 (26B) 概念ダウングレード',
+              'Talkie13B 記事自動補完',
+              'ハイブリッド・トンネリング・アーキテクチャ',
+            ] : [
+              'Verantyx V7 JCross Spatial Memory',
+              'Gemma4 (26B) Concept Downgrade',
+              'Talkie13B Prefix Autocomplete',
+              'Hybrid Tunneling Architecture',
+            ]}
+            pricing="Free / Local Inference"
+            href="/apps/talkiepress"
+            delay={0.25}
+            lang={lang}
+          />
+
           {/* World Rankings */}
           <RankingCard
             icon="🏆"
