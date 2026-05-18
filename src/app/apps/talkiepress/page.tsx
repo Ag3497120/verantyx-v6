@@ -7,7 +7,7 @@ import { ArrowLeft, Send, Settings, Radio } from "lucide-react";
 export default function TalkiePressApp() {
   const [newsText, setNewsText] = useState("");
   const [useHybrid, setUseHybrid] = useState(true);
-  const [apiUrl, setApiUrl] = useState("https://folks-promised-degree-essentially.trycloudflare.com/api/generate");
+  const [apiUrl, setApiUrl] = useState("https://phone-vitamin-substitute-wav.trycloudflare.com/api/generate");
   const [showSettings, setShowSettings] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -123,7 +123,7 @@ export default function TalkiePressApp() {
                 </div>
                 <div className="text-sm">
                   <span className="block font-bold text-[#e8dfc8]">Hybrid M1 Max Tunneling</span>
-                  <span className="text-[#a89b88]">Offload Gemma4 to Ollama API for explosive generation speed</span>
+                  <span className="text-[#a89b88]">Direct Verantyx MLX Native Tunneling for explosive generation speed</span>
                 </div>
               </label>
             </div>
