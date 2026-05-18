@@ -7,7 +7,7 @@ import { ArrowLeft, Send, Settings, Radio } from "lucide-react";
 export default function TalkiePressApp() {
   const [newsText, setNewsText] = useState("");
   const [useHybrid, setUseHybrid] = useState(true);
-  const [apiUrl, setApiUrl] = useState("https://phone-vitamin-substitute-wav.trycloudflare.com/api/generate");
+  const [apiUrl, setApiUrl] = useState("https://marketing-consortium-strings-includes.trycloudflare.com/api/generate");
   const [showSettings, setShowSettings] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
