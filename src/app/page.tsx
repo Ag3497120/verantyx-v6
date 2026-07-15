@@ -1,14 +1,16 @@
 'use client';
 
-/* cf-deploy-bump: 2026-07-15T19:10Z — ship committed out/ + trailing-slash routes */
+/* cf-deploy-bump: 2026-07-15T20:25Z — redesign: CLI-first, no splash, theme */
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import CinematicOpening from '@/components/CinematicOpening';
 import CliSpotlight from '@/components/CliSpotlight';
+import StickyCliCta from '@/components/StickyCliCta';
 import { useLanguage } from '@/lib/i18n';
+
+const CLI_GITHUB = 'https://github.com/Ag3497120/verantyx-cli';
 
 export default function Home() {
   const { lang } = useLanguage();
@@ -18,160 +20,129 @@ export default function Home() {
     offset: ['start start', 'end start'],
   });
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
-  const heroBlur = useTransform(scrollYProgress, [0, 1], [0, 8]);
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.97]);
+  const heroBlur = useTransform(scrollYProgress, [0, 1], [0, 6]);
 
   return (
-    <main className="relative bg-black text-white overflow-x-hidden min-h-screen">
-      <CinematicOpening />
+    <main className="relative text-white overflow-x-hidden min-h-screen">
       <Navbar />
+      <StickyCliCta />
 
-      {/* ── Hero Section ── */}
       <motion.section
         ref={heroRef}
         style={{ opacity: heroOpacity, scale: heroScale }}
-        className="relative min-h-[85vh] flex items-center justify-center px-6 pt-32 pb-24"
+        className="relative min-h-[88vh] flex items-center justify-center px-6 pt-28 pb-20"
       >
-        {/* Ambient glow */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'radial-gradient(ellipse 60% 40% at 50% 40%, rgba(14,165,233,0.06) 0%, transparent 70%)',
+            background:
+              'radial-gradient(ellipse 70% 45% at 50% 38%, rgba(var(--accent-rgb), 0.1) 0%, transparent 68%)',
           }}
         />
 
         <motion.div
           style={{ filter: useTransform(heroBlur, (v) => `blur(${v}px)`) }}
-          className="max-w-6xl mx-auto text-center relative z-10"
+          className="max-w-5xl mx-auto text-center relative z-10"
         >
-          {/* Overline */}
           <motion.div
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
-            transition={{ duration: 1.2, delay: 4.2, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto mb-8 h-px w-32"
+            transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="mx-auto mb-8 h-px w-28"
             style={{
-              background: 'linear-gradient(90deg, transparent, rgba(14,165,233,0.5), transparent)',
+              background:
+                'linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.55), transparent)',
               transformOrigin: 'center',
             }}
           />
 
           <motion.h1
-            initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
+            initial={{ opacity: 0, y: 28, filter: 'blur(8px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 4.3, ease: 'easeOut' }}
-            className="text-7xl md:text-9xl font-black mb-6 tracking-tight"
-            style={{
-              background: 'linear-gradient(135deg, #0EA5E9, #7C3AED, #06B6D4)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
+            transition={{ duration: 0.9, delay: 0.2, ease: 'easeOut' }}
+            className="font-display text-7xl md:text-9xl font-extrabold mb-6 tracking-tight gradient-brand"
           >
             Verantyx
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 20, filter: 'blur(4px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.8, delay: 4.6 }}
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.45 }}
             className="text-lg md:text-2xl font-light tracking-wide max-w-3xl mx-auto"
-            style={{ color: 'rgba(226, 232, 240, 0.9)' }}
+            style={{ color: 'rgba(226, 232, 240, 0.92)' }}
           >
             {lang === 'ja'
               ? '旗艦：Verantyx-CLI — 0.5B常駐ルーターと、必要なときだけ大型ローカルモデル'
               : 'Flagship: Verantyx-CLI — a resident 0.5B router that wakes larger local models only when needed'}
           </motion.p>
 
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 4.85 }}
-            className="mt-4 text-sm md:text-base font-light tracking-widest uppercase"
-            style={{ color: 'rgba(148, 163, 184, 0.65)' }}
-          >
-            {lang === 'ja' ? 'その下にアプリとその他プロジェクト' : 'Apps & other projects below'}
-          </motion.p>
-
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 5.0 }}
+            transition={{ duration: 0.65, delay: 0.65 }}
             className="mt-10 flex flex-wrap items-center justify-center gap-4"
           >
             <a
-              href="https://github.com/Ag3497120/verantyx-cli"
+              href={CLI_GITHUB}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-xl px-6 py-3 text-sm font-semibold"
+              className="btn-accent rounded-xl px-7 py-3.5 text-sm font-semibold"
+              style={{ textDecoration: 'none' }}
+            >
+              {lang === 'ja' ? 'GitHub で Verantyx-CLI を開く' : 'Open Verantyx-CLI on GitHub'}
+            </a>
+            <a
+              href="/verantyx-cli/"
+              className="rounded-xl px-7 py-3.5 text-sm font-semibold text-slate-300"
               style={{
-                background: 'rgba(14,165,233,0.18)',
-                border: '1px solid rgba(14,165,233,0.45)',
-                color: '#e0f2fe',
+                border: '1px solid rgba(148,163,184,0.28)',
+                textDecoration: 'none',
+                transition: 'border-color 0.3s ease, color 0.3s ease',
               }}
             >
-              Open Verantyx-CLI on GitHub
+              {lang === 'ja' ? 'CLI 製品ページ' : 'CLI product page'}
             </a>
             <a
               href="#verantyx-cli"
-              className="rounded-xl px-6 py-3 text-sm font-semibold text-slate-300"
-              style={{ border: '1px solid rgba(148,163,184,0.3)' }}
+              className="rounded-xl px-5 py-3.5 text-sm font-medium text-slate-500 hover:text-slate-300 transition-colors"
+              style={{ textDecoration: 'none' }}
             >
-              {lang === 'ja' ? '詳細を見る' : 'Read the details'}
+              {lang === 'ja' ? '概要へ ↓' : 'Overview ↓'}
             </a>
           </motion.div>
 
-          {/* Underline */}
           <motion.div
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
-            transition={{ duration: 1.2, delay: 5.1, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto mt-10 h-px w-32"
+            transition={{ duration: 1, delay: 0.85, ease: [0.22, 1, 0.36, 1] }}
+            className="mx-auto mt-12 h-px w-28"
             style={{
-              background: 'linear-gradient(90deg, transparent, rgba(14,165,233,0.5), transparent)',
+              background:
+                'linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.55), transparent)',
               transformOrigin: 'center',
             }}
           />
         </motion.div>
       </motion.section>
 
-      {/* ── Verantyx-CLI details (English) above Projects ── */}
-      <div className="relative px-6 py-4">
+      <div className="relative px-6 py-2">
         <div className="max-w-6xl mx-auto">
-          <SectionTitle text="VERANTYX-CLI" delay={5.15} />
+          <SectionTitle text="VERANTYX-CLI" />
         </div>
       </div>
       <CliSpotlight />
 
-      {/* ── Section Divider ── */}
-      <div className="relative px-6 py-4">
+      <div className="relative px-6 py-2">
         <div className="max-w-6xl mx-auto">
-          <SectionTitle text="PROJECTS" delay={5.2} />
+          <SectionTitle text="PROJECTS" />
         </div>
       </div>
 
-      {/* ── Project Cards Grid ── */}
-      <section className="relative px-6 pb-32 pt-12">
+      <section className="relative px-6 pb-16 pt-10">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <ProjectCard
-              icon="📱"
-              title="Apps"
-              description={lang === 'ja' ? '口の動きで遊ぶ革新的なiOSゲーム' : 'Innovative iOS games controlled by mouth movements'}
-              subtitle={lang === 'ja' ? 'パクパク釣り / MouthEat' : 'PakuPaku Fishing / MouthEat'}
-              href="/apps/"
-              delay={0}
-              lang={lang}
-            />
-            <ProjectCard
-              icon="⚡"
-              title="Verantyx Engine"
-              description={lang === 'ja' ? 'LLMフリーのシンボリック推論' : 'LLM-free symbolic reasoning'}
-              subtitle={lang === 'ja' ? 'ARC-AGI-2: 20.7% — ニューラルネットワークゼロ' : 'ARC-AGI-2: 20.7% — Zero Neural Networks'}
-              href="/verantyx/"
-              delay={0.1}
-              lang={lang}
-            />
             <ProjectCard
               icon="📦"
               title="Verantyx-CLI"
@@ -182,8 +153,9 @@ export default function Home() {
               }
               subtitle="github.com/Ag3497120/verantyx-cli · v3.0.0-alpha"
               href="/verantyx-cli/"
-              delay={0.2}
+              delay={0}
               lang={lang}
+              featured
             />
             <ProjectCard
               icon="📚"
@@ -191,10 +163,25 @@ export default function Home() {
               description={lang === 'ja' ? 'クロスワードパズルDSL' : 'Crossword puzzle DSL'}
               subtitle=""
               href="/jcross-language/"
-              delay={0.3}
+              delay={0.1}
+              lang={lang}
+            />
+            <ProjectCard
+              icon="📱"
+              title="Apps"
+              description={
+                lang === 'ja'
+                  ? '口の動きで遊ぶ iOS ゲームと関連プロジェクト'
+                  : 'Mouth-controlled iOS games and related projects'
+              }
+              subtitle={lang === 'ja' ? '一覧を見る' : 'Browse the catalog'}
+              href="/apps/"
+              delay={0.15}
               lang={lang}
             />
           </div>
+
+          <OtherAppsCollapse lang={lang} />
         </div>
       </section>
 
@@ -203,45 +190,111 @@ export default function Home() {
   );
 }
 
-/* ── Section Title with cinematic borders ── */
-function SectionTitle({ text, delay }: { text: string; delay: number }) {
+function OtherAppsCollapse({ lang }: { lang: 'ja' | 'en' }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <details
+      className="other-apps-details mt-10 rounded-2xl overflow-hidden"
+      style={{
+        border: '1px solid rgba(var(--accent-rgb), 0.12)',
+        background: 'rgba(10, 10, 20, 0.45)',
+      }}
+      open={open}
+      onToggle={(e) => setOpen((e.target as HTMLDetailsElement).open)}
+    >
+      <summary
+        className="px-6 py-5 flex items-center justify-between gap-4"
+        style={{ color: 'rgba(226, 232, 240, 0.85)' }}
+      >
+        <div>
+          <p
+            className="text-xs tracking-[0.28em] uppercase mb-1"
+            style={{ color: 'rgba(var(--accent-rgb), 0.7)' }}
+          >
+            {lang === 'ja' ? 'その他のアプリ' : 'Other apps'}
+          </p>
+          <p className="text-base font-medium">
+            {lang === 'ja'
+              ? 'パクパク釣り · MouthEat — クリックで展開'
+              : 'PakuPaku Fishing · MouthEat — expand to browse'}
+          </p>
+        </div>
+        <span className="other-apps-chevron text-slate-400 text-lg" aria-hidden>
+          ▾
+        </span>
+      </summary>
+      <div className="px-6 pb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <a
+          href="/apps/pakupaku-fishing/"
+          className="block rounded-xl p-5 transition-all duration-300"
+          style={{
+            border: '1px solid rgba(var(--accent-rgb), 0.1)',
+            background: 'rgba(0,0,0,0.35)',
+            textDecoration: 'none',
+            color: 'inherit',
+          }}
+        >
+          <span className="text-3xl">🎣</span>
+          <h3 className="mt-3 font-semibold text-lg text-white">
+            {lang === 'ja' ? 'パクパク釣り' : 'Paku Paku Fishing'}
+          </h3>
+          <p className="mt-1 text-sm text-slate-400">
+            {lang === 'ja' ? '口で釣るフィッシングゲーム' : 'Mouth-controlled fishing'}
+          </p>
+        </a>
+        <a
+          href="/apps/mouth-eat/"
+          className="block rounded-xl p-5 transition-all duration-300"
+          style={{
+            border: '1px solid rgba(var(--accent-rgb), 0.1)',
+            background: 'rgba(0,0,0,0.35)',
+            textDecoration: 'none',
+            color: 'inherit',
+          }}
+        >
+          <span className="text-3xl">😋</span>
+          <h3 className="mt-3 font-semibold text-lg text-white">MouthEat</h3>
+          <p className="mt-1 text-sm text-slate-400">
+            {lang === 'ja' ? '口を開けて食べるゲーム' : 'Open-mouth eating game'}
+          </p>
+        </a>
+      </div>
+    </details>
+  );
+}
+
+function SectionTitle({ text }: { text: string }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8, delay }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.7 }}
       className="flex items-center justify-center gap-6 py-6"
     >
       <motion.div
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         className="flex-1 h-px"
         style={{
-          background: 'linear-gradient(90deg, transparent, rgba(14,165,233,0.3))',
+          background: 'linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.35))',
           transformOrigin: 'left',
         }}
       />
-      <span
-        className="text-sm md:text-base font-semibold tracking-[0.4em] uppercase"
-        style={{
-          background: 'linear-gradient(45deg, #6b7280 0%, #d1d5db 45%, #f9fafb 70%, #d1d5db 85%, #6b7280 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-        }}
-      >
+      <span className="font-display text-sm md:text-base font-semibold tracking-[0.4em] uppercase text-silver">
         {text}
       </span>
       <motion.div
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         className="flex-1 h-px"
         style={{
-          background: 'linear-gradient(90deg, rgba(14,165,233,0.3), transparent)',
+          background: 'linear-gradient(90deg, rgba(var(--accent-rgb), 0.35), transparent)',
           transformOrigin: 'right',
         }}
       />
@@ -249,7 +302,6 @@ function SectionTitle({ text, delay }: { text: string; delay: number }) {
   );
 }
 
-/* ── Project Card ── */
 function ProjectCard({
   icon,
   title,
@@ -258,6 +310,7 @@ function ProjectCard({
   href,
   delay,
   lang,
+  featured = false,
 }: {
   icon: string;
   title: string;
@@ -266,60 +319,66 @@ function ProjectCard({
   href: string;
   delay: number;
   lang: 'ja' | 'en';
+  featured?: boolean;
 }) {
   return (
     <motion.a
       href={href}
-      initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }}
+      initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.8, delay, ease: 'easeOut' }}
+      transition={{ duration: 0.75, delay, ease: 'easeOut' }}
       whileHover={{ y: -6 }}
-      className="block group relative overflow-hidden"
+      className={`block group relative overflow-hidden ${featured ? 'md:col-span-2' : ''}`}
       style={{
-        background: 'rgba(10, 10, 20, 0.7)',
-        border: '1px solid rgba(14, 165, 233, 0.12)',
+        background: featured ? 'rgba(10, 10, 20, 0.82)' : 'rgba(10, 10, 20, 0.65)',
+        border: featured
+          ? '1px solid rgba(var(--accent-rgb), 0.28)'
+          : '1px solid rgba(var(--accent-rgb), 0.1)',
         borderRadius: 20,
-        padding: '2.5rem',
+        padding: featured ? '2.75rem' : '2.25rem',
         textDecoration: 'none',
         transition: 'border-color 0.4s ease, box-shadow 0.4s ease',
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = 'rgba(14, 165, 233, 0.4)';
-        e.currentTarget.style.boxShadow = '0 0 60px rgba(14, 165, 233, 0.12), inset 0 1px 0 rgba(14,165,233,0.1)';
+        e.currentTarget.style.borderColor = 'rgba(var(--accent-rgb), 0.45)';
+        e.currentTarget.style.boxShadow =
+          '0 0 50px rgba(var(--accent-rgb), 0.12), inset 0 1px 0 rgba(var(--accent-rgb), 0.08)';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = 'rgba(14, 165, 233, 0.12)';
+        e.currentTarget.style.borderColor = featured
+          ? 'rgba(var(--accent-rgb), 0.28)'
+          : 'rgba(var(--accent-rgb), 0.1)';
         e.currentTarget.style.boxShadow = 'none';
       }}
     >
-      {/* Hover gradient overlay */}
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at top left, rgba(14,165,233,0.05), transparent 60%)',
+          background:
+            'radial-gradient(ellipse at top left, rgba(var(--accent-rgb), 0.07), transparent 60%)',
           borderRadius: 20,
         }}
       />
 
-      <div className="relative z-10 flex flex-col gap-4">
-        <div className="text-5xl">{icon}</div>
-        <h2
-          className="text-2xl md:text-3xl font-bold"
-          style={{ color: '#f1f5f9' }}
-        >
+      <div className="relative z-10 flex flex-col gap-3">
+        <div className="text-4xl md:text-5xl">{icon}</div>
+        <h2 className="font-display text-2xl md:text-3xl font-bold" style={{ color: '#f1f5f9' }}>
           {title}
         </h2>
-        <p className="text-gray-400 text-lg leading-relaxed">{description}</p>
+        <p className="text-gray-400 text-base md:text-lg leading-relaxed">{description}</p>
         {subtitle && (
           <p
             className="text-sm font-medium tracking-wide"
-            style={{ color: 'rgba(14, 165, 233, 0.8)' }}
+            style={{ color: 'rgba(var(--accent-rgb), 0.85)' }}
           >
             {subtitle}
           </p>
         )}
-        <div className="flex items-center gap-2 mt-3 text-sm font-semibold" style={{ color: 'rgba(14, 165, 233, 0.7)' }}>
+        <div
+          className="flex items-center gap-2 mt-2 text-sm font-semibold"
+          style={{ color: 'rgba(var(--accent-rgb), 0.75)' }}
+        >
           <span>{lang === 'ja' ? '詳しく見る' : 'Learn more'}</span>
           <span className="group-hover:translate-x-2 transition-transform duration-300">→</span>
         </div>

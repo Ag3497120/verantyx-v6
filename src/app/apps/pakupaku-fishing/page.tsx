@@ -548,23 +548,38 @@ export default function PakuPakuFishingPage() {
         </p>
       </Section>
 
-      {/* Other App - Full-width banner */}
-      <section className="relative px-6 py-20">
+      {/* Other App — collapsed by default so visitors stay on this product */}
+      <section className="relative px-6 py-16">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-black tracking-wider mb-8 text-cyan-300/70 text-center">{t(content.sections.otherApps)}</h2>
-          <a
-            href="/apps/mouth-eat/"
-            className="block w-full p-8 bg-gradient-to-r from-cyan-900/20 to-blue-900/20 backdrop-blur-md border border-cyan-400/30 rounded-xl hover:border-cyan-400/60 hover:shadow-2xl hover:shadow-cyan-400/15 hover:-translate-y-2 transition-all"
-          >
-            <div className="flex items-center gap-6">
-              <div className="text-7xl">😋</div>
-              <div className="flex-1">
-                <div className="font-black text-white text-3xl tracking-wider mb-2">{content.otherApp.name}</div>
-                <div className="text-lg text-gray-400">{t(content.otherApp.description)}</div>
-              </div>
-              <div className="text-cyan-400 text-2xl">→</div>
+          <details className="other-apps-collapse rounded-xl border border-white/[0.08] bg-white/[0.02] overflow-hidden">
+            <summary className="px-6 py-5 flex items-center justify-between gap-4 text-left">
+              <span className="text-sm tracking-[0.2em] uppercase text-slate-500">
+                {t(content.sections.otherApps)}
+              </span>
+              <span className="collapse-chevron text-slate-500 text-sm" aria-hidden>
+                ▾
+              </span>
+            </summary>
+            <div className="px-6 pb-6">
+              <a
+                href="/apps/mouth-eat/"
+                className="block w-full p-6 md:p-8 bg-gradient-to-r from-cyan-900/20 to-blue-900/20 backdrop-blur-md border border-cyan-400/25 rounded-xl hover:border-cyan-400/50 hover:shadow-xl hover:shadow-cyan-400/10 transition-all"
+              >
+                <div className="flex items-center gap-5">
+                  <div className="text-5xl md:text-6xl">😋</div>
+                  <div className="flex-1">
+                    <div className="font-bold text-white text-xl md:text-2xl tracking-wide mb-1">
+                      {content.otherApp.name}
+                    </div>
+                    <div className="text-base text-gray-400">
+                      {t(content.otherApp.description)}
+                    </div>
+                  </div>
+                  <div className="text-cyan-400 text-xl">→</div>
+                </div>
+              </a>
             </div>
-          </a>
+          </details>
         </div>
       </section>
 

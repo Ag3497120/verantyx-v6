@@ -1,5 +1,23 @@
 @import "tailwindcss";
 
+:root {
+  --accent: #0EA5E9;
+  --accent-2: #06B6D4;
+  --accent-rgb: 14, 165, 233;
+  --accent-glow: rgba(14, 165, 233, 0.35);
+  --bg: #050508;
+  --bg-elevated: #0a0a14;
+  --fg: #e5e7eb;
+  --fg-muted: #9ca3af;
+  --font-display: var(--font-syne), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  color-scheme: dark;
+  transition:
+    --accent 0.45s ease,
+    --accent-2 0.45s ease,
+    --accent-glow 0.45s ease;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -11,12 +29,27 @@ html {
 }
 
 body {
-  background: #050508;
-  color: #e5e7eb;
+  background: var(--bg);
+  color: var(--fg);
   overflow-x: hidden;
+  font-family: var(--font-body);
+  transition: background-color 0.45s ease, color 0.45s ease;
 }
 
-/* ── Film grain noise (DEATHNOTE opening texture) ── */
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+}
+
+/* Atmosphere: soft diagonal mesh + radial accent wash */
+body {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(var(--accent-rgb), 0.12), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 100% 50%, rgba(var(--accent-rgb), 0.04), transparent 50%),
+    linear-gradient(165deg, #050508 0%, #08080f 45%, #050508 100%);
+  background-attachment: fixed;
+}
+
+/* Film grain */
 body::before {
   content: '';
   position: fixed;
@@ -29,7 +62,7 @@ body::before {
   background-size: 256px;
 }
 
-/* ── Cinematic vignette (DEATHNOTE dark-edge) ── */
+/* Vignette */
 body::after {
   content: '';
   position: fixed;
@@ -39,7 +72,6 @@ body::after {
   background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.35) 100%);
 }
 
-/* ── DEATHNOTE-style scroll-triggered blur→clear ── */
 .reveal-blur {
   opacity: 0;
   filter: blur(6px);
@@ -52,25 +84,49 @@ body::after {
   transform: translateY(0);
 }
 
+/* Shared accent utilities */
+.accent-text {
+  color: var(--accent);
+}
+
+.accent-border {
+  border-color: rgba(var(--accent-rgb), 0.35);
+}
+
+.btn-accent {
+  background: rgba(var(--accent-rgb), 0.16);
+  border: 1px solid rgba(var(--accent-rgb), 0.45);
+  color: #f0f9ff;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.25s ease;
+}
+
+.btn-accent:hover {
+  background: rgba(var(--accent-rgb), 0.28);
+  border-color: rgba(var(--accent-rgb), 0.7);
+  box-shadow: 0 0 28px rgba(var(--accent-rgb), 0.2);
+  transform: translateY(-1px);
+}
+
+.gradient-brand {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 @layer utilities {
   .text-glow {
-    text-shadow: 0 0 20px rgba(14, 165, 233, 0.5),
-                 0 0 30px rgba(14, 165, 233, 0.3);
-  }
-
-  .text-glow-purple {
-    text-shadow: 0 0 20px rgba(168, 85, 247, 0.5),
-                 0 0 30px rgba(168, 85, 247, 0.3);
+    text-shadow: 0 0 20px rgba(var(--accent-rgb), 0.5),
+                 0 0 30px rgba(var(--accent-rgb), 0.3);
   }
 
   .gradient-text {
-    background: linear-gradient(135deg, #0EA5E9 0%, #A855F7 100%);
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  /* Silver metallic text (DEATHNOTE section-title gradient) */
   .text-silver {
     background: linear-gradient(
       45deg,
@@ -86,22 +142,57 @@ body::after {
   }
 
   .card-glow {
-    box-shadow: 0 0 40px rgba(14, 165, 233, 0.1),
-                inset 0 0 40px rgba(14, 165, 233, 0.05);
+    box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.1),
+                inset 0 0 40px rgba(var(--accent-rgb), 0.05);
   }
 
   .border-glow {
-    border: 1px solid rgba(14, 165, 233, 0.3);
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
   }
 
-  /* DEATHNOTE outlined text technique */
   .text-outlined {
-    -webkit-text-stroke: 1px rgba(14, 165, 233, 0.4);
+    -webkit-text-stroke: 1px rgba(var(--accent-rgb), 0.4);
     color: transparent;
   }
 
   .text-luminescence {
     color: #e2e8f0;
-    text-shadow: 0 0 2px rgba(14, 165, 233, 0.3);
+    text-shadow: 0 0 2px rgba(var(--accent-rgb), 0.3);
+  }
+
+  .text-electric {
+    color: var(--accent);
+  }
+}
+
+/* Collapsible other-apps */
+.other-apps-collapse > summary,
+.other-apps-details > summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+.other-apps-collapse > summary::-webkit-details-marker,
+.other-apps-details > summary::-webkit-details-marker {
+  display: none;
+}
+.other-apps-collapse[open] .collapse-chevron,
+.other-apps-details[open] .other-apps-chevron,
+.other-apps-details[open] .collapse-chevron {
+  transform: rotate(180deg);
+}
+.collapse-chevron,
+.other-apps-chevron {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

@@ -107,7 +107,7 @@ export default function NotFound() {
           Public data available at{' '}
           <a href="/score.json" className="text-gray-600 hover:text-gray-400 transition-colors">/score.json</a>
           {' '}·{' '}
-          <a href="https://github.com/Ag3497120/verantyx-v6" className="text-gray-600 hover:text-gray-400 transition-colors" target="_blank">
+          <a href="https://github.com/Ag3497120/verantyx-cli" className="text-gray-600 hover:text-gray-400 transition-colors" target="_blank">
             GitHub
           </a>
         </p>

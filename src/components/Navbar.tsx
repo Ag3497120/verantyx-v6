@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/lib/i18n';
+import ThemePicker from '@/components/ThemePicker';
+
+const CLI_GITHUB = 'https://github.com/Ag3497120/verantyx-cli';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -23,11 +26,11 @@ export default function Navbar() {
         left: 0,
         right: 0,
         zIndex: 1000,
-        background: scrolled ? 'rgba(5, 5, 8, 0.92)' : 'rgba(5, 5, 8, 0.6)',
+        background: scrolled ? 'rgba(5, 5, 8, 0.94)' : 'rgba(5, 5, 8, 0.55)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         borderBottom: scrolled
-          ? '1px solid rgba(14, 165, 233, 0.1)'
+          ? '1px solid rgba(var(--accent-rgb), 0.14)'
           : '1px solid transparent',
         transition: 'background 0.4s ease, border-color 0.4s ease',
       }}
@@ -41,9 +44,9 @@ export default function Navbar() {
           alignItems: 'center',
           justifyContent: 'space-between',
           height: 60,
+          gap: 12,
         }}
       >
-        {/* Logo */}
         <a
           href="/"
           style={{
@@ -55,37 +58,28 @@ export default function Navbar() {
             fontWeight: 800,
             fontSize: '1.15em',
             letterSpacing: '-0.5px',
+            fontFamily: 'var(--font-display)',
           }}
         >
-          <span
-            style={{
-              fontSize: '1.1em',
-              background: 'linear-gradient(135deg, #0EA5E9, #7C3AED)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            ⚡
+          <span className="gradient-brand" style={{ fontSize: '1.05em' }}>
+            ◆
           </span>
           <span>Verantyx</span>
         </a>
 
-        {/* Desktop links */}
         <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 4,
-          }}
+          style={{ display: 'flex', alignItems: 'center', gap: 4 }}
           className="navbar-desktop"
         >
           <NavLink href="/" label="Home" />
           <NavLink href="/apps/" label="Apps" />
-          <NavLink href="/verantyx/" label="Engine" />
           <NavLink href="/verantyx-cli/" label="CLI" />
           <NavLink href="/jcross-language/" label=".jcross" />
 
-          {/* Language toggle */}
+          <div style={{ marginLeft: 10, marginRight: 4 }}>
+            <ThemePicker compact />
+          </div>
+
           <button
             onClick={() => setLang(lang === 'en' ? 'ja' : 'en')}
             style={{
@@ -102,7 +96,7 @@ export default function Navbar() {
               letterSpacing: '0.05em',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(14, 165, 233, 0.3)';
+              e.currentTarget.style.borderColor = 'rgba(var(--accent-rgb), 0.35)';
               e.currentTarget.style.color = '#e2e8f0';
             }}
             onMouseLeave={(e) => {
@@ -113,11 +107,11 @@ export default function Navbar() {
             {lang === 'en' ? 'JP' : 'EN'}
           </button>
 
-          {/* GitHub */}
           <a
-            href="https://github.com/Ag3497120/verantyx-v6"
+            href={CLI_GITHUB}
             target="_blank"
             rel="noopener noreferrer"
+            className="btn-accent"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -125,48 +119,54 @@ export default function Navbar() {
               marginLeft: 8,
               padding: '7px 14px',
               borderRadius: 8,
-              background: 'rgba(14, 165, 233, 0.08)',
-              border: '1px solid rgba(14, 165, 233, 0.2)',
-              color: '#e2e8f0',
               fontWeight: 600,
               fontSize: '0.8em',
               textDecoration: 'none',
-              transition: 'all 0.3s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(14, 165, 233, 0.5)';
-              e.currentTarget.style.boxShadow = '0 0 20px rgba(14, 165, 233, 0.15)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(14, 165, 233, 0.2)';
-              e.currentTarget.style.boxShadow = 'none';
             }}
           >
-            ⭐ GitHub
+            GitHub · CLI
           </a>
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          className="navbar-mobile-btn"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          style={{
-            display: 'none',
-            background: 'none',
-            border: 'none',
-            color: '#e2e8f0',
-            fontSize: '1.3em',
-            cursor: 'pointer',
-            padding: 4,
-            letterSpacing: '0.1em',
-          }}
-          aria-label="Menu"
+        <div
+          className="navbar-mobile-cluster"
+          style={{ display: 'none', alignItems: 'center', gap: 12 }}
         >
-          {mobileOpen ? '✕' : '☰'}
-        </button>
+          <ThemePicker compact />
+          <a
+            href={CLI_GITHUB}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-accent"
+            style={{
+              padding: '6px 10px',
+              borderRadius: 8,
+              fontSize: '0.72em',
+              fontWeight: 600,
+              textDecoration: 'none',
+            }}
+          >
+            CLI
+          </a>
+          <button
+            className="navbar-mobile-btn"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#e2e8f0',
+              fontSize: '1.3em',
+              cursor: 'pointer',
+              padding: 4,
+              letterSpacing: '0.1em',
+            }}
+            aria-label="Menu"
+          >
+            {mobileOpen ? '✕' : '☰'}
+          </button>
+        </div>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -177,16 +177,30 @@ export default function Navbar() {
             style={{
               overflow: 'hidden',
               background: 'rgba(5, 5, 8, 0.98)',
-              borderTop: '1px solid rgba(14, 165, 233, 0.08)',
+              borderTop: '1px solid rgba(var(--accent-rgb), 0.1)',
             }}
             className="navbar-mobile-menu"
           >
-            <div style={{ padding: '16px 24px 24px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <div
+              style={{
+                padding: '16px 24px 24px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 4,
+              }}
+            >
               <MobileNavLink href="/" label="Home" onClick={() => setMobileOpen(false)} />
               <MobileNavLink href="/apps/" label="Apps" onClick={() => setMobileOpen(false)} />
-              <MobileNavLink href="/verantyx/" label="Engine" onClick={() => setMobileOpen(false)} />
-              <MobileNavLink href="/verantyx-cli/" label="CLI" onClick={() => setMobileOpen(false)} />
-              <MobileNavLink href="/jcross-language/" label=".jcross" onClick={() => setMobileOpen(false)} />
+              <MobileNavLink
+                href="/verantyx-cli/"
+                label="CLI"
+                onClick={() => setMobileOpen(false)}
+              />
+              <MobileNavLink
+                href="/jcross-language/"
+                label=".jcross"
+                onClick={() => setMobileOpen(false)}
+              />
               <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
                 <button
                   onClick={() => setLang(lang === 'en' ? 'ja' : 'en')}
@@ -202,27 +216,25 @@ export default function Navbar() {
                     cursor: 'pointer',
                   }}
                 >
-                  {lang === 'en' ? '🇯🇵 日本語' : '🇺🇸 English'}
+                  {lang === 'en' ? '日本語' : 'English'}
                 </button>
                 <a
-                  href="https://github.com/Ag3497120/verantyx-v6"
+                  href={CLI_GITHUB}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="btn-accent"
                   style={{
                     flex: 1,
                     display: 'block',
                     padding: '10px 16px',
                     borderRadius: 10,
-                    background: 'rgba(14, 165, 233, 0.08)',
-                    border: '1px solid rgba(14, 165, 233, 0.2)',
-                    color: '#e2e8f0',
                     fontWeight: 600,
                     fontSize: '0.9em',
                     textDecoration: 'none',
                     textAlign: 'center',
                   }}
                 >
-                  ⭐ GitHub
+                  GitHub · CLI
                 </a>
               </div>
             </div>
@@ -233,7 +245,7 @@ export default function Navbar() {
       <style>{`
         @media (max-width: 768px) {
           .navbar-desktop { display: none !important; }
-          .navbar-mobile-btn { display: block !important; }
+          .navbar-mobile-cluster { display: flex !important; }
         }
         @media (min-width: 769px) {
           .navbar-mobile-menu { display: none !important; }
@@ -269,7 +281,15 @@ function NavLink({ href, label }: { href: string; label: string }) {
   );
 }
 
-function MobileNavLink({ href, label, onClick }: { href: string; label: string; onClick: () => void }) {
+function MobileNavLink({
+  href,
+  label,
+  onClick,
+}: {
+  href: string;
+  label: string;
+  onClick: () => void;
+}) {
   return (
     <a
       href={href}

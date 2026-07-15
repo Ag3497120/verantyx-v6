@@ -199,34 +199,44 @@ export default function MouthEatPage() {
         </p>
       </CinematicSection>
 
-      {/* Other App */}
+      {/* Other App — collapsed by default */}
       <section className="relative px-6 py-16">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-gray-600 text-xs tracking-[0.3em] uppercase mb-6">Other App</p>
-          <motion.a
-            href="/apps/pakupaku-fishing/"
-            whileHover={{ y: -3 }}
-            className="inline-flex items-center gap-4 px-8 py-5 rounded-2xl transition-all duration-300"
+        <div className="max-w-4xl mx-auto">
+          <details className="other-apps-collapse rounded-2xl overflow-hidden"
             style={{
-              background: 'rgba(10, 10, 20, 0.6)',
-              border: '1px solid rgba(14, 165, 233, 0.1)',
-              textDecoration: 'none',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(14, 165, 233, 0.3)';
-              e.currentTarget.style.boxShadow = '0 0 30px rgba(14, 165, 233, 0.06)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(14, 165, 233, 0.1)';
-              e.currentTarget.style.boxShadow = 'none';
+              background: 'rgba(10, 10, 20, 0.45)',
+              border: '1px solid rgba(var(--accent-rgb), 0.12)',
             }}
           >
-            <span className="text-4xl">🎣</span>
-            <div className="text-left">
-              <div className="font-bold text-white">パクパク釣り</div>
-              <div className="text-sm text-gray-500">口で釣る、新感覚フィッシングゲーム</div>
+            <summary className="px-6 py-5 flex items-center justify-between gap-4 text-left">
+              <span className="text-xs tracking-[0.3em] uppercase text-gray-500">
+                Other App
+              </span>
+              <span className="collapse-chevron text-gray-500 text-sm" aria-hidden>
+                ▾
+              </span>
+            </summary>
+            <div className="px-6 pb-6 flex justify-center">
+              <motion.a
+                href="/apps/pakupaku-fishing/"
+                whileHover={{ y: -3 }}
+                className="inline-flex items-center gap-4 px-8 py-5 rounded-2xl w-full max-w-lg"
+                style={{
+                  background: 'rgba(10, 10, 20, 0.6)',
+                  border: '1px solid rgba(var(--accent-rgb), 0.15)',
+                  textDecoration: 'none',
+                }}
+              >
+                <span className="text-4xl">🎣</span>
+                <div className="text-left">
+                  <div className="font-bold text-white">パクパク釣り</div>
+                  <div className="text-sm text-gray-500">
+                    口で釣る、新感覚フィッシングゲーム
+                  </div>
+                </div>
+              </motion.a>
             </div>
-          </motion.a>
+          </details>
         </div>
       </section>
 

@@ -2,19 +2,20 @@
 
 import { motion } from 'framer-motion';
 
+const GITHUB_CLI = 'https://github.com/Ag3497120/verantyx-cli';
+
 export default function Footer() {
   return (
     <footer className="relative py-20 px-6 overflow-hidden">
-      {/* Top border — cinematic thin line */}
       <div
         className="absolute top-0 left-0 right-0 h-px"
         style={{
-          background: 'linear-gradient(90deg, transparent, rgba(14,165,233,0.25) 30%, rgba(124,58,237,0.25) 70%, transparent)',
+          background:
+            'linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.28) 30%, rgba(var(--accent-rgb), 0.15) 70%, transparent)',
         }}
       />
 
       <div className="max-w-6xl mx-auto relative z-10">
-        {/* Logo + GitHub row */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -24,9 +25,10 @@ export default function Footer() {
         >
           <div className="text-center md:text-left">
             <h3
-              className="text-4xl font-black tracking-tight mb-2"
+              className="font-display text-4xl font-extrabold tracking-tight mb-2"
               style={{
-                background: 'linear-gradient(135deg, #0EA5E9, #7C3AED, #06B6D4)',
+                background:
+                  'linear-gradient(135deg, var(--accent), var(--accent-2))',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -34,26 +36,20 @@ export default function Footer() {
             >
               Verantyx
             </h3>
-            <p className="text-gray-500 text-sm tracking-wider uppercase">Symbolic Reasoning Engine</p>
+            <p className="text-gray-500 text-sm tracking-wider uppercase">
+              Local-first CLI · Apps · .jcross
+            </p>
           </div>
 
           <div className="flex flex-col items-center md:items-end gap-4">
             <a
-              href="https://github.com/Ag3497120/verantyx-v6"
+              href={GITHUB_CLI}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl transition-all duration-300"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl theme-surface"
               style={{
-                background: 'rgba(14, 165, 233, 0.06)',
-                border: '1px solid rgba(14, 165, 233, 0.15)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(14, 165, 233, 0.4)';
-                e.currentTarget.style.boxShadow = '0 0 30px rgba(14, 165, 233, 0.1)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(14, 165, 233, 0.15)';
-                e.currentTarget.style.boxShadow = 'none';
+                background: 'rgba(var(--accent-rgb), 0.08)',
+                border: '1px solid rgba(var(--accent-rgb), 0.2)',
               }}
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -63,27 +59,44 @@ export default function Footer() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="text-gray-300 font-semibold text-sm">★ Star on GitHub</span>
+              <span className="text-gray-300 font-semibold text-sm">
+                Star Verantyx-CLI
+              </span>
             </a>
 
             <p className="text-gray-600 text-xs">
               Built by{' '}
-              <a href="https://x.com/Koffdai" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-cyan-400 transition-colors">@Koffdai</a>
-              {' '}×{' '}
-              <a href="https://openclaw.ai" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-cyan-400 transition-colors">OpenClaw</a>
+              <a
+                href="https://x.com/Koffdai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:opacity-100 transition-colors"
+                style={{ color: 'rgba(var(--accent-rgb), 0.7)' }}
+              >
+                @Koffdai
+              </a>
+              {' × '}
+              <a
+                href="https://openclaw.ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:opacity-100 transition-colors"
+                style={{ color: 'rgba(var(--accent-rgb), 0.7)' }}
+              >
+                OpenClaw
+              </a>
             </p>
           </div>
         </motion.div>
 
-        {/* Divider */}
         <div
           className="my-12 h-px"
           style={{
-            background: 'linear-gradient(90deg, transparent, rgba(55,65,81,0.5) 30%, rgba(55,65,81,0.5) 70%, transparent)',
+            background:
+              'linear-gradient(90deg, transparent, rgba(55,65,81,0.5) 30%, rgba(55,65,81,0.5) 70%, transparent)',
           }}
         />
 
-        {/* Link Groups */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -91,26 +104,24 @@ export default function Footer() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="grid grid-cols-1 md:grid-cols-3 gap-10 text-sm"
         >
-          {/* Projects */}
           <div>
             <h4
               className="font-semibold mb-4 text-xs tracking-[0.3em] uppercase"
-              style={{ color: 'rgba(14, 165, 233, 0.7)' }}
+              style={{ color: 'rgba(var(--accent-rgb), 0.75)' }}
             >
               Projects
             </h4>
             <div className="flex flex-col gap-3">
-              <FooterLink href="/verantyx/" label="Verantyx Engine" />
               <FooterLink href="/verantyx-cli/" label="Verantyx-CLI" />
               <FooterLink href="/jcross-language/" label=".jcross Language" />
+              <FooterLink href="/apps/" label="Apps" />
             </div>
           </div>
 
-          {/* Apps */}
           <div>
             <h4
               className="font-semibold mb-4 text-xs tracking-[0.3em] uppercase"
-              style={{ color: 'rgba(14, 165, 233, 0.7)' }}
+              style={{ color: 'rgba(var(--accent-rgb), 0.75)' }}
             >
               Apps
             </h4>
@@ -120,11 +131,10 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Legal */}
           <div>
             <h4
               className="font-semibold mb-4 text-xs tracking-[0.3em] uppercase"
-              style={{ color: 'rgba(14, 165, 233, 0.7)' }}
+              style={{ color: 'rgba(var(--accent-rgb), 0.75)' }}
             >
               Legal
             </h4>
@@ -136,15 +146,14 @@ export default function Footer() {
           </div>
         </motion.div>
 
-        {/* Divider */}
         <div
           className="my-12 h-px"
           style={{
-            background: 'linear-gradient(90deg, transparent, rgba(55,65,81,0.3) 30%, rgba(55,65,81,0.3) 70%, transparent)',
+            background:
+              'linear-gradient(90deg, transparent, rgba(55,65,81,0.3) 30%, rgba(55,65,81,0.3) 70%, transparent)',
           }}
         />
 
-        {/* Copyright */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -153,14 +162,7 @@ export default function Footer() {
           className="text-center"
         >
           <p className="text-gray-600 text-xs tracking-wide">
-            © 2025 Verantyx. Pure symbolic reasoning — zero neural networks, zero GPUs.
-          </p>
-          <p className="mt-2 text-gray-700 text-xs">
-            Human architecture × AI implementation — kofdai designs the algorithms,{' '}
-            <a href="https://openclaw.ai" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-cyan-400 transition-colors">
-              OpenClaw (Claude)
-            </a>{' '}
-            helps implement and test them.
+            © 2026 Verantyx. Flagship: Verantyx-CLI on GitHub.
           </p>
         </motion.div>
       </div>
@@ -174,8 +176,12 @@ function FooterLink({ href, label }: { href: string; label: string }) {
       href={href}
       className="text-gray-500 transition-colors duration-300"
       style={{ textDecoration: 'none' }}
-      onMouseEnter={(e) => { e.currentTarget.style.color = 'rgba(14, 165, 233, 0.8)'; }}
-      onMouseLeave={(e) => { e.currentTarget.style.color = '#6b7280'; }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.color = 'rgba(var(--accent-rgb), 0.9)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.color = '#6b7280';
+      }}
     >
       {label}
     </a>
