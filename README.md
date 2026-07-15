@@ -67,15 +67,19 @@ kofdai
 
 This site is a **Next.js static export**. Production must build into `out/`.
 
+`wrangler.toml` is intentionally **not** used: when present with `pages_build_output_dir`, Cloudflare can leave the dashboard Build command empty and skip `npm run build`, then fail with `Output directory "out" not found`. Configure builds in the Pages dashboard only.
+
 | Setting | Value |
 |--------|--------|
 | Framework preset | None (or "Next.js (Static HTML Export)") |
-| Build command | `npm ci && npm run build` |
+| Build command | `npm run build` (or `npm ci && npm run build` / `npm run cf-build`) |
 | Build output directory | `out` |
 | Root directory | `/` |
 | Node version | 20+ (see `.nvmrc`) |
 
-Do **not** set the output directory to `public` or `.next`. `public/` is only for static assets copied into `out/`.
+Do **not** set the output directory to `public` or `.next`. `public/` is only for static assets copied into `out/`. Do **not** commit `out/` — it is gitignored; the Pages build must produce it.
+
+If the build log says `No build command specified. Skipping build step`, set **Build command** to `npm run build` under Settings → Builds (and clear build cache if needed).
 
 If a deploy succeeds but the site still shows old homepage copy (e.g. "Explore Our Projects" instead of "Flagship: Verantyx-CLI"):
 
