@@ -65,23 +65,21 @@ kofdai
 
 ## Cloudflare Pages
 
-This site is a **Next.js static export**. Production must build into `out/`.
+This site is a **Next.js static export**. Production must publish the contents of `out/` as the site root (not the repo root).
 
-`wrangler.toml` is intentionally **not** used: when present with `pages_build_output_dir`, Cloudflare can leave the dashboard Build command empty and skip `npm run build`, then fail with `Output directory "out" not found`. Configure builds in the Pages dashboard only.
+`wrangler.toml` sets `pages_build_output_dir = "out"` so Pages does not publish the Git root (which made `/` 404 while the real site lived under `/out/`). `out/` is **committed** so a skipped build step still has something to publish.
 
 | Setting | Value |
 |--------|--------|
 | Framework preset | None (or "Next.js (Static HTML Export)") |
-| Build command | `npm run build` (or `npm ci && npm run build` / `npm run cf-build`) — or leave empty if publishing committed `out/` |
-| Build output directory | `out` |
+| Build command | `npm run build` (preferred; or `npm run cf-build`) |
+| Build output directory | `out` (also pinned in `wrangler.toml`) |
 | Root directory | `/` |
-| Node version | 20+ (see `.nvmrc`) |
+| Node version | 20 (see `.nvmrc`) |
 
-Do **not** set the output directory to `public` or `.next`. `public/` is only for static assets copied into `out/`.
+Do **not** set the output directory to `public`, `.next`, or leave it blank (blank/`/` publishes the repo root). Prefer regenerating `out/` with `npm run build` before release.
 
-`out/` **is committed** as a safety net: production previously 404'd every in-site route when Pages skipped the build and published an empty/missing `out/`. Prefer regenerating with `npm run build` before release; the committed export keeps the site online even if the remote build step is misconfigured.
-
-If the build log says `No build command specified. Skipping build step`, either set **Build command** to `npm run build` under Settings → Builds, or rely on the committed `out/` (and clear build cache if needed).
+If a deploy “succeeds” but `/` 404s while `/out/` works: output dir is wrong — fix dashboard + keep `wrangler.toml`.
 
 If a deploy succeeds but the site still shows old homepage copy (e.g. "Explore Our Projects" instead of "Flagship: Verantyx-CLI"):
 

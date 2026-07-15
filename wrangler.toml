@@ -1,0 +1,14 @@
+# Cloudflare Pages — pins the publish root to the Next static export.
+# Without this, the dashboard may publish the repo root (`/`), so the site
+# only appears under /out/ and `/` 404s.
+#
+# Dashboard (still required):
+#   Build command: npm run build
+#   Build output directory: out  (overridden by pages_build_output_dir below)
+#   Root directory: /
+#   Node version: 20 (see .nvmrc)
+#
+# Keep `out/` committed as a fallback when the build step is skipped.
+name = "verantyx-site"
+compatibility_date = "2026-07-15"
+pages_build_output_dir = "out"

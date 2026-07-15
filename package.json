@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "rm -rf .next out && next build",
+    "build": "rm -rf .next && next build",
     "cf-build": "npm ci && npm run build",
     "start": "next start",
     "lint": "next lint"
