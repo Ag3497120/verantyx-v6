@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verantyx — Symbolic ARC-AGI-2 Solver</title>
-<meta name="description" content="24.0% on ARC-AGI-2 with zero neural networks. A symbolic program synthesis engine built on a single MacBook.">
-<meta property="og:title" content="Verantyx — 24.0% on ARC-AGI-2, Zero Neural Networks">
-<meta property="og:description" content="240/1000 ARC-AGI-2 tasks solved with pure symbolic reasoning. No GPU. No LLM. Just one MacBook.">
+<title>Verantyx — Verantyx-CLI · Local AI Runtime</title>
+<meta name="description" content="Verantyx-CLI: keep a 0.5B router resident, wake larger local models only when needed, with cross-session memory. Open-source local AI harness.">
+<meta property="og:title" content="Verantyx — Verantyx-CLI Flagship">
+<meta property="og:description" content="Local-first AI runtime: classify-only router, vector council, eternal memory. Not an accuracy booster — honest claim boundaries.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://verantyx.ai">
 <style>
@@ -178,6 +178,40 @@ a:hover { text-decoration: underline; }
 .cta .btn-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
 .cta .small-note { color: #484f58; font-size: 0.9em; margin-top: 20px; }
 
+
+/* ===== PROJECTS ===== */
+.projects { max-width: 1000px; margin: 0 auto; padding: 40px 20px 70px; }
+.projects h2 { font-size: 1.8em; color: #fff; margin-bottom: 10px; text-align: center; }
+.projects .lede { text-align: center; color: #8b949e; margin-bottom: 30px; }
+.project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+.project-card {
+  background: #161b22; border: 1px solid #30363d; border-radius: 14px; padding: 24px;
+  display: block; color: inherit; transition: border-color .2s, transform .2s;
+}
+.project-card:hover { border-color: #58a6ff; transform: translateY(-3px); text-decoration: none; }
+.project-card .ico { font-size: 1.8em; margin-bottom: 10px; display: block; }
+.project-card h3 { color: #f0f6fc; margin-bottom: 8px; font-size: 1.15em; }
+.project-card p { color: #8b949e; font-size: 0.95em; margin: 0; }
+.cli-spotlight { max-width: 900px; margin: 0 auto; padding: 50px 20px; }
+.cli-spotlight .box {
+  background: #161b22; border: 1px solid #30363d; border-radius: 16px; padding: 36px 28px;
+}
+.cli-spotlight h2 { color: #fff; font-size: 1.9em; margin: 12px 0 14px; }
+.cli-spotlight .pill {
+  display: inline-block; font-size: 0.75em; letter-spacing: .12em; text-transform: uppercase;
+  border: 1px solid #388bfd66; color: #79c0ff; border-radius: 999px; padding: 4px 12px;
+}
+.cli-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 24px 0; }
+@media (max-width: 720px) { .cli-cols { grid-template-columns: 1fr; } }
+.cli-cols h3 { color: #79c0ff; font-size: 0.85em; letter-spacing: .15em; text-transform: uppercase; margin-bottom: 10px; }
+.cli-cols ul { margin-left: 18px; color: #c9d1d9; }
+.cli-cols li { margin-bottom: 6px; }
+.cli-pre {
+  background: #0d1117; border: 1px solid #30363d; border-radius: 10px; padding: 16px;
+  overflow-x: auto; color: #79c0ff; font-size: 0.9em; margin-top: 18px;
+}
+.badge.sky { border-color: #1f6feb; color: #58a6ff; }
+
 footer { text-align: center; padding: 30px; color: #484f58; font-size: 0.85em; border-top: 1px solid #21262d; }
 </style>
 </head>
@@ -185,70 +219,107 @@ footer { text-align: center; padding: 30px; color: #484f58; font-size: 0.85em; b
 
 <!-- ===== STICKY TOP BANNER ===== -->
 <div class="gh-banner">
-  ⭐ If Verantyx inspires you, <a href="https://github.com/Ag3497120/verantyx-v6">give us a Star on GitHub</a> — it keeps this research alive.
+  ⭐ Flagship OSS: <a href="https://github.com/Ag3497120/verantyx-cli">Star Verantyx-CLI</a> — local router · council · eternal memory
 </div>
 
 <!-- ===== HERO ===== -->
 <div class="hero">
-  <h1>⚡ Verantyx</h1>
-  <div class="score">24.0%</div>
-  <div class="score-sub">240 / 1,000 ARC-AGI-2 tasks solved</div>
+  <h1>Verantyx</h1>
+  <div class="score" style="font-size:2.4em;color:#58a6ff;">Verantyx-CLI</div>
+  <div class="score-sub">Flagship open-source local AI runtime</div>
   <div class="tagline">
-    The hardest general intelligence benchmark — solved with
-    <strong>zero neural networks</strong>, on a single MacBook.
+    Keep a <strong>0.5B router</strong> resident. Wake larger local models <strong>only when needed</strong>.
+    Carry memory across restarts — without claiming that structure replaces world knowledge.
   </div>
   <div class="badges">
-    <span class="badge green">✓ Zero LLM calls</span>
-    <span class="badge green">✓ Zero GPU</span>
-    <span class="badge purple">✓ 100% Symbolic</span>
-    <span class="badge">✓ Every answer verifiable</span>
+    <span class="badge sky">✓ Classify-only router</span>
+    <span class="badge sky">✓ Vector council</span>
+    <span class="badge green">✓ Eternal memory</span>
+    <span class="badge">✓ Honest claim boundaries</span>
   </div>
-
-  <!-- Primary CTAs right in hero -->
   <div class="hero-cta">
-    <a href="https://github.com/Ag3497120/verantyx-v6" class="btn btn-star">⭐ Star on GitHub</a>
-    <a href="https://github.com/Ag3497120/verantyx-v6" class="btn btn-code">🔍 View Source Code</a>
+    <a href="https://github.com/Ag3497120/verantyx-cli" class="btn btn-star">⭐ Star Verantyx-CLI</a>
+    <a href="https://github.com/Ag3497120/verantyx-cli/releases/tag/v3.0.0-alpha" class="btn btn-code">Release v3.0.0-alpha</a>
+    <a href="#verantyx-cli" class="btn btn-code">Read details</a>
   </div>
 </div>
 
-<!-- ===== STAR APPEAL SECTION ===== -->
-<div class="star-appeal">
-  <span class="emoji-big">⭐</span>
-  <h2>Your Star Keeps This Research Going</h2>
-  <p>
-    Verantyx is built by <strong>one student</strong> on a personal MacBook — no lab, no funding, no GPU cluster.
-    <span class="highlight-text">Every GitHub Star directly helps</span> this project survive and grow.
-  </p>
-
-  <div class="star-reasons">
-    <div class="star-reason">
-      <span class="icon">📣</span>
-      <h4>Visibility = Survival</h4>
-      <p>Stars push the repo into GitHub Trending and search results. More eyes → more contributors → faster progress toward AGI.</p>
+<!-- ===== VERANTYX-CLI DETAILS (EN) ===== -->
+<div class="cli-spotlight" id="verantyx-cli">
+  <div class="box">
+    <span class="pill">Flagship · Open Source · MIT (code)</span>
+    <h2>Verantyx-CLI in detail</h2>
+    <p style="color:#c9d1d9;font-size:1.1em;max-width:760px;">
+      A local-first AI harness (Omni CLI): routing, deliberation, tools, and cross-session memory —
+      built for machines that cannot keep a frontier model loaded all day.
+    </p>
+    <div class="cli-cols">
+      <div>
+        <h3>What it is</h3>
+        <ul>
+          <li>Resident small router; larger local models on demand</li>
+          <li>Classify-only intent routing (the router does not invent answers)</li>
+          <li>Vector council / optional puzzle axes / agent tools</li>
+          <li>Eternal memory + feedback &amp; reviewer loops</li>
+          <li>Published honest benchmarks and claim boundaries</li>
+        </ul>
+      </div>
+      <div>
+        <h3>What it is not</h3>
+        <ul>
+          <li>Not an accuracy booster that turns 0.5B into a frontier model</li>
+          <li>Not “structure equals more world knowledge”</li>
+          <li>Not a one-click cloud demo — real local setup, real tradeoffs</li>
+        </ul>
+        <p style="color:#8b949e;font-size:0.95em;margin-top:12px;">
+          Prefer the curated <code>stable</code> branch or <code>v3.0.0-alpha</code>.
+          <code>main</code> moves fast as a research workbench.
+        </p>
+      </div>
     </div>
-    <div class="star-reason">
-      <span class="icon">🎓</span>
-      <h4>Grant Applications</h4>
-      <p>Star count is one of the first things grant committees and sponsors check. Your star is a vote of confidence.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;">
+      <a href="https://github.com/Ag3497120/verantyx-cli" class="btn btn-code">GitHub repository</a>
+      <a href="verantyx-cli-docs.html" class="btn btn-code">On-site docs</a>
+      <a href="jcross-language-guide.html" class="btn btn-code">.jcross language</a>
     </div>
-    <div class="star-reason">
-      <span class="icon">🤝</span>
-      <h4>Community Signal</h4>
-      <p>Every star tells other researchers: "This matters." It costs you nothing but means everything to independent research.</p>
-    </div>
-    <div class="star-reason">
-      <span class="icon">⚡</span>
-      <h4>Free & Takes 2 Seconds</h4>
-      <p>Click the ⭐ button on GitHub. That's it. You just supported cutting-edge AGI research from Kyoto, Japan.</p>
-    </div>
+    <pre class="cli-pre">git clone https://github.com/Ag3497120/verantyx-cli.git
+cd verantyx-cli
+git checkout stable   # curated snapshot for visitors
+python3 verantyx.py</pre>
   </div>
-
-  <a href="https://github.com/Ag3497120/verantyx-v6" class="btn btn-star" style="font-size:1.3em; padding: 20px 50px;">⭐ Star Verantyx on GitHub</a>
 </div>
 
-<!-- ===== WHY THIS MATTERS ===== -->
-<div class="section">
-  <h2>Why This Matters</h2>
+<!-- ===== PROJECTS (keep all) ===== -->
+<div class="projects" id="projects">
+  <h2>Projects</h2>
+  <p class="lede">Apps and research projects stay available below — Verantyx-CLI is the flagship open-source runtime.</p>
+  <div class="project-grid">
+    <a class="project-card" href="apps/">
+      <span class="ico">📱</span>
+      <h3>Apps</h3>
+      <p>Innovative iOS games (PakuPaku Fishing / MouthEat) — keep this section for store presence.</p>
+    </a>
+    <a class="project-card" href="#arc-engine">
+      <span class="ico">⚡</span>
+      <h3>Verantyx Engine</h3>
+      <p>LLM-free symbolic reasoning research (ARC-AGI-2 track).</p>
+    </a>
+    <a class="project-card" href="https://github.com/Ag3497120/verantyx-cli">
+      <span class="ico">📦</span>
+      <h3>Verantyx-CLI</h3>
+      <p>Local resident router, council &amp; eternal memory — flagship OSS.</p>
+    </a>
+    <a class="project-card" href="jcross-language-guide.html">
+      <span class="ico">📚</span>
+      <h3>.jcross Language</h3>
+      <p>Crossword / cross-structure DSL documentation.</p>
+    </a>
+  </div>
+</div>
+
+<!-- ===== ARC ENGINE (research) ===== -->
+<div class="section" id="arc-engine">
+  <h2>Also: Verantyx Engine (ARC research)</h2>
   <p>
     Frontier LLMs like o3 and Grok 4 attack ARC-AGI-2 with billions of parameters,
     thousands of GPU-hours, and inference costs of <strong>$10–100+ per task</strong>.
@@ -420,9 +491,9 @@ footer { text-align: center; padding: 30px; color: #484f58; font-size: 0.85em; b
     It takes 2 seconds and tells the world this research matters.
   </p>
   <div class="btn-row">
-    <a href="https://github.com/Ag3497120/verantyx-v6" class="btn btn-star">⭐ Star on GitHub</a>
+    <a href="https://github.com/Ag3497120/verantyx-cli" class="btn btn-star">⭐ Star Verantyx-CLI</a>
     <a href="https://github.com/sponsors/Ag3497120" class="btn btn-sponsor">💜 Sponsor Development</a>
-    <a href="https://github.com/Ag3497120/verantyx-v6" class="btn btn-code">📂 View Code</a>
+    <a href="https://github.com/Ag3497120/verantyx-v6" class="btn btn-code">📂 Website source</a>
   </div>
   <p class="small-note">
     Building AGI research costs real money — Claude API credits for development add up fast.<br>
