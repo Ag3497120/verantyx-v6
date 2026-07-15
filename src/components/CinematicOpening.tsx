@@ -124,7 +124,7 @@ export default function CinematicOpening() {
                 textTransform: 'uppercase',
               }}
             >
-              Explore Our Projects
+              Explore Verantyx-CLI
             </motion.p>
           )}
 
