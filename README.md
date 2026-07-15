@@ -63,6 +63,26 @@ npm start
 
 kofdai
 
+## Cloudflare Pages
+
+This site is a **Next.js static export**. Production must build into `out/`.
+
+| Setting | Value |
+|--------|--------|
+| Framework preset | None (or "Next.js (Static HTML Export)") |
+| Build command | `npm ci && npm run build` |
+| Build output directory | `out` |
+| Root directory | `/` |
+| Node version | 20+ (see `.nvmrc`) |
+
+Do **not** set the output directory to `public` or `.next`. `public/` is only for static assets copied into `out/`.
+
+If a deploy succeeds but the site still shows old homepage copy (e.g. "Explore Our Projects" instead of "Flagship: Verantyx-CLI"):
+
+1. Pages → Settings → Builds → **Clear build cache**
+2. Retry the deployment (or push an empty commit)
+3. Caching → **Purge Everything** for `verantyx.ai` / `www.verantyx.ai`
+
 ---
 
 **No LLMs. No neural networks. No pretrained models.**

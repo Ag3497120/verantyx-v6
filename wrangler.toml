@@ -1,0 +1,7 @@
+# Cloudflare Pages (static Next export). Dashboard should match:
+#   Build command: npm ci && npm run build
+#   Build output directory: out
+#   Root directory: /
+name = "verantyx-site"
+compatibility_date = "2026-07-15"
+pages_build_output_dir = "out"

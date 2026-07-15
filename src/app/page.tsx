@@ -1,6 +1,6 @@
 'use client';
 
-/* cf-deploy-bump: 2026-07-15T18:30Z */
+/* cf-deploy-bump: 2026-07-15T19:05Z — force clean CF Pages rebuild */
 
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
