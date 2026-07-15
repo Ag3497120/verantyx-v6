@@ -1,5 +1,13 @@
 # HTML must revalidate so deploys are not stuck behind long edge TTLs.
+# Cover `/`, `/*.html`, and directory indexes (`/apps/`, etc.) — otherwise
+# stale HTML keeps requesting deleted `/_next/static/*` hashes → mass 4xx.
 /
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*/*/
   Cache-Control: public, max-age=0, must-revalidate
 
 /*.html

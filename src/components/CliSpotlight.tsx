@@ -1,11 +1,14 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n';
 
 const GITHUB = 'https://github.com/Ag3497120/verantyx-cli';
 const RELEASE = 'https://github.com/Ag3497120/verantyx-cli/releases/tag/v3.0.0-alpha';
 
 export default function CliSpotlight() {
+  const { lang } = useLanguage();
+
   return (
     <section id="verantyx-cli" className="relative px-6 pb-20 pt-8">
       <div className="max-w-6xl mx-auto">
@@ -49,9 +52,9 @@ export default function CliSpotlight() {
                 Verantyx-CLI
               </h2>
               <p className="text-xl md:text-2xl font-light leading-snug text-slate-200 max-w-3xl">
-                Keep a small local router resident. Wake larger local models only when
-                needed. Carry memory across restarts — without pretending structure
-                replaces world knowledge.
+                {lang === 'ja'
+                  ? '小さなローカルルーターを常駐させ、必要なときだけ大型モデルを起こす。再起動をまたいで記憶を運ぶ。構造が世界知識の代わりになるとは言いません。'
+                  : 'Keep a small local router resident. Wake larger local models only when needed. Carry memory across restarts — without pretending structure replaces world knowledge.'}
               </p>
             </div>
 
@@ -61,14 +64,26 @@ export default function CliSpotlight() {
                   className="text-sm font-semibold tracking-[0.2em] uppercase"
                   style={{ color: 'rgba(var(--accent-rgb), 0.9)' }}
                 >
-                  What it is
+                  {lang === 'ja' ? 'これは何か' : 'What it is'}
                 </h3>
                 <ul className="space-y-2 text-base list-disc list-inside marker:opacity-60">
-                  <li>Local-first AI runtime / harness (Omni CLI)</li>
-                  <li>Classify-only routing — the router does not invent answers</li>
-                  <li>Vector council, optional puzzle axes, agent tools, eternal memory</li>
-                  <li>Feedback &amp; reviewer loops for overnight self-correction</li>
-                  <li>Honest benchmarks with claim boundaries published in-repo</li>
+                  {lang === 'ja' ? (
+                    <>
+                      <li>ローカル優先の AI ランタイム / ハーネス（Omni CLI）</li>
+                      <li>分類専用ルーティング — ルーターは答えを捏造しない</li>
+                      <li>ベクトル評議会、任意のパズル軸、エージェントツール、永遠の記憶</li>
+                      <li>フィードバックとレビューループで一晩かけて自己修正</li>
+                      <li>主張の境界をリポジトリに公開した誠実なベンチマーク</li>
+                    </>
+                  ) : (
+                    <>
+                      <li>Local-first AI runtime / harness (Omni CLI)</li>
+                      <li>Classify-only routing — the router does not invent answers</li>
+                      <li>Vector council, optional puzzle axes, agent tools, eternal memory</li>
+                      <li>Feedback &amp; reviewer loops for overnight self-correction</li>
+                      <li>Honest benchmarks with claim boundaries published in-repo</li>
+                    </>
+                  )}
                 </ul>
               </div>
               <div className="space-y-3 text-slate-300 leading-relaxed">
@@ -76,18 +91,38 @@ export default function CliSpotlight() {
                   className="text-sm font-semibold tracking-[0.2em] uppercase"
                   style={{ color: 'rgba(var(--accent-rgb), 0.9)' }}
                 >
-                  What it is not
+                  {lang === 'ja' ? 'これは何かではない' : 'What it is not'}
                 </h3>
                 <ul className="space-y-2 text-base list-disc list-inside marker:text-slate-600">
-                  <li>Not an accuracy booster that turns 0.5B into a frontier model</li>
-                  <li>Not “structure equals more world knowledge”</li>
-                  <li>Not a one-click cloud demo — real local setup, real tradeoffs</li>
+                  {lang === 'ja' ? (
+                    <>
+                      <li>0.5B をフロンティアモデルにする精度ブースターではない</li>
+                      <li>「構造＝より多くの世界知識」ではない</li>
+                      <li>ワンクリックのクラウドデモではない — 実機セットアップとトレードオフ</li>
+                    </>
+                  ) : (
+                    <>
+                      <li>Not an accuracy booster that turns 0.5B into a frontier model</li>
+                      <li>Not “structure equals more world knowledge”</li>
+                      <li>Not a one-click cloud demo — real local setup, real tradeoffs</li>
+                    </>
+                  )}
                 </ul>
                 <p className="pt-2 text-sm text-slate-500 leading-relaxed">
-                  Try the curated <code className="opacity-90">stable</code> branch or the{' '}
-                  <code className="opacity-90">v3.0.0-alpha</code> release;{' '}
-                  <code className="text-slate-400">main</code> moves fast as a research
-                  workbench.
+                  {lang === 'ja' ? (
+                    <>
+                      訪問者向けは <code className="opacity-90">stable</code> か{' '}
+                      <code className="opacity-90">v3.0.0-alpha</code> を推奨。{' '}
+                      <code className="text-slate-400">main</code> は研究用ワークベンチです。
+                    </>
+                  ) : (
+                    <>
+                      Try the curated <code className="opacity-90">stable</code> branch or the{' '}
+                      <code className="opacity-90">v3.0.0-alpha</code> release;{' '}
+                      <code className="text-slate-400">main</code> moves fast as a research
+                      workbench.
+                    </>
+                  )}
                 </p>
               </div>
             </div>
@@ -104,7 +139,7 @@ export default function CliSpotlight() {
                   color: '#e0f2fe',
                 }}
               >
-                GitHub repository
+                {lang === 'ja' ? 'GitHub リポジトリ' : 'GitHub repository'}
                 <span aria-hidden>→</span>
               </a>
               <a
@@ -114,14 +149,14 @@ export default function CliSpotlight() {
                 className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-slate-300"
                 style={{ border: '1px solid rgba(148,163,184,0.25)' }}
               >
-                Release notes
+                {lang === 'ja' ? 'リリースノート' : 'Release notes'}
               </a>
               <a
                 href="/verantyx-cli/"
                 className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-slate-400 hover:opacity-100"
                 style={{ color: 'rgba(var(--accent-rgb), 0.85)' }}
               >
-                Full product page
+                {lang === 'ja' ? '製品ページ' : 'Full product page'}
                 <span aria-hidden>→</span>
               </a>
             </div>
@@ -135,7 +170,7 @@ export default function CliSpotlight() {
             >
 {`git clone https://github.com/Ag3497120/verantyx-cli.git
 cd verantyx-cli
-# Prefer: git checkout stable   # curated snapshot for visitors
+git checkout stable
 python3 verantyx.py`}
             </pre>
           </div>

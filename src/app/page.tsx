@@ -1,6 +1,6 @@
 'use client';
 
-/* cf-deploy-bump: 2026-07-15T20:25Z — redesign: CLI-first, no splash, theme */
+/* cf-deploy-bump: 2026-07-15T20:45Z — conversion CTAs + 4xx hardening */
 
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState } from 'react';
@@ -11,6 +11,12 @@ import StickyCliCta from '@/components/StickyCliCta';
 import { useLanguage } from '@/lib/i18n';
 
 const CLI_GITHUB = 'https://github.com/Ag3497120/verantyx-cli';
+
+const COMMANDS = [
+  'git clone https://github.com/Ag3497120/verantyx-cli.git',
+  'cd verantyx-cli && git checkout stable',
+  'python3 verantyx.py',
+];
 
 export default function Home() {
   const { lang } = useLanguage();
@@ -82,35 +88,46 @@ export default function Home() {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.65 }}
-            className="mt-10 flex flex-wrap items-center justify-center gap-4"
+            className="mt-10 flex flex-col items-center gap-4"
           >
             <a
               href={CLI_GITHUB}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-accent rounded-xl px-7 py-3.5 text-sm font-semibold"
+              className="btn-accent rounded-xl px-8 py-3.5 text-sm font-semibold"
               style={{ textDecoration: 'none' }}
             >
-              {lang === 'ja' ? 'GitHub で Verantyx-CLI を開く' : 'Open Verantyx-CLI on GitHub'}
+              {lang === 'ja' ? 'GitHub で開く' : 'Open on GitHub'}
             </a>
-            <a
-              href="/verantyx-cli/"
-              className="rounded-xl px-7 py-3.5 text-sm font-semibold text-slate-300"
-              style={{
-                border: '1px solid rgba(148,163,184,0.28)',
-                textDecoration: 'none',
-                transition: 'border-color 0.3s ease, color 0.3s ease',
-              }}
-            >
-              {lang === 'ja' ? 'CLI 製品ページ' : 'CLI product page'}
-            </a>
-            <a
-              href="#verantyx-cli"
-              className="rounded-xl px-5 py-3.5 text-sm font-medium text-slate-500 hover:text-slate-300 transition-colors"
-              style={{ textDecoration: 'none' }}
-            >
-              {lang === 'ja' ? '概要へ ↓' : 'Overview ↓'}
-            </a>
+            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm">
+              <a
+                href="#demo"
+                className="font-medium transition-colors"
+                style={{ color: 'rgba(var(--accent-rgb), 0.95)', textDecoration: 'none' }}
+              >
+                {lang === 'ja' ? '30秒デモ' : '30s demo'}
+              </a>
+              <span className="text-slate-600" aria-hidden>
+                ·
+              </span>
+              <a
+                href="#start"
+                className="font-medium text-slate-300 hover:text-white transition-colors"
+                style={{ textDecoration: 'none' }}
+              >
+                {lang === 'ja' ? '3コマンドで開始' : 'Start in 3 commands'}
+              </a>
+              <span className="text-slate-600" aria-hidden>
+                ·
+              </span>
+              <a
+                href="#why"
+                className="font-medium text-slate-400 hover:text-slate-200 transition-colors"
+                style={{ textDecoration: 'none' }}
+              >
+                {lang === 'ja' ? '何が他と違うか' : 'What makes it different'}
+              </a>
+            </div>
           </motion.div>
 
           <motion.div
@@ -126,6 +143,10 @@ export default function Home() {
           />
         </motion.div>
       </motion.section>
+
+      <DemoSection lang={lang} />
+      <StartSection lang={lang} />
+      <WhySection lang={lang} />
 
       <div className="relative px-6 py-2">
         <div className="max-w-6xl mx-auto">
@@ -187,6 +208,311 @@ export default function Home() {
 
       <Footer />
     </main>
+  );
+}
+
+function DemoSection({ lang }: { lang: 'ja' | 'en' }) {
+  const steps =
+    lang === 'ja'
+      ? [
+          { n: '01', title: 'clone', body: 'リポジトリを取得' },
+          { n: '02', title: 'stable', body: '訪問者向けブランチへ切替' },
+          { n: '03', title: 'run', body: '常駐ルーターが起動し、プロンプトを待つ' },
+        ]
+      : [
+          { n: '01', title: 'clone', body: 'Get the repository' },
+          { n: '02', title: 'stable', body: 'Switch to the visitor-ready branch' },
+          { n: '03', title: 'run', body: 'Resident router boots and waits for prompts' },
+        ];
+
+  return (
+    <section id="demo" className="relative px-6 py-16 scroll-mt-24">
+      <div className="max-w-3xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.7 }}
+        >
+          <p
+            className="text-xs tracking-[0.3em] uppercase mb-3"
+            style={{ color: 'rgba(var(--accent-rgb), 0.8)' }}
+          >
+            {lang === 'ja' ? '30秒デモ' : '30-second demo'}
+          </p>
+          <h2 className="font-display text-3xl md:text-4xl font-bold mb-3">
+            {lang === 'ja' ? '起動までの流れ' : 'From zero to resident router'}
+          </h2>
+          <p className="text-slate-400 mb-8 leading-relaxed">
+            {lang === 'ja'
+              ? '動画や asciinema はありません。代わりに、実際の3ステップをそのまま示します。'
+              : 'No hosted video yet — here is the real three-step path, as it runs locally.'}
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.75, delay: 0.1 }}
+          className="rounded-2xl overflow-hidden font-mono text-sm"
+          style={{
+            border: '1px solid rgba(var(--accent-rgb), 0.2)',
+            background: 'rgba(0,0,0,0.55)',
+          }}
+        >
+          <div
+            className="flex items-center gap-2 px-4 py-2.5 text-xs text-slate-500"
+            style={{ borderBottom: '1px solid rgba(148,163,184,0.12)' }}
+          >
+            <span className="inline-block w-2.5 h-2.5 rounded-full bg-slate-700" />
+            <span className="inline-block w-2.5 h-2.5 rounded-full bg-slate-700" />
+            <span className="inline-block w-2.5 h-2.5 rounded-full bg-slate-700" />
+            <span className="ml-2 tracking-wide">verantyx-cli · demo</span>
+          </div>
+          <div className="p-5 space-y-4 text-left">
+            {COMMANDS.map((cmd, i) => (
+              <motion.div
+                key={cmd}
+                initial={{ opacity: 0, x: -8 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.15 + i * 0.12 }}
+              >
+                <p className="text-slate-500 text-xs mb-1">
+                  {steps[i].n} · {steps[i].title}
+                </p>
+                <p style={{ color: 'rgba(224, 242, 254, 0.92)' }}>
+                  <span style={{ color: 'rgba(var(--accent-rgb), 0.9)' }}>$ </span>
+                  {cmd}
+                </p>
+                <p className="text-slate-500 text-xs mt-1">{steps[i].body}</p>
+              </motion.div>
+            ))}
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.55 }}
+              className="pt-2"
+              style={{ color: 'rgba(var(--accent-rgb), 0.85)' }}
+            >
+              {lang === 'ja'
+                ? '→ ルーター常駐。大型モデルは必要なときだけ起床。'
+                : '→ Router resident. Larger models wake only when needed.'}
+            </motion.p>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function StartSection({ lang }: { lang: 'ja' | 'en' }) {
+  return (
+    <section id="start" className="relative px-6 py-16 scroll-mt-24">
+      <div className="max-w-3xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.7 }}
+        >
+          <p
+            className="text-xs tracking-[0.3em] uppercase mb-3"
+            style={{ color: 'rgba(var(--accent-rgb), 0.8)' }}
+          >
+            {lang === 'ja' ? '3コマンドで開始' : 'Start in 3 commands'}
+          </p>
+          <h2 className="font-display text-3xl md:text-4xl font-bold mb-3">
+            {lang === 'ja' ? 'コピーして実行' : 'Copy, paste, run'}
+          </h2>
+          <p className="text-slate-400 mb-8 leading-relaxed">
+            {lang === 'ja'
+              ? 'stable ブランチを推奨。main は研究用で変化が速いです。'
+              : 'Prefer the stable branch. main moves fast as a research workbench.'}
+          </p>
+        </motion.div>
+
+        <div className="space-y-3">
+          {COMMANDS.map((cmd, i) => (
+            <CopyCommand key={cmd} cmd={cmd} index={i} lang={lang} />
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mt-8 flex flex-wrap gap-3"
+        >
+          <a
+            href={CLI_GITHUB}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-accent rounded-xl px-6 py-3 text-sm font-semibold"
+            style={{ textDecoration: 'none' }}
+          >
+            {lang === 'ja' ? 'GitHub リポジトリ' : 'GitHub repository'} →
+          </a>
+          <a
+            href="/verantyx-cli/"
+            className="rounded-xl px-6 py-3 text-sm font-semibold text-slate-400"
+            style={{ border: '1px solid rgba(148,163,184,0.22)', textDecoration: 'none' }}
+          >
+            {lang === 'ja' ? '製品ページ' : 'Product page'}
+          </a>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function CopyCommand({
+  cmd,
+  index,
+  lang,
+}: {
+  cmd: string;
+  index: number;
+  lang: 'ja' | 'en';
+}) {
+  const [copied, setCopied] = useState(false);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(cmd);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.08 }}
+      className="flex items-stretch gap-2 rounded-xl overflow-hidden"
+      style={{
+        border: '1px solid rgba(var(--accent-rgb), 0.18)',
+        background: 'rgba(0,0,0,0.45)',
+      }}
+    >
+      <pre
+        className="flex-1 overflow-x-auto px-4 py-3.5 text-sm font-mono text-left m-0"
+        style={{ color: 'rgba(226,232,240,0.92)' }}
+      >
+        <span className="text-slate-500 mr-2">{index + 1}.</span>
+        {cmd}
+      </pre>
+      <button
+        type="button"
+        onClick={copy}
+        className="shrink-0 px-4 text-xs font-semibold tracking-wide transition-colors"
+        style={{
+          borderLeft: '1px solid rgba(148,163,184,0.15)',
+          color: copied ? 'rgba(var(--accent-rgb), 1)' : '#94a3b8',
+          background: 'transparent',
+          cursor: 'pointer',
+        }}
+        aria-label={lang === 'ja' ? 'コピー' : 'Copy'}
+      >
+        {copied ? (lang === 'ja' ? 'コピー済' : 'Copied') : lang === 'ja' ? 'コピー' : 'Copy'}
+      </button>
+    </motion.div>
+  );
+}
+
+function WhySection({ lang }: { lang: 'ja' | 'en' }) {
+  const items =
+    lang === 'ja'
+      ? [
+          {
+            title: '分類専用ルーター',
+            body: '0.5B は答えを捏造しない。分類して、必要なときだけ大型ローカルモデルを起こす。',
+          },
+          {
+            title: 'ローカル優先',
+            body: 'クラウドデモではない。実機セットアップとトレードオフを隠さない。',
+          },
+          {
+            title: '永遠の記憶',
+            body: '再起動のたびに忘れるのではなく、セッションをまたいで文脈を運ぶ。',
+          },
+          {
+            title: '主張の境界が公開',
+            body: '構造＝世界知識とは言わない。ベンチと claim boundaries はリポジトリにある。',
+          },
+        ]
+      : [
+          {
+            title: 'Classify-only router',
+            body: 'The 0.5B does not invent answers. It classifies, then wakes larger local models only when needed.',
+          },
+          {
+            title: 'Local-first, honest',
+            body: 'Not a one-click cloud demo. Real setup, real tradeoffs — no magic accuracy claims.',
+          },
+          {
+            title: 'Eternal memory',
+            body: 'Carry durable context across restarts instead of amnesia every boot.',
+          },
+          {
+            title: 'Published claim boundaries',
+            body: 'Structure ≠ world knowledge. Benchmarks and limits live in-repo.',
+          },
+        ];
+
+  return (
+    <section id="why" className="relative px-6 py-16 scroll-mt-24">
+      <div className="max-w-3xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.7 }}
+        >
+          <p
+            className="text-xs tracking-[0.3em] uppercase mb-3"
+            style={{ color: 'rgba(var(--accent-rgb), 0.8)' }}
+          >
+            {lang === 'ja' ? '何が他と違うか' : 'What makes it different'}
+          </p>
+          <h2 className="font-display text-3xl md:text-4xl font-bold mb-8">
+            {lang === 'ja' ? '小さな常駐。大きな起床。' : 'Stay small. Wake big.'}
+          </h2>
+        </motion.div>
+
+        <ul className="space-y-6 list-none">
+          {items.map((item, i) => (
+            <motion.li
+              key={item.title}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55, delay: i * 0.07 }}
+              className="text-left"
+              style={{
+                paddingBottom: 24,
+                borderBottom:
+                  i < items.length - 1 ? '1px solid rgba(148,163,184,0.12)' : 'none',
+              }}
+            >
+              <h3
+                className="font-display text-lg md:text-xl font-semibold mb-2"
+                style={{ color: 'rgba(241,245,249,0.98)' }}
+              >
+                {item.title}
+              </h3>
+              <p className="text-slate-400 leading-relaxed">{item.body}</p>
+            </motion.li>
+          ))}
+        </ul>
+      </div>
+    </section>
   );
 }
 
