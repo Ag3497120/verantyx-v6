@@ -1,5 +1,7 @@
 'use client';
 
+/* cf-deploy-bump: 2026-07-15T18:30Z */
+
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import Navbar from '@/components/Navbar';
