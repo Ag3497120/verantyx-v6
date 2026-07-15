@@ -5,6 +5,7 @@ import { useRef } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CinematicOpening from '@/components/CinematicOpening';
+import CliSpotlight from '@/components/CliSpotlight';
 import { useLanguage } from '@/lib/i18n';
 
 export default function Home() {
@@ -72,18 +73,58 @@ export default function Home() {
             initial={{ opacity: 0, y: 20, filter: 'blur(4px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ duration: 0.8, delay: 4.6 }}
-            className="text-lg md:text-2xl font-light tracking-widest uppercase"
-            style={{ color: 'rgba(148, 163, 184, 0.8)' }}
+            className="text-lg md:text-2xl font-light tracking-wide max-w-3xl mx-auto"
+            style={{ color: 'rgba(226, 232, 240, 0.9)' }}
           >
-            {lang === 'ja' ? 'プロジェクトを探索する' : 'Explore Our Projects'}
+            {lang === 'ja'
+              ? '旗艦：Verantyx-CLI — 0.5B常駐ルーターと、必要なときだけ大型ローカルモデル'
+              : 'Flagship: Verantyx-CLI — a resident 0.5B router that wakes larger local models only when needed'}
           </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 4.85 }}
+            className="mt-4 text-sm md:text-base font-light tracking-widest uppercase"
+            style={{ color: 'rgba(148, 163, 184, 0.65)' }}
+          >
+            {lang === 'ja' ? 'その下にアプリとその他プロジェクト' : 'Apps & other projects below'}
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 5.0 }}
+            className="mt-10 flex flex-wrap items-center justify-center gap-4"
+          >
+            <a
+              href="https://github.com/Ag3497120/verantyx-cli"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-xl px-6 py-3 text-sm font-semibold"
+              style={{
+                background: 'rgba(14,165,233,0.18)',
+                border: '1px solid rgba(14,165,233,0.45)',
+                color: '#e0f2fe',
+              }}
+            >
+              Open Verantyx-CLI on GitHub
+            </a>
+            <a
+              href="#verantyx-cli"
+              className="rounded-xl px-6 py-3 text-sm font-semibold text-slate-300"
+              style={{ border: '1px solid rgba(148,163,184,0.3)' }}
+            >
+              {lang === 'ja' ? '詳細を見る' : 'Read the details'}
+            </a>
+          </motion.div>
 
           {/* Underline */}
           <motion.div
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
-            transition={{ duration: 1.2, delay: 4.8, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto mt-8 h-px w-32"
+            transition={{ duration: 1.2, delay: 5.1, ease: [0.22, 1, 0.36, 1] }}
+            className="mx-auto mt-10 h-px w-32"
             style={{
               background: 'linear-gradient(90deg, transparent, rgba(14,165,233,0.5), transparent)',
               transformOrigin: 'center',
@@ -92,10 +133,18 @@ export default function Home() {
         </motion.div>
       </motion.section>
 
+      {/* ── Verantyx-CLI details (English) above Projects ── */}
+      <div className="relative px-6 py-4">
+        <div className="max-w-6xl mx-auto">
+          <SectionTitle text="VERANTYX-CLI" delay={5.15} />
+        </div>
+      </div>
+      <CliSpotlight />
+
       {/* ── Section Divider ── */}
       <div className="relative px-6 py-4">
         <div className="max-w-6xl mx-auto">
-          <SectionTitle text="PROJECTS" delay={5.0} />
+          <SectionTitle text="PROJECTS" delay={5.2} />
         </div>
       </div>
 
@@ -124,8 +173,12 @@ export default function Home() {
             <ProjectCard
               icon="📦"
               title="Verantyx-CLI"
-              description={lang === 'ja' ? 'コマンドラインインターフェース' : 'Command line interface'}
-              subtitle=""
+              description={
+                lang === 'ja'
+                  ? 'ローカル常駐ルーター＋評議会＋永遠の記憶（旗艦OSS）'
+                  : 'Local resident router, council & eternal memory — flagship OSS'
+              }
+              subtitle="github.com/Ag3497120/verantyx-cli · v3.0.0-alpha"
               href="/verantyx-cli"
               delay={0.2}
               lang={lang}
