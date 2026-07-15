@@ -195,7 +195,7 @@ export default function MouthEatPage() {
           </div>
         </GlassCard>
         <p className="text-center text-gray-600 text-xs mt-6">
-          詳細は<a href="/privacy" className="transition-colors duration-300" style={{ color: 'rgba(14, 165, 233, 0.6)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(14, 165, 233, 0.9)'} onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(14, 165, 233, 0.6)'}>プライバシーポリシー</a>をご覧ください
+          詳細は<a href="/privacy/" className="transition-colors duration-300" style={{ color: 'rgba(14, 165, 233, 0.6)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(14, 165, 233, 0.9)'} onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(14, 165, 233, 0.6)'}>プライバシーポリシー</a>をご覧ください
         </p>
       </CinematicSection>
 
@@ -204,7 +204,7 @@ export default function MouthEatPage() {
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-gray-600 text-xs tracking-[0.3em] uppercase mb-6">Other App</p>
           <motion.a
-            href="/apps/pakupaku-fishing"
+            href="/apps/pakupaku-fishing/"
             whileHover={{ y: -3 }}
             className="inline-flex items-center gap-4 px-8 py-5 rounded-2xl transition-all duration-300"
             style={{

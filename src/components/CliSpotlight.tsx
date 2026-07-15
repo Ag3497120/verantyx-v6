@@ -97,7 +97,7 @@ export default function CliSpotlight() {
                 Release notes
               </a>
               <a
-                href="/verantyx-cli"
+                href="/verantyx-cli/"
                 className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-slate-400 transition-colors hover:text-sky-300"
               >
                 On-site docs

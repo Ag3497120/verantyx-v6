@@ -105,7 +105,7 @@ export default function TermsPage() {
           </p>
           <p className="text-gray-600 text-sm mt-2">
             サポートページ:{' '}
-            <a href="/support" className="transition-colors duration-300" style={{ color: 'rgba(14, 165, 233, 0.6)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(14, 165, 233, 0.9)'} onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(14, 165, 233, 0.6)'}>
+            <a href="/support/" className="transition-colors duration-300" style={{ color: 'rgba(14, 165, 233, 0.6)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(14, 165, 233, 0.9)'} onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(14, 165, 233, 0.6)'}>
               https://verantyx.ai/support
             </a>
           </p>

@@ -173,7 +173,7 @@ export default function SupportPage() {
       <CinematicSection title={t(content.apps.title, lang)}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <motion.a
-            href="/apps/pakupaku-fishing"
+            href="/apps/pakupaku-fishing/"
             whileHover={{ y: -3 }}
             className="flex items-center gap-4 transition-all duration-300"
             style={{ textDecoration: 'none' }}
@@ -189,7 +189,7 @@ export default function SupportPage() {
             </GlassCard>
           </motion.a>
           <motion.a
-            href="/apps/mouth-eat"
+            href="/apps/mouth-eat/"
             whileHover={{ y: -3 }}
             className="flex items-center gap-4 transition-all duration-300"
             style={{ textDecoration: 'none' }}

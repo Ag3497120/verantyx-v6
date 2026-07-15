@@ -541,7 +541,7 @@ export default function PakuPakuFishingPage() {
         </div>
         <p className="text-center text-gray-500 text-sm mt-8">
           {t(content.privacy.detailsText)}{' '}
-          <a href="/privacy" className="text-cyan-400 hover:underline hover:text-cyan-300 transition-colors">
+          <a href="/privacy/" className="text-cyan-400 hover:underline hover:text-cyan-300 transition-colors">
             {t(content.privacy.linkText)}
           </a>
           {lang === 'ja' && ` ${t(content.privacy.detailsTextEnd)}`}
@@ -553,7 +553,7 @@ export default function PakuPakuFishingPage() {
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-black tracking-wider mb-8 text-cyan-300/70 text-center">{t(content.sections.otherApps)}</h2>
           <a
-            href="/apps/mouth-eat"
+            href="/apps/mouth-eat/"
             className="block w-full p-8 bg-gradient-to-r from-cyan-900/20 to-blue-900/20 backdrop-blur-md border border-cyan-400/30 rounded-xl hover:border-cyan-400/60 hover:shadow-2xl hover:shadow-cyan-400/15 hover:-translate-y-2 transition-all"
           >
             <div className="flex items-center gap-6">

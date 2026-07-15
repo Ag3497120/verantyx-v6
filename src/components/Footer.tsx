@@ -100,9 +100,9 @@ export default function Footer() {
               Projects
             </h4>
             <div className="flex flex-col gap-3">
-              <FooterLink href="/verantyx" label="Verantyx Engine" />
-              <FooterLink href="/verantyx-cli" label="Verantyx-CLI" />
-              <FooterLink href="/jcross-language" label=".jcross Language" />
+              <FooterLink href="/verantyx/" label="Verantyx Engine" />
+              <FooterLink href="/verantyx-cli/" label="Verantyx-CLI" />
+              <FooterLink href="/jcross-language/" label=".jcross Language" />
             </div>
           </div>
 
@@ -115,8 +115,8 @@ export default function Footer() {
               Apps
             </h4>
             <div className="flex flex-col gap-3">
-              <FooterLink href="/apps/pakupaku-fishing" label="パクパク釣り" />
-              <FooterLink href="/apps/mouth-eat" label="MouthEat" />
+              <FooterLink href="/apps/pakupaku-fishing/" label="パクパク釣り" />
+              <FooterLink href="/apps/mouth-eat/" label="MouthEat" />
             </div>
           </div>
 
@@ -129,9 +129,9 @@ export default function Footer() {
               Legal
             </h4>
             <div className="flex flex-col gap-3">
-              <FooterLink href="/privacy" label="Privacy Policy" />
-              <FooterLink href="/support" label="Support" />
-              <FooterLink href="/terms" label="Terms" />
+              <FooterLink href="/privacy/" label="Privacy Policy" />
+              <FooterLink href="/support/" label="Support" />
+              <FooterLink href="/terms/" label="Terms" />
             </div>
           </div>
         </motion.div>

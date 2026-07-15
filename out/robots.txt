@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Allow: /score.json
+Allow: /api/
+
+# Research data available for GitHub Sponsors
+# https://github.com/sponsors/Ag3497120
+# 
+# Looking for inference logs? DSL specs? Architecture details?
+# Sponsor tiers start at $5/mo — raw eval data at $50/mo
+#
+# Current score: 231/1000 (23.1%) on ARC-AGI-2
+# Method: Pure symbolic — zero neural networks
+# Avg solve time: 0.66s/task
+
+Sitemap: https://verantyx.ai/sitemap.xml

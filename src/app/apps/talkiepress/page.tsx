@@ -49,7 +49,7 @@ export default function TalkiePressApp() {
   return (
     <div className="min-h-screen bg-[#1c1814] text-[#e8dfc8] font-serif selection:bg-[#8c2020] selection:text-white pb-20">
       <div className="max-w-4xl mx-auto pt-10 px-4">
-        <Link href="/apps" className="inline-flex items-center text-[#a89b88] hover:text-[#e8dfc8] mb-8 transition-colors">
+        <Link href="/apps/" className="inline-flex items-center text-[#a89b88] hover:text-[#e8dfc8] mb-8 transition-colors">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Apps
         </Link>

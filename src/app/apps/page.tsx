@@ -41,7 +41,7 @@ export default function AppsPage() {
               '3 game modes',
             ]}
             pricing="Free + ¥250 PASS"
-            href="/apps/pakupaku-fishing"
+            href="/apps/pakupaku-fishing/"
             delay={0}
             lang={lang}
           />
@@ -64,7 +64,7 @@ export default function AppsPage() {
               'Gameplay recording',
             ]}
             pricing="Free + ¥250 PASS"
-            href="/apps/mouth-eat"
+            href="/apps/mouth-eat/"
             delay={0.15}
             lang={lang}
           />
@@ -87,7 +87,7 @@ export default function AppsPage() {
               'Hybrid Tunneling Architecture',
             ]}
             pricing="Free / Local Inference"
-            href="/apps/talkiepress"
+            href="/apps/talkiepress/"
             delay={0.25}
             lang={lang}
           />
@@ -109,7 +109,7 @@ export default function AppsPage() {
               'Real-time updates',
               'Nickname search',
             ]}
-            href="/apps/ranking"
+            href="/apps/ranking/"
             delay={0.3}
             lang={lang}
           />

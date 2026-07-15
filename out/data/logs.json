@@ -1,0 +1,12 @@
+{
+  "message": "Looking for raw inference logs?",
+  "status": "sponsor_exclusive",
+  "current_score": "231/1000 (23.1%)",
+  "what_sponsors_get": {
+    "$5/mo": "Failure categories by transformation type (recolor, move, fill, shrink)",
+    "$20/mo": "Full inference log per eval run + per-task rule that fired",
+    "$50/mo": "Raw eval data, DSL grammar drafts, architecture discussion access"
+  },
+  "become_a_sponsor": "https://github.com/sponsors/Ag3497120",
+  "public_data": "/score.json"
+}

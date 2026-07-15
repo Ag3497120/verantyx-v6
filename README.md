@@ -72,14 +72,16 @@ This site is a **Next.js static export**. Production must build into `out/`.
 | Setting | Value |
 |--------|--------|
 | Framework preset | None (or "Next.js (Static HTML Export)") |
-| Build command | `npm run build` (or `npm ci && npm run build` / `npm run cf-build`) |
+| Build command | `npm run build` (or `npm ci && npm run build` / `npm run cf-build`) — or leave empty if publishing committed `out/` |
 | Build output directory | `out` |
 | Root directory | `/` |
 | Node version | 20+ (see `.nvmrc`) |
 
-Do **not** set the output directory to `public` or `.next`. `public/` is only for static assets copied into `out/`. Do **not** commit `out/` — it is gitignored; the Pages build must produce it.
+Do **not** set the output directory to `public` or `.next`. `public/` is only for static assets copied into `out/`.
 
-If the build log says `No build command specified. Skipping build step`, set **Build command** to `npm run build` under Settings → Builds (and clear build cache if needed).
+`out/` **is committed** as a safety net: production previously 404'd every in-site route when Pages skipped the build and published an empty/missing `out/`. Prefer regenerating with `npm run build` before release; the committed export keeps the site online even if the remote build step is misconfigured.
+
+If the build log says `No build command specified. Skipping build step`, either set **Build command** to `npm run build` under Settings → Builds, or rely on the committed `out/` (and clear build cache if needed).
 
 If a deploy succeeds but the site still shows old homepage copy (e.g. "Explore Our Projects" instead of "Flagship: Verantyx-CLI"):
 

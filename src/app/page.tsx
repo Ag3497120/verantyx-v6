@@ -1,6 +1,6 @@
 'use client';
 
-/* cf-deploy-bump: 2026-07-15T19:05Z — force clean CF Pages rebuild */
+/* cf-deploy-bump: 2026-07-15T19:10Z — ship committed out/ + trailing-slash routes */
 
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
@@ -159,7 +159,7 @@ export default function Home() {
               title="Apps"
               description={lang === 'ja' ? '口の動きで遊ぶ革新的なiOSゲーム' : 'Innovative iOS games controlled by mouth movements'}
               subtitle={lang === 'ja' ? 'パクパク釣り / MouthEat' : 'PakuPaku Fishing / MouthEat'}
-              href="/apps"
+              href="/apps/"
               delay={0}
               lang={lang}
             />
@@ -168,7 +168,7 @@ export default function Home() {
               title="Verantyx Engine"
               description={lang === 'ja' ? 'LLMフリーのシンボリック推論' : 'LLM-free symbolic reasoning'}
               subtitle={lang === 'ja' ? 'ARC-AGI-2: 20.7% — ニューラルネットワークゼロ' : 'ARC-AGI-2: 20.7% — Zero Neural Networks'}
-              href="/verantyx"
+              href="/verantyx/"
               delay={0.1}
               lang={lang}
             />
@@ -181,7 +181,7 @@ export default function Home() {
                   : 'Local resident router, council & eternal memory — flagship OSS'
               }
               subtitle="github.com/Ag3497120/verantyx-cli · v3.0.0-alpha"
-              href="/verantyx-cli"
+              href="/verantyx-cli/"
               delay={0.2}
               lang={lang}
             />
@@ -190,7 +190,7 @@ export default function Home() {
               title=".jcross Language"
               description={lang === 'ja' ? 'クロスワードパズルDSL' : 'Crossword puzzle DSL'}
               subtitle=""
-              href="/jcross-language"
+              href="/jcross-language/"
               delay={0.3}
               lang={lang}
             />

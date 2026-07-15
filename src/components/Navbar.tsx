@@ -80,10 +80,10 @@ export default function Navbar() {
           className="navbar-desktop"
         >
           <NavLink href="/" label="Home" />
-          <NavLink href="/apps" label="Apps" />
-          <NavLink href="/verantyx" label="Engine" />
-          <NavLink href="/verantyx-cli" label="CLI" />
-          <NavLink href="/jcross-language" label=".jcross" />
+          <NavLink href="/apps/" label="Apps" />
+          <NavLink href="/verantyx/" label="Engine" />
+          <NavLink href="/verantyx-cli/" label="CLI" />
+          <NavLink href="/jcross-language/" label=".jcross" />
 
           {/* Language toggle */}
           <button
@@ -183,10 +183,10 @@ export default function Navbar() {
           >
             <div style={{ padding: '16px 24px 24px', display: 'flex', flexDirection: 'column', gap: 4 }}>
               <MobileNavLink href="/" label="Home" onClick={() => setMobileOpen(false)} />
-              <MobileNavLink href="/apps" label="Apps" onClick={() => setMobileOpen(false)} />
-              <MobileNavLink href="/verantyx" label="Engine" onClick={() => setMobileOpen(false)} />
-              <MobileNavLink href="/verantyx-cli" label="CLI" onClick={() => setMobileOpen(false)} />
-              <MobileNavLink href="/jcross-language" label=".jcross" onClick={() => setMobileOpen(false)} />
+              <MobileNavLink href="/apps/" label="Apps" onClick={() => setMobileOpen(false)} />
+              <MobileNavLink href="/verantyx/" label="Engine" onClick={() => setMobileOpen(false)} />
+              <MobileNavLink href="/verantyx-cli/" label="CLI" onClick={() => setMobileOpen(false)} />
+              <MobileNavLink href="/jcross-language/" label=".jcross" onClick={() => setMobileOpen(false)} />
               <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
                 <button
                   onClick={() => setLang(lang === 'en' ? 'ja' : 'en')}

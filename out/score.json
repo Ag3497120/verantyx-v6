@@ -1,0 +1,40 @@
+{
+  "project": "verantyx",
+  "benchmark": "ARC-AGI-2",
+  "version": "v69",
+  "score": {
+    "solved": 231,
+    "total": 1000,
+    "percentage": 23.1
+  },
+  "method": "Pure symbolic program synthesis — zero neural networks",
+  "engine": {
+    "avg_solve_time_sec": 0.66,
+    "approach": "Cross-structure probe + rotating orientation search + compositional rule synthesis"
+  },
+  "history": [
+    { "version": "v1", "solved": 42, "date": "2026-02-01" },
+    { "version": "v19", "solved": 113, "date": "2026-02-10" },
+    { "version": "v23", "solved": 120, "date": "2026-02-14" },
+    { "version": "v50", "solved": 200, "date": "2026-02-25" },
+    { "version": "v57", "solved": 216, "date": "2026-02-26" },
+    { "version": "v60", "solved": 224, "date": "2026-02-26" },
+    { "version": "v65", "solved": 228, "date": "2026-02-27" },
+    { "version": "v69", "solved": 231, "date": "2026-02-27" }
+  ],
+  "sponsor_data": {
+    "message": "Raw inference logs, failure analysis, and DSL architecture details are available exclusively for GitHub Sponsors.",
+    "tiers": {
+      "$5/mo": "Score updates + failure categories",
+      "$20/mo": "Full inference logs + per-task rule distribution",
+      "$50/mo": "Raw eval data + DSL drafts + architecture discussions"
+    },
+    "url": "https://github.com/sponsors/Ag3497120"
+  },
+  "links": {
+    "source": "https://github.com/Ag3497120/verantyx-v6",
+    "website": "https://verantyx.ai",
+    "twitter": "https://x.com/Koffdai"
+  },
+  "updated_at": "2026-02-27T21:00:00+09:00"
+}
