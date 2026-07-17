@@ -63,11 +63,31 @@ npm start
 
 kofdai
 
+## Apple Music API proxy (friends)
+
+Catalog-only edge proxy for friend apps:
+
+`Friend app → https://verantyx.ai/api/apple-music/* → Apple Music API`
+
+Implemented as **Cloudflare Pages Functions** under `functions/api/apple-music/` (Next.js API routes do not run on this static export). Docs: [/apple-music-api/](https://verantyx.ai/apple-music-api/).
+
+| Endpoint | Auth | Notes |
+|----------|------|--------|
+| `GET /api/apple-music/search?term=&types=&storefront=` | `x-api-key` | Catalog search |
+| `GET /api/apple-music/health` | none | No secrets in response |
+
+**Secrets** (Cloudflare Pages → Settings → Environment variables; encrypt secrets):
+
+- `APPLE_TEAM_ID`, `APPLE_MUSIC_KEY_ID`, `APPLE_MUSIC_PRIVATE_KEY` (PEM — never commit `.p8`)
+- `FRIEND_API_KEYS` (comma-separated)
+
+Rate limit: **60 req / 60s / API key** (in-memory per CF isolate). See `.env.example` and the docs page for curl + local `wrangler pages dev` steps.
+
 ## Cloudflare Pages
 
 This site is a **Next.js static export**. Production must publish the contents of `out/` as the site root (not the repo root).
 
-`wrangler.toml` sets `pages_build_output_dir = "out"` so Pages does not publish the Git root (which made `/` 404 while the real site lived under `/out/`). `out/` is **committed** so a skipped build step still has something to publish.
+`wrangler.toml` sets `pages_build_output_dir = "out"` so Pages does not publish the Git root (which made `/` 404 while the real site lived under `/out/`). `out/` is **committed** so a skipped build step still has something to publish. Functions in `/functions` deploy with the Pages project.
 
 | Setting | Value |
 |--------|--------|

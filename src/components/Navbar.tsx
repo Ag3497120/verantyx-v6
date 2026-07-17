@@ -75,6 +75,7 @@ export default function Navbar() {
           <NavLink href="/apps/" label="Apps" />
           <NavLink href="/verantyx-cli/" label="CLI" />
           <NavLink href="/jcross-language/" label=".jcross" />
+          <NavLink href="/apple-music-api/" label="API" />
 
           <div style={{ marginLeft: 10, marginRight: 4 }}>
             <ThemePicker compact />
@@ -199,6 +200,11 @@ export default function Navbar() {
               <MobileNavLink
                 href="/jcross-language/"
                 label=".jcross"
+                onClick={() => setMobileOpen(false)}
+              />
+              <MobileNavLink
+                href="/apple-music-api/"
+                label="Apple Music API"
                 onClick={() => setMobileOpen(false)}
               />
               <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>

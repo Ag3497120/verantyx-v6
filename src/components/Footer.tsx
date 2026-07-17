@@ -115,6 +115,7 @@ export default function Footer() {
               <FooterLink href="/verantyx-cli/" label="Verantyx-CLI" />
               <FooterLink href="/jcross-language/" label=".jcross Language" />
               <FooterLink href="/apps/" label="Apps" />
+              <FooterLink href="/apple-music-api/" label="Apple Music API" />
             </div>
           </div>
 

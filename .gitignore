@@ -1,6 +1,9 @@
 node_modules/
 .next/
 .env*
+!.env.example
+.dev.vars
+*.p8
 # `out/` is tracked so Cloudflare can publish a full static export even when
 # the Pages Build command is empty / skipped. Prefer regenerating via
 # `npm run build` (or `npm run cf-build`) before each release.

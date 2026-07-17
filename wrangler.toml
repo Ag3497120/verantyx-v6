@@ -8,6 +8,19 @@
 #   Root directory: /
 #   Node version: 20 (see .nvmrc)
 #
+# Pages Functions live in /functions (project root). Apple Music proxy:
+#   GET /api/apple-music/search
+#   GET /api/apple-music/health
+#
+# Secrets (Pages → Settings → Environment variables, Production):
+#   APPLE_TEAM_ID
+#   APPLE_MUSIC_KEY_ID
+#   APPLE_MUSIC_PRIVATE_KEY   (PEM; newlines as \n ok)
+#   FRIEND_API_KEYS           (comma-separated)
+#
+# Local: copy .env.example → .dev.vars, then:
+#   npm run build && npx wrangler pages dev out
+#
 # Keep `out/` committed as a fallback when the build step is skipped.
 name = "verantyx-site"
 compatibility_date = "2026-07-15"
