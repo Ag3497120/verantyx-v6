@@ -12,7 +12,15 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '@/lib/i18n';
-import { ask, CATALOGUE_SIZE, SUGGESTIONS, type Reply } from '@/lib/bot';
+import {
+  ask,
+  CATALOGUE_SIZE,
+  EMPTY_CONTEXT,
+  remember,
+  SUGGESTIONS,
+  type Context,
+  type Reply,
+} from '@/lib/bot';
 import Logo from '@/components/Logo';
 
 type Turn = { role: 'user'; text: string } | { role: 'bot'; reply: Reply };
@@ -27,6 +35,7 @@ const VERDICT_STYLE: Record<
   },
   UNKNOWN_NO_EVIDENCE: { color: '#f59e0b', border: 'rgba(245,158,11,0.35)' },
   UNKNOWN_AMBIGUOUS: { color: '#a78bfa', border: 'rgba(167,139,250,0.35)' },
+  UNKNOWN_NO_CONTEXT: { color: '#f59e0b', border: 'rgba(245,158,11,0.35)' },
 };
 
 export default function SiteBot() {
@@ -35,6 +44,10 @@ export default function SiteBot() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [turns, setTurns] = useState<Turn[]>([]);
+  // Context is a SPACE, not a transcript: only the subject each answer
+  // established is kept, so a follow-up resolves against what was actually
+  // answered rather than against everything that was typed.
+  const [context, setContext] = useState<Context>(EMPTY_CONTEXT);
   const logRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -59,12 +72,15 @@ export default function SiteBot() {
   function send(text: string) {
     const q = text.trim();
     if (!q) return;
-    setTurns((prev) => [
-      ...prev,
-      { role: 'user', text: q },
-      { role: 'bot', reply: ask(q, lang) },
-    ]);
+    const reply = ask(q, lang, context);
+    setTurns((prev) => [...prev, { role: 'user', text: q }, { role: 'bot', reply }]);
+    setContext((prev) => remember(prev, reply.establishes));
     setInput('');
+  }
+
+  function reset() {
+    setTurns([]);
+    setContext(EMPTY_CONTEXT);
   }
 
   return (
@@ -113,9 +129,15 @@ export default function SiteBot() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 16, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 12, scale: 0.98 }}
+            // Only the wrapper moves; the panel itself never carries opacity.
+            // Animating opacity on the panel makes the page show through the
+            // conversation for the length of the transition — and if the tab
+            // is backgrounded mid-animation the frame it stops on is the one
+            // that stays, which is how a transcript ended up permanently at
+            // 0.66 and unreadable.
+            initial={{ y: 16, scale: 0.98 }}
+            animate={{ y: 0, scale: 1 }}
+            exit={{ y: 12, scale: 0.98 }}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
             lang={lang}
             style={{
@@ -130,7 +152,12 @@ export default function SiteBot() {
               flexDirection: 'column',
               borderRadius: 18,
               border: '1px solid var(--line-strong)',
-              background: 'var(--chrome-solid)',
+              // Opaque, not translucent. `--chrome-solid` is 94% and reads
+              // fine as a 60px navbar strip; over a page of body copy the
+              // remaining 6% put the text underneath straight through the
+              // conversation, and a transcript you cannot read is not a
+              // conversation. The blur stays for the edges.
+              background: 'var(--panel)',
               backdropFilter: 'blur(18px)',
               WebkitBackdropFilter: 'blur(18px)',
               boxShadow: '0 24px 60px rgba(0,0,0,0.35)',
@@ -170,6 +197,51 @@ export default function SiteBot() {
                   ? `${CATALOGUE_SIZE} リポジトリの README から答えるか、型で拒否します。モデルは使いません。`
                   : `Answers from ${CATALOGUE_SIZE} repositories' READMEs, or refuses with a type. No model.`}
               </div>
+
+              {context.subjects.length > 0 && (
+                <div
+                  style={{
+                    marginTop: 9,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <span style={{ fontSize: '0.62rem', color: 'var(--ink-4)' }}>
+                    {ja ? 'いま話題:' : 'in context:'}
+                  </span>
+                  {context.subjects.slice(0, 3).map((sub) => (
+                    <span
+                      key={sub}
+                      style={{
+                        fontSize: '0.64rem',
+                        color: 'rgba(var(--accent-rgb), 0.95)',
+                        border: '1px solid rgba(var(--accent-rgb), 0.3)',
+                        borderRadius: 6,
+                        padding: '1px 7px',
+                        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+                      }}
+                    >
+                      {sub}
+                    </span>
+                  ))}
+                  <button
+                    onClick={reset}
+                    style={{
+                      marginLeft: 'auto',
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--ink-4)',
+                      fontSize: '0.62rem',
+                      cursor: 'pointer',
+                      padding: 0,
+                    }}
+                  >
+                    {ja ? '消す' : 'clear'}
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Log */}
@@ -302,6 +374,19 @@ function BotTurn({
   const v = VERDICT_STYLE[reply.verdict];
   return (
     <div style={{ maxWidth: '95%' }}>
+      {reply.carried && (
+        <div
+          style={{
+            fontSize: '0.63rem',
+            color: 'var(--ink-4)',
+            marginBottom: 5,
+            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+          }}
+        >
+          {ja ? '文脈から補った: ' : 'carried in: '}
+          {reply.carried}
+        </div>
+      )}
       <div
         style={{
           display: 'inline-block',

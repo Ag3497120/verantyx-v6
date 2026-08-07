@@ -16,7 +16,43 @@
 
 import { CATALOGUE, CATALOGUE_CHARS, type CatalogueEntry } from './catalogue';
 
-export type Verdict = 'ANSWER' | 'UNKNOWN_NO_EVIDENCE' | 'UNKNOWN_AMBIGUOUS';
+export type Verdict =
+  | 'ANSWER'
+  | 'UNKNOWN_NO_EVIDENCE'
+  | 'UNKNOWN_AMBIGUOUS'
+  | 'UNKNOWN_NO_CONTEXT';
+
+/* Conversation context, built the way the engine builds it: a SPACE, not a
+ * window. Each answered turn puts its subject into a small store, and a
+ * follow-up that names no subject of its own — 「それは」「その限界は」「then
+ * what about the limits」 — is resolved against it.
+ *
+ * The part that matters is the refusal. When a follow-up needs a subject and
+ * none has been established, the reply is UNKNOWN_NO_CONTEXT, which says so.
+ * Guessing the subject is how a chatbot answers confidently about a project
+ * the visitor never mentioned, and this one is on a site whose whole claim is
+ * that it does not do that. */
+export type Context = {
+  /** Subjects established by earlier answers, most recent first. */
+  subjects: string[];
+};
+
+export const EMPTY_CONTEXT: Context = { subjects: [] };
+
+/* A follow-up is a question with a pointer where its subject should be.
+ * Matched by shape, not by intent detection: these are closed sets in both
+ * languages, and a closed set is what a rule can be trusted with. */
+const FOLLOW_UP_EN =
+  /^(?:and\s+)?(?:what|how)\s+(?:about|much|many)\b|^(?:and|so|then)\b|^(?:its|it['’]s|their|that|those|the)\s+\w+\?*$|\b(?:it|that|this|those|them)\b/i;
+const FOLLOW_UP_JA = /^(?:それ|これ|あれ|その|この|あの|そこ|では|じゃあ|でも|あと)/;
+
+/** Does this query lean on something already said? */
+export function isFollowUp(query: string): boolean {
+  const q = query.trim();
+  if (!q) return false;
+  if (HAS_CJK.test(q)) return FOLLOW_UP_JA.test(q);
+  return FOLLOW_UP_EN.test(q);
+}
 
 export type Lang = 'en' | 'ja';
 
@@ -207,6 +243,11 @@ export type Reply = {
   source?: { name: string; url: string };
   /** Verbatim lines from the README, offered under the summary. */
   quotes?: string[];
+  /** The subject carried in from earlier, shown so the reader can see what
+   *  the bot assumed rather than having to infer it from the answer. */
+  carried?: string;
+  /** The subject this answer establishes for the next follow-up. */
+  establishes?: string;
 };
 
 export const CATALOGUE_SIZE = CATALOGUE.length;
@@ -329,8 +370,34 @@ export function catalogueFor(query: string) {
     .sort((a, b) => b.score - a.score);
 }
 
-export function ask(query: string, lang: Lang): Reply {
-  const trimmed = query.trim();
+/* Resolving a follow-up: put the established subject in front of the query
+ * and ask again. Deliberately literal — the subject is PREPENDED rather than
+ * substituted into the sentence, because substitution would require knowing
+ * where the pronoun sits, and getting that wrong silently changes what was
+ * asked. Prepending can only add signal. */
+export function ask(
+  query: string,
+  lang: Lang,
+  context: Context = EMPTY_CONTEXT
+): Reply {
+  let trimmed = query.trim();
+  let carried: string | undefined;
+
+  if (isFollowUp(trimmed) && !catalogueFor(trimmed).some((r) => r.score >= 8)) {
+    const subject = context.subjects[0];
+    if (!subject) {
+      return {
+        verdict: 'UNKNOWN_NO_CONTEXT',
+        text:
+          lang === 'ja'
+            ? 'それが何を指すのか、まだ何も確定していません。推測はしません。プロジェクト名から聞いてください。'
+            : 'Nothing has been established for that to refer to, and I will not guess. Name a project first.',
+      };
+    }
+    carried = subject;
+    trimmed = `${subject} ${trimmed}`;
+  }
+
   if (!trimmed) {
     return {
       verdict: 'UNKNOWN_NO_EVIDENCE',
@@ -361,6 +428,8 @@ export function ask(query: string, lang: Lang): Reply {
       matched: named[0].hits,
       href: '/catalogue/',
       hrefLabel: lang === 'ja' ? '図鑑で見る' : 'See it in the catalogue',
+      carried,
+      establishes: e.name,
     };
   }
 
@@ -387,6 +456,8 @@ export function ask(query: string, lang: Lang): Reply {
         matched: best.hits,
         href: '/catalogue/',
         hrefLabel: lang === 'ja' ? '図鑑で見る' : 'See it in the catalogue',
+        carried,
+        establishes: e.name,
       };
     }
     return {
@@ -426,5 +497,23 @@ export function ask(query: string, lang: Lang): Reply {
     href: top.fact.href,
     hrefLabel: top.fact.hrefLabel?.[lang],
     matched: top.hits,
+    carried,
+    establishes: top.fact.project,
   };
+}
+
+/** What the conversation knows about, as a typed answer rather than a list. */
+export function locate(topic: string, context: Context) {
+  const t = topic.trim().toLowerCase();
+  const found = context.subjects.find((s) => s.toLowerCase() === t);
+  return found ? { status: 'ACTIVE' as const, subject: found }
+               : { status: 'ABSENT' as const };
+}
+
+export function remember(context: Context, subject?: string): Context {
+  if (!subject) return context;
+  // Most recent first, no duplicates, and bounded — a context that grows
+  // without limit is a window that has not noticed it is one.
+  const subjects = [subject, ...context.subjects.filter((s) => s !== subject)];
+  return { subjects: subjects.slice(0, 8) };
 }
