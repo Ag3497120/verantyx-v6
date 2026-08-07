@@ -81,6 +81,7 @@ export default function Navbar() {
           <NavLink href="/" label="Home" />
           <NavLink href="/apps/" label="Apps" />
           <NavLink href="/vera/" label="Vera" />
+          <NavLink href="/catalogue/" label="Catalogue" />
           <NavLink href="/verantyx-cli/" label="CLI" />
           <NavLink href="/jcross-language/" label=".jcross" />
           <NavLink href="/apple-music-api/" label="API" />
@@ -214,6 +215,11 @@ export default function Navbar() {
               <MobileNavLink
                 href="/vera/"
                 label="Vera"
+                onClick={() => setMobileOpen(false)}
+              />
+              <MobileNavLink
+                href="/catalogue/"
+                label="Catalogue"
                 onClick={() => setMobileOpen(false)}
               />
               <MobileNavLink

@@ -12,7 +12,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '@/lib/i18n';
-import { ask, SUGGESTIONS, type Reply } from '@/lib/bot';
+import { ask, CATALOGUE_SIZE, SUGGESTIONS, type Reply } from '@/lib/bot';
 import Logo from '@/components/Logo';
 
 type Turn = { role: 'user'; text: string } | { role: 'bot'; reply: Reply };
@@ -80,6 +80,14 @@ export default function SiteBot() {
           zIndex: 1200,
           width: 52,
           height: 52,
+          // The button held its contents with default inline flow, so the
+          // block-level SVG sat against the top-left of the padding box and
+          // the ✕ glyph sat on a text baseline — two different offsets in
+          // the same button. Centring both explicitly is the fix.
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 0,
           borderRadius: 16,
           border: '1px solid rgba(var(--accent-rgb), 0.4)',
           background: 'var(--chrome-solid)',
@@ -159,8 +167,8 @@ export default function SiteBot() {
                 }}
               >
                 {ja
-                  ? '保存された事実から答えるか、型で拒否します。モデルは使いません。'
-                  : 'Answers from stored facts, or refuses with a type. No model.'}
+                  ? `${CATALOGUE_SIZE} リポジトリの README から答えるか、型で拒否します。モデルは使いません。`
+                  : `Answers from ${CATALOGUE_SIZE} repositories' READMEs, or refuses with a type. No model.`}
               </div>
             </div>
 
@@ -322,8 +330,51 @@ function BotTurn({
           overflowWrap: 'anywhere',
         }}
       >
-        {reply.text}
+        {reply.text.split('\n\n').map((para, i) => (
+          <p key={i} style={{ marginTop: i === 0 ? 0 : 9 }}>
+            {para}
+          </p>
+        ))}
       </div>
+
+      {reply.quotes && reply.quotes.length > 0 && (
+        <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {reply.quotes.map((q, i) => (
+            <div
+              key={i}
+              style={{
+                paddingLeft: 10,
+                borderLeft: '2px solid rgba(var(--accent-rgb), 0.35)',
+                color: 'var(--ink-3)',
+                fontSize: '0.76rem',
+                lineHeight: ja ? 1.85 : 1.6,
+                overflowWrap: 'anywhere',
+              }}
+            >
+              {q}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {reply.source && (
+        <a
+          href={reply.source.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-block',
+            marginTop: 8,
+            marginRight: 12,
+            fontSize: '0.72rem',
+            color: 'var(--ink-4)',
+            textDecoration: 'none',
+            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+          }}
+        >
+          {reply.source.name} ↗
+        </a>
+      )}
 
       {reply.options && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>

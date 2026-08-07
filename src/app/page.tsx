@@ -1,732 +1,429 @@
 'use client';
 
-/* cf-deploy-bump: 2026-07-15T20:45Z — conversion CTAs + 4xx hardening */
+/* The front door.
+ *
+ * It used to open on Verantyx-CLI — one project's hero, one project's install
+ * block — which made the flagship the whole of what Verantyx is. The CLI has
+ * had its own page for a while, so this one is now about the position the
+ * projects share: systems that say what they do not know, in types, with the
+ * line the answer came from.
+ *
+ * Every number here is measured and links to where it was measured. A
+ * principles page that asserts principles is a manifesto; one that can be
+ * checked is a claim.
+ */
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import CliSpotlight from '@/components/CliSpotlight';
-import StickyCliCta from '@/components/StickyCliCta';
+import Logo from '@/components/Logo';
 import { useLanguage } from '@/lib/i18n';
+import { CATALOGUE, CATALOGUE_CHARS } from '@/lib/catalogue';
 
-const CLI_GITHUB = 'https://github.com/Ag3497120/verantyx-cli';
+type L = { en: string; ja: string };
 
-const COMMANDS = [
-  'git clone https://github.com/Ag3497120/verantyx-cli.git',
-  'cd verantyx-cli && git checkout stable',
-  'python3 verantyx.py',
+const PRINCIPLES: { n: string; title: L; body: L }[] = [
+  {
+    n: '01',
+    title: {
+      en: 'Not knowing is an answer, and it has a type',
+      ja: '知らないことは答えであり、それには型がある',
+    },
+    body: {
+      en: 'A system that always produces something produces something when it has nothing. Ours return UNKNOWN_NO_EVIDENCE, UNKNOWN_LOW_COVERAGE, UNKNOWN_DOMINANT_SOURCE — each naming what is missing, so the next step is a procedure rather than a matter of taste.',
+      ja: '常に何かを返す仕組みは、何も無いときにも何かを返します。ここでは UNKNOWN_NO_EVIDENCE、UNKNOWN_LOW_COVERAGE、UNKNOWN_DOMINANT_SOURCE を返します。何が欠けているかを名指すので、次の一手が好みではなく手順になります。',
+    },
+  },
+  {
+    n: '02',
+    title: {
+      en: 'An answer names the line it came from',
+      ja: '答えは、出典の行を名指す',
+    },
+    body: {
+      en: 'Not a summary of the sources — the sentence itself, with the file. A person can then disagree with the machine, which is the only way anyone finds out it is wrong.',
+      ja: '出典の要約ではなく、文そのものと、ファイル名。そうして初めて人が機械に反論でき、それが機械の誤りが見つかる唯一の道です。',
+    },
+  },
+  {
+    n: '03',
+    title: {
+      en: 'The same input gives the same output',
+      ja: '同じ入力からは、同じ出力',
+    },
+    body: {
+      en: 'No model sits in the answer path, so there is nothing to be non-deterministic about. A finding that changes between runs cannot be cited, and a finding that cannot be cited cannot carry a decision.',
+      ja: '答えの経路にモデルが無いので、非決定的になる余地がありません。実行ごとに変わる所見は引用できず、引用できない所見は判断を支えられません。',
+    },
+  },
+  {
+    n: '04',
+    title: {
+      en: 'Limits are published, not discovered',
+      ja: '限界は、見つけられる前に公開する',
+    },
+    body: {
+      en: 'Every measurement here is stated with the corpus it was measured on, and every known gap is written down beside it. A number without its corpus is exactly the shape of claim these systems exist to refuse.',
+      ja: 'すべての測定を、どのコーパスで測ったかとセットで書きます。既知の穴もその隣に書きます。コーパスを伴わない数字は、これらの仕組みが拒否する形そのものです。',
+    },
+  },
+];
+
+const MEASURED: { value: string; label: L; note: L; href: string }[] = [
+  {
+    value: '8 / 8',
+    label: { en: 'recall, real documents', ja: '再現率(実文書)' },
+    note: {
+      en: 'Cabinet Office damage reports, 4 revisions',
+      ja: '内閣府 被害状況速報 4版',
+    },
+    href: '/vera/#measured',
+  },
+  {
+    value: '6 / 6',
+    label: { en: 'recall, read blind', ja: '再現率(ブラインド)' },
+    note: {
+      en: 'MLIT series, no code changes, read after',
+      ja: '国交省 系列。コード無変更、読んだのは後',
+    },
+    href: '/vera/#measured',
+  },
+  {
+    value: '0',
+    label: { en: 'false positives', ja: '誤検出' },
+    note: {
+      en: 'across both corpora, every finding read',
+      ja: '両コーパス。全所見を人が照合',
+    },
+    href: '/vera/#measured',
+  },
+  {
+    value: String(CATALOGUE.length),
+    label: { en: 'repositories read', ja: '読んだリポジトリ' },
+    note: {
+      en: `${CATALOGUE_CHARS.toLocaleString()} characters of README`,
+      ja: `README ${CATALOGUE_CHARS.toLocaleString()}字`,
+    },
+    href: '/catalogue/',
+  },
+];
+
+const ENTRANCES: { title: string; body: L; href: string; external?: boolean }[] = [
+  {
+    title: 'Vera-α',
+    body: {
+      en: 'The engine. Documents in, disagreement out — measured on two government report series.',
+      ja: 'エンジン本体。文書を入れ、食い違いを出す。2つの官庁報告系列で実測済み。',
+    },
+    href: '/vera/',
+  },
+  {
+    title: 'Verantyx-CLI',
+    body: {
+      en: 'A resident local router that wakes larger models only when the task needs them.',
+      ja: 'ローカル常駐ルーター。必要なときだけ大型モデルを起こします。',
+    },
+    href: '/verantyx-cli/',
+  },
+  {
+    title: { en: 'Catalogue', ja: '図鑑' }.en,
+    body: {
+      en: 'Every repository, read by the engine itself and listed verbatim.',
+      ja: '全リポジトリを、エンジン自身に読ませて原文のまま並べたもの。',
+    },
+    href: '/catalogue/',
+  },
+  {
+    title: 'Apps',
+    body: {
+      en: 'The iOS side — mouth-controlled games and related projects.',
+      ja: 'iOS 側。口の動きで遊ぶゲームと関連プロジェクト。',
+    },
+    href: '/apps/',
+  },
 ];
 
 export default function Home() {
   const { lang } = useLanguage();
+  const t = (o: L) => o[lang];
+  const ja = lang === 'ja';
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
   });
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.97]);
-  const heroBlur = useTransform(scrollYProgress, [0, 1], [0, 6]);
 
   return (
-    <main className="relative text-white overflow-x-hidden min-h-screen">
+    <main lang={lang} className="relative text-white min-h-screen" style={{ overflowX: 'clip' }}>
       <Navbar />
-      <StickyCliCta />
 
+      {/* ── Hero ───────────────────────────────────────────────── */}
       <motion.section
         ref={heroRef}
-        style={{ opacity: heroOpacity, scale: heroScale }}
-        className="relative min-h-[88vh] flex items-center justify-center px-6 pt-28 pb-20"
+        style={{ opacity: heroOpacity }}
+        className="relative px-5 sm:px-6 pt-28 sm:pt-36 pb-16 sm:pb-24"
       >
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'radial-gradient(ellipse 70% 45% at 50% 38%, rgba(var(--accent-rgb), 0.1) 0%, transparent 68%)',
+              'radial-gradient(ellipse 70% 50% at 50% 30%, rgba(var(--accent-rgb), 0.11), transparent 64%)',
           }}
         />
-
-        <motion.div
-          style={{ filter: useTransform(heroBlur, (v) => `blur(${v}px)`) }}
-          className="max-w-5xl mx-auto text-center relative z-10"
-        >
+        <div className="mx-auto w-full max-w-4xl relative z-10 text-center">
           <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto mb-8 h-px w-28"
-            style={{
-              background:
-                'linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.55), transparent)',
-              transformOrigin: 'center',
-            }}
-          />
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="flex justify-center mb-7"
+          >
+            <Logo size="clamp(56px, 14vw, 88px)" />
+          </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 28, filter: 'blur(8px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.9, delay: 0.2, ease: 'easeOut' }}
-            className="font-display text-7xl md:text-9xl font-extrabold mb-6 tracking-tight gradient-brand"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="font-display font-extrabold gradient-brand"
+            style={{
+              fontSize: 'clamp(2.6rem, 11vw, 6rem)',
+              lineHeight: 1,
+              letterSpacing: '-0.035em',
+              marginBottom: '1.4rem',
+            }}
           >
             Verantyx
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 18 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.45 }}
-            className="text-lg md:text-2xl font-light tracking-wide max-w-3xl mx-auto"
-            style={{ color: 'var(--ink-2)' }}
+            transition={{ duration: 0.7, delay: 0.22 }}
+            className="mx-auto max-w-2xl"
+            style={{
+              color: 'var(--ink-2)',
+              fontSize: 'clamp(1.02rem, 2.6vw, 1.35rem)',
+              lineHeight: ja ? 1.95 : 1.62,
+              fontWeight: 300,
+            }}
           >
-            {lang === 'ja'
-              ? '旗艦：Verantyx-CLI — 0.5B常駐ルーターと、必要なときだけ大型ローカルモデル'
-              : 'Flagship: Verantyx-CLI — a resident 0.5B router that wakes larger local models only when needed'}
+            {t({
+              en: 'Systems that say what they do not know — in types, with the line the answer came from.',
+              ja: '知らないことを、知らないと言う仕組み。型で、そして答えの出典の行とともに。',
+            })}
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.65 }}
-            className="mt-10 flex flex-col items-center gap-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className="mt-9 flex flex-wrap justify-center gap-3"
           >
             <a
-              href={CLI_GITHUB}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-accent rounded-xl px-8 py-3.5 text-sm font-semibold"
+              href="/vera/"
+              className="btn-accent rounded-xl px-6 py-3 text-sm font-semibold"
               style={{ textDecoration: 'none' }}
             >
-              {lang === 'ja' ? 'GitHub で開く' : 'Open on GitHub'}
+              {t({ en: 'What is measured', ja: '実測値を見る' })} →
             </a>
-            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm">
-              <a
-                href="#demo"
-                className="font-medium transition-colors"
-                style={{ color: 'rgba(var(--accent-rgb), 0.95)', textDecoration: 'none' }}
-              >
-                {lang === 'ja' ? '30秒デモ' : '30s demo'}
-              </a>
-              <span className="text-slate-600" aria-hidden>
-                ·
-              </span>
-              <a
-                href="#start"
-                className="font-medium text-slate-300 hover:text-white transition-colors"
-                style={{ textDecoration: 'none' }}
-              >
-                {lang === 'ja' ? '3コマンドで開始' : 'Start in 3 commands'}
-              </a>
-              <span className="text-slate-600" aria-hidden>
-                ·
-              </span>
-              <a
-                href="#why"
-                className="font-medium text-slate-400 hover:text-slate-200 transition-colors"
-                style={{ textDecoration: 'none' }}
-              >
-                {lang === 'ja' ? '何が他と違うか' : 'What makes it different'}
-              </a>
-            </div>
+            <a
+              href="/catalogue/"
+              className="rounded-xl px-6 py-3 text-sm font-semibold"
+              style={{
+                border: '1px solid var(--line-strong)',
+                color: 'var(--ink-3)',
+                textDecoration: 'none',
+              }}
+            >
+              {t({ en: 'Catalogue', ja: '図鑑' })}
+            </a>
           </motion.div>
-
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 1, delay: 0.85, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto mt-12 h-px w-28"
-            style={{
-              background:
-                'linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.55), transparent)',
-              transformOrigin: 'center',
-            }}
-          />
-        </motion.div>
+        </div>
       </motion.section>
 
-      <DemoSection lang={lang} />
-      <StartSection lang={lang} />
-      <WhySection lang={lang} />
-
-      <div className="relative px-6 py-2">
-        <div className="max-w-6xl mx-auto">
-          <SectionTitle text="VERANTYX-CLI" />
+      {/* ── Measured ───────────────────────────────────────────── */}
+      <Section label={t({ en: 'Measured', ja: '実測値' })}>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          {MEASURED.map((m) => (
+            <a
+              key={m.label.en}
+              href={m.href}
+              className="rounded-2xl border p-4 sm:p-5 block"
+              style={{
+                borderColor: 'var(--line)',
+                background: 'var(--surface)',
+                textDecoration: 'none',
+                transition: 'border-color 0.25s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(var(--accent-rgb), 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--line)';
+              }}
+            >
+              <div
+                className="font-display font-bold gradient-brand"
+                style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', lineHeight: 1.1 }}
+              >
+                {m.value}
+              </div>
+              <div
+                className="mt-2 font-semibold"
+                style={{ color: 'var(--ink-2)', fontSize: 'clamp(0.74rem, 1.9vw, 0.82rem)' }}
+              >
+                {t(m.label)}
+              </div>
+              <div
+                className="mt-1.5"
+                style={{
+                  color: 'var(--ink-4)',
+                  fontSize: 'clamp(0.68rem, 1.7vw, 0.74rem)',
+                  lineHeight: ja ? 1.8 : 1.5,
+                }}
+              >
+                {t(m.note)}
+              </div>
+            </a>
+          ))}
         </div>
-      </div>
-      <CliSpotlight />
+      </Section>
 
-      <div className="relative px-6 py-2">
-        <div className="max-w-6xl mx-auto">
-          <SectionTitle text="PROJECTS" />
+      {/* ── Principles ─────────────────────────────────────────── */}
+      <Section label={t({ en: 'The position', ja: '立場' })}>
+        <div className="grid gap-4 sm:gap-5 md:grid-cols-2">
+          {PRINCIPLES.map((p) => (
+            <div
+              key={p.n}
+              className="rounded-2xl border p-5 sm:p-6"
+              style={{ borderColor: 'var(--line)', background: 'var(--surface)' }}
+            >
+              <div
+                className="font-mono mb-3"
+                style={{
+                  color: 'rgba(var(--accent-rgb), 0.8)',
+                  fontSize: '0.7rem',
+                  letterSpacing: '0.16em',
+                }}
+              >
+                {p.n}
+              </div>
+              <h3
+                className="font-semibold mb-3"
+                style={{
+                  color: 'var(--ink)',
+                  fontSize: 'clamp(0.98rem, 2.5vw, 1.12rem)',
+                  lineHeight: ja ? 1.6 : 1.32,
+                }}
+              >
+                {t(p.title)}
+              </h3>
+              <p
+                style={{
+                  color: 'var(--ink-3)',
+                  fontSize: 'clamp(0.85rem, 2.2vw, 0.92rem)',
+                  lineHeight: ja ? 1.95 : 1.68,
+                }}
+              >
+                {t(p.body)}
+              </p>
+            </div>
+          ))}
         </div>
-      </div>
+      </Section>
 
-      <section className="relative px-6 pb-16 pt-10">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <ProjectCard
-              icon="📦"
-              title="Verantyx-CLI"
-              description={
-                lang === 'ja'
-                  ? 'ローカル常駐ルーター＋評議会＋永遠の記憶（旗艦OSS）'
-                  : 'Local resident router, council & eternal memory — flagship OSS'
-              }
-              subtitle="github.com/Ag3497120/verantyx-cli · v3.0.0-alpha"
-              href="/verantyx-cli/"
-              delay={0}
-              lang={lang}
-              featured
-            />
-            <ProjectCard
-              icon="🛡️"
-              title="Vera-α"
-              description={
-                lang === 'ja'
-                  ? '推測しない知識エンジン。実文書で 8/8 と 6/6(ブラインド)'
-                  : 'A knowledge engine that refuses to guess — 8/8 and 6/6 blind, on real documents'
-              }
-              subtitle={
-                lang === 'ja'
-                  ? '決定論的・LLM 非依存・オフライン'
-                  : 'Deterministic · no LLM in the answer path · offline'
-              }
-              href="/vera/"
-              delay={0.05}
-              lang={lang}
-              featured
-            />
-            <ProjectCard
-              icon="📚"
-              title=".jcross Language"
-              description={lang === 'ja' ? 'クロスワードパズルDSL' : 'Crossword puzzle DSL'}
-              subtitle=""
-              href="/jcross-language/"
-              delay={0.1}
-              lang={lang}
-            />
-            <ProjectCard
-              icon="📱"
-              title="Apps"
-              description={
-                lang === 'ja'
-                  ? '口の動きで遊ぶ iOS ゲームと関連プロジェクト'
-                  : 'Mouth-controlled iOS games and related projects'
-              }
-              subtitle={lang === 'ja' ? '一覧を見る' : 'Browse the catalog'}
-              href="/apps/"
-              delay={0.15}
-              lang={lang}
-            />
-          </div>
-
-          <OtherAppsCollapse lang={lang} />
+      {/* ── Where to go ────────────────────────────────────────── */}
+      <Section label={t({ en: 'Where to go', ja: '入口' })}>
+        <div className="grid gap-4 sm:gap-5 sm:grid-cols-2">
+          {ENTRANCES.map((e) => (
+            <a
+              key={e.href}
+              href={e.href}
+              className="rounded-2xl border p-5 sm:p-6 block"
+              style={{
+                borderColor: 'var(--line)',
+                background: 'var(--surface)',
+                textDecoration: 'none',
+                transition: 'border-color 0.25s ease, transform 0.25s ease',
+              }}
+              onMouseEnter={(ev) => {
+                ev.currentTarget.style.borderColor = 'rgba(var(--accent-rgb), 0.4)';
+                ev.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(ev) => {
+                ev.currentTarget.style.borderColor = 'var(--line)';
+                ev.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              <div
+                className="font-display font-bold mb-2"
+                style={{ color: 'var(--ink)', fontSize: 'clamp(1rem, 2.6vw, 1.15rem)' }}
+              >
+                {e.title}
+              </div>
+              <p
+                style={{
+                  color: 'var(--ink-3)',
+                  fontSize: 'clamp(0.83rem, 2.1vw, 0.9rem)',
+                  lineHeight: ja ? 1.9 : 1.62,
+                }}
+              >
+                {t(e.body)}
+              </p>
+            </a>
+          ))}
         </div>
-      </section>
+      </Section>
+
+      {/* ── What this is not ───────────────────────────────────── */}
+      <Section label={t({ en: 'What this is not', ja: 'これでないもの' })}>
+        <p
+          className="max-w-2xl"
+          style={{
+            color: 'var(--ink-3)',
+            fontSize: 'clamp(0.9rem, 2.3vw, 1rem)',
+            lineHeight: ja ? 1.95 : 1.72,
+          }}
+        >
+          {t({
+            en: 'None of this writes for you. No free-form prose, no summarisation, no translation, no open-domain chat. That is not a weakness being worked on — it is the trade that buys the rest: a system that will not compose a sentence also cannot compose a fact.',
+            ja: 'ここにあるものは、あなたの代わりに文章を書きません。自由作文も要約も翻訳も雑談もしません。これは改善中の弱点ではなく、残り全部を買うための取引です。文を作らない仕組みは、事実も作れません。',
+          })}
+        </p>
+      </Section>
 
       <Footer />
     </main>
   );
 }
 
-function DemoSection({ lang }: { lang: 'ja' | 'en' }) {
-  const steps =
-    lang === 'ja'
-      ? [
-          { n: '01', title: 'clone', body: 'リポジトリを取得' },
-          { n: '02', title: 'stable', body: '訪問者向けブランチへ切替' },
-          { n: '03', title: 'run', body: '常駐ルーターが起動し、プロンプトを待つ' },
-        ]
-      : [
-          { n: '01', title: 'clone', body: 'Get the repository' },
-          { n: '02', title: 'stable', body: 'Switch to the visitor-ready branch' },
-          { n: '03', title: 'run', body: 'Resident router boots and waits for prompts' },
-        ];
-
+function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <section id="demo" className="relative px-6 py-16 scroll-mt-24">
-      <div className="max-w-3xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.7 }}
-        >
-          <p
-            className="text-xs tracking-[0.3em] uppercase mb-3"
-            style={{ color: 'rgba(var(--accent-rgb), 0.8)' }}
+    <section className="relative px-5 sm:px-6 py-12 sm:py-16 md:py-20">
+      <div className="mx-auto w-full max-w-4xl">
+        <div className="flex items-center gap-4 mb-6 sm:mb-8">
+          <span
+            className="h-px w-8 sm:w-12 shrink-0"
+            style={{
+              background:
+                'linear-gradient(90deg, rgba(var(--accent-rgb), 0.5), transparent)',
+            }}
+          />
+          <span
+            className="uppercase font-semibold"
+            style={{
+              color: 'var(--ink-4)',
+              fontSize: '0.66rem',
+              letterSpacing: '0.26em',
+            }}
           >
-            {lang === 'ja' ? '30秒デモ' : '30-second demo'}
-          </p>
-          <h2 className="font-display text-3xl md:text-4xl font-bold mb-3">
-            {lang === 'ja' ? '起動までの流れ' : 'From zero to resident router'}
-          </h2>
-          <p className="text-slate-400 mb-8 leading-relaxed">
-            {lang === 'ja'
-              ? '動画や asciinema はありません。代わりに、実際の3ステップをそのまま示します。'
-              : 'No hosted video yet — here is the real three-step path, as it runs locally.'}
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.75, delay: 0.1 }}
-          className="rounded-2xl overflow-hidden font-mono text-sm"
-          style={{
-            border: '1px solid rgba(var(--accent-rgb), 0.2)',
-            background: 'var(--surface-2)',
-          }}
-        >
-          <div
-            className="flex items-center gap-2 px-4 py-2.5 text-xs text-slate-500"
-            style={{ borderBottom: '1px solid rgba(148,163,184,0.12)' }}
-          >
-            <span className="inline-block w-2.5 h-2.5 rounded-full bg-slate-700" />
-            <span className="inline-block w-2.5 h-2.5 rounded-full bg-slate-700" />
-            <span className="inline-block w-2.5 h-2.5 rounded-full bg-slate-700" />
-            <span className="ml-2 tracking-wide">verantyx-cli · demo</span>
-          </div>
-          <div className="p-5 space-y-4 text-left">
-            {COMMANDS.map((cmd, i) => (
-              <motion.div
-                key={cmd}
-                initial={{ opacity: 0, x: -8 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.15 + i * 0.12 }}
-              >
-                <p className="text-slate-500 text-xs mb-1">
-                  {steps[i].n} · {steps[i].title}
-                </p>
-                <p style={{ color: 'var(--ink-2)' }}>
-                  <span style={{ color: 'rgba(var(--accent-rgb), 0.9)' }}>$ </span>
-                  {cmd}
-                </p>
-                <p className="text-slate-500 text-xs mt-1">{steps[i].body}</p>
-              </motion.div>
-            ))}
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.55 }}
-              className="pt-2"
-              style={{ color: 'rgba(var(--accent-rgb), 0.85)' }}
-            >
-              {lang === 'ja'
-                ? '→ ルーター常駐。大型モデルは必要なときだけ起床。'
-                : '→ Router resident. Larger models wake only when needed.'}
-            </motion.p>
-          </div>
-        </motion.div>
+            {label}
+          </span>
+        </div>
+        {children}
       </div>
     </section>
-  );
-}
-
-function StartSection({ lang }: { lang: 'ja' | 'en' }) {
-  return (
-    <section id="start" className="relative px-6 py-16 scroll-mt-24">
-      <div className="max-w-3xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.7 }}
-        >
-          <p
-            className="text-xs tracking-[0.3em] uppercase mb-3"
-            style={{ color: 'rgba(var(--accent-rgb), 0.8)' }}
-          >
-            {lang === 'ja' ? '3コマンドで開始' : 'Start in 3 commands'}
-          </p>
-          <h2 className="font-display text-3xl md:text-4xl font-bold mb-3">
-            {lang === 'ja' ? 'コピーして実行' : 'Copy, paste, run'}
-          </h2>
-          <p className="text-slate-400 mb-8 leading-relaxed">
-            {lang === 'ja'
-              ? 'stable ブランチを推奨。main は研究用で変化が速いです。'
-              : 'Prefer the stable branch. main moves fast as a research workbench.'}
-          </p>
-        </motion.div>
-
-        <div className="space-y-3">
-          {COMMANDS.map((cmd, i) => (
-            <CopyCommand key={cmd} cmd={cmd} index={i} lang={lang} />
-          ))}
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="mt-8 flex flex-wrap gap-3"
-        >
-          <a
-            href={CLI_GITHUB}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-accent rounded-xl px-6 py-3 text-sm font-semibold"
-            style={{ textDecoration: 'none' }}
-          >
-            {lang === 'ja' ? 'GitHub リポジトリ' : 'GitHub repository'} →
-          </a>
-          <a
-            href="/verantyx-cli/"
-            className="rounded-xl px-6 py-3 text-sm font-semibold text-slate-400"
-            style={{ border: '1px solid rgba(148,163,184,0.22)', textDecoration: 'none' }}
-          >
-            {lang === 'ja' ? '製品ページ' : 'Product page'}
-          </a>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-function CopyCommand({
-  cmd,
-  index,
-  lang,
-}: {
-  cmd: string;
-  index: number;
-  lang: 'ja' | 'en';
-}) {
-  const [copied, setCopied] = useState(false);
-
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(cmd);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1600);
-    } catch {
-      /* ignore */
-    }
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
-      className="flex items-stretch gap-2 rounded-xl overflow-hidden"
-      style={{
-        border: '1px solid rgba(var(--accent-rgb), 0.18)',
-        background: 'rgba(0,0,0,0.45)',
-      }}
-    >
-      <pre
-        className="flex-1 overflow-x-auto px-4 py-3.5 text-sm font-mono text-left m-0"
-        style={{ color: 'var(--ink-2)' }}
-      >
-        <span className="text-slate-500 mr-2">{index + 1}.</span>
-        {cmd}
-      </pre>
-      <button
-        type="button"
-        onClick={copy}
-        className="shrink-0 px-4 text-xs font-semibold tracking-wide transition-colors"
-        style={{
-          borderLeft: '1px solid rgba(148,163,184,0.15)',
-          color: copied ? 'rgba(var(--accent-rgb), 1)' : '#94a3b8',
-          background: 'transparent',
-          cursor: 'pointer',
-        }}
-        aria-label={lang === 'ja' ? 'コピー' : 'Copy'}
-      >
-        {copied ? (lang === 'ja' ? 'コピー済' : 'Copied') : lang === 'ja' ? 'コピー' : 'Copy'}
-      </button>
-    </motion.div>
-  );
-}
-
-function WhySection({ lang }: { lang: 'ja' | 'en' }) {
-  const items =
-    lang === 'ja'
-      ? [
-          {
-            title: '分類専用ルーター',
-            body: '0.5B は答えを捏造しない。分類して、必要なときだけ大型ローカルモデルを起こす。',
-          },
-          {
-            title: 'ローカル優先',
-            body: 'クラウドデモではない。実機セットアップとトレードオフを隠さない。',
-          },
-          {
-            title: '永遠の記憶',
-            body: '再起動のたびに忘れるのではなく、セッションをまたいで文脈を運ぶ。',
-          },
-          {
-            title: '主張の境界が公開',
-            body: '構造＝世界知識とは言わない。ベンチと claim boundaries はリポジトリにある。',
-          },
-        ]
-      : [
-          {
-            title: 'Classify-only router',
-            body: 'The 0.5B does not invent answers. It classifies, then wakes larger local models only when needed.',
-          },
-          {
-            title: 'Local-first, honest',
-            body: 'Not a one-click cloud demo. Real setup, real tradeoffs — no magic accuracy claims.',
-          },
-          {
-            title: 'Eternal memory',
-            body: 'Carry durable context across restarts instead of amnesia every boot.',
-          },
-          {
-            title: 'Published claim boundaries',
-            body: 'Structure ≠ world knowledge. Benchmarks and limits live in-repo.',
-          },
-        ];
-
-  return (
-    <section id="why" className="relative px-6 py-16 scroll-mt-24">
-      <div className="max-w-3xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.7 }}
-        >
-          <p
-            className="text-xs tracking-[0.3em] uppercase mb-3"
-            style={{ color: 'rgba(var(--accent-rgb), 0.8)' }}
-          >
-            {lang === 'ja' ? '何が他と違うか' : 'What makes it different'}
-          </p>
-          <h2 className="font-display text-3xl md:text-4xl font-bold mb-8">
-            {lang === 'ja' ? '小さな常駐。大きな起床。' : 'Stay small. Wake big.'}
-          </h2>
-        </motion.div>
-
-        <ul className="space-y-6 list-none">
-          {items.map((item, i) => (
-            <motion.li
-              key={item.title}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.55, delay: i * 0.07 }}
-              className="text-left"
-              style={{
-                paddingBottom: 24,
-                borderBottom:
-                  i < items.length - 1 ? '1px solid rgba(148,163,184,0.12)' : 'none',
-              }}
-            >
-              <h3
-                className="font-display text-lg md:text-xl font-semibold mb-2"
-                style={{ color: 'var(--ink)' }}
-              >
-                {item.title}
-              </h3>
-              <p className="text-slate-400 leading-relaxed">{item.body}</p>
-            </motion.li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
-function OtherAppsCollapse({ lang }: { lang: 'ja' | 'en' }) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <details
-      className="other-apps-details mt-10 rounded-2xl overflow-hidden"
-      style={{
-        border: '1px solid rgba(var(--accent-rgb), 0.12)',
-        background: 'rgba(10, 10, 20, 0.45)',
-      }}
-      open={open}
-      onToggle={(e) => setOpen((e.target as HTMLDetailsElement).open)}
-    >
-      <summary
-        className="px-6 py-5 flex items-center justify-between gap-4"
-        style={{ color: 'var(--ink-2)' }}
-      >
-        <div>
-          <p
-            className="text-xs tracking-[0.28em] uppercase mb-1"
-            style={{ color: 'rgba(var(--accent-rgb), 0.7)' }}
-          >
-            {lang === 'ja' ? 'その他のアプリ' : 'Other apps'}
-          </p>
-          <p className="text-base font-medium">
-            {lang === 'ja'
-              ? 'パクパク釣り · MouthEat — クリックで展開'
-              : 'PakuPaku Fishing · MouthEat — expand to browse'}
-          </p>
-        </div>
-        <span className="other-apps-chevron text-slate-400 text-lg" aria-hidden>
-          ▾
-        </span>
-      </summary>
-      <div className="px-6 pb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <a
-          href="/apps/pakupaku-fishing/"
-          className="block rounded-xl p-5 transition-all duration-300"
-          style={{
-            border: '1px solid rgba(var(--accent-rgb), 0.1)',
-            background: 'rgba(0,0,0,0.35)',
-            textDecoration: 'none',
-            color: 'inherit',
-          }}
-        >
-          <span className="text-3xl">🎣</span>
-          <h3 className="mt-3 font-semibold text-lg text-white">
-            {lang === 'ja' ? 'パクパク釣り' : 'Paku Paku Fishing'}
-          </h3>
-          <p className="mt-1 text-sm text-slate-400">
-            {lang === 'ja' ? '口で釣るフィッシングゲーム' : 'Mouth-controlled fishing'}
-          </p>
-        </a>
-        <a
-          href="/apps/mouth-eat/"
-          className="block rounded-xl p-5 transition-all duration-300"
-          style={{
-            border: '1px solid rgba(var(--accent-rgb), 0.1)',
-            background: 'rgba(0,0,0,0.35)',
-            textDecoration: 'none',
-            color: 'inherit',
-          }}
-        >
-          <span className="text-3xl">😋</span>
-          <h3 className="mt-3 font-semibold text-lg text-white">MouthEat</h3>
-          <p className="mt-1 text-sm text-slate-400">
-            {lang === 'ja' ? '口を開けて食べるゲーム' : 'Open-mouth eating game'}
-          </p>
-        </a>
-      </div>
-    </details>
-  );
-}
-
-function SectionTitle({ text }: { text: string }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.7 }}
-      className="flex items-center justify-center gap-6 py-6"
-    >
-      <motion.div
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        className="flex-1 h-px"
-        style={{
-          background: 'linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.35))',
-          transformOrigin: 'left',
-        }}
-      />
-      <span className="font-display text-sm md:text-base font-semibold tracking-[0.4em] uppercase text-silver">
-        {text}
-      </span>
-      <motion.div
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        className="flex-1 h-px"
-        style={{
-          background: 'linear-gradient(90deg, rgba(var(--accent-rgb), 0.35), transparent)',
-          transformOrigin: 'right',
-        }}
-      />
-    </motion.div>
-  );
-}
-
-function ProjectCard({
-  icon,
-  title,
-  description,
-  subtitle,
-  href,
-  delay,
-  lang,
-  featured = false,
-}: {
-  icon: string;
-  title: string;
-  description: string;
-  subtitle: string;
-  href: string;
-  delay: number;
-  lang: 'ja' | 'en';
-  featured?: boolean;
-}) {
-  return (
-    <motion.a
-      href={href}
-      initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.75, delay, ease: 'easeOut' }}
-      whileHover={{ y: -6 }}
-      className={`block group relative overflow-hidden ${featured ? 'md:col-span-2' : ''}`}
-      style={{
-        background: featured ? 'rgba(10, 10, 20, 0.82)' : 'rgba(10, 10, 20, 0.65)',
-        border: featured
-          ? '1px solid rgba(var(--accent-rgb), 0.28)'
-          : '1px solid rgba(var(--accent-rgb), 0.1)',
-        borderRadius: 20,
-        padding: featured ? '2.75rem' : '2.25rem',
-        textDecoration: 'none',
-        transition: 'border-color 0.4s ease, box-shadow 0.4s ease',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = 'rgba(var(--accent-rgb), 0.45)';
-        e.currentTarget.style.boxShadow =
-          '0 0 50px rgba(var(--accent-rgb), 0.12), inset 0 1px 0 rgba(var(--accent-rgb), 0.08)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = featured
-          ? 'rgba(var(--accent-rgb), 0.28)'
-          : 'rgba(var(--accent-rgb), 0.1)';
-        e.currentTarget.style.boxShadow = 'none';
-      }}
-    >
-      <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(ellipse at top left, rgba(var(--accent-rgb), 0.07), transparent 60%)',
-          borderRadius: 20,
-        }}
-      />
-
-      <div className="relative z-10 flex flex-col gap-3">
-        <div className="text-4xl md:text-5xl">{icon}</div>
-        <h2 className="font-display text-2xl md:text-3xl font-bold" style={{ color: 'var(--ink)' }}>
-          {title}
-        </h2>
-        <p className="text-gray-400 text-base md:text-lg leading-relaxed">{description}</p>
-        {subtitle && (
-          <p
-            className="text-sm font-medium tracking-wide"
-            style={{ color: 'rgba(var(--accent-rgb), 0.85)' }}
-          >
-            {subtitle}
-          </p>
-        )}
-        <div
-          className="flex items-center gap-2 mt-2 text-sm font-semibold"
-          style={{ color: 'rgba(var(--accent-rgb), 0.75)' }}
-        >
-          <span>{lang === 'ja' ? '詳しく見る' : 'Learn more'}</span>
-          <span className="group-hover:translate-x-2 transition-transform duration-300">→</span>
-        </div>
-      </div>
-    </motion.a>
   );
 }

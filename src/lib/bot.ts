@@ -14,6 +14,8 @@
  * on that side, which is the same compromise the engine itself makes.
  */
 
+import { CATALOGUE, CATALOGUE_CHARS, type CatalogueEntry } from './catalogue';
+
 export type Verdict = 'ANSWER' | 'UNKNOWN_NO_EVIDENCE' | 'UNKNOWN_AMBIGUOUS';
 
 export type Lang = 'en' | 'ja';
@@ -200,7 +202,15 @@ export type Reply = {
   matched?: string[];
   /** Offered when the query was ambiguous between projects. */
   options?: string[];
+  /** Set when the answer came from a README rather than a hand-written fact,
+   *  so a reader can tell the two apart and go to the source. */
+  source?: { name: string; url: string };
+  /** Verbatim lines from the README, offered under the summary. */
+  quotes?: string[];
 };
+
+export const CATALOGUE_SIZE = CATALOGUE.length;
+export { CATALOGUE_CHARS };
 
 const LATIN = /[a-z0-9]+/gi;
 const HAS_CJK = /[぀-ヿ㐀-䶿一-鿿]/;
@@ -209,6 +219,16 @@ function sharesStem(a: string, b: string): boolean {
   const n = Math.min(a.length, b.length);
   if (n < 5) return false;
   return a.slice(0, 5) === b.slice(0, 5);
+}
+
+/* Japanese compounds nest, and a visitor types the part they know.
+ * 「立体十字」 is the front of 「立体十字構造体」 and matched nothing, because
+ * containment was only tested one way — the query had to hold the WHOLE
+ * stored topic. Both directions are tested now; three characters is the floor,
+ * since two kanji can appear inside almost anything. */
+function cjkTouches(query: string, key: string): boolean {
+  if (query.includes(key)) return true;
+  return key.length >= 3 && query.length >= 3 && key.includes(query);
 }
 
 function terms(query: string): string[] {
@@ -225,7 +245,7 @@ function score(fact: Fact, query: string): { score: number; hits: string[] } {
   for (const key of fact.keys) {
     const k = key.toLowerCase();
     if (HAS_CJK.test(key)) {
-      if (q.includes(k)) {
+      if (cjkTouches(q, k)) {
         hits.push(key);
         total += k.length >= 3 ? 3 : 2;
       }
@@ -250,6 +270,65 @@ function score(fact: Fact, query: string): { score: number; hits: string[] } {
   return { score: total, hits };
 }
 
+/* The catalogue half. Hand-written facts are consulted first because they
+ * are edited prose written for a visitor; a README entry is the author's own
+ * words about a repository, which is better than nothing and worse than an
+ * answer written to be read here. When only the catalogue matches, the reply
+ * says so and links the repository, so nobody mistakes a quotation for a
+ * summary somebody wrote for them. */
+function scoreEntry(e: CatalogueEntry, query: string): { score: number; hits: string[] } {
+  const q = query.toLowerCase();
+  const words = new Set(terms(query));
+  const hits: string[] = [];
+  let total = 0;
+
+  // A name match is scored by HOW MUCH of the name matched, not just that it
+  // did. A flat bonus made every name equal, so 「Verantyx Logic」 answered as
+  // Verantyx — the shorter name won on a tie and the visitor got a different
+  // project than the one they typed. Longer, more specific names now win.
+  const nameLow = e.name.toLowerCase();
+  const parts = nameLow.split(/[-_.]/).filter((p) => p.length > 1);
+  if (q.includes(nameLow)) {
+    hits.push(e.name);
+    total += 10 + nameLow.length;
+  } else {
+    const got = parts.filter((p) => words.has(p) || q.includes(p));
+    if (got.length === parts.length && got.length > 0) {
+      hits.push(e.name);
+      total += 9 + nameLow.length;
+    } else if (got.length) {
+      // A token of six characters or more inside a repository name is
+      // effectively unique across this catalogue, so matching one is nearly
+      // as good as matching the whole name.
+      const longest = Math.max(...got.map((p) => p.length));
+      hits.push(...got);
+      total += longest >= 6 ? 9 + longest : 3 * got.length;
+    }
+  }
+
+  for (const topic of e.topics) {
+    const t = topic.toLowerCase();
+    if (HAS_CJK.test(topic)) {
+      if (cjkTouches(q, t)) {
+        hits.push(topic);
+        // A longer stored topic that the query names is more specific, and
+        // should outrank a short one that merely appears inside it.
+        total += Math.min(3 + Math.floor(topic.length / 3), 7);
+      }
+    } else if (words.has(t)) {
+      hits.push(topic);
+      total += 2;
+    }
+  }
+  return { score: total, hits: Array.from(new Set(hits)) };
+}
+
+export function catalogueFor(query: string) {
+  return CATALOGUE.map((e) => ({ entry: e, ...scoreEntry(e, query) }))
+    .filter((r) => r.score > 0)
+    .sort((a, b) => b.score - a.score);
+}
+
 export function ask(query: string, lang: Lang): Reply {
   const trimmed = query.trim();
   if (!trimmed) {
@@ -262,17 +341,60 @@ export function ask(query: string, lang: Lang): Reply {
     };
   }
 
+  // A repository NAME beats everything. Without this, 「dendritic memory」
+  // reached the CLI card through the shared word `memory` while the
+  // repository actually called dendritic-memory-editor sat unmatched — the
+  // visitor named a project and got a different one.
+  const named = catalogueFor(trimmed).filter((r) => r.score >= 8);
+  if (named.length > 0) {
+    const e = named[0].entry;
+    const lead = e.description || e.summary;
+    return {
+      verdict: 'ANSWER',
+      project: e.name,
+      text:
+        lang === 'ja'
+          ? `${lead}\n\nこれは README から読み取ったもので、私が書いた説明ではありません。`
+          : `${lead}\n\nRead from the README, not written for this page.`,
+      source: { name: e.name, url: e.url },
+      quotes: e.facts.slice(0, 2),
+      matched: named[0].hits,
+      href: '/catalogue/',
+      hrefLabel: lang === 'ja' ? '図鑑で見る' : 'See it in the catalogue',
+    };
+  }
+
   const ranked = FACTS.map((fact) => ({ fact, ...score(fact, trimmed) }))
     .filter((r) => r.score > 0)
     .sort((a, b) => b.score - a.score);
 
   if (ranked.length === 0) {
+    // Nothing hand-written matched; try the READMEs.
+    const cat = catalogueFor(trimmed);
+    if (cat.length > 0) {
+      const best = cat[0];
+      const e = best.entry;
+      const lead = e.description || e.summary;
+      return {
+        verdict: 'ANSWER',
+        project: e.name,
+        text:
+          lang === 'ja'
+            ? `${lead}\n\nこれは README から読み取ったもので、私が書いた説明ではありません。`
+            : `${lead}\n\nRead from the README, not written for this page.`,
+        source: { name: e.name, url: e.url },
+        quotes: e.facts.slice(0, 2),
+        matched: best.hits,
+        href: '/catalogue/',
+        hrefLabel: lang === 'ja' ? '図鑑で見る' : 'See it in the catalogue',
+      };
+    }
     return {
       verdict: 'UNKNOWN_NO_EVIDENCE',
       text:
         lang === 'ja'
-          ? 'この問いに答えられる事実を持っていません。推測はしません。扱えるのは Vera、Verantyx IDE、Verantyx-CLI、.jcross、iOS アプリ、そしてこのサイト自身についてです。'
-          : 'I have no stored fact that answers that, and I will not guess. What I can speak to: Vera, the Verantyx IDE, Verantyx-CLI, .jcross, the iOS apps, and this site itself.',
+          ? `この問いに答えられる事実を持っていません。推測はしません。読み込んでいるのは ${CATALOGUE.length} リポジトリの README(${CATALOGUE_CHARS.toLocaleString()}字)です。プロジェクト名や、その分野の言葉で聞いてみてください。`
+          : `I have no stored fact that answers that, and I will not guess. What I hold is the READMEs of ${CATALOGUE.length} repositories (${CATALOGUE_CHARS.toLocaleString()} characters). Try a project name, or a word from its subject.`,
     };
   }
 
