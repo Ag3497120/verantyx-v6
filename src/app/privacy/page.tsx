@@ -69,7 +69,7 @@ export default function PrivacyPage() {
       title: { ja: '広告について', en: 'Advertising' },
       content: (
         <GlassCard>
-          <h3 className="text-lg font-semibold mb-4" style={{ color: 'rgba(250, 204, 21, 0.8)' }}>
+          <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--warn)' }}>
             {lang === 'ja' ? 'Google AdMob（無料版のみ）' : 'Google AdMob (Free version only)'}
           </h3>
           <div className="space-y-2.5">

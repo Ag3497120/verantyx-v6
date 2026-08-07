@@ -77,7 +77,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.45 }}
             className="text-lg md:text-2xl font-light tracking-wide max-w-3xl mx-auto"
-            style={{ color: 'rgba(226, 232, 240, 0.92)' }}
+            style={{ color: 'var(--ink-2)' }}
           >
             {lang === 'ja'
               ? '旗艦：Verantyx-CLI — 0.5B常駐ルーターと、必要なときだけ大型ローカルモデル'
@@ -179,6 +179,24 @@ export default function Home() {
               featured
             />
             <ProjectCard
+              icon="🛡️"
+              title="Vera-α"
+              description={
+                lang === 'ja'
+                  ? '推測しない知識エンジン。実文書で 8/8 と 6/6(ブラインド)'
+                  : 'A knowledge engine that refuses to guess — 8/8 and 6/6 blind, on real documents'
+              }
+              subtitle={
+                lang === 'ja'
+                  ? '決定論的・LLM 非依存・オフライン'
+                  : 'Deterministic · no LLM in the answer path · offline'
+              }
+              href="/vera/"
+              delay={0.05}
+              lang={lang}
+              featured
+            />
+            <ProjectCard
               icon="📚"
               title=".jcross Language"
               description={lang === 'ja' ? 'クロスワードパズルDSL' : 'Crossword puzzle DSL'}
@@ -258,7 +276,7 @@ function DemoSection({ lang }: { lang: 'ja' | 'en' }) {
           className="rounded-2xl overflow-hidden font-mono text-sm"
           style={{
             border: '1px solid rgba(var(--accent-rgb), 0.2)',
-            background: 'rgba(0,0,0,0.55)',
+            background: 'var(--surface-2)',
           }}
         >
           <div
@@ -282,7 +300,7 @@ function DemoSection({ lang }: { lang: 'ja' | 'en' }) {
                 <p className="text-slate-500 text-xs mb-1">
                   {steps[i].n} · {steps[i].title}
                 </p>
-                <p style={{ color: 'rgba(224, 242, 254, 0.92)' }}>
+                <p style={{ color: 'var(--ink-2)' }}>
                   <span style={{ color: 'rgba(var(--accent-rgb), 0.9)' }}>$ </span>
                   {cmd}
                 </p>
@@ -403,7 +421,7 @@ function CopyCommand({
     >
       <pre
         className="flex-1 overflow-x-auto px-4 py-3.5 text-sm font-mono text-left m-0"
-        style={{ color: 'rgba(226,232,240,0.92)' }}
+        style={{ color: 'var(--ink-2)' }}
       >
         <span className="text-slate-500 mr-2">{index + 1}.</span>
         {cmd}
@@ -503,7 +521,7 @@ function WhySection({ lang }: { lang: 'ja' | 'en' }) {
             >
               <h3
                 className="font-display text-lg md:text-xl font-semibold mb-2"
-                style={{ color: 'rgba(241,245,249,0.98)' }}
+                style={{ color: 'var(--ink)' }}
               >
                 {item.title}
               </h3>
@@ -531,7 +549,7 @@ function OtherAppsCollapse({ lang }: { lang: 'ja' | 'en' }) {
     >
       <summary
         className="px-6 py-5 flex items-center justify-between gap-4"
-        style={{ color: 'rgba(226, 232, 240, 0.85)' }}
+        style={{ color: 'var(--ink-2)' }}
       >
         <div>
           <p
@@ -689,7 +707,7 @@ function ProjectCard({
 
       <div className="relative z-10 flex flex-col gap-3">
         <div className="text-4xl md:text-5xl">{icon}</div>
-        <h2 className="font-display text-2xl md:text-3xl font-bold" style={{ color: '#f1f5f9' }}>
+        <h2 className="font-display text-2xl md:text-3xl font-bold" style={{ color: 'var(--ink)' }}>
           {title}
         </h2>
         <p className="text-gray-400 text-base md:text-lg leading-relaxed">{description}</p>

@@ -117,7 +117,7 @@ export default function VerantyxCLIPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.25 }}
             className="text-lg md:text-2xl font-light max-w-3xl leading-relaxed"
-            style={{ color: 'rgba(226,232,240,0.9)' }}
+            style={{ color: 'var(--ink-2)' }}
           >
             {t({
               en: 'Keep a small local router resident. Wake larger local models only when needed. Carry memory across restarts — without pretending structure replaces world knowledge.',
@@ -144,7 +144,7 @@ export default function VerantyxCLIPage() {
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-xl px-7 py-3.5 text-sm font-semibold text-slate-300"
-              style={{ border: '1px solid rgba(148,163,184,0.28)', textDecoration: 'none' }}
+              style={{ border: '1px solid var(--line-strong)', textDecoration: 'none' }}
             >
               {t({ en: 'Release notes', ja: 'リリースノート' })}
             </a>
@@ -174,8 +174,8 @@ export default function VerantyxCLIPage() {
           className="overflow-x-auto rounded-2xl border p-5 md:p-6 text-sm leading-relaxed font-mono"
           style={{
             borderColor: 'rgba(var(--accent-rgb), 0.2)',
-            background: 'rgba(0,0,0,0.55)',
-            color: 'rgba(224, 242, 254, 0.92)',
+            background: 'var(--surface-2)',
+            color: 'var(--ink-2)',
           }}
         >
 {`git clone https://github.com/Ag3497120/verantyx-cli.git
@@ -196,7 +196,7 @@ python3 verantyx.py`}
           <a
             href={DOCS}
             className="rounded-lg px-5 py-2.5 text-sm font-semibold text-slate-400"
-            style={{ border: '1px solid rgba(148,163,184,0.2)', textDecoration: 'none' }}
+            style={{ border: '1px solid var(--line)', textDecoration: 'none' }}
           >
             {t({ en: 'Legacy HTML docs', ja: '旧 HTML ドキュメント' })}
           </a>
@@ -222,7 +222,7 @@ python3 verantyx.py`}
                 border: '1px solid rgba(var(--accent-rgb), 0.12)',
               }}
             >
-              <h3 className="font-display text-xl font-semibold mb-3" style={{ color: '#f1f5f9' }}>
+              <h3 className="font-display text-xl font-semibold mb-3" style={{ color: 'var(--ink)' }}>
                 {t(f.title)}
               </h3>
               <p className="text-slate-400 leading-relaxed">{t(f.body)}</p>
@@ -340,7 +340,7 @@ python3 verantyx.py`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-xl px-7 py-3.5 text-sm font-semibold text-slate-300"
-                style={{ border: '1px solid rgba(148,163,184,0.28)', textDecoration: 'none' }}
+                style={{ border: '1px solid var(--line-strong)', textDecoration: 'none' }}
               >
                 v3.0.0-alpha
               </a>

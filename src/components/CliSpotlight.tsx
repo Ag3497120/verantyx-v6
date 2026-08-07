@@ -164,8 +164,8 @@ export default function CliSpotlight() {
             <pre
               className="overflow-x-auto rounded-2xl border bg-black/50 p-4 text-left text-sm leading-relaxed font-mono"
               style={{
-                borderColor: 'rgba(148,163,184,0.2)',
-                color: 'rgba(226,232,240,0.9)',
+                borderColor: 'var(--line)',
+                color: 'var(--ink-2)',
               }}
             >
 {`git clone https://github.com/Ag3497120/verantyx-cli.git

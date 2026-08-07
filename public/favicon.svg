@@ -1,5 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="8" fill="#050508"/>
-  <path d="M16 6L26 16L16 26L6 16L16 6Z" fill="#0EA5E9"/>
-  <path d="M16 11L21 16L16 21L11 16L16 11Z" fill="#050508"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="t" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5FD3D0"/><stop offset="100%" stop-color="#2FA8B8"/>
+    </linearGradient>
+    <linearGradient id="b" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2B7FC7"/><stop offset="100%" stop-color="#1B5C9E"/>
+    </linearGradient>
+    <linearGradient id="m" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#49BFC6"/><stop offset="100%" stop-color="#2570B4"/>
+    </linearGradient>
+  </defs>
+  <polygon points="100,100 23.8,56 37.3,32.6 113.5,76.6" fill="url(#t)"/>
+  <polygon points="100,100 23.8,56 10.3,79.4 86.5,123.4" fill="url(#m)"/>
+  <polygon points="100,100 23.8,144 10.3,120.6 86.5,76.6" fill="url(#t)"/>
+  <polygon points="100,100 23.8,144 37.3,167.4 113.5,123.4" fill="url(#m)"/>
+  <polygon points="100,100 100,12 73,12 73,100" fill="url(#t)"/>
+  <polygon points="100,100 100,12 127,12 127,100" fill="url(#b)"/>
+  <polygon points="100,100 100,188 73,188 73,100" fill="url(#m)"/>
+  <polygon points="100,100 100,188 127,188 127,100" fill="url(#b)"/>
+  <polygon points="100,100 176.2,56 162.7,32.6 86.5,76.6" fill="url(#b)"/>
+  <polygon points="100,100 176.2,56 189.7,79.4 113.5,123.4" fill="url(#m)"/>
+  <polygon points="100,100 176.2,144 189.7,120.6 113.5,76.6" fill="url(#b)"/>
+  <polygon points="100,100 176.2,144 162.7,167.4 86.5,123.4" fill="url(#m)"/>
+  <circle cx="100" cy="100" r="15" fill="#EAFBFF" opacity="0.92"/>
 </svg>

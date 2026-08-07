@@ -86,7 +86,7 @@ export default function NotFound() {
             style={{
               background: 'rgba(14, 165, 233, 0.1)',
               border: '1px solid rgba(14, 165, 233, 0.3)',
-              color: '#e2e8f0',
+              color: 'var(--ink-2)',
             }}
             target="_blank"
           >
@@ -96,7 +96,7 @@ export default function NotFound() {
             href="/"
             className="px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 text-gray-400"
             style={{
-              border: '1px solid rgba(107, 114, 128, 0.2)',
+              border: '1px solid var(--line-strong)',
             }}
           >
             Back to Verantyx

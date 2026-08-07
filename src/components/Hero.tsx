@@ -54,7 +54,7 @@ export default function Hero() {
           className="mt-8 text-sm text-gray-500"
         >
           Built by{' '}
-          <a href="https://x.com/Koffdai" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-cyan-400 transition-colors">kofdai</a>
+          <a href="https://github.com/Ag3497120" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-cyan-400 transition-colors">Ag3497120</a>
           {' '}×{' '}
           <a href="https://openclaw.ai" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-cyan-400 transition-colors">OpenClaw</a>
           {' '}— Human Logic + AI Implementation

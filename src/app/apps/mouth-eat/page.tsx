@@ -95,7 +95,7 @@ export default function MouthEatPage() {
 
         <h3
           className="text-lg font-semibold mb-4 tracking-wider"
-          style={{ color: 'rgba(250, 204, 21, 0.8)' }}
+          style={{ color: 'var(--warn)' }}
         >
           スペシャルアイテム
         </h3>

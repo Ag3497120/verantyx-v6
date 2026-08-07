@@ -70,7 +70,14 @@ export const THEMES: ThemeTokens[] = [
 ];
 
 const STORAGE_KEY = 'verantyx-theme';
+const MODE_KEY = 'verantyx-mode';
 
+export type Mode = 'dark' | 'light';
+
+/* Accent only. The surface tokens are NOT written here any more: they used to
+ * be set as inline styles on <html>, which beats any stylesheet rule, so a
+ * light-mode block could never take effect. They live in globals.css now,
+ * where `html[data-mode='light']` can override them. */
 function applyTheme(theme: ThemeTokens) {
   const root = document.documentElement;
   root.dataset.theme = theme.id;
@@ -78,22 +85,26 @@ function applyTheme(theme: ThemeTokens) {
   root.style.setProperty('--accent-2', theme.accent2);
   root.style.setProperty('--accent-rgb', theme.accentRgb);
   root.style.setProperty('--accent-glow', theme.glow);
-  root.style.setProperty('--bg', '#050508');
-  root.style.setProperty('--bg-elevated', '#0a0a14');
-  root.style.setProperty('--fg', '#e5e7eb');
-  root.style.setProperty('--fg-muted', '#9ca3af');
+}
+
+function applyMode(mode: Mode) {
+  document.documentElement.dataset.mode = mode;
 }
 
 type ThemeContextType = {
   themeId: ThemeId;
   theme: ThemeTokens;
   setThemeId: (id: ThemeId) => void;
+  mode: Mode;
+  setMode: (mode: Mode) => void;
+  toggleMode: () => void;
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [themeId, setThemeIdState] = useState<ThemeId>('cyan');
+  const [mode, setModeState] = useState<Mode>('dark');
   const theme = THEMES.find((t) => t.id === themeId) ?? THEMES[0];
 
   useEffect(() => {
@@ -110,6 +121,27 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     applyTheme(THEMES[0]);
   }, []);
 
+  // A stored choice wins; otherwise follow the operating system, which is
+  // what a visitor who has set a preference there already expects.
+  useEffect(() => {
+    let next: Mode = 'dark';
+    try {
+      const stored = localStorage.getItem(MODE_KEY) as Mode | null;
+      if (stored === 'light' || stored === 'dark') {
+        next = stored;
+      } else if (
+        typeof window !== 'undefined' &&
+        window.matchMedia('(prefers-color-scheme: light)').matches
+      ) {
+        next = 'light';
+      }
+    } catch {
+      /* ignore */
+    }
+    setModeState(next);
+    applyMode(next);
+  }, []);
+
   useEffect(() => {
     applyTheme(theme);
   }, [theme]);
@@ -123,8 +155,24 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const setMode = useCallback((next: Mode) => {
+    setModeState(next);
+    applyMode(next);
+    try {
+      localStorage.setItem(MODE_KEY, next);
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const toggleMode = useCallback(() => {
+    setMode(mode === 'dark' ? 'light' : 'dark');
+  }, [mode, setMode]);
+
   return (
-    <ThemeContext.Provider value={{ themeId, theme, setThemeId }}>
+    <ThemeContext.Provider
+      value={{ themeId, theme, setThemeId, mode, setMode, toggleMode }}
+    >
       {children}
     </ThemeContext.Provider>
   );

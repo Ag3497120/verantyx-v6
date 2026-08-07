@@ -19,8 +19,8 @@ const links = [
     description: 'HuggingFace Spaces — live ARC-AGI-2 solver demo',
   },
   {
-    title: 'Follow @kofdai',
-    url: 'https://x.com/Koffdai',
+    title: 'Follow Ag3497120',
+    url: 'https://github.com/Ag3497120',
     icon: 'x',
     color: '#A855F7',
     description: 'Latest updates and research progress',

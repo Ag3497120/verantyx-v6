@@ -118,7 +118,7 @@ export default function RankingPage() {
                 style={{
                   background: selectedMode === mode.id ? 'rgba(14, 165, 233, 0.1)' : 'transparent',
                   border: selectedMode === mode.id ? '1px solid rgba(14, 165, 233, 0.3)' : '1px solid rgba(55, 65, 81, 0.3)',
-                  color: selectedMode === mode.id ? '#e2e8f0' : '#6b7280',
+                  color: selectedMode === mode.id ? '#e2e8f0' : 'var(--ink-4)',
                 }}
               >
                 {mode.label}
@@ -154,7 +154,7 @@ export default function RankingPage() {
             style={{
               background: 'rgba(10, 10, 20, 0.6)',
               border: '1px solid rgba(14, 165, 233, 0.08)',
-              color: '#9ca3af',
+              color: 'var(--ink-3)',
             }}
           >
             🔄 {lang === 'ja' ? '更新' : 'Refresh'}

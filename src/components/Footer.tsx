@@ -67,13 +67,13 @@ export default function Footer() {
             <p className="text-gray-600 text-xs">
               Built by{' '}
               <a
-                href="https://x.com/Koffdai"
+                href="https://github.com/Ag3497120"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:opacity-100 transition-colors"
                 style={{ color: 'rgba(var(--accent-rgb), 0.7)' }}
               >
-                @Koffdai
+                Ag3497120
               </a>
               {' × '}
               <a
@@ -181,7 +181,7 @@ function FooterLink({ href, label }: { href: string; label: string }) {
         e.currentTarget.style.color = 'rgba(var(--accent-rgb), 0.9)';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.color = '#6b7280';
+        e.currentTarget.style.color = 'var(--ink-4)';
       }}
     >
       {label}

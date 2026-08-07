@@ -9,8 +9,27 @@
   --bg-elevated: #0a0a14;
   --fg: #e5e7eb;
   --fg-muted: #9ca3af;
-  --font-display: var(--font-syne), ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+
+  /* Semantic surface tokens. Every page used to hardcode its greys inline,
+   * which is fine for one palette and impossible for two: an inline style
+   * cannot be overridden by a light-mode rule. These are what the components
+   * reference now, so switching mode is a variable swap rather than an edit
+   * to every file. */
+  --ink: #e8eaf0;          /* primary text            */
+  --ink-2: rgba(226, 232, 240, 0.88); /* lead paragraphs */
+  --ink-3: #94a3b8;        /* body copy               */
+  --ink-4: #64748b;        /* captions, labels        */
+  --surface: rgba(255, 255, 255, 0.018);
+  --surface-2: rgba(0, 0, 0, 0.42);   /* code, wells   */
+  --line: rgba(148, 163, 184, 0.16);
+  --line-strong: rgba(148, 163, 184, 0.26);
+  --chrome: rgba(5, 5, 8, 0.55);        /* nav, translucent  */
+  --chrome-solid: rgba(5, 5, 8, 0.94);  /* nav, on scroll    */
+  --warn: rgba(250, 204, 21, 0.85);     /* advisory headings */
+  --font-display: var(--font-syne), var(--font-noto-jp), ui-sans-serif,
+    system-ui, sans-serif;
+  --font-body: var(--font-dm-sans), var(--font-noto-jp), ui-sans-serif,
+    system-ui, sans-serif;
   color-scheme: dark;
   transition:
     --accent 0.45s ease,
@@ -18,10 +37,47 @@
     --accent-glow 0.45s ease;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Light mode is a real inversion of the token set, not a filter over the
+ * dark one. Only the tokens change; no component knows which mode it is in.
+ * `color-scheme` is set too, so form controls and scrollbars follow. */
+html[data-mode='light'] {
+  color-scheme: light;
+  --bg: #fbfcfd;
+  --bg-elevated: #ffffff;
+  --fg: #0f172a;
+  --fg-muted: #475569;
+  --ink: #0f172a;
+  --ink-2: rgba(15, 23, 42, 0.86);
+  --ink-3: #475569;
+  --ink-4: #64748b;
+  --surface: rgba(15, 23, 42, 0.026);
+  --surface-2: rgba(15, 23, 42, 0.045);
+  --line: rgba(15, 23, 42, 0.11);
+  --line-strong: rgba(15, 23, 42, 0.2);
+  --chrome: rgba(251, 252, 253, 0.7);
+  --chrome-solid: rgba(251, 252, 253, 0.94);
+  /* The dark-mode amber is a 1.6:1 contrast on white. Same signal, readable. */
+  --warn: #a16207;
+}
+
+/* This reset MUST stay inside @layer base.
+ *
+ * Tailwind v4 puts every utility in the `utilities` cascade layer, and
+ * unlayered CSS beats layered CSS outright — specificity never enters into
+ * it. Left unlayered, this one rule silently zeroed `px-6`, `mx-auto`,
+ * `mt-10` and every other spacing utility on every page of the site, so
+ * text ran edge to edge on a phone and nothing was ever centred. Measured:
+ * `getComputedStyle(section).paddingLeft` was `0px` on a section carrying
+ * `px-6`.
+ *
+ * Tailwind's own preflight already sets all three of these; the rule is kept
+ * only so the intent stays visible. */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 }
 
 html {
@@ -40,6 +96,18 @@ h1, h2, h3, .font-display {
   font-family: var(--font-display);
 }
 
+/* Japanese sets differently from Latin and the defaults tuned for one are
+ * wrong for the other. Kanji need more leading to stay legible at the same
+ * size, and Japanese has no spaces, so a line may break anywhere EXCEPT
+ * before a closing bracket or a small kana — which is what `word-break:
+ * normal` plus `line-break: strict` gets right and `break-all` gets wrong. */
+:lang(ja),
+[lang='ja'] {
+  line-break: strict;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
 /* Atmosphere: soft diagonal mesh + radial accent wash */
 body {
   background-image:
@@ -48,6 +116,30 @@ body {
     linear-gradient(165deg, #050508 0%, #08080f 45%, #050508 100%);
   background-attachment: fixed;
 }
+
+/* The same atmosphere, a fifth of the strength. At dark-mode opacity the
+   accent wash reads as a stain on a white page rather than as depth. */
+html[data-mode='light'] body {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(var(--accent-rgb), 0.07), transparent 58%),
+    radial-gradient(ellipse 50% 40% at 100% 50%, rgba(var(--accent-rgb), 0.03), transparent 50%),
+    linear-gradient(165deg, #fbfcfd 0%, #f4f7fa 45%, #fbfcfd 100%);
+}
+
+/* Film grain is a dark-room effect; on white it is just dirt. */
+html[data-mode='light'] body::before {
+  opacity: 0.012;
+}
+
+/* Utility remap. Components that still name a Tailwind grey directly are
+   remapped here rather than edited one by one — the class keeps its meaning
+   (primary / body / caption) and only its value changes with the mode. */
+html[data-mode='light'] .text-white { color: var(--ink); }
+html[data-mode='light'] .text-slate-200,
+html[data-mode='light'] .text-slate-300 { color: var(--ink-2); }
+html[data-mode='light'] .text-slate-400 { color: var(--ink-3); }
+html[data-mode='light'] .text-slate-500,
+html[data-mode='light'] .text-slate-600 { color: var(--ink-4); }
 
 /* Film grain */
 body::before {
@@ -105,6 +197,27 @@ body::after {
   border-color: rgba(var(--accent-rgb), 0.7);
   box-shadow: 0 0 28px rgba(var(--accent-rgb), 0.2);
   transform: translateY(-1px);
+}
+
+/* On white, a 16%-opacity accent wash behind near-white text is unreadable.
+   The light variant fills the button and puts white on top of it instead. */
+html[data-mode='light'] .btn-accent {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+html[data-mode='light'] .btn-accent:hover {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+  box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.28);
+}
+
+/* The gradient wordmark and headings keep their accent, but the silver
+   utility is a dark-room effect: on white it renders as near-invisible. */
+html[data-mode='light'] .text-silver {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--ink-3);
 }
 
 .gradient-brand {

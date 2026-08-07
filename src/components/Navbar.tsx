@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/lib/i18n';
+import { useTheme } from '@/lib/theme';
+import Logo from '@/components/Logo';
 import ThemePicker from '@/components/ThemePicker';
 
 const CLI_GITHUB = 'https://github.com/Ag3497120/verantyx-cli';
@@ -11,6 +13,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { lang, setLang } = useLanguage();
+  const { mode, toggleMode } = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -26,7 +29,7 @@ export default function Navbar() {
         left: 0,
         right: 0,
         zIndex: 1000,
-        background: scrolled ? 'rgba(5, 5, 8, 0.94)' : 'rgba(5, 5, 8, 0.55)',
+        background: scrolled ? 'var(--chrome-solid)' : 'var(--chrome)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         borderBottom: scrolled
@@ -39,12 +42,16 @@ export default function Navbar() {
         style={{
           maxWidth: 1200,
           margin: '0 auto',
-          padding: '0 24px',
+          // Was a flat 24px. On a 375px phone that left the row too narrow
+          // for the wordmark, so "Verantyx" broke across two lines and the
+          // CLI pill stacked one letter per line.
+          padding: '0 clamp(14px, 4vw, 24px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           height: 60,
-          gap: 12,
+          gap: 10,
+          flexWrap: 'nowrap',
         }}
       >
         <a
@@ -54,16 +61,16 @@ export default function Navbar() {
             alignItems: 'center',
             gap: 10,
             textDecoration: 'none',
-            color: '#fff',
+            color: 'var(--ink)',
             fontWeight: 800,
-            fontSize: '1.15em',
+            fontSize: 'clamp(1rem, 3.6vw, 1.15em)',
             letterSpacing: '-0.5px',
             fontFamily: 'var(--font-display)',
+            whiteSpace: 'nowrap',
+            flexShrink: 0,
           }}
         >
-          <span className="gradient-brand" style={{ fontSize: '1.05em' }}>
-            ◆
-          </span>
+          <Logo size={24} />
           <span>Verantyx</span>
         </a>
 
@@ -73,6 +80,7 @@ export default function Navbar() {
         >
           <NavLink href="/" label="Home" />
           <NavLink href="/apps/" label="Apps" />
+          <NavLink href="/vera/" label="Vera" />
           <NavLink href="/verantyx-cli/" label="CLI" />
           <NavLink href="/jcross-language/" label=".jcross" />
           <NavLink href="/apple-music-api/" label="API" />
@@ -81,15 +89,17 @@ export default function Navbar() {
             <ThemePicker compact />
           </div>
 
+          <ModeToggle mode={mode} onToggle={toggleMode} />
+
           <button
             onClick={() => setLang(lang === 'en' ? 'ja' : 'en')}
             style={{
               padding: '6px 12px',
               marginLeft: 4,
               borderRadius: 8,
-              border: '1px solid rgba(107, 114, 128, 0.2)',
+              border: '1px solid var(--line-strong)',
               background: 'transparent',
-              color: '#9ca3af',
+              color: 'var(--ink-3)',
               fontWeight: 500,
               fontSize: '0.8em',
               cursor: 'pointer',
@@ -98,11 +108,11 @@ export default function Navbar() {
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = 'rgba(var(--accent-rgb), 0.35)';
-              e.currentTarget.style.color = '#e2e8f0';
+              e.currentTarget.style.color = 'var(--ink)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(107, 114, 128, 0.2)';
-              e.currentTarget.style.color = '#9ca3af';
+              e.currentTarget.style.borderColor = 'var(--line-strong)';
+              e.currentTarget.style.color = 'var(--ink-3)';
             }}
           >
             {lang === 'en' ? 'JP' : 'EN'}
@@ -131,20 +141,29 @@ export default function Navbar() {
 
         <div
           className="navbar-mobile-cluster"
-          style={{ display: 'none', alignItems: 'center', gap: 12 }}
+          style={{
+            display: 'none',
+            alignItems: 'center',
+            gap: 10,
+            flexShrink: 0,
+          }}
         >
-          <ThemePicker compact />
+          <ModeToggle mode={mode} onToggle={toggleMode} />
+          <span className="navbar-narrow-hide">
+            <ThemePicker compact />
+          </span>
           <a
             href={CLI_GITHUB}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-accent"
+            className="btn-accent navbar-narrow-hide"
             style={{
               padding: '6px 10px',
               borderRadius: 8,
               fontSize: '0.72em',
               fontWeight: 600,
               textDecoration: 'none',
+              whiteSpace: 'nowrap',
             }}
           >
             CLI
@@ -155,7 +174,7 @@ export default function Navbar() {
             style={{
               background: 'none',
               border: 'none',
-              color: '#e2e8f0',
+              color: 'var(--ink-2)',
               fontSize: '1.3em',
               cursor: 'pointer',
               padding: 4,
@@ -177,7 +196,7 @@ export default function Navbar() {
             transition={{ duration: 0.25 }}
             style={{
               overflow: 'hidden',
-              background: 'rgba(5, 5, 8, 0.98)',
+              background: 'var(--chrome-solid)',
               borderTop: '1px solid rgba(var(--accent-rgb), 0.1)',
             }}
             className="navbar-mobile-menu"
@@ -192,6 +211,11 @@ export default function Navbar() {
             >
               <MobileNavLink href="/" label="Home" onClick={() => setMobileOpen(false)} />
               <MobileNavLink href="/apps/" label="Apps" onClick={() => setMobileOpen(false)} />
+              <MobileNavLink
+                href="/vera/"
+                label="Vera"
+                onClick={() => setMobileOpen(false)}
+              />
               <MobileNavLink
                 href="/verantyx-cli/"
                 label="CLI"
@@ -209,14 +233,34 @@ export default function Navbar() {
               />
               <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
                 <button
+                  onClick={toggleMode}
+                  style={{
+                    flex: 1,
+                    padding: '10px 16px',
+                    borderRadius: 10,
+                    border: '1px solid var(--line-strong)',
+                    background: 'transparent',
+                    color: 'var(--ink-3)',
+                    fontWeight: 500,
+                    fontSize: '0.9em',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {mode === 'dark'
+                    ? lang === 'ja' ? '☀ ライト' : '☀ Light'
+                    : lang === 'ja' ? '☾ ダーク' : '☾ Dark'}
+                </button>
+              </div>
+              <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                <button
                   onClick={() => setLang(lang === 'en' ? 'ja' : 'en')}
                   style={{
                     flex: 1,
                     padding: '10px 16px',
                     borderRadius: 10,
-                    border: '1px solid rgba(107, 114, 128, 0.2)',
+                    border: '1px solid var(--line-strong)',
                     background: 'transparent',
-                    color: '#9ca3af',
+                    color: 'var(--ink-3)',
                     fontWeight: 500,
                     fontSize: '0.9em',
                     cursor: 'pointer',
@@ -253,11 +297,58 @@ export default function Navbar() {
           .navbar-desktop { display: none !important; }
           .navbar-mobile-cluster { display: flex !important; }
         }
+        /* Below this the bar has room for the wordmark and the menu button
+           and nothing else. Both hidden items are in the drawer. */
+        @media (max-width: 420px) {
+          .navbar-narrow-hide { display: none !important; }
+        }
         @media (min-width: 769px) {
           .navbar-mobile-menu { display: none !important; }
         }
       `}</style>
     </nav>
+  );
+}
+
+function ModeToggle({
+  mode,
+  onToggle,
+}: {
+  mode: 'dark' | 'light';
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      onClick={onToggle}
+      aria-label={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      title={mode === 'dark' ? 'Light mode' : 'Dark mode'}
+      style={{
+        width: 32,
+        height: 32,
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 9,
+        border: '1px solid var(--line-strong)',
+        background: 'transparent',
+        color: 'var(--ink-3)',
+        cursor: 'pointer',
+        fontSize: '0.95em',
+        lineHeight: 1,
+        transition: 'color 0.25s ease, border-color 0.25s ease',
+        flexShrink: 0,
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.color = 'var(--accent)';
+        e.currentTarget.style.borderColor = 'rgba(var(--accent-rgb), 0.5)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.color = 'var(--ink-3)';
+        e.currentTarget.style.borderColor = 'var(--line-strong)';
+      }}
+    >
+      {mode === 'dark' ? '☀' : '☾'}
+    </button>
   );
 }
 
@@ -268,7 +359,7 @@ function NavLink({ href, label }: { href: string; label: string }) {
       style={{
         padding: '6px 12px',
         borderRadius: 8,
-        color: '#9ca3af',
+        color: 'var(--ink-3)',
         fontWeight: 500,
         fontSize: '0.85em',
         textDecoration: 'none',
@@ -276,10 +367,10 @@ function NavLink({ href, label }: { href: string; label: string }) {
         transition: 'color 0.3s ease',
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.color = '#e2e8f0';
+        e.currentTarget.style.color = 'var(--ink)';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.color = '#9ca3af';
+        e.currentTarget.style.color = 'var(--ink-3)';
       }}
     >
       {label}
