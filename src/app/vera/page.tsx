@@ -109,6 +109,42 @@ const LIMITS: L[] = [
   },
 ];
 
+/* The jgen static dictionary. Documented here rather than in a feature list
+ * because the interesting part is the third row: the question it REFUSES to
+ * answer, and the measurement that put it out of reach. */
+const LEXICON: { q: L; verdict: L; measured: L; ok: boolean }[] = [
+  {
+    ok: true,
+    q: { en: 'Is this the kind of word that can carry a state?',
+         ja: 'この語は状態を担える種類の語か' },
+    verdict: { en: 'Usable', ja: '使える' },
+    measured: {
+      en: 'Separated the real proposal queue completely: true candidates at +0.164 / +0.128 / +0.082, false ones at −0.143 / −0.239. Unseen state words (滞留, 孤立, 冠水) landed on the right side too.',
+      ja: '実際の候補列を完全に分離。本物が +0.164 / +0.128 / +0.082、偽物が −0.143 / −0.239。未知の状態語（滞留・孤立・冠水）も正しい側に落ちました。',
+    },
+  },
+  {
+    ok: true,
+    q: { en: 'Which known words sit nearest to it?',
+         ja: 'どの既知語がいちばん近いか' },
+    verdict: { en: 'Usable as search', ja: '検索として使える' },
+    measured: {
+      en: '冠水 → 断水 (0.52), 停電 → 停止 (0.47). Shown to the operator as context beside a proposal, never as a decision.',
+      ja: '冠水 → 断水 (0.52)、停電 → 停止 (0.47)。提案の横に文脈として示すだけで、判断はしません。',
+    },
+  },
+  {
+    ok: false,
+    q: { en: 'Which pole is it — restored, or still out?',
+         ja: 'どちらの極か — 解消側か、継続側か' },
+    verdict: { en: 'Refused. Absent from the API.', ja: '拒否。API に存在しません' },
+    measured: {
+      en: '64.5% leave-one-out on the engine\u2019s own 31 terms — a coin flip. Opposite poles live in identical contexts: an outage and its restoration share a paragraph, so a frozen table holds no information that separates them. A 4B model scored 54.8% on the same test. Neither is usable, and no function returns a pole.',
+      ja: 'エンジン自身の31語で leave-one-out 64.5% — ほぼコイン投げです。反対の極は同じ文脈に現れます（「断水が発生」と「復旧が完了」は同じ段落）ので、凍結された表には区別する情報がありません。4B のモデルは同じ試験で 54.8% でした。どちらも使い物にならず、極を返す関数は存在しません。',
+    },
+  },
+];
+
 export default function VeraPage() {
   const { lang } = useLanguage();
   const t = (o: L) => o[lang];
@@ -435,6 +471,85 @@ no_candidate_cross`}
               </p>
             </div>
           ))}
+        </div>
+      </Section>
+
+      {/* ── The static dictionary ──────────────────────────────── */}
+      <Section label={t({ en: 'Static dictionary', ja: '静的辞書' })}>
+        <H2 ja={ja}>
+          {t({
+            en: 'A model used as a dictionary, and only where it measured usable',
+            ja: 'モデルを辞書として使う — 測って使えた範囲だけ',
+          })}
+        </H2>
+        <Body ja={ja}>
+          {t({
+            en: 'Vera can grow its vocabulary from the documents themselves, and a person approves each word. To put the likely-real candidates in front of that person first, it can consult a jgen — a local model file converted with `--parts lexicon`, carrying its embedding table and nothing else. It has no layers that generate, so it physically cannot write. It is opened once and read a row at a time: pure standard library, no inference engine, no network.',
+            ja: 'Vera は文書自身から語彙を育て、一語ずつ人が承認します。その人の前に「本物らしい候補」を先に置くために、jgen を引きます — `--parts lexicon` で変換したローカルのモデルファイルで、埋め込み表だけを持ち、生成する層を持ちません。物理的に文章を書けません。一度開いて必要な行だけを読む、標準ライブラリのみ・推論エンジンなし・通信なしの実装です。',
+          })}
+        </Body>
+
+        <div className="mt-8 space-y-4 max-w-3xl">
+          {LEXICON.map((row) => (
+            <div
+              key={row.q.en}
+              className="rounded-2xl p-5"
+              style={{
+                border: '1px solid var(--line, rgba(255,255,255,0.09))',
+                background: 'var(--surface, rgba(255,255,255,0.02))',
+                borderLeft: `3px solid ${
+                  row.ok ? 'rgba(var(--accent-rgb), 0.75)' : 'var(--warn, #f59e0b)'
+                }`,
+              }}
+            >
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2">
+                <p className="font-semibold" style={{ fontSize: '0.97rem' }}>
+                  {t(row.q)}
+                </p>
+                <span
+                  className="rounded-full px-2.5 py-0.5"
+                  style={{
+                    fontSize: '0.7rem',
+                    letterSpacing: '0.04em',
+                    color: row.ok
+                      ? 'rgba(var(--accent-rgb), 0.95)'
+                      : 'var(--warn, #f59e0b)',
+                    border: `1px solid ${
+                      row.ok
+                        ? 'rgba(var(--accent-rgb), 0.4)'
+                        : 'rgba(var(--warn-rgb, 245 158 11), 0.5)'
+                    }`,
+                  }}
+                >
+                  {t(row.verdict)}
+                </span>
+              </div>
+              <p
+                className="text-slate-400"
+                style={{
+                  fontSize: 'clamp(0.85rem, 2.2vw, 0.9rem)',
+                  lineHeight: ja ? 1.9 : 1.65,
+                }}
+              >
+                {t(row.measured)}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div
+          className="mt-6 rounded-2xl p-5 max-w-3xl"
+          style={{
+            border: '1px solid rgba(var(--accent-rgb), 0.3)',
+            background: 'rgba(var(--accent-rgb), 0.05)',
+          }}
+        >
+          <Body ja={ja}>
+            {t({
+              en: 'The dictionary orders the queue. It never accepts a word — that stays with the person, and it stays there because of the third row, not out of caution. It is optional too: without one configured, the queue simply arrives unsorted, and nothing else changes.',
+              ja: '辞書は並べ替えるだけで、語を受理しません。受理は人のもので、その理由は用心ではなく3行目の実測です。設定は任意で、辞書が無ければ候補列が並べ替えられないだけ、他は何も変わりません。',
+            })}
+          </Body>
         </div>
       </Section>
 
