@@ -188,13 +188,24 @@ export default function VeraPage() {
             className="mt-8 sm:mt-11 flex flex-wrap items-center gap-3"
           >
             <a
-              href={ENGINE}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/vera/demo/"
               className="btn-accent rounded-xl px-6 py-3 text-sm font-semibold"
               style={{ textDecoration: 'none' }}
             >
-              {t({ en: 'Engine on GitHub', ja: 'エンジン (GitHub)' })} →
+              {t({ en: 'Try it in the browser', ja: 'ブラウザで試す' })} →
+            </a>
+            <a
+              href={ENGINE}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-xl px-6 py-3 text-sm font-semibold"
+              style={{
+                textDecoration: 'none',
+                color: 'var(--ink-2)',
+                border: '1px solid var(--line-strong, rgba(255,255,255,0.16))',
+              }}
+            >
+              {t({ en: 'Engine on GitHub', ja: 'エンジン (GitHub)' })}
             </a>
             <a
               href={IDE}

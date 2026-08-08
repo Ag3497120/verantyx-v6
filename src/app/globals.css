@@ -26,6 +26,7 @@
   --chrome: rgba(5, 5, 8, 0.55);        /* nav, translucent  */
   --chrome-solid: rgba(5, 5, 8, 0.94);  /* nav, on scroll    */
   --warn: rgba(250, 204, 21, 0.85);     /* advisory headings */
+  --warn-rgb: 250 204 21;               /* same amber, for rgba() alphas */
   --panel: #0b0d13;                     /* opaque overlay surface */
   --font-display: var(--font-syne), var(--font-noto-jp), ui-sans-serif,
     system-ui, sans-serif;
@@ -59,6 +60,7 @@ html[data-mode='light'] {
   --chrome-solid: rgba(251, 252, 253, 0.94);
   /* The dark-mode amber is a 1.6:1 contrast on white. Same signal, readable. */
   --warn: #a16207;
+  --warn-rgb: 161 98 7;
   --panel: #ffffff;
 }
 
