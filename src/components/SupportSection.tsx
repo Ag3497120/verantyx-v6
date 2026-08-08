@@ -92,7 +92,7 @@ export default function SupportSection() {
             💜 Sponsor on GitHub
           </a>
           <a
-            href="https://github.com/Ag3497120/verantyx-v6"
+            href="https://github.com/Ag3497120/Verantyx"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block ml-4 px-10 py-4 rounded-xl font-semibold text-lg border border-gray-700 text-gray-300 hover:border-gray-500 hover:text-white transition-all hover:scale-105"

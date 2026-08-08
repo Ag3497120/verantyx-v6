@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/lib/i18n';
 
-const CLI_GITHUB = 'https://github.com/Ag3497120/verantyx-cli';
+const CLI_GITHUB = 'https://github.com/Ag3497120/Verantyx';
 
 export default function StickyCliCta() {
   const { lang } = useLanguage();

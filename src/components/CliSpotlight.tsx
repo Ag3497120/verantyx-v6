@@ -3,8 +3,8 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/lib/i18n';
 
-const GITHUB = 'https://github.com/Ag3497120/verantyx-cli';
-const RELEASE = 'https://github.com/Ag3497120/verantyx-cli/releases/tag/v3.0.0-alpha';
+const GITHUB = 'https://github.com/Ag3497120/Verantyx';
+const RELEASE = 'https://github.com/Ag3497120/Verantyx';
 
 export default function CliSpotlight() {
   const { lang } = useLanguage();
@@ -168,7 +168,7 @@ export default function CliSpotlight() {
                 color: 'var(--ink-2)',
               }}
             >
-{`git clone https://github.com/Ag3497120/verantyx-cli.git
+{`git clone https://github.com/Ag3497120/Verantyx.git
 cd verantyx-cli
 git checkout stable
 python3 verantyx.py`}

@@ -78,7 +78,7 @@ export default function LiveMetrics() {
           })}
           {' · '}
           <a 
-            href={`https://github.com/Ag3497120/verantyx-v6/commit/${metrics.commit}`}
+            href={`https://github.com/Ag3497120/Verantyx${metrics.commit}`}
             target="_blank" 
             rel="noopener noreferrer"
             className="text-gray-500 hover:text-cyan-400 transition-colors"

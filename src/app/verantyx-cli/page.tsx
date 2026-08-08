@@ -6,8 +6,8 @@ import Footer from '@/components/Footer';
 import StickyCliCta from '@/components/StickyCliCta';
 import { useLanguage } from '@/lib/i18n';
 
-const GITHUB = 'https://github.com/Ag3497120/verantyx-cli';
-const RELEASE = 'https://github.com/Ag3497120/verantyx-cli/releases/tag/v3.0.0-alpha';
+const GITHUB = 'https://github.com/Ag3497120/Verantyx';
+const RELEASE = 'https://github.com/Ag3497120/Verantyx';
 const DOCS = '/verantyx-cli-docs.html';
 
 const FEATURES = [
@@ -178,7 +178,7 @@ export default function VerantyxCLIPage() {
             color: 'var(--ink-2)',
           }}
         >
-{`git clone https://github.com/Ag3497120/verantyx-cli.git
+{`git clone https://github.com/Ag3497120/Verantyx.git
 cd verantyx-cli
 git checkout stable   # curated snapshot for visitors
 python3 verantyx.py`}

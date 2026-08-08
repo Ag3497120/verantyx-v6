@@ -7,7 +7,7 @@ import { useTheme } from '@/lib/theme';
 import Logo from '@/components/Logo';
 import ThemePicker from '@/components/ThemePicker';
 
-const CLI_GITHUB = 'https://github.com/Ag3497120/verantyx-cli';
+const CLI_GITHUB = 'https://github.com/Ag3497120/Verantyx';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);

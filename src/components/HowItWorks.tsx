@@ -76,7 +76,7 @@ export default function HowItWorks() {
             <p className="leading-relaxed">
               <span className="font-mono text-electric">Claude Sonnet 4.5</span> writes Python{' '}
               <span className="font-mono">transform(grid)</span> functions for each unsolved task.
-              5-6 parallel agents process batches of 50 tasks via OpenClaw.
+              5-6 parallel agents process batches of 50 tasks.
               The LLM never outputs answers — it writes code.
             </p>
           </div>

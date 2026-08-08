@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 
-const GITHUB_CLI = 'https://github.com/Ag3497120/verantyx-cli';
+const GITHUB_CLI = 'https://github.com/Ag3497120/Verantyx';
 
 export default function Footer() {
   return (
@@ -74,16 +74,6 @@ export default function Footer() {
                 style={{ color: 'rgba(var(--accent-rgb), 0.7)' }}
               >
                 Ag3497120
-              </a>
-              {' × '}
-              <a
-                href="https://openclaw.ai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-500 hover:opacity-100 transition-colors"
-                style={{ color: 'rgba(var(--accent-rgb), 0.7)' }}
-              >
-                OpenClaw
               </a>
             </p>
           </div>

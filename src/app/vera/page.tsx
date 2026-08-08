@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useLanguage } from '@/lib/i18n';
 
-const ENGINE = 'https://github.com/Ag3497120/Verantyx-Vera-alpha';
+const ENGINE = 'https://github.com/Ag3497120/Verantyx';
 const IDE = 'https://github.com/Ag3497120/Verantyx';
 
 type L = { en: string; ja: string };

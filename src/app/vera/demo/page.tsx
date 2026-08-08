@@ -5,9 +5,9 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useLanguage } from '@/lib/i18n';
 
-const SPACE = 'https://kofdai-verantyx-hle-14.hf.space';
-const SPACE_PAGE = 'https://huggingface.co/spaces/kofdai/verantyx-hle-14';
-const ENGINE = 'https://github.com/Ag3497120/Verantyx-Vera-alpha';
+const SPACE = 'https://kofdai-verantyx-vera.hf.space';
+const SPACE_PAGE = 'https://huggingface.co/spaces/kofdai/verantyx-vera';
+const ENGINE = 'https://github.com/Ag3497120/Verantyx';
 
 type L = { en: string; ja: string };
 
@@ -29,6 +29,20 @@ const TABS: { name: L; body: L }[] = [
     body: {
       en: 'The engine proves a defect in its own reading with no answer key, repairs what it can, and hands you what it cannot.',
       ja: 'エンジンが自分の読みの欠陥を答え合わせなしで証明し、直せるものを直し、直せないものをあなたに渡すまで。',
+    },
+  },
+  {
+    name: { en: 'Closed loop', ja: '閉ループ' },
+    body: {
+      en: 'Candidate repairs built from what was PROVEN, then measured — accepted or rejected, with the numbers that decided it.',
+      ja: '証明された欠陥から修復候補を作り、測って受理か却下を決めます。決め手になった数字も一緒に出ます。',
+    },
+  },
+  {
+    name: { en: 'Lexicon', ja: '辞書' },
+    body: {
+      en: 'A jgen carrying only its embed table, so it cannot generate. It answers two questions that were measured usable, and refuses the one that was not.',
+      ja: 'embed 表だけを持つ jgen なので生成できません。測って使えると分かった二つに答え、使えなかった一つは答えません。',
     },
   },
   {
@@ -252,9 +266,9 @@ export default function VeraDemoPage() {
             className="font-display font-bold mb-7"
             style={{ fontSize: 'clamp(1.35rem, 3.6vw, 2rem)' }}
           >
-            {t({ en: 'Three tabs', ja: '三つのタブ' })}
+            {t({ en: 'Five tabs', ja: '五つのタブ' })}
           </h2>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {TABS.map((tab, i) => (
               <motion.div
                 key={tab.name.en}

@@ -6,7 +6,7 @@ import { useRef } from 'react';
 const links = [
   {
     title: 'View Source Code',
-    url: 'https://github.com/Ag3497120/verantyx-v6',
+    url: 'https://github.com/Ag3497120/Verantyx',
     icon: 'github',
     color: '#0EA5E9',
     description: 'Explore the full codebase — 304 files, 100K lines',

@@ -55,9 +55,6 @@ export default function Hero() {
         >
           Built by{' '}
           <a href="https://github.com/Ag3497120" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-cyan-400 transition-colors">Ag3497120</a>
-          {' '}×{' '}
-          <a href="https://openclaw.ai" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-cyan-400 transition-colors">OpenClaw</a>
-          {' '}— Human Logic + AI Implementation
         </motion.p>
       </div>
     </section>
