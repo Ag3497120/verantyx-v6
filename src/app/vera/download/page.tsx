@@ -45,7 +45,7 @@ const STEPS: { n: string; title: L; body: L; cmd?: string; note?: L }[] = [
       en: 'One line. It downloads about 1 MB and takes a few seconds.',
       ja: '1行です。1MB ほどをダウンロードして数秒で終わります。',
     },
-    cmd: 'python3 -m pip install "verantyx-vera[docs] @ git+https://github.com/Ag3497120/Verantyx-Vera-alpha"',
+    cmd: 'python3 -m pip install "verantyx-vera[docs]"',
     note: {
       en: 'The [docs] part adds PDF and Word reading. Leave it out and it still runs, but only on plain text and HTML.',
       ja: '[docs] は PDF と Word を読むための追加です。外しても動きますが、テキストと HTML だけになります。',
