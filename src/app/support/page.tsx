@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { useLanguage } from '@/lib/i18n';
 import { PageHero, CinematicSection, GlassCard, FeatureCheck } from '@/components/CinematicSection';
 
 type Lang = 'ja' | 'en';
@@ -81,17 +81,11 @@ const content = {
 };
 
 export default function SupportPage() {
-  const [lang, setLang] = useState<Lang>('ja');
+  const { lang } = useLanguage();
 
   return (
     <main className="relative bg-black text-white overflow-x-hidden">
       <Navbar />
-
-      {/* Language Toggle */}
-      <div className="fixed top-20 right-6 z-50 backdrop-blur-md rounded-full px-1 py-1 flex gap-1" style={{ background: 'rgba(5,5,8,0.7)', border: '1px solid rgba(14,165,233,0.1)' }}>
-        <button onClick={() => setLang('ja')} className={`px-3 py-1 text-xs font-semibold rounded-full transition-all ${lang === 'ja' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`} style={lang === 'ja' ? { background: 'rgba(14,165,233,0.2)', border: '1px solid rgba(14,165,233,0.3)' } : {}}>JP</button>
-        <button onClick={() => setLang('en')} className={`px-3 py-1 text-xs font-semibold rounded-full transition-all ${lang === 'en' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`} style={lang === 'en' ? { background: 'rgba(14,165,233,0.2)', border: '1px solid rgba(14,165,233,0.3)' } : {}}>EN</button>
-      </div>
 
       <PageHero
         title={t(content.hero.title, lang)}
