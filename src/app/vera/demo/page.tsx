@@ -190,6 +190,17 @@ export default function VeraDemoPage() {
                 ja: 'これは公開サーバです。貼り付け・アップロードした文書は送信されます。架空データか、すでに公開されている資料だけを使ってください。共有できない文書で同じエンジンを動かすには、ローカルに入れてください。外部接続を一切しません。',
               })}
             </p>
+            <a
+              href="/vera/download/"
+              className="inline-block mt-4 rounded-xl px-5 py-3 text-sm font-semibold"
+              style={{
+                textDecoration: 'none',
+                color: 'var(--ink)',
+                border: '1px solid var(--line-strong, rgba(255,255,255,0.18))',
+              }}
+            >
+              {t({ en: 'How to install it — two minutes', ja: '入れ方（2分）' })} →
+            </a>
             <pre
               className="mt-4 rounded-xl px-4 py-3 overflow-x-auto"
               style={{
@@ -200,7 +211,7 @@ export default function VeraDemoPage() {
                 color: 'var(--ink-2)',
               }}
             >
-              <code>{`pip install verantyx-vera\nvera audit ./documents        # ${ja ? '127.0.0.1 で開く監査画面' : 'audit page on 127.0.0.1'}\nvera self-evolve ./documents  # ${ja ? '証明・修復・待ち行列' : 'prove, repair, queue'}`}</code>
+              <code>{`vera field   # ${ja ? '外部接続なし・127.0.0.1' : 'no network, 127.0.0.1'}`}</code>
             </pre>
           </motion.div>
         </div>
