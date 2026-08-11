@@ -1,0 +1,1030 @@
+<meta charset="utf-8">
+<title>Vera 立体十字構造</title>
+<style>
+:root{
+  --ink:#080a0d; --surface:#11141a; --raised:#171b23; --line:#262c37;
+  --text:#ddd8ce; --dim:#8b877e; --faint:#585650;
+  --hou:#c8563c; --gaku:#b8923f; --hyak:#5289b8;
+  --cite:#e8724f; --unit:#5d8a6a; --hot:#f0e6d2;
+}
+:root[data-theme="light"]{
+  --ink:#eee9df; --surface:#e2ddd1; --raised:#faf7f0; --line:#cec7b8;
+  --text:#1b1a17; --dim:#5d594f; --faint:#8a857a;
+  --hou:#a8442d; --gaku:#8a6c22; --hyak:#2f6390;
+  --cite:#b8402a; --unit:#3f6b4c; --hot:#101010;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme]){
+    --ink:#eee9df; --surface:#e2ddd1; --raised:#faf7f0; --line:#cec7b8;
+    --text:#1b1a17; --dim:#5d594f; --faint:#8a857a;
+    --hou:#a8442d; --gaku:#8a6c22; --hyak:#2f6390;
+    --cite:#b8402a; --unit:#3f6b4c; --hot:#101010;
+  }
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ink); color:var(--text); overflow:hidden;
+  font-family:"Hiragino Kaku Gothic ProN","Yu Gothic Medium","Yu Gothic",
+    Meiryo,system-ui,sans-serif; font-size:13.5px; line-height:1.5;
+}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  font-variant-numeric:tabular-nums}
+#app{display:grid; grid-template-columns:252px 1fr; height:100vh}
+#rail{background:var(--surface); border-right:1px solid var(--line);
+  overflow-y:auto; display:flex; flex-direction:column}
+.brand{padding:15px 16px 12px; border-bottom:1px solid var(--line)}
+.brand h1{margin:0; font-size:14.5px; font-weight:600; letter-spacing:.13em}
+.brand p{margin:5px 0 0; font-size:10.5px; color:var(--dim); letter-spacing:.05em}
+.sec{padding:13px 16px; border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec h2{margin:0 0 8px; font-size:9.5px; font-weight:600; color:var(--faint);
+  letter-spacing:.17em; text-transform:uppercase}
+.row{display:flex; justify-content:space-between; padding:2.5px 0; font-size:12px; gap:8px}
+.row span{color:var(--dim)} .row b{font-weight:600; color:var(--text)}
+label.tog{display:flex; align-items:center; gap:8px; padding:3.5px 0;
+  font-size:12.5px; cursor:pointer; user-select:none}
+label.tog input{accent-color:var(--dim); margin:0}
+.sw{width:9px;height:9px;border-radius:50%;flex:none}
+.bar{width:20px;height:2px;flex:none;border-radius:1px}
+#q{width:100%; padding:6.5px 9px; background:var(--ink); color:var(--text);
+  border:1px solid var(--line); border-radius:3px; font:inherit; font-size:12.5px}
+#q:focus{outline:none;border-color:var(--dim)}
+#hits{margin-top:6px;max-height:180px;overflow-y:auto}
+#hits button{display:block;width:100%;text-align:left;padding:4px 7px;
+  background:none;border:none;color:var(--dim);font:inherit;font-size:12px;
+  cursor:pointer;border-radius:3px}
+#hits button:hover{background:var(--raised);color:var(--hot)}
+.note{font-size:10.5px;color:var(--faint);line-height:1.6;margin:0}
+#stage{position:relative;min-width:0}
+canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
+canvas.drag{cursor:grabbing}
+#tools{position:absolute;right:14px;top:14px;display:flex;gap:6px;flex-wrap:wrap;
+  justify-content:flex-end;max-width:60%}
+#tools button{background:var(--surface);color:var(--dim);border:1px solid var(--line);
+  border-radius:3px;padding:5px 10px;font:inherit;font-size:11.5px;cursor:pointer}
+#tools button:hover{color:var(--hot);border-color:var(--dim)}
+#tools button.on{color:var(--hot);border-color:var(--cite)}
+#hud{position:absolute;left:14px;bottom:12px;display:flex;gap:14px;
+  font-size:11px;color:var(--faint);pointer-events:none}
+#insp{position:absolute;right:14px;top:52px;width:300px;
+  max-height:calc(100% - 80px);background:var(--raised);
+  border:1px solid var(--line);border-radius:4px;padding:14px 15px;
+  overflow-y:auto;display:none;box-shadow:0 10px 32px rgba(0,0,0,.45)}
+#insp.on{display:block}
+#insp .kind{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:5px}
+#insp h3{margin:0 0 10px;font-size:16px;font-weight:600;word-break:break-all}
+#insp dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:12px}
+#insp dt{color:var(--faint)} #insp dd{margin:0;word-break:break-all}
+#insp h4{margin:13px 0 5px;font-size:9.5px;letter-spacing:.15em;color:var(--faint);
+  text-transform:uppercase;font-weight:600}
+.tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{font-size:11px;padding:2px 6px;border-radius:3px;background:var(--surface);
+  border:1px solid var(--line);color:var(--dim)}
+.tag.cite{border-color:var(--cite);color:var(--cite)}
+.tag.unit{border-color:var(--unit);color:var(--unit)}
+#close{position:absolute;right:9px;top:8px;background:none;border:none;
+  color:var(--faint);font-size:17px;cursor:pointer;padding:2px 5px}
+#close:hover{color:var(--hot)}
+#live{margin-top:8px;font-size:11px;color:var(--faint)}
+#live b{color:var(--cite)}
+#askq{width:100%;padding:8px 10px;background:var(--ink);color:var(--text);
+  border:1px solid var(--line);border-radius:3px;font:inherit;font-size:13px}
+#askq:focus{outline:none;border-color:var(--cite)}
+#answer{margin-top:9px}
+#answer .v{font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--cite);font-weight:600}
+#answer .item{font-size:15px;font-weight:600;margin:3px 0}
+#answer .path{font-size:11.5px;color:var(--dim);font-family:ui-monospace,monospace}
+#answer .sent{font-size:12.5px;margin-top:6px;padding-left:8px;
+  border-left:2px solid var(--line)}
+#answer .why{font-size:11px;color:var(--faint);margin-top:6px;line-height:1.5}
+#answer .reach{font-size:11.5px;margin-top:5px}
+#answer .reach b{color:var(--unit)}
+#trace{max-height:150px;overflow-y:auto;margin-top:7px;font-size:11.5px}
+#trace div{padding:2px 0;color:var(--dim);border-bottom:1px solid var(--line)}
+#trace div b{color:var(--text);font-weight:600}
+@media (max-width:860px){
+  #app{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  #rail{max-height:40vh} #insp{width:auto;left:14px}
+}
+</style>
+
+<div id="app">
+  <aside id="rail">
+    <div class="brand">
+      <h1 data-i="title">Vera に訊く</h1>
+      <p><span data-i="sub">立体十字 — 6腕 × 4面 = 容量24</span>
+         <button id="b-lang" style="float:right;background:none;border:1px solid var(--line);color:var(--dim);border-radius:3px;cursor:pointer;font-size:10px;padding:1px 6px">EN</button></p>
+    </div>
+    <div class="sec" id="asksec">
+      <input id="askq" placeholder="質問を入力（日本語 / English）" autocomplete="off">
+      <div id="live">未接続 — 静的表示</div>
+      <div id="answer"></div>
+      <div id="trace"></div>
+    </div>
+    <div class="sec">
+      <h2>federation</h2>
+      <div class="row"><span>ノード</span><b class="mono" id="m-n">—</b></div>
+      <div class="row"><span>核</span><b class="mono" id="m-c">—</b></div>
+      <div class="row"><span>葉</span><b class="mono" id="m-l">—</b></div>
+      <div class="row"><span>教義リンク</span><b class="mono" id="m-k">—</b></div>
+      <div class="row"><span>形態素単位</span><b class="mono" id="m-u">—</b></div>
+    </div>
+    <div class="sec"><h2>domain</h2><div id="doms"></div></div>
+    <div class="sec">
+      <h2>edge</h2>
+      <label class="tog"><input type="checkbox" id="e-hold" checked>
+        <span class="bar" style="background:var(--line)"></span>含有</label>
+      <label class="tog"><input type="checkbox" id="e-cite" checked>
+        <span class="bar" style="background:var(--cite)"></span>引用（教義→条文）</label>
+      <label class="tog"><input type="checkbox" id="e-unit">
+        <span class="bar" style="background:var(--unit)"></span>単位（形態素）</label>
+    </div>
+    <div class="sec">
+      <h2>search</h2>
+      <input id="q" placeholder="核・葉を検索" autocomplete="off">
+      <div id="hits"></div>
+    </div>
+    <div class="sec">
+      <p class="note">位置は力学ではなく構造から計算されている。腕と面は
+      engine の <span class="mono">AXES</span> / <span class="mono">FACET_FACES</span>
+      そのもので、24を超える葉は腕先に入れ子の十字を生やす — 容量則が測定された形。
+      ノードは動かないので点滅しない。</p>
+    </div>
+  </aside>
+  <main id="stage">
+    <canvas id="cv"></canvas>
+    <div id="tools">
+      <button id="b-fit">全体</button>
+      <button id="b-spin" class="on">回転</button>
+      <button id="b-cross">十字を描く</button>
+      <button id="b-theme">明暗</button>
+    </div>
+    <div id="hud">
+      <span id="h-cam" class="mono">—</span>
+      <span id="h-grown" class="mono" style="color:var(--unit)"></span>
+      <span id="h-sel" class="mono"></span>
+      <span>左ドラッグ=回転 / 右・Shift=平行移動 / ホイール=前後 / クリック=選択</span>
+    </div>
+    <div id="insp">
+      <button id="close" aria-label="閉じる">×</button>
+      <div class="kind" id="i-kind"></div>
+      <h3 id="i-name"></h3>
+      <dl id="i-dl"></dl>
+      <div id="i-extra"></div>
+    </div>
+  </main>
+</div>
+
+<!-- structure data now fetched from /view3d.json (same origin) -->
+<script>
+fetch("view3d.json").then(r => r.json()).then(function(D){
+"use strict";
+const N = D.labels.length;
+const POS = new Float32Array(D.pos);
+const KIND = Uint8Array.from(D.kind), DOM = Int8Array.from(D.dom);
+const ARM = Int8Array.from(D.arm), FACE = Int8Array.from(D.face);
+const LAB = D.labels;
+const cv = document.getElementById("cv");
+const gl = cv.getContext("webgl2", {antialias:true, alpha:false});
+
+const CSS = {};
+function css(){
+  const s = getComputedStyle(document.documentElement);
+  for(const k of ["ink","hou","gaku","hyak","cite","unit","line","text","dim","faint","hot"])
+    CSS[k] = s.getPropertyValue("--"+k).trim();
+}
+css();
+function rgb(h){
+  h = h.replace("#","");
+  return [parseInt(h.slice(0,2),16)/255, parseInt(h.slice(2,4),16)/255,
+          parseInt(h.slice(4,6),16)/255];
+}
+
+// ── adjacency, built once ───────────────────────────────
+const EH = Uint32Array.from(D.edges), EC = Uint32Array.from(D.cite),
+      EU = Uint32Array.from(D.unit);
+const parent = new Int32Array(N).fill(-1);
+for(let i = 0; i < EH.length; i += 2) parent[EH[i+1]] = EH[i];
+const citesOf = new Map(), unitsOf = new Map();
+for(let i = 0; i < EC.length; i += 2){
+  if(!citesOf.has(EC[i])) citesOf.set(EC[i], []);
+  citesOf.get(EC[i]).push(EC[i+1]);
+}
+for(let i = 0; i < EU.length; i += 2){
+  if(!unitsOf.has(EU[i])) unitsOf.set(EU[i], []);
+  unitsOf.get(EU[i]).push(EU[i+1]);
+}
+const kids = new Map();
+for(let i = 0; i < EH.length; i += 2){
+  if(!kids.has(EH[i])) kids.set(EH[i], []);
+  kids.get(EH[i]).push(EH[i+1]);
+}
+
+// ── gl helpers ──────────────────────────────────────────
+function sh(type, src){
+  const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+  if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(s);
+  return s;
+}
+function prog(vs, fs){
+  const p = gl.createProgram();
+  gl.attachShader(p, sh(gl.VERTEX_SHADER, vs));
+  gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(p);
+  if(!gl.getProgramParameter(p, gl.LINK_STATUS)) throw gl.getProgramInfoLog(p);
+  return p;
+}
+
+const P_NODE = prog(`#version 300 es
+in vec3 a_p; in float a_k; in float a_d; in float a_hot;
+uniform mat4 u_mvp; uniform float u_px;
+out vec3 v_col; out float v_hot;
+uniform vec3 u_hou, u_gaku, u_hyak, u_text;
+void main(){
+  gl_Position = u_mvp * vec4(a_p, 1.0);
+  float size = a_k < .5 ? 26.0 : a_k < 1.5 ? 17.0 : a_k < 2.5 ? 6.0 : 3.2;
+  gl_PointSize = max(1.4, size * u_px / max(gl_Position.w, 1.0) * 420.0);
+  vec3 c = a_d < .5 ? u_hou : a_d < 1.5 ? u_gaku : u_hyak;
+  v_col = a_k < 1.5 ? u_text : c;
+  v_hot = a_hot;
+}`, `#version 300 es
+precision highp float;
+in vec3 v_col; in float v_hot; out vec4 o;
+uniform vec3 u_hot;
+void main(){
+  vec2 d = gl_PointCoord - 0.5;
+  float r = dot(d, d);
+  if(r > 0.25) discard;
+  float a = smoothstep(0.25, 0.10, r);
+  o = vec4(mix(v_col, u_hot, v_hot), a * (0.55 + 0.45 * v_hot));
+}`);
+
+const P_LINE = prog(`#version 300 es
+in vec3 a_p; in float a_hot;
+uniform mat4 u_mvp; out float v_hot;
+void main(){ gl_Position = u_mvp * vec4(a_p,1.0); v_hot = a_hot; }`,
+`#version 300 es
+precision highp float;
+in float v_hot; out vec4 o;
+uniform vec3 u_col, u_hot; uniform float u_a;
+void main(){ o = vec4(mix(u_col, u_hot, v_hot), u_a * (1.0 + 2.5 * v_hot)); }`);
+
+function buf(data, target){
+  const b = gl.createBuffer();
+  gl.bindBuffer(target || gl.ARRAY_BUFFER, b);
+  gl.bufferData(target || gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+  return b;
+}
+const HOT = new Float32Array(N);
+const b_pos = buf(POS), b_kind = buf(Float32Array.from(KIND)),
+      b_dom = buf(Float32Array.from(DOM, v => v < 0 ? 0 : v));
+const b_hot = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, b_hot);
+gl.bufferData(gl.ARRAY_BUFFER, HOT, gl.DYNAMIC_DRAW);
+
+const vaoNode = gl.createVertexArray();
+gl.bindVertexArray(vaoNode);
+function attr(p, b, loc, size){
+  gl.bindBuffer(gl.ARRAY_BUFFER, b);
+  const l = gl.getAttribLocation(p, loc);
+  if(l >= 0){ gl.enableVertexAttribArray(l); gl.vertexAttribPointer(l, size, gl.FLOAT, false, 0, 0); }
+}
+attr(P_NODE, b_pos, "a_p", 3); attr(P_NODE, b_kind, "a_k", 1);
+attr(P_NODE, b_dom, "a_d", 1); attr(P_NODE, b_hot, "a_hot", 1);
+
+function lineVAO(idx){
+  const v = new Float32Array(idx.length * 3), h = new Float32Array(idx.length);
+  for(let i = 0; i < idx.length; i++){
+    v[i*3] = POS[idx[i]*3]; v[i*3+1] = POS[idx[i]*3+1]; v[i*3+2] = POS[idx[i]*3+2];
+  }
+  const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
+  const bp = buf(v);
+  const bh = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, bh); gl.bufferData(gl.ARRAY_BUFFER, h, gl.DYNAMIC_DRAW);
+  attr(P_LINE, bp, "a_p", 3); attr(P_LINE, bh, "a_hot", 1);
+  return {vao, n:idx.length, idx, hbuf:bh, host:h};
+}
+const L_HOLD = lineVAO(EH), L_CITE = lineVAO(EC), L_UNIT = lineVAO(EU);
+
+// ── the cross itself, drawn near the camera ─────────────
+// Six arms and four faces are the engine's own AXES / FACET_FACES; drawing
+// a node as a dot throws away the only structural fact it has.
+const ARMV = [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]];
+const crossGeom = [];
+for(const v of ARMV){ crossGeom.push(0,0,0, v[0],v[1],v[2]); }
+for(const v of ARMV){
+  const a = Math.abs(v[2]) < .9 ? [0,0,1] : [1,0,0];
+  const u = [v[1]*a[2]-v[2]*a[1], v[2]*a[0]-v[0]*a[2], v[0]*a[1]-v[1]*a[0]];
+  const n = Math.hypot(...u) || 1; const U = u.map(c => c/n);
+  const W = [v[1]*U[2]-v[2]*U[1], v[2]*U[0]-v[0]*U[2], v[0]*U[1]-v[1]*U[0]];
+  const F = [[0,1],[0,-1],[1,0],[-1,0]];
+  for(let i = 0; i < 4; i++){
+    const p = F[i], q = F[(i+1) % 4];
+    crossGeom.push(v[0]+ (U[0]*p[0]+W[0]*p[1])*.34, v[1]+(U[1]*p[0]+W[1]*p[1])*.34,
+                   v[2]+(U[2]*p[0]+W[2]*p[1])*.34,
+                   v[0]+ (U[0]*q[0]+W[0]*q[1])*.34, v[1]+(U[1]*q[0]+W[1]*q[1])*.34,
+                   v[2]+(U[2]*q[0]+W[2]*q[1])*.34);
+  }
+}
+const CROSS = new Float32Array(crossGeom);
+const b_cross = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, b_cross);
+gl.bufferData(gl.ARRAY_BUFFER, CROSS, gl.DYNAMIC_DRAW);
+const vaoCross = gl.createVertexArray(); gl.bindVertexArray(vaoCross);
+attr(P_LINE, b_cross, "a_p", 3);
+const CROSS_SCRATCH = new Float32Array(CROSS.length);
+
+// ── camera ──────────────────────────────────────────────
+let az = .7, el = .42, dist = 16000, tgt = [0,0,0], spin = true;
+// Frame from the data. The root cross uses three of its six arms because
+// there are three domains, so the federation is not centred on the origin
+// and a fixed camera looks past it.
+const BB = (function(){
+  let x0=1e9,y0=1e9,z0=1e9,x1=-1e9,y1=-1e9,z1=-1e9;
+  for(let i=0;i<N;i++){
+    const x=POS[i*3],y=POS[i*3+1],z=POS[i*3+2];
+    if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y;
+    if(z<z0)z0=z; if(z>z1)z1=z;
+  }
+  return {c:[(x0+x1)/2,(y0+y1)/2,(z0+z1)/2],
+          r:Math.max(x1-x0,y1-y0,z1-z0)/2};
+})();
+function frameAll(){ tgt = BB.c.slice(); dist = BB.r * 2.6; az = .7; el = .42; }
+frameAll();
+let W = 0, H = 0, dpr = 1;
+function resize(){
+  dpr = Math.min(2, devicePixelRatio || 1);
+  W = cv.clientWidth; H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  gl.viewport(0, 0, cv.width, cv.height);
+}
+new ResizeObserver(resize).observe(cv); resize();
+
+function mul(a, b){
+  const o = new Float32Array(16);
+  for(let i = 0; i < 4; i++) for(let j = 0; j < 4; j++){
+    let s = 0; for(let k = 0; k < 4; k++) s += a[k*4+j] * b[i*4+k];
+    o[i*4+j] = s;
+  }
+  return o;
+}
+function eye(){
+  return [tgt[0] + dist*Math.cos(el)*Math.sin(az),
+          tgt[1] + dist*Math.sin(el),
+          tgt[2] + dist*Math.cos(el)*Math.cos(az)];
+}
+function mvp(){
+  const e = eye();
+  let f = [tgt[0]-e[0], tgt[1]-e[1], tgt[2]-e[2]];
+  const fl = Math.hypot(...f); f = f.map(c => c/fl);
+  let s = [f[1]*0 - f[2]*0, 0, 0];
+  s = [f[2]*1 - 0, 0, -f[0]*1];
+  const sl = Math.hypot(...s) || 1; s = s.map(c => c/sl);
+  const u = [s[1]*f[2]-s[2]*f[1], s[2]*f[0]-s[0]*f[2], s[0]*f[1]-s[1]*f[0]];
+  const view = new Float32Array([
+    s[0], u[0], -f[0], 0, s[1], u[1], -f[1], 0, s[2], u[2], -f[2], 0,
+    -(s[0]*e[0]+s[1]*e[1]+s[2]*e[2]), -(u[0]*e[0]+u[1]*e[1]+u[2]*e[2]),
+    (f[0]*e[0]+f[1]*e[1]+f[2]*e[2]), 1]);
+  const fov = 1.05, asp = W / Math.max(H, 1), near = 20, far = 120000;
+  const t = 1 / Math.tan(fov / 2);
+  const proj = new Float32Array([
+    t/asp,0,0,0, 0,t,0,0, 0,0,(far+near)/(near-far),-1,
+    0,0,2*far*near/(near-far),0]);
+  return {m: mul(proj, view), e};
+}
+
+// ── selection ───────────────────────────────────────────
+let sel = -1, litSet = null;
+function setHot(){
+  HOT.fill(0);
+  L_HOLD.host.fill(0); L_CITE.host.fill(0); L_UNIT.host.fill(0);
+  if(sel >= 0){
+    HOT[sel] = 1;
+    if(litSet) for(const i of litSet) HOT[i] = Math.max(HOT[i], .72);
+    for(const L of [L_HOLD, L_CITE, L_UNIT])
+      for(let i = 0; i < L.idx.length; i += 2)
+        if(L.idx[i] === sel || L.idx[i+1] === sel){ L.host[i] = 1; L.host[i+1] = 1; }
+  }
+  for(const i of pulse.keys()) HOT[i] = Math.max(HOT[i], pulse.get(i));
+  gl.bindBuffer(gl.ARRAY_BUFFER, b_hot); gl.bufferSubData(gl.ARRAY_BUFFER, 0, HOT);
+  for(const L of [L_HOLD, L_CITE, L_UNIT]){
+    gl.bindBuffer(gl.ARRAY_BUFFER, L.hbuf);
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, L.host);
+  }
+}
+const pulse = new Map();
+
+const KINDN = ["主権","分野","葉（法令の編/章・記事）","核"];
+function select(i){
+  sel = i;
+  const s = new Set([i]);
+  if(parent[i] >= 0) s.add(parent[i]);
+  for(const k of (kids.get(i) || []).slice(0, 400)) s.add(k);
+  for(const c of (citesOf.get(i) || [])) s.add(c);
+  for(const u of (unitsOf.get(i) || [])) s.add(u);
+  litSet = s; setHot();
+  document.getElementById("i-kind").textContent = KINDN[KIND[i]];
+  document.getElementById("i-name").textContent = LAB[i];
+  const rows = [];
+  if(DOM[i] >= 0) rows.push(["分野", D.domains[DOM[i]]]);
+  if(parent[i] >= 0) rows.push(["親", LAB[parent[i]]]);
+  if(ARM[i] >= 0) rows.push(["腕", ["+x","-x","+y","-y","+z","-z"][ARM[i]]]);
+  if(FACE[i] >= 0) rows.push(["面", ["north","south","east","west"][FACE[i]]]);
+  const kn = (kids.get(i) || []).length;
+  if(kn) rows.push(["内包", kn.toLocaleString() + (kn > 24 ? "（入れ子）" : "")]);
+  document.getElementById("i-dl").innerHTML = rows.map(([k,v]) =>
+    "<dt>"+esc(k)+"</dt><dd>"+esc(v)+"</dd>").join("");
+  let x = "";
+  const ci = citesOf.get(i);
+  if(ci) x += "<h4>引用した条文</h4><div class='tags'>" +
+    ci.map(j => "<span class='tag cite'>"+esc(LAB[j])+"</span>").join("") +
+    "</div><p class='note' style='margin-top:6px'>この語について書いた文書が引いた条文。条文の側の主張ではない。</p>";
+  const ui = unitsOf.get(i);
+  if(ui) x += "<h4>形態素単位</h4><div class='tags'>" +
+    ui.map(j => "<span class='tag unit'>"+esc(LAB[j])+"</span>").join("") + "</div>";
+  const kk = (kids.get(i) || []).slice(0, 40);
+  if(kk.length) x += "<h4>この十字に載っているもの</h4><div class='tags'>" +
+    kk.map(j => "<span class='tag'>"+esc(LAB[j])+"</span>").join("") + "</div>";
+  document.getElementById("i-extra").innerHTML = x;
+  document.getElementById("insp").classList.add("on");
+  document.getElementById("h-sel").textContent = LAB[i];
+}
+function clearSel(){
+  sel = -1; litSet = null; setHot();
+  document.getElementById("insp").classList.remove("on");
+  document.getElementById("h-sel").textContent = "";
+}
+function esc(s){ return String(s).replace(/[&<>"]/g, c =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+function pick(px, py){
+  const {m} = mvp();
+  let best = -1, bd = 26 * 26;
+  for(let i = 0; i < N; i++){
+    if(!domOn[DOM[i] < 0 ? 0 : DOM[i]] && KIND[i] > 1) continue;
+    const x = POS[i*3], y = POS[i*3+1], z = POS[i*3+2];
+    const cw = m[3]*x + m[7]*y + m[11]*z + m[15];
+    if(cw <= 0) continue;
+    const sx = (m[0]*x + m[4]*y + m[8]*z + m[12]) / cw;
+    const sy = (m[1]*x + m[5]*y + m[9]*z + m[13]) / cw;
+    const ex = (sx*.5+.5)*W - px, ey = (1-(sy*.5+.5))*H - py;
+    const d = ex*ex + ey*ey;
+    const bonus = KIND[i] < 2 ? 0.25 : 1;
+    if(d * bonus < bd){ bd = d * bonus; best = i; }
+  }
+  return best;
+}
+
+// ── input ───────────────────────────────────────────────
+let drag = 0, moved = false, lx = 0, ly = 0;
+cv.addEventListener("contextmenu", e => e.preventDefault());
+cv.addEventListener("pointerdown", e => {
+  drag = (e.button === 2 || e.shiftKey) ? 2 : 1;
+  moved = false; lx = e.clientX; ly = e.clientY;
+  cv.classList.add("drag"); cv.setPointerCapture(e.pointerId); spin = false;
+  document.getElementById("b-spin").classList.remove("on");
+});
+addEventListener("pointermove", e => {
+  if(!drag) return;
+  const dx = e.clientX - lx, dy = e.clientY - ly;
+  if(Math.abs(dx) + Math.abs(dy) > 2) moved = true;
+  if(drag === 1){
+    az -= dx * .006;
+    el = Math.max(-1.5, Math.min(1.5, el + dy * .006));
+  } else {
+    const k = dist * .0013;
+    const r = [Math.cos(az), 0, -Math.sin(az)];
+    const u = [Math.sin(az)*Math.sin(el), Math.cos(el), Math.cos(az)*Math.sin(el)];
+    for(let i = 0; i < 3; i++) tgt[i] += -r[i]*dx*k + u[i]*dy*k;
+  }
+  lx = e.clientX; ly = e.clientY;
+});
+addEventListener("pointerup", e => {
+  if(drag && !moved){
+    const r = cv.getBoundingClientRect();
+    const i = pick(e.clientX - r.left, e.clientY - r.top);
+    i >= 0 ? select(i) : clearSel();
+  }
+  drag = 0; cv.classList.remove("drag");
+});
+cv.addEventListener("wheel", e => {
+  e.preventDefault();
+  dist = Math.max(90, Math.min(90000, dist * Math.exp(e.deltaY * .0013)));
+}, {passive:false});
+
+// ── rail ────────────────────────────────────────────────
+const M = D.meta;
+document.getElementById("m-n").textContent = M.nodes.toLocaleString();
+document.getElementById("m-c").textContent = M.cores.toLocaleString();
+document.getElementById("m-l").textContent = M.leaves.toLocaleString();
+document.getElementById("m-k").textContent = M.links.toLocaleString();
+document.getElementById("m-u").textContent = M.units.toLocaleString();
+const DC = ["hou","gaku","hyak"], domOn = [true,true,true];
+D.domains.forEach((d, i) => {
+  const l = document.createElement("label"); l.className = "tog";
+  l.innerHTML = "<input type='checkbox' checked><span class='sw' style='background:var(--"+
+    DC[i]+")'></span><span style='flex:1'>"+esc(d)+
+    "</span><span class='mono' style='color:var(--faint);font-size:11px'>"+
+    (M.domain_counts[d]||0).toLocaleString()+"</span>";
+  l.querySelector("input").onchange = e => { domOn[i] = e.target.checked; };
+  document.getElementById("doms").appendChild(l);
+});
+const edgeOn = {hold:true, cite:true, unit:false};
+for(const k of ["hold","cite","unit"])
+  document.getElementById("e-"+k).onchange = e => edgeOn[k] = e.target.checked;
+
+const q = document.getElementById("q"), hits = document.getElementById("hits");
+q.oninput = () => {
+  const v = q.value.trim(); hits.innerHTML = "";
+  if(!v) return;
+  let n = 0;
+  for(let i = 0; i < N && n < 30; i++){
+    if(!LAB[i].includes(v)) continue;
+    n++;
+    const b = document.createElement("button");
+    b.textContent = LAB[i] + "  ·  " + KINDN[KIND[i]];
+    b.onclick = () => { goTo(i); };
+    hits.appendChild(b);
+  }
+  if(!n){ const d = document.createElement("div");
+    d.className = "note"; d.style.padding = "5px 7px";
+    d.textContent = "該当なし"; hits.appendChild(d); }
+};
+function goTo(i){
+  select(i);
+  tgt = [POS[i*3], POS[i*3+1], POS[i*3+2]];
+  dist = KIND[i] === 3 ? 340 : KIND[i] === 2 ? 1100 : 6000;
+  spin = false; document.getElementById("b-spin").classList.remove("on");
+}
+document.getElementById("close").onclick = clearSel;
+document.getElementById("b-fit").onclick = frameAll;
+document.getElementById("b-spin").onclick = e => {
+  spin = !spin; e.target.classList.toggle("on", spin);
+};
+let showCross = false;
+document.getElementById("b-cross").onclick = e => {
+  showCross = !showCross; e.target.classList.toggle("on", showCross);
+};
+document.getElementById("b-theme").onclick = () => {
+  const cur = document.documentElement.getAttribute("data-theme");
+  const sysDark = !matchMedia("(prefers-color-scheme: light)").matches;
+  document.documentElement.setAttribute("data-theme",
+    cur ? (cur === "dark" ? "light" : "dark") : (sysDark ? "light" : "dark"));
+  css();
+};
+
+// ── live inference (local only) ─────────────────────────
+// A published artifact runs under a CSP that blocks every external host and
+// no runtime capability opens one, so this connects only when the page is
+// served next to the engine. Static is the honest default and says so.
+// ── 二言語 ─────────────────────────────────────────────
+const I18N = {
+  ja: {title:"Vera に訊く", sub:"立体十字 — 6腕 × 4面 = 容量24",
+       connected:"<b>接続</b> — 問いを構造の上で解く", offline:"未接続 — 静的表示",
+       placeholder:"質問を入力（日本語 / English）",
+       growing:"取得中", noarticle:"記事なし", grown:"成長",
+       cores:"核", ready:"再索引完了", askagain:"同じ問いをもう一度",
+       ask:"問", langw:"言語", witness:"独立合議", origin:"出所",
+       unordered:"順不同 — 証拠は順位を持たない",
+       aspect:"観点で選択", subj:"訊かれた主語", nearest:"最寄りの保持語",
+       fix:"登録すれば解決: ", nofix:"登録では直らない: "},
+  en: {title:"Ask Vera", sub:"stereo cross — 6 arms × 4 faces = capacity 24",
+       connected:"<b>connected</b> — questions resolve on the structure",
+       offline:"offline — static view",
+       placeholder:"ask a question (日本語 / English)",
+       growing:"fetching", noarticle:"no article", grown:"grown",
+       cores:"cores", ready:"re-indexed", askagain:"ask the same question again",
+       ask:"Q", langw:"language", witness:"witnesses", origin:"source",
+       unordered:"unordered — the evidence ranks nothing",
+       aspect:"selected by the asked aspect", subj:"asked subject",
+       nearest:"nearest held", fix:"closes by registering: ",
+       nofix:"registration does not close this: "},
+};
+let LANGUI = "ja";
+function t(k){ return (I18N[LANGUI] || I18N.ja)[k] || k; }
+function applyLang(){
+  document.querySelectorAll("[data-i]").forEach(el => {
+    el.textContent = t(el.getAttribute("data-i"));
+  });
+  const q = document.getElementById("askq");
+  if(q) q.placeholder = t("placeholder");
+}
+const bLang = document.getElementById("b-lang");
+if(bLang) bLang.onclick = () => {
+  LANGUI = LANGUI === "ja" ? "en" : "ja";
+  bLang.textContent = LANGUI === "ja" ? "EN" : "日本語";
+  applyLang();
+};
+
+// ── 成長した核の描画層 ─────────────────────────────────
+// 追加ノードは既存バッファに触らず、専用の小バッファで描く。位置は 指名 の
+// 腕の周りに決定論で置く(ラベルのハッシュから角度) — 見せているのは
+// 「どこに何が増えたか」であって幾何の再計算ではない。
+const GROWN = {pos: [], n: 0, buf: null, labels: []};
+let grownAnchor = null;
+function addGrown(cores){
+  if(grownAnchor == null){
+    const gi = LAB.indexOf("指名");
+    grownAnchor = gi >= 0 ? [POS[gi*3], POS[gi*3+1], POS[gi*3+2]] : [0,0,0];
+  }
+  for(const c of cores){
+    if(byLabel0.has(c)) continue;
+    let h = 0;
+    for(let i = 0; i < c.length; i++) h = (h * 31 + c.charCodeAt(i)) >>> 0;
+    const a = (h % 6283) / 1000, b = ((h >> 11) % 3141) / 1000;
+    const r = 380 + (h % 240);
+    GROWN.pos.push(grownAnchor[0] + r * Math.cos(a) * Math.sin(b),
+                   grownAnchor[1] + r * Math.sin(a) * Math.sin(b),
+                   grownAnchor[2] + r * Math.cos(b));
+    GROWN.labels.push(c);
+  }
+  GROWN.n = GROWN.pos.length / 3;
+  if(!GROWN.buf) GROWN.buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, GROWN.buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(GROWN.pos), gl.DYNAMIC_DRAW);
+  document.getElementById("h-grown").textContent = "+" + GROWN.n;
+}
+const byLabel0 = new Map();
+const byLabel = new Map();
+for(let i = 0; i < N; i++) if(!byLabel.has(LAB[i])) byLabel.set(LAB[i], i);
+for(const [k, v0] of byLabel) byLabel0.set(k, v0);
+const liveEl = document.getElementById("live"), traceEl = document.getElementById("trace");
+function traceLine(html){
+  const d = document.createElement("div"); d.innerHTML = html;
+  traceEl.prepend(d);
+  while(traceEl.children.length > 40) traceEl.lastChild.remove();
+}
+const answerEl = document.getElementById("answer");
+
+//: What each verdict means, in one line. The name alone is precise and
+//: unhelpful to a reader meeting it for the first time.
+const WHY_EN = {
+  ANSWER: "entered the core as asked; the sections converged",
+  SEEDED: "could not enter as asked; the staircase named the subject first",
+  UNKNOWN_TIME_DEPENDENT: "the answer depends on when you ask; the store has no clock",
+  UNKNOWN_NO_SUBJECT: "readable, but no content word — a generator's job",
+  UNKNOWN_NOT_PRESENT: "the word parsed but the corpus does not hold it; registering closes it",
+  UNKNOWN_NO_EVIDENCE: "no candidate stood at all",
+  UNKNOWN_INSUFFICIENT_EVIDENCE: "candidates stood but the evidence is thin",
+  UNKNOWN_LANGUAGE_NOT_HELD: "no sovereign was built for this language",
+  AMBIGUOUS: "split between centres; ties are never broken",
+  UNITS: "split the word into attested units and landed nearby",
+  CONTAINMENT: "landed on a longer word containing it",
+  ATTESTED: "every asked condition appears on the subject's own cross",
+  NOT_ATTESTED: "the subject is held; the condition has no evidence — a gap, not a denial",
+};
+const WHY = {
+  ATTESTED: "訊かれた条件は主語の十字に証言されている",
+  NOT_ATTESTED: "主語は在るが条件の証拠が無い — 欠落であって否定ではない",
+  ANSWER: "問いのまま推論核に入り、断面が一致した",
+  SEEDED: "そのままでは入れず、階段が主題を名指してから入った",
+  UNKNOWN_TIME_DEPENDENT: "答えが訊いた時点に依存する。蔵書に時計がない",
+  UNKNOWN_NO_SUBJECT: "読めたが内容語がない。生成層の仕事",
+  UNKNOWN_NOT_PRESENT: "語は読めたが蔵書にない。登録すれば答えられる",
+  UNKNOWN_NO_EVIDENCE: "候補が一つも立たなかった",
+  UNKNOWN_INSUFFICIENT_EVIDENCE: "候補は立ったが証拠が足りない",
+  UNKNOWN_LANGUAGE_NOT_HELD: "その言語のソブリンがない",
+  AMBIGUOUS: "複数の中心に割れた。同点は破らない",
+  UNITS: "語を単位に割って近くに着地した",
+  CONTAINMENT: "その語を含むより長い語に着地した",
+};
+
+function showAnswer(m){
+  const v = m.verdict || "";
+  let h = "<div class='v'>" + esc(v) + (m.language ? "  ·  " + esc(m.language) : "") +
+          (m.detail && m.detail !== "0/0" ? "  ·  " + esc(m.detail) : "") + "</div>";
+  if(m.item) h += "<div class='item'>" + esc(m.item) + "</div>";
+  if(m.path) h += "<div class='path'>" + esc(m.path) + "</div>";
+  for(const s of (m.sentences || [])) h += "<div class='sent'>" + esc(s) + "</div>";
+  if(m.facet_only && m.facet_only.length)
+    h += "<div class='why'>核でなく facet のみ: " + esc(m.facet_only.join("、")) + "</div>";
+  if(m.missing && m.missing.length)
+    h += "<div class='why'>蔵書にない語: " + esc(m.missing.join("、")) + "</div>";
+  if(m.witness && m.witness.answered)
+    h += "<div class='why'>" + t("witness") + " " + m.witness.agree + "/" +
+         m.witness.answered + "</div>";
+  if(m.order === "arbitrary") h += "<div class='why'>" + t("unordered") + "</div>";
+  else if(m.order === "aspect") h += "<div class='why'>" + t("aspect") + "</div>";
+  if(m.origin && m.origin.length)
+    h += "<div class='why'>" + t("origin") + ": " + esc(m.origin.join(" / ")) + "</div>";
+  if(m.subject && !m.item)
+    h += "<div class='why'>" + t("subj") + ": " + esc(m.subject) +
+         (m.nearest ? " / " + t("nearest") + ": " + esc(m.nearest) : "") + "</div>";
+  const whyMap = LANGUI === "en" ? WHY_EN : WHY;
+  if(whyMap[v]) h += "<div class='why'>" + esc(whyMap[v]) + "</div>";
+  const r = m.remedy;
+  if(r && r.needs_registration === true)
+    h += "<div class='why'>" + t("fix") + esc(r.register || "") + "</div>";
+  else if(r && r.why)
+    h += "<div class='why'>" + t("nofix") + esc(String(r.why).slice(0, 110)) + "</div>";
+  answerEl.innerHTML = h;
+}
+
+// ── サーバ無しモード: ブラウザ内 CPython ─────────────────
+// verantyx.ai のような静的配信では SSE サーバが無い。その場合は HF の静的
+// アセット(CORS *)から同じエンジンと同じ構造を取得し、Pyodide 上の CPython
+// で推論する。JS への再実装は二つ目の実装を生むのでしない — 動くのは常に
+// 本物の verantyx。生育も Wikipedia API(origin=*)で本物が動く。
+const ASSETS = "https://kofdai-ask-vera.static.hf.space";
+let PY = null, pyBooting = false;
+function offerPyodide(){
+  const askq = document.getElementById("askq");
+  askq.disabled = true;
+  liveEl.innerHTML = "<button id='b-boot' style='background:var(--raised);" +
+    "border:1px solid var(--line);color:var(--text);border-radius:3px;" +
+    "cursor:pointer;font:inherit;font-size:11.5px;padding:3px 10px'>" +
+    (LANGUI === "en" ? "boot the engine in this browser (~30MB)"
+                     : "ブラウザ内でエンジンを起動 (~30MB)") + "</button>";
+  document.getElementById("b-boot").onclick = bootPyodide;
+}
+async function fetchBytes(url, label){
+  const res = await fetch(url);
+  if(!res.ok) throw new Error(label + " " + res.status);
+  const total = +(res.headers.get("content-length") || 0);
+  const reader = res.body.getReader(); const chunks = []; let got = 0;
+  for(;;){
+    const r = await reader.read();
+    if(r.done) break;
+    chunks.push(r.value); got += r.value.length;
+    liveEl.textContent = label + " " + (got/1048576).toFixed(1) +
+      (total ? "/" + (total/1048576).toFixed(1) : "") + " MB";
+  }
+  const buf = new Uint8Array(got); let off = 0;
+  for(const c of chunks){ buf.set(c, off); off += c.length; }
+  return buf;
+}
+async function bootPyodide(){
+  if(pyBooting || PY) return;
+  pyBooting = true;
+  try{
+    liveEl.textContent = "Pyodide…";
+    await new Promise((res, rej) => {
+      const sc = document.createElement("script");
+      sc.src = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js";
+      sc.onload = res; sc.onerror = () => rej(new Error("pyodide load failed"));
+      document.head.appendChild(sc);
+    });
+    PY = await loadPyodide({indexURL:"https://cdn.jsdelivr.net/pyodide/v0.26.4/full/"});
+    liveEl.textContent = "sqlite3…";
+    await PY.loadPackage("sqlite3");
+    PY.unpackArchive((await fetchBytes(ASSETS + "/verantyx.zip", "engine")).buffer, "zip");
+    PY.FS.writeFile("vera_web.db", await fetchBytes(ASSETS + "/vera_web.db", "structure"));
+    try{ PY.FS.writeFile("writer.json", await fetchBytes(ASSETS + "/writer.json", "writer")); }catch(e){}
+    liveEl.textContent = LANGUI === "en" ? "assembling…" : "ソブリンを組み立て中…";
+    await PY.runPythonAsync([
+      "import sys, json",
+      "sys.path.insert(0, '/home/pyodide')",
+      "from verantyx.export_sqlite import vera as _vera",
+      "V = _vera('vera_web.db')",
+      "def ASK(q):",
+      "    r = V.ask(q)",
+      "    w = r.get('written') or {}",
+      "    wt = r.get('witnesses') or {}",
+      "    subj = r.get('subject')",
+      "    if not subj and r.get('verdict') in ('UNKNOWN_NOT_PRESENT','UNKNOWN_NO_EVIDENCE'):",
+      "        from verantyx.stacked import subject_check",
+      "        cov = subject_check(V.stores['ja'], q, '')",
+      "        if cov.get('single') and cov.get('subject') and cov['subject'] not in V.stores['ja'].crosses:",
+      "            subj = cov['subject']",
+      "    return json.dumps({'verdict': r.get('verdict'), 'item': r.get('core'),",
+      "      'language': r.get('language'), 'path': r.get('text'),",
+      "      'terms': [t for t in str(r.get('text') or '').split()],",
+      "      'sentences': [(x.get('text') if isinstance(x, dict) else str(x))",
+      "                    for x in (w.get('sentences') or [])[:3]],",
+      "      'witness': ({'agree': wt.get('agree'), 'answered': wt.get('answered')} if wt else None),",
+      "      'origin': sorted({s2 for v2 in (r.get('facet_origin') or {}).values() for s2 in v2})[:3],",
+      "      'order': r.get('order_evidence'), 'subject': subj,",
+      "      'nearest': r.get('nearest_held'), 'remedy': r.get('remedy'),",
+      "      'missing': r.get('missing'), 'facet_only': r.get('as_facet_only')},",
+      "      ensure_ascii=False)",
+      "def GROW(subject, text):",
+      "    from verantyx.document_ingest import Document, ingest_documents",
+      "    st = V.stores['ja']",
+      "    before = set(st.crosses)",
+      "    label = '指名／' + subject + '.txt'",
+      "    st.source_labels.add(label)",
+      "    ingest_documents(st, [Document(source=label, text=text)])",
+      "    wit = V.witnesses.get('指名')",
+      "    if wit is not None:",
+      "        wit.source_labels.add(label)",
+      "        ingest_documents(wit, [Document(source=label, text=text)])",
+      "    new = sorted(set(st.crosses) - before)",
+      "    V.add('ja', st)",
+      "    return json.dumps({'count': len(new), 'cores': new[:60]}, ensure_ascii=False)"
+    ].join("\n"));
+    liveEl.innerHTML = LANGUI === "en"
+      ? "<b>engine live</b> — CPython in this tab"
+      : "<b>起動</b> — このタブの中の CPython";
+    const askq = document.getElementById("askq");
+    askq.disabled = false;
+    askq.onkeydown = async ev => {
+      if(ev.key !== "Enter" || !askq.value.trim() || askq.disabled) return;
+      const q = askq.value.trim();
+      askq.disabled = true;
+      answerEl.innerHTML = "<div class='v'>…</div>"; traceEl.innerHTML = "";
+      handleEvent({type:"ask", query:q, terms:[]});
+      try{
+        const m = JSON.parse(await PY.runPythonAsync("ASK(" + JSON.stringify(q) + ")"));
+        handleEvent({type:"language", language:m.language});
+        handleEvent({type:"touch", nodes:m.terms || []});
+        handleEvent({type:"verdict", ...m, detail:""});
+        if(m.subject && !m.item) growPyodide(m.subject);
+      }catch(err){
+        answerEl.innerHTML = "<div class='why'>" + esc(String(err).slice(0,140)) + "</div>";
+      }
+      askq.disabled = false;
+    };
+  }catch(err){
+    liveEl.textContent = "boot failed: " + String(err).slice(0, 80);
+    pyBooting = false;
+  }
+}
+async function growPyodide(subject){
+  handleEvent({type:"grow_start", subject});
+  try{
+    const u = "https://ja.wikipedia.org/w/api.php?action=query&format=json&origin=*" +
+      "&prop=extracts&explaintext=1&redirects=1&titles=" + encodeURIComponent(subject);
+    const d = await (await fetch(u)).json();
+    const pages = (d.query || {}).pages || {};
+    let text = null;
+    for(const k in pages){ if(!("missing" in pages[k])) text = pages[k].extract; }
+    if(!text){ handleEvent({type:"grow_missing", subject}); return; }
+    const g = JSON.parse(await PY.runPythonAsync(
+      "GROW(" + JSON.stringify(subject) + "," + JSON.stringify(text) + ")"));
+    handleEvent({type:"grown", subject, count:g.count, cores:g.cores, domain:"指名"});
+    handleEvent({type:"grow_ready", subject});
+  }catch(err){
+    handleEvent({type:"grow_missing", subject});
+  }
+}
+
+if(location.protocol.startsWith("http") && location.hostname === "localhost"){
+  try{
+    const es = new EventSource("/events");
+    const askq = document.getElementById("askq");
+    let sseOK = false;
+    es.onopen = () => { sseOK = true; liveEl.innerHTML = t("connected");
+                        askq.disabled = false; };
+    es.onerror = () => {
+      // 一度も繋がらなければ SSE サーバは居ない — ブラウザ内エンジンを
+      // 提案する。一度繋がった後の瞬断は再接続に任せる。
+      if(!sseOK && !PY){ es.close(); offerPyodide(); }
+      else if(!PY){ liveEl.textContent = t("offline"); askq.disabled = true; }
+    };
+    askq.onkeydown = ev => {
+      if(ev.key !== "Enter" || !askq.value.trim()) return;
+      answerEl.innerHTML = "<div class='v'>…</div>";
+      traceEl.innerHTML = "";
+      fetch("/ask?q=" + encodeURIComponent(askq.value.trim()));
+    };
+    es.onmessage = ev => handleEvent(JSON.parse(ev.data));
+  }catch(e){ offerPyodide(); }
+} else {
+  offerPyodide();
+}
+
+function handleEvent(m){
+      if(m.type === "ask"){
+        traceLine("<b>問</b> " + esc(m.query));
+      } else if(m.type === "language"){
+        traceLine("<span class='mono' style='color:var(--faint)'>言語</span> " +
+                  esc(m.language));
+      } else if(m.type === "touch"){
+        for(const t of m.nodes){
+          const i = byLabel.get(t);
+          if(i != null) pulse.set(i, 1);
+        }
+        setHot();
+      } else if(m.type === "reading"){
+        traceLine("<span class='mono' style='color:var(--faint)'>" + esc(m.setting) +
+          "</span> " + esc(m.verdict) + " " + esc(m.item || "—"));
+      } else if(m.type === "reach"){
+        traceLine("<span class='mono' style='color:var(--unit)'>" + esc(m.route) +
+          "</span> " + esc(m.term) + " → " + esc(m.item));
+      } else if(m.type === "verdict"){
+        traceLine("<b>" + esc(m.verdict) + "</b> " + esc(m.item || "—"));
+        showAnswer(m);
+        const i = m.item != null ? byLabel.get(m.item) : null;
+        if(i != null) goTo(i);
+      } else if(m.type === "grow_start"){
+        traceLine("<span style='color:var(--unit)'>" + t("growing") + "</span> " + esc(m.subject));
+      } else if(m.type === "grow_missing"){
+        traceLine("<span style='color:var(--faint)'>" + t("noarticle") + "</span> " + esc(m.subject));
+      } else if(m.type === "grown"){
+        addGrown(m.cores || []);
+        traceLine("<b style='color:var(--unit)'>" + t("grown") + "</b> " +
+          esc(m.subject) + " +" + m.count + " " + t("cores"));
+      } else if(m.type === "grow_ready"){
+        traceLine("<span style='color:var(--unit)'>" + t("ready") + "</span> " +
+          esc(m.subject) + " — " + t("askagain"));
+      }
+}
+
+setInterval(() => {
+  if(!pulse.size) return;
+  for(const [k, v] of pulse){
+    const nv = v - .06;
+    nv <= 0 ? pulse.delete(k) : pulse.set(k, nv);
+  }
+  setHot();
+}, 60);
+
+// ── draw ────────────────────────────────────────────────
+const u = (p, n) => gl.getUniformLocation(p, n);
+gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+gl.disable(gl.DEPTH_TEST);
+
+function nearCrosses(m, e){
+  // Only nodes close to the camera get their full geometry: 59,019 crosses
+  // is 1.4M line segments and, drawn small, is noise rather than structure.
+  const out = [];
+  for(let i = 0; i < N && out.length < 260; i++){
+    if(KIND[i] === 3) continue;
+    if(KIND[i] > 1 && !domOn[DOM[i] < 0 ? 0 : DOM[i]]) continue;
+    const dx = POS[i*3]-e[0], dy = POS[i*3+1]-e[1], dz = POS[i*3+2]-e[2];
+    const d = Math.sqrt(dx*dx+dy*dy+dz*dz);
+    if(d < dist * 1.1) out.push([i, d]);
+  }
+  return out;
+}
+
+function frame(){
+  if(spin) az += .0013;
+  const {m, e} = mvp();
+  const ink = rgb(CSS.ink);
+  gl.clearColor(ink[0], ink[1], ink[2], 1); gl.clear(gl.COLOR_BUFFER_BIT);
+
+  gl.useProgram(P_LINE);
+  gl.uniformMatrix4fv(u(P_LINE,"u_mvp"), false, m);
+  gl.uniform3fv(u(P_LINE,"u_hot"), rgb(CSS.hot));
+  const lines = [[L_HOLD, edgeOn.hold, CSS.line, .19],
+                 [L_UNIT, edgeOn.unit, CSS.unit, .5],
+                 [L_CITE, edgeOn.cite, CSS.cite, .72]];
+  for(const [L, on, col, a] of lines){
+    if(!on) continue;
+    gl.bindVertexArray(L.vao);
+    gl.uniform3fv(u(P_LINE,"u_col"), rgb(col));
+    gl.uniform1f(u(P_LINE,"u_a"), a);
+    gl.drawArrays(gl.LINES, 0, L.n);
+  }
+
+  if(showCross){
+    gl.uniform3fv(u(P_LINE,"u_col"), rgb(CSS.dim));
+    gl.uniform1f(u(P_LINE,"u_a"), .45);
+    gl.bindVertexArray(vaoCross);
+    for(const [i] of nearCrosses(m, e)){
+      const s = KIND[i] === 0 ? 4200 : KIND[i] === 1 ? 1500 : 220;
+      for(let j = 0; j < CROSS.length; j += 3){
+        CROSS_SCRATCH[j]   = POS[i*3]   + CROSS[j]   * s;
+        CROSS_SCRATCH[j+1] = POS[i*3+1] + CROSS[j+1] * s;
+        CROSS_SCRATCH[j+2] = POS[i*3+2] + CROSS[j+2] * s;
+      }
+      gl.bindBuffer(gl.ARRAY_BUFFER, b_cross);
+      gl.bufferSubData(gl.ARRAY_BUFFER, 0, CROSS_SCRATCH);
+      gl.drawArrays(gl.LINES, 0, CROSS.length / 3);
+    }
+  }
+
+  gl.useProgram(P_NODE);
+  gl.bindVertexArray(vaoNode);
+  gl.uniformMatrix4fv(u(P_NODE,"u_mvp"), false, m);
+  gl.uniform1f(u(P_NODE,"u_px"), dpr);
+  gl.uniform3fv(u(P_NODE,"u_hou"), rgb(CSS.hou));
+  gl.uniform3fv(u(P_NODE,"u_gaku"), rgb(CSS.gaku));
+  gl.uniform3fv(u(P_NODE,"u_hyak"), rgb(CSS.hyak));
+  gl.uniform3fv(u(P_NODE,"u_text"), rgb(CSS.text));
+  gl.uniform3fv(u(P_NODE,"u_hot"), rgb(CSS.hot));
+  gl.drawArrays(gl.POINTS, 0, N);
+
+  if(GROWN.n){
+    gl.useProgram(P_LINE);
+    gl.uniformMatrix4fv(u(P_LINE,"u_mvp"), false, m);
+    gl.uniform3fv(u(P_LINE,"u_col"), rgb(CSS.unit));
+    gl.uniform3fv(u(P_LINE,"u_hot"), rgb(CSS.hot));
+    gl.uniform1f(u(P_LINE,"u_a"), .95);
+    if(!GROWN.vao){
+      GROWN.vao = gl.createVertexArray(); gl.bindVertexArray(GROWN.vao);
+      gl.bindBuffer(gl.ARRAY_BUFFER, GROWN.buf);
+      const l = gl.getAttribLocation(P_LINE, "a_p");
+      gl.enableVertexAttribArray(l);
+      gl.vertexAttribPointer(l, 3, gl.FLOAT, false, 0, 0);
+      const lh = gl.getAttribLocation(P_LINE, "a_hot");
+      if(lh >= 0) gl.disableVertexAttribArray(lh);
+    }
+    gl.bindVertexArray(GROWN.vao);
+    gl.drawArrays(gl.POINTS, 0, GROWN.n);
+  }
+  document.getElementById("h-cam").textContent =
+    "距離 " + Math.round(dist).toLocaleString();
+  requestAnimationFrame(frame);
+}
+setHot();
+frame();
+}).catch(e => {
+  document.body.innerHTML = "<div style='padding:40px;font-family:sans-serif'>" +
+    "view3d.json を読めません — engine の隣から配信してください:<br>" +
+    "<code>python3 -m verantyx.serve_view3d --page viewer</code></div>";
+});
+</script>
