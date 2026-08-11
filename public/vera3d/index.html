@@ -137,6 +137,10 @@ canvas.drag{cursor:grabbing}
     <div class="sec" id="asksec">
       <input id="askq" placeholder="質問を入力（日本語 / English）" autocomplete="off">
       <div id="live">未接続 — 静的表示</div>
+      <label class="tog" style="margin-top:6px">
+        <input type="checkbox" id="tg-auto">
+        <span data-i="autogrow">成長を自動承認する(内容は都度表示)</span>
+      </label>
       <div id="answer"></div>
       <div id="trace"></div>
     </div>
@@ -606,7 +610,9 @@ const I18N = {
        ask:"問", langw:"言語", witness:"独立合議", origin:"出所",
        unordered:"順不同 — 証拠は順位を持たない",
        aspect:"観点で選択", subj:"訊かれた主語", nearest:"最寄りの保持語",
-       fix:"登録すれば解決: ", nofix:"登録では直らない: "},
+       fix:"登録すれば解決: ", nofix:"登録では直らない: ",
+       autogrow:"成長を自動承認する(内容は都度表示)",
+       autonote:"自動承認", ingested:"取り込み済み"},
   en: {title:"Ask Vera", sub:"stereo cross — 6 arms × 4 faces = capacity 24",
        connected:"<b>connected</b> — questions resolve on the structure",
        offline:"offline — static view",
@@ -617,7 +623,9 @@ const I18N = {
        unordered:"unordered — the evidence ranks nothing",
        aspect:"selected by the asked aspect", subj:"asked subject",
        nearest:"nearest held", fix:"closes by registering: ",
-       nofix:"registration does not close this: "},
+       nofix:"registration does not close this: ",
+       autogrow:"auto-approve growth (contents always shown)",
+       autonote:"auto-approved", ingested:"ingested"},
 };
 let LANGUI = "ja";
 function t(k){ return (I18N[LANGUI] || I18N.ja)[k] || k; }
@@ -741,7 +749,60 @@ const WHY = {
 };
 
 let pendingGrow = null;   // {subject, text?} — 承認待ち
+// 自動承認トグル。既定は手動 — 取り込みは人間の関門が原則で、自動は
+// 明示的に選んだ人だけ。自動でも「何が入ったか」は必ず気泡で示す:
+// 見えない取り込みは、見えない文脈解決と同じ形の嘘になる。
+let AUTOGROW = localStorage.getItem("vera_auto_grow") === "1";
+const tgAuto = document.getElementById("tg-auto");
+if(tgAuto){
+  tgAuto.checked = AUTOGROW;
+  tgAuto.onchange = () => {
+    AUTOGROW = tgAuto.checked;
+    localStorage.setItem("vera_auto_grow", AUTOGROW ? "1" : "0");
+  };
+}
+async function fetchPreview(subject){
+  if(PY){
+    const u = "https://ja.wikipedia.org/w/api.php?action=query&format=json&origin=*" +
+      "&prop=extracts&explaintext=1&redirects=1&titles=" + encodeURIComponent(subject);
+    try{
+      const d = await (await fetch(u)).json();
+      const pages = (d.query || {}).pages || {}; let text = null;
+      for(const k in pages){ if(!("missing" in pages[k])) text = pages[k].extract; }
+      return text ? {ok:true, head:text.slice(0,220), chars:text.length,
+                     url:"https://ja.wikipedia.org/wiki/"+subject, _text:text}
+                  : {ok:false};
+    }catch(e){ return {ok:false}; }
+  }
+  return await (await fetch("/preview?s=" + encodeURIComponent(subject))).json();
+}
+async function ingestApproved(subject, text){
+  if(PY){
+    handleEvent({type:"grow_start", subject});
+    try{
+      const g = JSON.parse(await PY.runPythonAsync(
+        "GROW(" + JSON.stringify(subject) + "," + JSON.stringify(text) + ")"));
+      handleEvent({type:"grown", subject, count:g.count, cores:g.cores, domain:"指名"});
+      handleEvent({type:"grow_ready", subject});
+    }catch(e){ handleEvent({type:"grow_missing", subject}); }
+  } else {
+    fetch("/grow?s=" + encodeURIComponent(subject));
+  }
+}
+async function autoGrow(subject, directed){
+  const b = bubble("vera", "<div class='ctx'>" + t("autonote") + "</div>" +
+                   esc(subject) + " …");
+  const pv = await fetchPreview(subject);
+  if(!pv.ok){ b.innerHTML = esc(subject) + " — " + t("noarticle"); return; }
+  b.innerHTML = "<div class='ctx'>" + t("autonote") + " — " + t("ingested") +
+    "</div>" + esc(subject) + " (" + pv.chars + (LANGUI==="en"?" chars":" 字") +
+    ")<div class='prev'>" + esc(pv.head) + "…</div>" +
+    "<a href='" + pv.url + "' target='_blank' style='font-size:11px;" +
+    "color:var(--dim)'>" + (LANGUI==="en"?"source":"出典") + "</a>";
+  await ingestApproved(subject, pv._text || null);
+}
 function offerGrow(subject, directed){
+  if(AUTOGROW){ autoGrow(subject, directed); return; }
   const b = bubble("vera",
     "<div class='ctx'>" + (directed ? (LANGUI==="en"?"directed growth":"指名取得")
                                     : (LANGUI==="en"?"growth offer":"成長の提案")) + "</div>" +
