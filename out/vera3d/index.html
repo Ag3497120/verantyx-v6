@@ -137,6 +137,13 @@ canvas.drag{cursor:grabbing}
     <div class="sec" id="asksec">
       <input id="askq" placeholder="質問を入力（日本語 / English）" autocomplete="off">
       <div id="live">未接続 — 静的表示</div>
+      <div style="margin-top:7px">
+        <button id="b-suggest" style="width:100%;background:var(--raised);
+          border:1px solid var(--line);color:var(--text);border-radius:4px;
+          cursor:pointer;font:inherit;font-size:11.5px;padding:4px 8px"
+          data-i="suggest">Vera に情報を持ち寄る</button>
+      </div>
+      <div id="trail" class="mono" style="font-size:10.5px;color:var(--dim);margin-top:5px"></div>
       <label class="tog" style="margin-top:6px">
         <input type="checkbox" id="tg-auto">
         <span data-i="autogrow">成長を自動承認する(内容は都度表示)</span>
@@ -612,7 +619,8 @@ const I18N = {
        aspect:"観点で選択", subj:"訊かれた主語", nearest:"最寄りの保持語",
        fix:"登録すれば解決: ", nofix:"登録では直らない: ",
        autogrow:"成長を自動承認する(内容は都度表示)",
-       autonote:"自動承認", ingested:"取り込み済み"},
+       autonote:"自動承認", ingested:"取り込み済み",
+       suggest:"Vera に情報を持ち寄る"},
   en: {title:"Ask Vera", sub:"stereo cross — 6 arms × 4 faces = capacity 24",
        connected:"<b>connected</b> — questions resolve on the structure",
        offline:"offline — static view",
@@ -625,7 +633,8 @@ const I18N = {
        nearest:"nearest held", fix:"closes by registering: ",
        nofix:"registration does not close this: ",
        autogrow:"auto-approve growth (contents always shown)",
-       autonote:"auto-approved", ingested:"ingested"},
+       autonote:"auto-approved", ingested:"ingested",
+       suggest:"contribute knowledge to Vera"},
 };
 let LANGUI = "ja";
 function t(k){ return (I18N[LANGUI] || I18N.ja)[k] || k; }
@@ -636,6 +645,23 @@ function applyLang(){
   const q = document.getElementById("askq");
   if(q) q.placeholder = t("placeholder");
 }
+// 持ち寄り: 提案は公開の場(GitHub Issue)に置かれ、人間の承認
+// (issue の確認 + grow --github の実行)を経てだけ構造に入る。
+// 世界中の誰でも提案でき、誰の提案も黙って入らない。
+document.getElementById("b-suggest").onclick = () => {
+  const subject = prompt(LANGUI === "en"
+    ? "Subject Vera should learn (e.g. 質権):"
+    : "Vera に覚えてほしい主題(例: 質権):");
+  if(!subject) return;
+  const body = encodeURIComponent(
+    "## 主題 / Subject\n" + subject +
+    "\n\n## 出典 / Source (URL)\n(ja.wikipedia の記事名か URL)\n\n" +
+    "## なぜ / Why\n(どの質問が拒否されたか等)\n\n" +
+    "---\n取り込みは所有者の承認後に grow --github で行われます。");
+  window.open("https://github.com/Ag3497120/Verantyx-Vera-alpha/issues/new" +
+    "?labels=vera-suggest&title=" + encodeURIComponent("[提案] " + subject) +
+    "&body=" + body, "_blank");
+};
 const bLang = document.getElementById("b-lang");
 if(bLang) bLang.onclick = () => {
   LANGUI = LANGUI === "ja" ? "en" : "ja";
@@ -696,6 +722,18 @@ function bubble(cls, html){
 // 「それの効果は」「その要件は」は直前の答えの核で解決する。解決は隠さず
 // 表示する — 何をどう読み替えたかが見えない文脈解決は、主語泥棒と同じ形。
 let lastCore = null;
+const TRAIL = [];
+function pushTrail(core){
+  if(!core || TRAIL[TRAIL.length-1] === core) { lastCore = core || lastCore; return; }
+  TRAIL.push(core); if(TRAIL.length > 5) TRAIL.shift();
+  lastCore = core;
+  const el = document.getElementById("trail");
+  if(el) el.innerHTML = TRAIL.map(esc).join(" → ") +
+    " <button id='trail-x' style='background:none;border:none;color:var(--faint);cursor:pointer'>×</button>";
+  const x = document.getElementById("trail-x");
+  if(x) x.onclick = () => { TRAIL.length = 0; lastCore = null;
+    document.getElementById("trail").textContent = ""; };
+}
 function resolveContext(q){
   if(!lastCore) return {q, note:null};
   let m = q.match(/^(それ|これ|その|この)(の)?(.*)$/);
@@ -705,12 +743,35 @@ function resolveContext(q){
   if(m) return {q: lastCore + "の" + m[2] + "は", note: "主語 → " + lastCore};
   return {q, note:null};
 }
+// ── 意図の型(決定論) ─────────────────────────────────
+// 質問かタスクか、どの形の質問か。エンジンが経路を分ける規則と同じものを
+// 表で見せる — 型が見えれば、答えの形(定義/証言/交差/取得)も予測できる。
+function classifyIntent(q){
+  if(/^(?:取得[  ]*|\+[  ]*)/.test(q))
+    return LANGUI==="en" ? "task: fetch" : "タスク: 取得";
+  if(/^(それ|これ|その|この)/.test(q) ||
+     /^(の)?(要件|効果|期間|刑|手続|順位|定義|意味)(は|とは)?[?？]?$/.test(q))
+    return LANGUI==="en" ? "context follow-up" : "文脈参照";
+  if(/(できますか|できるか|必要ですか|必要か|可能ですか|可能か|ありますか|あるか|ですか|ますか|されるか|するか|なるか)[?？]?$/.test(q))
+    return LANGUI==="en" ? "yes/no → attestation" : "真偽 → 証言";
+  const runs = (q.match(/[㐀-䶿一-鿿ァ-ヺー]{2,}|[A-Za-z][A-Za-z0-9']+/g) || []);
+  if(runs.length >= 3 && /[  ]/.test(q))
+    return LANGUI==="en" ? "conditions → intersection" : "複合条件 → 交差";
+  if(/とは[?？]?$/.test(q) || /^what\s+is\b/i.test(q))
+    return LANGUI==="en" ? "definition" : "定義";
+  if(/の.+は[?？]?$/.test(q))
+    return LANGUI==="en" ? "aspect" : "観点";
+  return LANGUI==="en" ? "lookup" : "照会";
+}
+
 function submitQuery(raw, send){
   // 指名取得: 「取得 X」「+X」— 情報を入れて欲しいと頼む形。承認は同じ関門。
   const g = raw.match(/^(?:取得[  ]*|\+[  ]*)(.+)$/);
   if(g){ bubble("user", esc(raw)); offerGrow(g[1].trim(), true); return; }
   const {q, note} = resolveContext(raw);
-  bubble("user", (note ? "<div class='ctx'>" + esc(note) + "</div>" : "") + esc(raw));
+  const intent = classifyIntent(raw);
+  bubble("user", "<div class='ctx'>" + esc(intent) +
+         (note ? " · " + esc(note) : "") + "</div>" + esc(raw));
   traceEl.innerHTML = "";
   send(q);
 }
@@ -897,7 +958,7 @@ function showAnswer(m){
   else if(r && r.why)
     h += "<div class='why'>" + t("nofix") + esc(String(r.why).slice(0, 110)) + "</div>";
   bubble("vera", h);
-  if(m.item) lastCore = m.item;
+  if(m.item) pushTrail(m.item);
   // Pyodide 経路には grow_offer イベントが無いので、ここで同じ提案を出す。
   if(PY && m.subject && !m.item) offerGrow(m.subject, false);
 }
