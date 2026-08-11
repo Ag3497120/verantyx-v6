@@ -25,3 +25,10 @@
 name = "verantyx-site"
 compatibility_date = "2026-07-15"
 pages_build_output_dir = "out"
+
+# Demand inlet — anonymous refused-subject counters for /api/vera/demand.
+# Nothing here enters the model; grow --demand pulls the ranking into the
+# same human-approved queue as every other inlet.
+[[kv_namespaces]]
+binding = "VERA_DEMAND"
+id = "71d37aa6a0db45a78938f39bc980f28c"
