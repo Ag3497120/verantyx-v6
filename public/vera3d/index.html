@@ -998,15 +998,42 @@ function showAnswer(m){
 // 本物の verantyx。生育も Wikipedia API(origin=*)で本物が動く。
 const ASSETS = "https://kofdai-ask-vera.static.hf.space";
 let PY = null, pyBooting = false;
-function offerPyodide(){
+let VERSIONS = null, chosenVersion = null;
+async function offerPyodide(){
   const askq = document.getElementById("askq");
   askq.disabled = true;
-  liveEl.innerHTML = "<button id='b-boot' style='background:var(--raised);" +
+  // 版の献立は Space の versions/index.json。同じ型で刻まれた各版
+  // (vera-A-日付, 構造が変われば B-…)から選んで起動する — モデルの
+  // 切替は重みの切替と同じ意味を持つ。
+  try{
+    VERSIONS = await (await fetch(ASSETS + "/versions/index.json")).json();
+  }catch(e){ VERSIONS = null; }
+  let sel = "";
+  if(VERSIONS && VERSIONS.length){
+    const saved = localStorage.getItem("vera_version");
+    const items = VERSIONS.slice().reverse();
+    sel = "<select id='ver-sel' style='background:var(--ink);color:var(--text);" +
+      "border:1px solid var(--line);border-radius:3px;font:inherit;" +
+      "font-size:11px;padding:2px 4px;max-width:170px'>" +
+      items.map(v => "<option value='" + esc(v.id) + "'" +
+        ((saved || items[0].id) === v.id ? " selected" : "") + ">" +
+        esc(v.id) + (v.notes ? " — " + esc(v.notes.slice(0,26)) : "") +
+        "</option>").join("") + "</select> ";
+  }
+  liveEl.innerHTML = sel +
+    "<button id='b-boot' style='background:var(--raised);" +
     "border:1px solid var(--line);color:var(--text);border-radius:3px;" +
     "cursor:pointer;font:inherit;font-size:11.5px;padding:3px 10px'>" +
-    (LANGUI === "en" ? "boot the engine in this browser (~30MB)"
-                     : "ブラウザ内でエンジンを起動 (~30MB)") + "</button>";
-  document.getElementById("b-boot").onclick = bootPyodide;
+    (LANGUI === "en" ? "boot (~45MB)" : "起動 (~45MB)") + "</button>";
+  document.getElementById("b-boot").onclick = () => {
+    const el = document.getElementById("ver-sel");
+    chosenVersion = null;
+    if(el && VERSIONS){
+      chosenVersion = VERSIONS.find(v => v.id === el.value) || null;
+      localStorage.setItem("vera_version", el.value);
+    }
+    bootPyodide();
+  };
 }
 async function gunzip(buf){
   const ds = new DecompressionStream("gzip");
@@ -1044,9 +1071,13 @@ async function bootPyodide(){
     liveEl.textContent = "sqlite3…";
     await PY.loadPackage("sqlite3");
     PY.unpackArchive((await fetchBytes(ASSETS + "/verantyx.zip", "engine")).buffer, "zip");
-    PY.FS.writeFile("vera_web.db", await gunzip(await fetchBytes(ASSETS + "/vera_web.db.gz", "structure")));
-    try{ PY.FS.writeFile("vera_edges.db", await gunzip(await fetchBytes(ASSETS + "/vera_edges.db.gz", "edges"))); }catch(e){}
-    try{ PY.FS.writeFile("writer.json", await gunzip(await fetchBytes(ASSETS + "/writer.json.gz", "writer"))); }catch(e){}
+    const V = chosenVersion;
+    const fdb = V ? ASSETS + "/" + V.db : ASSETS + "/vera_web.db.gz";
+    const fed = V ? ASSETS + "/" + V.edges : ASSETS + "/vera_edges.db.gz";
+    const fwr = V ? ASSETS + "/" + V.writer : ASSETS + "/writer.json.gz";
+    PY.FS.writeFile("vera_web.db", await gunzip(await fetchBytes(fdb, "structure")));
+    try{ PY.FS.writeFile("vera_edges.db", await gunzip(await fetchBytes(fed, "edges"))); }catch(e){}
+    try{ PY.FS.writeFile("writer.json", await gunzip(await fetchBytes(fwr, "writer"))); }catch(e){}
     liveEl.textContent = LANGUI === "en" ? "assembling…" : "ソブリンを組み立て中…";
     await PY.runPythonAsync([
       "import sys, json",
@@ -1090,9 +1121,10 @@ async function bootPyodide(){
       "    V.add('ja', st)",
       "    return json.dumps({'count': len(new), 'cores': new[:60]}, ensure_ascii=False)"
     ].join("\n"));
-    liveEl.innerHTML = LANGUI === "en"
+    liveEl.innerHTML = (LANGUI === "en"
       ? "<b>engine live</b> — CPython in this tab"
-      : "<b>起動</b> — このタブの中の CPython";
+      : "<b>起動</b> — このタブの中の CPython") +
+      (chosenVersion ? " · <span class='mono'>" + esc(chosenVersion.id) + "</span>" : "");
     const askq = document.getElementById("askq");
     askq.disabled = false;
     askq.onkeydown = async ev => {
