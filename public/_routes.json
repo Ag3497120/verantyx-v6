@@ -1,5 +1,8 @@
 {
   "version": 1,
-  "include": ["/api/apple-music/*"],
+  "include": [
+    "/api/apple-music/*",
+    "/api/vera/*"
+  ],
   "exclude": []
 }
