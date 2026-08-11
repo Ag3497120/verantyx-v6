@@ -722,18 +722,46 @@ function bubble(cls, html){
 // 「それの効果は」「その要件は」は直前の答えの核で解決する。解決は隠さず
 // 表示する — 何をどう読み替えたかが見えない文脈解決は、主語泥棒と同じ形。
 let lastCore = null;
-const TRAIL = [];
-function pushTrail(core){
-  if(!core || TRAIL[TRAIL.length-1] === core) { lastCore = core || lastCore; return; }
-  TRAIL.push(core); if(TRAIL.length > 5) TRAIL.shift();
-  lastCore = core;
+// 会話の跡は 50 手まで持ち、ブラウザに保存され、構造の上の経路として
+// 3D に描かれる — 記憶は箱ではなく、連合の上を歩いた足跡。決定論は
+// 保たれる: 解決に使うのは常に直近の核で、跡は全部見えている。
+const TRAIL = JSON.parse(localStorage.getItem("vera_trail") || "[]");
+const CONVO = {pos: [], buf: null, n: 0};
+function rebuildConvo(){
+  CONVO.pos = [];
+  for(const c of TRAIL){
+    const i = byLabel.get(c);
+    if(i != null) CONVO.pos.push(POS[i*3], POS[i*3+1], POS[i*3+2]);
+  }
+  CONVO.n = CONVO.pos.length / 3;
+  if(CONVO.n >= 2){
+    if(!CONVO.buf) CONVO.buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, CONVO.buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(CONVO.pos), gl.DYNAMIC_DRAW);
+    CONVO.vao = null;   // 再構築
+  }
+}
+function renderTrail(){
   const el = document.getElementById("trail");
-  if(el) el.innerHTML = TRAIL.map(esc).join(" → ") +
-    " <button id='trail-x' style='background:none;border:none;color:var(--faint);cursor:pointer'>×</button>";
+  if(!el) return;
+  const shown = TRAIL.slice(-8);
+  el.innerHTML = (TRAIL.length > 8 ? "… " : "") + shown.map(esc).join(" → ") +
+    (TRAIL.length ? " <span style='color:var(--faint)'>(" + TRAIL.length + ")</span>" +
+     " <button id='trail-x' style='background:none;border:none;color:var(--faint);cursor:pointer'>×</button>" : "");
   const x = document.getElementById("trail-x");
   if(x) x.onclick = () => { TRAIL.length = 0; lastCore = null;
-    document.getElementById("trail").textContent = ""; };
+    localStorage.removeItem("vera_trail");
+    CONVO.n = 0; renderTrail(); };
 }
+function pushTrail(core){
+  if(!core){ return; }
+  lastCore = core;
+  if(TRAIL[TRAIL.length-1] === core){ return; }
+  TRAIL.push(core); if(TRAIL.length > 50) TRAIL.shift();
+  localStorage.setItem("vera_trail", JSON.stringify(TRAIL));
+  renderTrail(); rebuildConvo();
+}
+if(TRAIL.length){ lastCore = TRAIL[TRAIL.length-1]; }
 function resolveContext(q){
   if(!lastCore) return {q, note:null};
   let m = q.match(/^(それ|これ|その|この)(の)?(.*)$/);
@@ -1248,6 +1276,24 @@ function frame(){
   gl.uniform3fv(u(P_NODE,"u_hot"), rgb(CSS.hot));
   gl.drawArrays(gl.POINTS, 0, N);
 
+  if(CONVO.n >= 2){
+    gl.useProgram(P_LINE);
+    gl.uniformMatrix4fv(u(P_LINE,"u_mvp"), false, m);
+    gl.uniform3fv(u(P_LINE,"u_col"), rgb(CSS.hot));
+    gl.uniform3fv(u(P_LINE,"u_hot"), rgb(CSS.hot));
+    gl.uniform1f(u(P_LINE,"u_a"), .85);
+    if(!CONVO.vao){
+      CONVO.vao = gl.createVertexArray(); gl.bindVertexArray(CONVO.vao);
+      gl.bindBuffer(gl.ARRAY_BUFFER, CONVO.buf);
+      const l = gl.getAttribLocation(P_LINE, "a_p");
+      gl.enableVertexAttribArray(l);
+      gl.vertexAttribPointer(l, 3, gl.FLOAT, false, 0, 0);
+      const lh = gl.getAttribLocation(P_LINE, "a_hot");
+      if(lh >= 0) gl.disableVertexAttribArray(lh);
+    }
+    gl.bindVertexArray(CONVO.vao);
+    gl.drawArrays(gl.LINE_STRIP, 0, CONVO.n);
+  }
   if(GROWN.n){
     gl.useProgram(P_LINE);
     gl.uniformMatrix4fv(u(P_LINE,"u_mvp"), false, m);
@@ -1271,6 +1317,7 @@ function frame(){
   requestAnimationFrame(frame);
 }
 setHot();
+renderTrail(); rebuildConvo();
 frame();
 }).catch(e => {
   document.body.innerHTML = "<div style='padding:40px;font-family:sans-serif'>" +
