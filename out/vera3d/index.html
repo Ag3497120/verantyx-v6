@@ -705,6 +705,9 @@ function showAnswer(m){
   if(m.witness && m.witness.answered)
     h += "<div class='why'>" + t("witness") + " " + m.witness.agree + "/" +
          m.witness.answered + "</div>";
+  if(m.grain && m.grain.of)
+    h += "<div class='why'>" + (LANGUI === "en" ? "grain accord " : "粒度一致 ") +
+         m.grain.agree + "/" + m.grain.of + "</div>";
   if(m.order === "arbitrary") h += "<div class='why'>" + t("unordered") + "</div>";
   else if(m.order === "aspect") h += "<div class='why'>" + t("aspect") + "</div>";
   if(m.origin && m.origin.length)
@@ -739,6 +742,11 @@ function offerPyodide(){
                      : "ブラウザ内でエンジンを起動 (~30MB)") + "</button>";
   document.getElementById("b-boot").onclick = bootPyodide;
 }
+async function gunzip(buf){
+  const ds = new DecompressionStream("gzip");
+  const out = new Response(new Blob([buf]).stream().pipeThrough(ds));
+  return new Uint8Array(await out.arrayBuffer());
+}
 async function fetchBytes(url, label){
   const res = await fetch(url);
   if(!res.ok) throw new Error(label + " " + res.status);
@@ -770,8 +778,9 @@ async function bootPyodide(){
     liveEl.textContent = "sqlite3…";
     await PY.loadPackage("sqlite3");
     PY.unpackArchive((await fetchBytes(ASSETS + "/verantyx.zip", "engine")).buffer, "zip");
-    PY.FS.writeFile("vera_web.db", await fetchBytes(ASSETS + "/vera_web.db", "structure"));
-    try{ PY.FS.writeFile("writer.json", await fetchBytes(ASSETS + "/writer.json", "writer")); }catch(e){}
+    PY.FS.writeFile("vera_web.db", await gunzip(await fetchBytes(ASSETS + "/vera_web.db.gz", "structure")));
+    try{ PY.FS.writeFile("vera_edges.db", await gunzip(await fetchBytes(ASSETS + "/vera_edges.db.gz", "edges"))); }catch(e){}
+    try{ PY.FS.writeFile("writer.json", await gunzip(await fetchBytes(ASSETS + "/writer.json.gz", "writer"))); }catch(e){}
     liveEl.textContent = LANGUI === "en" ? "assembling…" : "ソブリンを組み立て中…";
     await PY.runPythonAsync([
       "import sys, json",
@@ -796,6 +805,7 @@ async function bootPyodide(){
       "      'witness': ({'agree': wt.get('agree'), 'answered': wt.get('answered')} if wt else None),",
       "      'origin': sorted({s2 for v2 in (r.get('facet_origin') or {}).values() for s2 in v2})[:3],",
       "      'order': r.get('order_evidence'), 'subject': subj,",
+      "      'grain': r.get('grain'),",
       "      'nearest': r.get('nearest_held'), 'remedy': r.get('remedy'),",
       "      'missing': r.get('missing'), 'facet_only': r.get('as_facet_only')},",
       "      ensure_ascii=False)",
