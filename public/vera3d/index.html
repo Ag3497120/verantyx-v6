@@ -137,6 +137,12 @@ canvas.drag{cursor:grabbing}
     <div class="sec" id="asksec">
       <input id="askq" placeholder="質問を入力（日本語 / English）" autocomplete="off">
       <div id="live">未接続 — 静的表示</div>
+      <div style="margin-top:7px;display:flex;gap:6px">
+        <button id="b-save" style="flex:1;background:var(--raised);
+          border:1px solid var(--line);color:var(--text);border-radius:4px;
+          cursor:pointer;font:inherit;font-size:11.5px;padding:4px 8px"
+          data-i="save">記録をファイルへ</button>
+      </div>
       <div style="margin-top:7px">
         <button id="b-suggest" style="width:100%;background:var(--raised);
           border:1px solid var(--line);color:var(--text);border-radius:4px;
@@ -620,7 +626,7 @@ const I18N = {
        fix:"登録すれば解決: ", nofix:"登録では直らない: ",
        autogrow:"成長を自動承認する(内容は都度表示)",
        autonote:"自動承認", ingested:"取り込み済み",
-       suggest:"Vera に情報を持ち寄る"},
+       suggest:"Vera に情報を持ち寄る", save:"記録をファイルへ"},
   en: {title:"Ask Vera", sub:"stereo cross — 6 arms × 4 faces = capacity 24",
        connected:"<b>connected</b> — questions resolve on the structure",
        offline:"offline — static view",
@@ -634,7 +640,7 @@ const I18N = {
        nofix:"registration does not close this: ",
        autogrow:"auto-approve growth (contents always shown)",
        autonote:"auto-approved", ingested:"ingested",
-       suggest:"contribute knowledge to Vera"},
+       suggest:"contribute knowledge to Vera", save:"save session to a file"},
 };
 let LANGUI = "ja";
 function t(k){ return (I18N[LANGUI] || I18N.ja)[k] || k; }
@@ -648,6 +654,22 @@ function applyLang(){
 // 持ち寄り: 提案は公開の場(GitHub Issue)に置かれ、人間の承認
 // (issue の確認 + grow --github の実行)を経てだけ構造に入る。
 // 世界中の誰でも提案でき、誰の提案も黙って入らない。
+// 端末への保存: 会話の跡・成長の記録・選択版を JSONL 一つに。
+// grow --queue がそのまま読める形式なので、保存したファイルは
+// そのまま提案キューとして提出できる — ブラウザが最も手軽な参加経路。
+document.getElementById("b-save").onclick = () => {
+  const lines = [];
+  lines.push(JSON.stringify({kind:"session", date:new Date().toISOString(),
+    version:(chosenVersion||{}).id || "live", trail:TRAIL}));
+  for(const c of GROWN.labels)
+    lines.push(JSON.stringify({subject:c, rule:"browser_grown"}));
+  const blob = new Blob([lines.join("\n") + "\n"],
+                       {type:"application/x-ndjson"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "vera-session-" + new Date().toISOString().slice(0,10) + ".jsonl";
+  a.click();
+};
 document.getElementById("b-suggest").onclick = () => {
   const subject = prompt(LANGUI === "en"
     ? "Subject Vera should learn (e.g. 質権):"
@@ -965,6 +987,13 @@ function showAnswer(m){
     h += "<div class='why'>核でなく facet のみ: " + esc(m.facet_only.join("、")) + "</div>";
   if(m.missing && m.missing.length)
     h += "<div class='why'>蔵書にない語: " + esc(m.missing.join("、")) + "</div>";
+  if(m.tier && m.tier.label){
+    const tc = m.tier.label === "strong" ? "var(--unit)" :
+               m.tier.label === "weak" ? "var(--faint)" : "var(--dim)";
+    h += "<div class='why' style='color:" + tc + "'>" +
+         (LANGUI==="en" ? "confidence: " : "確からしさ: ") + m.tier.label +
+         " (" + (m.tier.why || []).join(", ") + ")</div>";
+  }
   if(m.witness && m.witness.answered)
     h += "<div class='why'>" + t("witness") + " " + m.witness.agree + "/" +
          m.witness.answered + "</div>";
@@ -1078,6 +1107,7 @@ async function bootPyodide(){
     PY.FS.writeFile("vera_web.db", await gunzip(await fetchBytes(fdb, "structure")));
     try{ PY.FS.writeFile("vera_edges.db", await gunzip(await fetchBytes(fed, "edges"))); }catch(e){}
     try{ PY.FS.writeFile("writer.json", await gunzip(await fetchBytes(fwr, "writer"))); }catch(e){}
+    try{ PY.FS.writeFile("vera_gaps.db", await gunzip(await fetchBytes(ASSETS + "/vera_gaps.db.gz", "gaps"))); }catch(e){}
     liveEl.textContent = LANGUI === "en" ? "assembling…" : "ソブリンを組み立て中…";
     await PY.runPythonAsync([
       "import sys, json",
@@ -1102,7 +1132,7 @@ async function bootPyodide(){
       "      'witness': ({'agree': wt.get('agree'), 'answered': wt.get('answered')} if wt else None),",
       "      'origin': sorted({s2 for v2 in (r.get('facet_origin') or {}).values() for s2 in v2})[:3],",
       "      'order': r.get('order_evidence'), 'subject': subj,",
-      "      'grain': r.get('grain'),",
+      "      'grain': r.get('grain'), 'tier': r.get('tier'),",
       "      'nearest': r.get('nearest_held'), 'remedy': r.get('remedy'),",
       "      'missing': r.get('missing'), 'facet_only': r.get('as_facet_only')},",
       "      ensure_ascii=False)",
