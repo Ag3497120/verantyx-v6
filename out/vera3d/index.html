@@ -1126,6 +1126,22 @@ async function gunzip(buf){
   const out = new Response(new Blob([buf]).stream().pipeThrough(ds));
   return new Uint8Array(await out.arrayBuffer());
 }
+// 起動アセットは Cache API に保存し、二回目以降はネットワークに出ない。
+// 鍵は URL(版ファイルは版名入りなので、版が変われば自然に別鍵)。
+const ACACHE = "vera-assets-v1";
+async function cachedBytes(url, label){
+  try{
+    const c = await caches.open(ACACHE);
+    const hit = await c.match(url);
+    if(hit){
+      liveEl.textContent = label + " (cache)";
+      return new Uint8Array(await hit.arrayBuffer());
+    }
+    const buf = await fetchBytes(url, label);
+    try{ await c.put(url, new Response(buf)); }catch(e){}
+    return buf;
+  }catch(e){ return await fetchBytes(url, label); }
+}
 async function fetchBytes(url, label){
   const res = await fetch(url);
   if(!res.ok) throw new Error(label + " " + res.status);
@@ -1156,15 +1172,15 @@ async function bootPyodide(){
     PY = await loadPyodide({indexURL:"https://cdn.jsdelivr.net/pyodide/v0.26.4/full/"});
     liveEl.textContent = "sqlite3…";
     await PY.loadPackage("sqlite3");
-    PY.unpackArchive((await fetchBytes(ASSETS + "/verantyx.zip", "engine")).buffer, "zip");
+    PY.unpackArchive((await cachedBytes(ASSETS + "/verantyx.zip", "engine")).buffer, "zip");
     const V = chosenVersion;
     const fdb = V ? ASSETS + "/" + V.db : ASSETS + "/vera_web.db.gz";
     const fed = V ? ASSETS + "/" + V.edges : ASSETS + "/vera_edges.db.gz";
     const fwr = V ? ASSETS + "/" + V.writer : ASSETS + "/writer.json.gz";
-    PY.FS.writeFile("vera_web.db", await gunzip(await fetchBytes(fdb, "structure")));
-    try{ PY.FS.writeFile("vera_edges.db", await gunzip(await fetchBytes(fed, "edges"))); }catch(e){}
-    try{ PY.FS.writeFile("writer.json", await gunzip(await fetchBytes(fwr, "writer"))); }catch(e){}
-    try{ PY.FS.writeFile("vera_gaps.db", await gunzip(await fetchBytes(ASSETS + "/vera_gaps.db.gz", "gaps"))); }catch(e){}
+    PY.FS.writeFile("vera_web.db", await gunzip(await cachedBytes(fdb, "structure")));
+    try{ PY.FS.writeFile("vera_edges.db", await gunzip(await cachedBytes(fed, "edges"))); }catch(e){}
+    try{ PY.FS.writeFile("writer.json", await gunzip(await cachedBytes(fwr, "writer"))); }catch(e){}
+    try{ PY.FS.writeFile("vera_gaps.db", await gunzip(await cachedBytes(ASSETS + "/vera_gaps.db.gz", "gaps"))); }catch(e){}
     liveEl.textContent = LANGUI === "en" ? "assembling…" : "ソブリンを組み立て中…";
     await PY.runPythonAsync([
       "import sys, json",
