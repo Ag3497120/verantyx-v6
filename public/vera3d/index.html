@@ -150,7 +150,11 @@ canvas.drag{cursor:grabbing}
           data-i="suggest">Vera に情報を持ち寄る</button>
       </div>
       <div id="trail" class="mono" style="font-size:10.5px;color:var(--dim);margin-top:5px"></div>
-      <label class="tog" style="margin-top:6px">
+      <label class="tog" style="margin-top:4px">
+        <input type="checkbox" id="tg-share">
+        <span data-i="share">拒否された主題を匿名で共有(要望として)</span>
+      </label>
+      <label class="tog" style="margin-top:2px">
         <input type="checkbox" id="tg-auto">
         <span data-i="autogrow">成長を自動承認する(内容は都度表示)</span>
       </label>
@@ -626,7 +630,8 @@ const I18N = {
        fix:"登録すれば解決: ", nofix:"登録では直らない: ",
        autogrow:"成長を自動承認する(内容は都度表示)",
        autonote:"自動承認", ingested:"取り込み済み",
-       suggest:"Vera に情報を持ち寄る", save:"記録をファイルへ"},
+       suggest:"Vera に情報を持ち寄る", save:"記録をファイルへ",
+       share:"拒否された主題を匿名で共有(要望として)"},
   en: {title:"Ask Vera", sub:"stereo cross — 6 arms × 4 faces = capacity 24",
        connected:"<b>connected</b> — questions resolve on the structure",
        offline:"offline — static view",
@@ -640,7 +645,8 @@ const I18N = {
        nofix:"registration does not close this: ",
        autogrow:"auto-approve growth (contents always shown)",
        autonote:"auto-approved", ingested:"ingested",
-       suggest:"contribute knowledge to Vera", save:"save session to a file"},
+       suggest:"contribute knowledge to Vera", save:"save session to a file",
+       share:"share refused subjects anonymously (as requests)"},
 };
 let LANGUI = "ja";
 function t(k){ return (I18N[LANGUI] || I18N.ja)[k] || k; }
@@ -814,7 +820,27 @@ function classifyIntent(q){
   return LANGUI==="en" ? "lookup" : "照会";
 }
 
+// 永続リンク: 同じリンクは誰が開いても同じ答え — 決定論そのものが
+// 共有価値になる。?q= は接続/起動の完了後に一度だけ実行される。
+const URLQ = new URLSearchParams(location.search);
+const EMBED = URLQ.get("embed") === "1";
+if(EMBED){
+  const r = document.getElementById("rail");
+  if(r){ for(const sec of r.children)
+           if(!sec.querySelector("#askq")) sec.style.display = "none"; }
+}
+let pendingURLQ = URLQ.get("q") || null;
+function runPendingQ(sendFn){
+  if(!pendingURLQ) return;
+  const q = pendingURLQ; pendingURLQ = null;
+  submitQuery(q, sendFn);
+}
 function submitQuery(raw, send){
+  try{
+    const u = new URL(location);
+    u.searchParams.set("q", raw);
+    history.replaceState(null, "", u);
+  }catch(e){}
   // 指名取得: 「取得 X」「+X」— 情報を入れて欲しいと頼む形。承認は同じ関門。
   const g = raw.match(/^(?:取得[  ]*|\+[  ]*)(.+)$/);
   if(g){ bubble("user", esc(raw)); offerGrow(g[1].trim(), true); return; }
@@ -859,11 +885,32 @@ const WHY = {
   CONTAINMENT: "その語を含むより長い語に着地した",
 };
 
+// 要望の集計先(verantyx.ai の Pages Function)。未バインドなら黙って
+// 非表示 — 動かない釦は嘘なので。
+const DEMAND_API = "https://verantyx.ai/api/vera/demand";
+let demandUp = null;
+fetch(DEMAND_API, {method:"GET"}).then(r => { demandUp = r.ok; })
+  .catch(() => { demandUp = false; });
+let SHARE_REFUSALS = localStorage.getItem("vera_share_refusals") === "1";
+function sendDemand(subject){
+  if(demandUp === false) return;
+  fetch(DEMAND_API, {method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({subject})}).catch(()=>{});
+}
 let pendingGrow = null;   // {subject, text?} — 承認待ち
 // 自動承認トグル。既定は手動 — 取り込みは人間の関門が原則で、自動は
 // 明示的に選んだ人だけ。自動でも「何が入ったか」は必ず気泡で示す:
 // 見えない取り込みは、見えない文脈解決と同じ形の嘘になる。
 let AUTOGROW = localStorage.getItem("vera_auto_grow") === "1";
+const tgShare = document.getElementById("tg-share");
+if(tgShare){
+  tgShare.checked = SHARE_REFUSALS;
+  tgShare.onchange = () => {
+    SHARE_REFUSALS = tgShare.checked;
+    localStorage.setItem("vera_share_refusals", SHARE_REFUSALS ? "1" : "0");
+  };
+}
 const tgAuto = document.getElementById("tg-auto");
 if(tgAuto){
   tgAuto.checked = AUTOGROW;
@@ -922,7 +969,17 @@ function offerGrow(subject, directed){
       : " は蔵書にありません。記事を取得して内容を確認しますか?") +
     "<div class='offer'><button class='ok'>" +
     (LANGUI==="en"?"fetch & preview":"取得して確認") + "</button>" +
-    "<button class='no'>" + (LANGUI==="en"?"dismiss":"やめる") + "</button></div>");
+    "<button class='no'>" + (LANGUI==="en"?"dismiss":"やめる") + "</button>" +
+    "<button class='dem'>" + (LANGUI==="en"?"request this":"この主題を要望") +
+    "</button></div>");
+  if(SHARE_REFUSALS) sendDemand(subject);
+  const demBtn = b.querySelector("button.dem");
+  if(demBtn){
+    if(demandUp === false) demBtn.style.display = "none";
+    demBtn.onclick = () => { sendDemand(subject);
+      demBtn.textContent = LANGUI==="en" ? "requested ✓" : "要望済み ✓";
+      demBtn.disabled = true; };
+  }
   const [ok, no] = b.querySelectorAll("button");
   no.onclick = () => b.remove();
   ok.onclick = async () => {
@@ -1154,9 +1211,24 @@ async function bootPyodide(){
     liveEl.innerHTML = (LANGUI === "en"
       ? "<b>engine live</b> — CPython in this tab"
       : "<b>起動</b> — このタブの中の CPython") +
-      (chosenVersion ? " · <span class='mono'>" + esc(chosenVersion.id) + "</span>" : "");
+      (chosenVersion ? " · <span class='mono'>" + esc(chosenVersion.id) + "</span>" +
+        ((chosenVersion.contributors || []).length
+          ? " · " + (LANGUI==="en" ? "with " : "貢献: ") +
+            chosenVersion.contributors.map(esc).join(", ") : "") : "");
     const askq = document.getElementById("askq");
     askq.disabled = false;
+    runPendingQ(async q => {
+      askq.disabled = true;
+      handleEvent({type:"ask", query:q, terms:[]});
+      try{
+        const m = JSON.parse(await PY.runPythonAsync("ASK(" + JSON.stringify(q) + ")"));
+        handleEvent({type:"language", language:m.language});
+        handleEvent({type:"touch", nodes:m.terms || []});
+        handleEvent({type:"verdict", ...m, detail:""});
+        if(m.subject && !m.item) offerGrow(m.subject, false);
+      }catch(e){}
+      askq.disabled = false;
+    });
     askq.onkeydown = async ev => {
       if(ev.key !== "Enter" || !askq.value.trim() || askq.disabled) return;
       const q0 = askq.value.trim(); askq.value = "";
@@ -1205,7 +1277,8 @@ if(location.protocol.startsWith("http") && location.hostname === "localhost"){
     const askq = document.getElementById("askq");
     let sseOK = false;
     es.onopen = () => { sseOK = true; liveEl.innerHTML = t("connected");
-                        askq.disabled = false; };
+                        askq.disabled = false;
+                        runPendingQ(q2 => fetch("/ask?q=" + encodeURIComponent(q2))); };
     es.onerror = () => {
       // 一度も繋がらなければ SSE サーバは居ない — ブラウザ内エンジンを
       // 提案する。一度繋がった後の瞬断は再接続に任せる。
