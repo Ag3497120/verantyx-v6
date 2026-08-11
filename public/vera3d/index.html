@@ -55,6 +55,23 @@ label.tog input{accent-color:var(--dim); margin:0}
   cursor:pointer;border-radius:3px}
 #hits button:hover{background:var(--raised);color:var(--hot)}
 .note{font-size:10.5px;color:var(--faint);line-height:1.6;margin:0}
+#chat{display:flex;flex-direction:column;gap:8px;margin-top:8px;
+  max-height:44vh;overflow-y:auto;padding-right:2px}
+.msg{border-radius:7px;padding:8px 10px;font-size:12.5px;line-height:1.55}
+.msg.user{background:var(--raised);border:1px solid var(--line);
+  align-self:flex-end;max-width:92%}
+.msg.vera{background:var(--surface);border:1px solid var(--line);max-width:100%}
+.msg .ctx{font-size:10px;color:var(--faint);margin-bottom:3px}
+.msg .v{font-weight:600;letter-spacing:.04em}
+.offer{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}
+.offer button{background:var(--raised);border:1px solid var(--line);
+  color:var(--text);border-radius:4px;cursor:pointer;font:inherit;
+  font-size:11.5px;padding:3px 10px}
+.offer button:hover{border-color:var(--dim)}
+.offer .ok{color:var(--unit)} .offer .no{color:var(--faint)}
+.prev{margin-top:6px;padding:7px 9px;background:var(--ink);
+  border:1px solid var(--line);border-radius:5px;font-size:11.5px;
+  color:var(--dim);max-height:110px;overflow-y:auto}
 #stage{position:relative;min-width:0}
 canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
 canvas.drag{cursor:grabbing}
@@ -657,6 +674,38 @@ function traceLine(html){
   while(traceEl.children.length > 40) traceEl.lastChild.remove();
 }
 const answerEl = document.getElementById("answer");
+answerEl.id = "chat"; answerEl.className = "";
+const chatEl = answerEl;
+function bubble(cls, html){
+  const d = document.createElement("div");
+  d.className = "msg " + cls; d.innerHTML = html;
+  chatEl.appendChild(d);
+  while(chatEl.children.length > 30) chatEl.firstChild.remove();
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return d;
+}
+// ── 文脈参照(決定論・可視) ────────────────────────────
+// 「それの効果は」「その要件は」は直前の答えの核で解決する。解決は隠さず
+// 表示する — 何をどう読み替えたかが見えない文脈解決は、主語泥棒と同じ形。
+let lastCore = null;
+function resolveContext(q){
+  if(!lastCore) return {q, note:null};
+  let m = q.match(/^(それ|これ|その|この)(の)?(.*)$/);
+  if(m) return {q: lastCore + "の" + m[3].replace(/^の/, ""),
+                note: m[1] + " → " + lastCore};
+  m = q.match(/^(の)?(要件|効果|期間|刑|手続|順位|定義|意味)(は|とは)?[?？]?$/);
+  if(m) return {q: lastCore + "の" + m[2] + "は", note: "主語 → " + lastCore};
+  return {q, note:null};
+}
+function submitQuery(raw, send){
+  // 指名取得: 「取得 X」「+X」— 情報を入れて欲しいと頼む形。承認は同じ関門。
+  const g = raw.match(/^(?:取得[  ]*|\+[  ]*)(.+)$/);
+  if(g){ bubble("user", esc(raw)); offerGrow(g[1].trim(), true); return; }
+  const {q, note} = resolveContext(raw);
+  bubble("user", (note ? "<div class='ctx'>" + esc(note) + "</div>" : "") + esc(raw));
+  traceEl.innerHTML = "";
+  send(q);
+}
 
 //: What each verdict means, in one line. The name alone is precise and
 //: unhelpful to a reader meeting it for the first time.
@@ -691,6 +740,70 @@ const WHY = {
   CONTAINMENT: "その語を含むより長い語に着地した",
 };
 
+let pendingGrow = null;   // {subject, text?} — 承認待ち
+function offerGrow(subject, directed){
+  const b = bubble("vera",
+    "<div class='ctx'>" + (directed ? (LANGUI==="en"?"directed growth":"指名取得")
+                                    : (LANGUI==="en"?"growth offer":"成長の提案")) + "</div>" +
+    esc(subject) + (LANGUI==="en"
+      ? " is not held. Fetch its article and PREVIEW it?"
+      : " は蔵書にありません。記事を取得して内容を確認しますか?") +
+    "<div class='offer'><button class='ok'>" +
+    (LANGUI==="en"?"fetch & preview":"取得して確認") + "</button>" +
+    "<button class='no'>" + (LANGUI==="en"?"dismiss":"やめる") + "</button></div>");
+  const [ok, no] = b.querySelectorAll("button");
+  no.onclick = () => b.remove();
+  ok.onclick = async () => {
+    ok.disabled = true;
+    let pv;
+    if(PY){
+      const u = "https://ja.wikipedia.org/w/api.php?action=query&format=json&origin=*" +
+        "&prop=extracts&explaintext=1&redirects=1&titles=" + encodeURIComponent(subject);
+      try{
+        const d = await (await fetch(u)).json();
+        const pages = (d.query || {}).pages || {}; let text = null;
+        for(const k in pages){ if(!("missing" in pages[k])) text = pages[k].extract; }
+        pv = text ? {ok:true, head:text.slice(0,220), chars:text.length,
+                     url:"https://ja.wikipedia.org/wiki/"+subject, _text:text}
+                  : {ok:false};
+      }catch(e){ pv = {ok:false}; }
+    } else {
+      pv = await (await fetch("/preview?s=" + encodeURIComponent(subject))).json();
+    }
+    if(!pv.ok){ b.innerHTML = esc(subject) + " — " + t("noarticle"); return; }
+    pendingGrow = {subject, text: pv._text || null};
+    b.innerHTML = "<div class='ctx'>" + (LANGUI==="en"?"preview":"取り込む内容の確認") +
+      " — " + esc(subject) + " (" + pv.chars + (LANGUI==="en"?" chars":" 字") + ")</div>" +
+      "<div class='prev'>" + esc(pv.head) + "…</div>" +
+      "<div class='offer'><button class='ok'>" +
+      (LANGUI==="en"?"approve & ingest":"承認して取り込む") + "</button>" +
+      "<button class='no'>" + (LANGUI==="en"?"reject":"却下") + "</button>" +
+      "<a href='" + pv.url + "' target='_blank' style='font-size:11px;" +
+      "color:var(--dim);align-self:center'>" +
+      (LANGUI==="en"?"source":"出典を見る") + "</a></div>";
+    const [ok2, no2] = b.querySelectorAll("button");
+    no2.onclick = () => { pendingGrow = null; b.remove(); };
+    ok2.onclick = async () => {
+      ok2.disabled = true;
+      if(PY){
+        handleEvent({type:"grow_start", subject});
+        try{
+          const g = JSON.parse(await PY.runPythonAsync(
+            "GROW(" + JSON.stringify(subject) + "," +
+            JSON.stringify(pendingGrow.text) + ")"));
+          handleEvent({type:"grown", subject, count:g.count, cores:g.cores,
+                       domain:"指名"});
+          handleEvent({type:"grow_ready", subject});
+        }catch(e){ handleEvent({type:"grow_missing", subject}); }
+      } else {
+        fetch("/grow?s=" + encodeURIComponent(subject));
+      }
+      pendingGrow = null;
+      b.querySelector(".offer").remove();
+    };
+  };
+}
+
 function showAnswer(m){
   const v = m.verdict || "";
   let h = "<div class='v'>" + esc(v) + (m.language ? "  ·  " + esc(m.language) : "") +
@@ -722,7 +835,10 @@ function showAnswer(m){
     h += "<div class='why'>" + t("fix") + esc(r.register || "") + "</div>";
   else if(r && r.why)
     h += "<div class='why'>" + t("nofix") + esc(String(r.why).slice(0, 110)) + "</div>";
-  answerEl.innerHTML = h;
+  bubble("vera", h);
+  if(m.item) lastCore = m.item;
+  // Pyodide 経路には grow_offer イベントが無いので、ここで同じ提案を出す。
+  if(PY && m.subject && !m.item) offerGrow(m.subject, false);
 }
 
 // ── サーバ無しモード: ブラウザ内 CPython ─────────────────
@@ -831,9 +947,9 @@ async function bootPyodide(){
     askq.disabled = false;
     askq.onkeydown = async ev => {
       if(ev.key !== "Enter" || !askq.value.trim() || askq.disabled) return;
-      const q = askq.value.trim();
+      const q0 = askq.value.trim(); askq.value = "";
+      submitQuery(q0, async q => {
       askq.disabled = true;
-      answerEl.innerHTML = "<div class='v'>…</div>"; traceEl.innerHTML = "";
       handleEvent({type:"ask", query:q, terms:[]});
       try{
         const m = JSON.parse(await PY.runPythonAsync("ASK(" + JSON.stringify(q) + ")"));
@@ -845,6 +961,7 @@ async function bootPyodide(){
         answerEl.innerHTML = "<div class='why'>" + esc(String(err).slice(0,140)) + "</div>";
       }
       askq.disabled = false;
+      });
     };
   }catch(err){
     liveEl.textContent = "boot failed: " + String(err).slice(0, 80);
@@ -885,9 +1002,8 @@ if(location.protocol.startsWith("http") && location.hostname === "localhost"){
     };
     askq.onkeydown = ev => {
       if(ev.key !== "Enter" || !askq.value.trim()) return;
-      answerEl.innerHTML = "<div class='v'>…</div>";
-      traceEl.innerHTML = "";
-      fetch("/ask?q=" + encodeURIComponent(askq.value.trim()));
+      submitQuery(askq.value.trim(), q2 => fetch("/ask?q=" + encodeURIComponent(q2)));
+      askq.value = "";
     };
     es.onmessage = ev => handleEvent(JSON.parse(ev.data));
   }catch(e){ offerPyodide(); }
@@ -918,6 +1034,8 @@ function handleEvent(m){
         showAnswer(m);
         const i = m.item != null ? byLabel.get(m.item) : null;
         if(i != null) goTo(i);
+      } else if(m.type === "grow_offer"){
+        offerGrow(m.subject, false);
       } else if(m.type === "grow_start"){
         traceLine("<span style='color:var(--unit)'>" + t("growing") + "</span> " + esc(m.subject));
       } else if(m.type === "grow_missing"){
