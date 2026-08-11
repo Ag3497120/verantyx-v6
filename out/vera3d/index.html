@@ -202,6 +202,8 @@ canvas.drag{cursor:grabbing}
     <div id="hud">
       <span id="h-cam" class="mono">—</span>
       <span id="h-grown" class="mono" style="color:var(--unit)"></span>
+      <span id="h-cross" class="mono" style="color:var(--cite)"></span>
+      <span id="h-gaps" class="mono" style="color:var(--gaku)"></span>
       <span id="h-sel" class="mono"></span>
       <span>左ドラッグ=回転 / 右・Shift=平行移動 / ホイール=前後 / クリック=選択</span>
     </div>
@@ -701,6 +703,90 @@ if(bLang) bLang.onclick = () => {
 // 追加ノードは既存バッファに触らず、専用の小バッファで描く。位置は 指名 の
 // 腕の周りに決定論で置く(ラベルのハッシュから角度) — 見せているのは
 // 「どこに何が増えたか」であって幾何の再計算ではない。
+// 答えた核の「実際の十字」— 面を 6腕×4面 の席に置き、同一文の辺で結ぶ。
+// 幾何の要である面と辺が、幾何の絵に無かったのを埋める層。
+const CROSS_L = {pos: [], n: 0, buf: null, vao: null,
+                 edgePos: [], edgeN: 0, edgeBuf: null, edgeVao: null,
+                 labels: [], center: null};
+function perp(v){
+  const a = Math.abs(v[2]) < 0.9 ? [0,0,1] : [1,0,0];
+  let u = [v[1]*a[2]-v[2]*a[1], v[2]*a[0]-v[0]*a[2], v[0]*a[1]-v[1]*a[0]];
+  const n = Math.hypot(u[0],u[1],u[2]) || 1; u = u.map(x=>x/n);
+  const w = [v[1]*u[2]-v[2]*u[1], v[2]*u[0]-v[0]*u[2], v[0]*u[1]-v[1]*u[0]];
+  return [u,w];
+}
+const FACEOFF = [[0,1],[0,-1],[1,0],[-1,0]];   // 既存 ARMV を使う
+function showCrossOf(coreLabel, faces, edges){
+  const ci = byLabel.get(coreLabel);
+  if(ci == null){ CROSS_L.n = 0; CROSS_L.edgeN = 0; return; }
+  const c = [POS[ci*3], POS[ci*3+1], POS[ci*3+2]];
+  CROSS_L.center = c; CROSS_L.pos = []; CROSS_L.labels = [];
+  const armLen = 300, faceLen = 90;
+  const at = {};
+  for(let i = 0; i < faces.length && i < 24; i++){
+    const ai = Math.floor(i/4), fi = i%4, v = ARMV[ai];
+    const tip = [c[0]+v[0]*armLen, c[1]+v[1]*armLen, c[2]+v[2]*armLen];
+    const [u,w] = perp(v); const [du,dw] = FACEOFF[fi];
+    const p = [tip[0]+u[0]*du*faceLen+w[0]*dw*faceLen,
+               tip[1]+u[1]*du*faceLen+w[1]*dw*faceLen,
+               tip[2]+u[2]*du*faceLen+w[2]*dw*faceLen];
+    CROSS_L.pos.push(p[0],p[1],p[2]); CROSS_L.labels.push(faces[i]);
+    at[faces[i]] = p;
+  }
+  CROSS_L.n = CROSS_L.pos.length/3;
+  CROSS_L.edgePos = [];
+  for(const pr of (edges || [])){
+    const a = at[pr[0]], b = at[pr[1]];
+    if(a && b) CROSS_L.edgePos.push(a[0],a[1],a[2], b[0],b[1],b[2]);
+  }
+  CROSS_L.edgeN = CROSS_L.edgePos.length/3;
+  if(!CROSS_L.buf) CROSS_L.buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, CROSS_L.buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(CROSS_L.pos), gl.DYNAMIC_DRAW);
+  CROSS_L.vao = null;
+  if(CROSS_L.edgeN){
+    if(!CROSS_L.edgeBuf) CROSS_L.edgeBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, CROSS_L.edgeBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(CROSS_L.edgePos), gl.DYNAMIC_DRAW);
+    CROSS_L.edgeVao = null;
+  }
+  document.getElementById("h-cross").textContent =
+    "面 " + CROSS_L.n + " / 辺 " + (CROSS_L.edgeN/2);
+}
+
+// 欠落の地図 — 仲間が持ち自分が持たない主題。構造の一部なので描く。
+const GAPS = {pos: [], n: 0, buf: null, vao: null, subjects: []};
+async function loadGaps(){
+  try{
+    const d = await (await fetch("/gaps")).json();
+    GAPS.pos = []; GAPS.subjects = [];
+    for(const g of (d.gaps || [])){
+      // 保持している証人の分野の位置を基準に、欠落を外側へ置く。
+      let anchor = null;
+      for(const h of (g.held_by || [])){
+        const i = byLabel.get(h);
+        if(i != null){ anchor = [POS[i*3],POS[i*3+1],POS[i*3+2]]; break; }
+      }
+      if(!anchor) continue;
+      let h = 0; for(let i=0;i<g.subject.length;i++) h=(h*31+g.subject.charCodeAt(i))>>>0;
+      const a=(h%6283)/1000, b=((h>>11)%3141)/1000, r=1500+(h%900);
+      GAPS.pos.push(anchor[0]+r*Math.cos(a)*Math.sin(b),
+                    anchor[1]+r*Math.sin(a)*Math.sin(b),
+                    anchor[2]+r*Math.cos(b));
+      GAPS.subjects.push(g.subject);
+    }
+    GAPS.n = GAPS.pos.length/3;
+    if(GAPS.n){
+      if(!GAPS.buf) GAPS.buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, GAPS.buf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(GAPS.pos), gl.DYNAMIC_DRAW);
+      GAPS.vao = null;
+      const el = document.getElementById("h-gaps");
+      if(el) el.textContent = "欠落 " + GAPS.n;
+    }
+  }catch(e){}
+}
+
 const GROWN = {pos: [], n: 0, buf: null, labels: []};
 let grownAnchor = null;
 function addGrown(cores){
@@ -762,6 +848,59 @@ function rebuildConvo(){
     if(i != null) CONVO.pos.push(POS[i*3], POS[i*3+1], POS[i*3+2]);
   }
   CONVO.n = CONVO.pos.length / 3;
+  // 欠落(地図済みの穴)
+  if(GAPS.n){
+    gl.useProgram(P_LINE);
+    gl.uniformMatrix4fv(u(P_LINE,"u_mvp"), false, m);
+    gl.uniform3fv(u(P_LINE,"u_col"), rgb(CSS.gaku));
+    gl.uniform3fv(u(P_LINE,"u_hot"), rgb(CSS.hot));
+    gl.uniform1f(u(P_LINE,"u_a"), .32);
+    if(!GAPS.vao){
+      GAPS.vao = gl.createVertexArray(); gl.bindVertexArray(GAPS.vao);
+      gl.bindBuffer(gl.ARRAY_BUFFER, GAPS.buf);
+      const l = gl.getAttribLocation(P_LINE,"a_p");
+      gl.enableVertexAttribArray(l); gl.vertexAttribPointer(l,3,gl.FLOAT,false,0,0);
+      const lh = gl.getAttribLocation(P_LINE,"a_hot");
+      if(lh >= 0) gl.disableVertexAttribArray(lh);
+    }
+    gl.bindVertexArray(GAPS.vao);
+    gl.drawArrays(gl.POINTS, 0, GAPS.n);
+  }
+  // 答えた核の実十字: 面の間の辺(同一文で書かれた関係)
+  if(CROSS_L.edgeN >= 2){
+    gl.useProgram(P_LINE);
+    gl.uniformMatrix4fv(u(P_LINE,"u_mvp"), false, m);
+    gl.uniform3fv(u(P_LINE,"u_col"), rgb(CSS.cite));
+    gl.uniform3fv(u(P_LINE,"u_hot"), rgb(CSS.hot));
+    gl.uniform1f(u(P_LINE,"u_a"), .8);
+    if(!CROSS_L.edgeVao){
+      CROSS_L.edgeVao = gl.createVertexArray(); gl.bindVertexArray(CROSS_L.edgeVao);
+      gl.bindBuffer(gl.ARRAY_BUFFER, CROSS_L.edgeBuf);
+      const l = gl.getAttribLocation(P_LINE,"a_p");
+      gl.enableVertexAttribArray(l); gl.vertexAttribPointer(l,3,gl.FLOAT,false,0,0);
+      const lh = gl.getAttribLocation(P_LINE,"a_hot");
+      if(lh >= 0) gl.disableVertexAttribArray(lh);
+    }
+    gl.bindVertexArray(CROSS_L.edgeVao);
+    gl.drawArrays(gl.LINES, 0, CROSS_L.edgeN);
+  }
+  // 面そのもの
+  if(CROSS_L.n){
+    gl.useProgram(P_LINE);
+    gl.uniformMatrix4fv(u(P_LINE,"u_mvp"), false, m);
+    gl.uniform3fv(u(P_LINE,"u_col"), rgb(CSS.hot));
+    gl.uniform1f(u(P_LINE,"u_a"), 1.0);
+    if(!CROSS_L.vao){
+      CROSS_L.vao = gl.createVertexArray(); gl.bindVertexArray(CROSS_L.vao);
+      gl.bindBuffer(gl.ARRAY_BUFFER, CROSS_L.buf);
+      const l = gl.getAttribLocation(P_LINE,"a_p");
+      gl.enableVertexAttribArray(l); gl.vertexAttribPointer(l,3,gl.FLOAT,false,0,0);
+      const lh = gl.getAttribLocation(P_LINE,"a_hot");
+      if(lh >= 0) gl.disableVertexAttribArray(lh);
+    }
+    gl.bindVertexArray(CROSS_L.vao);
+    gl.drawArrays(gl.POINTS, 0, CROSS_L.n);
+  }
   if(CONVO.n >= 2){
     if(!CONVO.buf) CONVO.buf = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, CONVO.buf);
@@ -1294,6 +1433,7 @@ if(location.protocol.startsWith("http") && location.hostname === "localhost"){
     let sseOK = false;
     es.onopen = () => { sseOK = true; liveEl.innerHTML = t("connected");
                         askq.disabled = false;
+                        loadGaps();
                         runPendingQ(q2 => fetch("/ask?q=" + encodeURIComponent(q2))); };
     es.onerror = () => {
       // 一度も繋がらなければ SSE サーバは居ない — ブラウザ内エンジンを
@@ -1335,6 +1475,10 @@ function handleEvent(m){
         showAnswer(m);
         const i = m.item != null ? byLabel.get(m.item) : null;
         if(i != null) goTo(i);
+      } else if(m.type === "cross"){
+        showCrossOf(m.core, m.faces || [], m.edges || []);
+        traceLine("<span class='mono' style='color:var(--cite)'>十字</span> " +
+          esc(m.core) + " 面" + (m.faces||[]).length + " 辺" + (m.edges||[]).length);
       } else if(m.type === "grow_offer"){
         offerGrow(m.subject, false);
       } else if(m.type === "grow_start"){
