@@ -517,6 +517,23 @@ function pick(px, py){
   return best;
 }
 
+function pickGap(px, py){
+  if(!GAPS.n) return -1;
+  const {m} = mvp();
+  let best = -1, bd = 22 * 22;
+  for(let i = 0; i < GAPS.n; i++){
+    const x = GAPS.pos[i*3], y = GAPS.pos[i*3+1], z = GAPS.pos[i*3+2];
+    const cw = m[3]*x + m[7]*y + m[11]*z + m[15];
+    if(cw <= 0) continue;
+    const sx = (m[0]*x + m[4]*y + m[8]*z + m[12]) / cw;
+    const sy = (m[1]*x + m[5]*y + m[9]*z + m[13]) / cw;
+    const ex = (sx*.5+.5)*W - px, ey = (1-(sy*.5+.5))*H - py;
+    const d = ex*ex + ey*ey;
+    if(d < bd){ bd = d; best = i; }
+  }
+  return best;
+}
+
 // ── input ───────────────────────────────────────────────
 let drag = 0, moved = false, lx = 0, ly = 0;
 cv.addEventListener("contextmenu", e => e.preventDefault());
@@ -544,7 +561,22 @@ addEventListener("pointermove", e => {
 addEventListener("pointerup", e => {
   if(drag && !moved){
     const r = cv.getBoundingClientRect();
-    const i = pick(e.clientX - r.left, e.clientY - r.top);
+    const px = e.clientX - r.left, py = e.clientY - r.top;
+    // 欠落は連合のノードではないので pick が見ない。先に当てる —
+    // 「地図に描いてあるのに触れない」は、描いていないのと大差ない。
+    const g = pickGap(px, py);
+    if(g >= 0){
+      const subject = GAPS.subjects[g];
+      toHost({type:"gap_click", subject});
+      bubble("vera", "<div class='ctx'>" +
+        (LANGUI==="en" ? "gap selected" : "欠落を選択") + "</div>" +
+        esc(subject) + " — " +
+        (LANGUI==="en" ? "held by peers, missing here."
+                       : "仲間は持ち、ここには無い。"));
+      offerGrow(subject, true);
+      return;
+    }
+    const i = pick(px, py);
     i >= 0 ? select(i) : clearSel();
   }
   drag = 0; cv.classList.remove("drag");
@@ -1452,7 +1484,17 @@ if(location.protocol.startsWith("http") && location.hostname === "localhost"){
   offerPyodide();
 }
 
+// ホストへの信号線。IDE の WKWebView が messageHandler を持つときだけ
+// 通じる — 通じなければ黙る。ページは単体でも成立し、IDE では右の
+// パネルがこの信号で動く(同じ信号なので、絵とパネルが食い違えない)。
+function toHost(msg){
+  try{
+    window.webkit?.messageHandlers?.veraSignal?.postMessage(msg);
+  }catch(e){}
+}
+
 function handleEvent(m){
+      toHost(m);
       if(m.type === "ask"){
         traceLine("<b>問</b> " + esc(m.query));
       } else if(m.type === "language"){
