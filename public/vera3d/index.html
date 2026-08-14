@@ -1462,6 +1462,10 @@ async function growPyodide(subject){
   }
 }
 
+// 欠落の地図は接続に依存しない — ライブの /gaps が無ければ同梱の
+// スナップショットに落ちるので、公開サイトでも起動時に描く。
+loadGaps();
+
 if(location.protocol.startsWith("http") && location.hostname === "localhost"){
   try{
     const es = new EventSource("/events");
