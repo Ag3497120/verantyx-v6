@@ -231,6 +231,17 @@ export default function VeraPage() {
               {t({ en: 'Try it in the browser', ja: 'ブラウザで試す' })} →
             </a>
             <a
+              href="/vera3d/"
+              className="rounded-xl px-6 py-3 text-sm font-semibold"
+              style={{
+                textDecoration: 'none',
+                color: 'var(--ink-2)',
+                border: '1px solid var(--line-strong, rgba(255,255,255,0.16))',
+              }}
+            >
+              {t({ en: 'Walk the structure in 3D', ja: '構造を3Dで歩く' })}
+            </a>
+            <a
               href={ENGINE}
               target="_blank"
               rel="noopener noreferrer"

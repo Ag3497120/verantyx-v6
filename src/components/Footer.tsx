@@ -103,6 +103,7 @@ export default function Footer() {
             </h4>
             <div className="flex flex-col gap-3">
               <FooterLink href="/verantyx-cli/" label="Verantyx-CLI" />
+              <FooterLink href="/vera3d/" label="Vera 3D — 立体十字" />
               <FooterLink href="/jcross-language/" label=".jcross Language" />
               <FooterLink href="/apps/" label="Apps" />
               <FooterLink href="/apple-music-api/" label="Apple Music API" />

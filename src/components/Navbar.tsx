@@ -82,6 +82,7 @@ export default function Navbar() {
           <NavLink href="/apps/" label="Apps" />
           <NavLink href="/vera/" label="Vera" />
           <NavLink href="/vera/demo/" label="Demo" />
+          <NavLink href="/vera3d/" label="3D" />
           <NavLink href="/vera/download/" label="Install" />
           <NavLink href="/catalogue/" label="Catalogue" />
           <NavLink href="/verantyx-cli/" label="CLI" />
@@ -222,6 +223,11 @@ export default function Navbar() {
               <MobileNavLink
                 href="/vera/demo/"
                 label="Demo"
+                onClick={() => setMobileOpen(false)}
+              />
+              <MobileNavLink
+                href="/vera3d/"
+                label="3D"
                 onClick={() => setMobileOpen(false)}
               />
               <MobileNavLink

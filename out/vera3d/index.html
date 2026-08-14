@@ -790,7 +790,11 @@ function showCrossOf(coreLabel, faces, edges){
 const GAPS = {pos: [], n: 0, buf: null, vao: null, subjects: []};
 async function loadGaps(){
   try{
-    const d = await (await fetch("/gaps")).json();
+    let r = await fetch("/gaps").catch(() => null);
+    // 公開ビルドにはライブの /gaps が無い — 静的な同梱スナップショットへ落ちる。
+    if(!r || !r.ok) r = await fetch("gaps.json").catch(() => null);
+    if(!r || !r.ok) return;
+    const d = await r.json();
     GAPS.pos = []; GAPS.subjects = [];
     for(const g of (d.gaps || [])){
       // 保持している証人の分野の位置を基準に、欠落を外側へ置く。
