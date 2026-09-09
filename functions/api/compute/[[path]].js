@@ -89,6 +89,59 @@ async function registration(env, request) {
   return {stored, authorization};
 }
 
+async function backhaul(endpoint, authorization, operation, body) {
+  const upgraded = await fetch(endpoint + "/ws", {headers: {Upgrade: "websocket", Authorization: authorization,
+    "User-Agent": "Verantyx-FourCross/0.1 (+https://verantyx.ai)"}, redirect: "manual"});
+  if (upgraded.status !== 101 || !upgraded.webSocket) fail("BORROWER_BACKHAUL_UNAVAILABLE", 502);
+  const ws = upgraded.webSocket;
+  ws.accept();
+  ws.binaryType = "arraybuffer";
+  const stream = new TransformStream();
+  const writer = stream.writable.getWriter();
+  let resolveHeaders, rejectHeaders, headerSeen = false, ended = false, sequence = 0;
+  const headersReady = new Promise((resolve, reject) => { resolveHeaders = resolve; rejectHeaders = reject; });
+  const stop = async (reason) => {
+    if (ended) return;
+    ended = true;
+    rejectHeaders(new Error(reason));
+    try { await writer.abort(new Error(reason)); } catch {}
+    try { ws.close(1011, "Backhaul stopped"); } catch {}
+  };
+  const timeout = setTimeout(() => { void stop("BACKHAUL_TIMEOUT"); }, 240000);
+  ws.addEventListener("message", async event => {
+    try {
+      if (typeof event.data === "string") {
+        const value = JSON.parse(event.data);
+        if (value.type === "headers" && !headerSeen) {
+          headerSeen = true;
+          resolveHeaders(value);
+        } else if (value.type === "end" && headerSeen) {
+          ended = true;
+          clearTimeout(timeout);
+          await writer.close();
+          ws.close(1000, "Complete");
+        } else throw new Error("Invalid backhaul event");
+      } else {
+        if (!headerSeen || ended) throw new Error("Unexpected data");
+        const data = new Uint8Array(event.data);
+        if (data.length < 4 || data.length > 65540 || new DataView(data.buffer, data.byteOffset, data.byteLength).getUint32(0) !== sequence) {
+          throw new Error("Invalid backhaul sequence");
+        }
+        await writer.write(data.slice(4));
+        ws.send(JSON.stringify({ack: sequence++}));
+      }
+    } catch { clearTimeout(timeout); await stop("BACKHAUL_INTERRUPTED"); }
+  });
+  ws.addEventListener("close", () => { if (!ended) void stop("BACKHAUL_CLOSED"); });
+  ws.addEventListener("error", () => { void stop("BACKHAUL_FAILED"); });
+  ws.send(JSON.stringify({operation, body}));
+  const head = await headersReady;
+  return new Response(stream.readable, {status: head.status, headers: {
+    "Content-Type": operation === "chat" && head.status === 200 ? "text/event-stream; charset=utf-8" : "application/json",
+    "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff",
+  }});
+}
+
 export async function onRequest({request, env, params}) {
   try {
     if (!env.VERA_DEMAND) fail("CONTROL_STORAGE_UNAVAILABLE", 503);
@@ -111,8 +164,7 @@ export async function onRequest({request, env, params}) {
     }
     if (request.method === "GET" && path === "status") {
       const {stored, authorization} = await registration(env, request);
-      const result = await fetch(stored.endpoint + "/health", {headers: {Authorization: authorization, "User-Agent": "Verantyx-FourCross/0.1 (+https://verantyx.ai)"}, redirect: "error", signal: AbortSignal.timeout(10000)});
-      return new Response(result.body, {status: result.status, headers: {"Content-Type": "application/json", "Cache-Control": "no-store"}});
+      return await backhaul(stored.endpoint, authorization, "health");
     }
     if (request.method === "POST" && path === "chat") {
       const {stored, authorization} = await registration(env, request);
@@ -121,8 +173,7 @@ export async function onRequest({request, env, params}) {
       if (!Array.isArray(messages) || !messages.length || messages.length > 16 || messages.some(m => !m || !["user", "assistant"].includes(m.role) || typeof m.content !== "string" || m.content.length > 6000)) fail("INVALID_MESSAGES");
       const job = crypto.randomUUID().replaceAll("-", "");
       const ticket = await lease(env, job, await hash(wire(messages)));
-      const result = await fetch(stored.endpoint + "/v1/chat", {method: "POST", headers: {"Content-Type": "application/json", Authorization: authorization, "User-Agent": "Verantyx-FourCross/0.1 (+https://verantyx.ai)"}, body: JSON.stringify({messages, ticket}), redirect: "error", signal: AbortSignal.timeout(180000)});
-      return new Response(result.body, {status: result.status, headers: {"Content-Type": result.headers.get("Content-Type") || "application/json", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff"}});
+      return await backhaul(stored.endpoint, authorization, "chat", {messages, ticket});
     }
     return json({error: "NOT_FOUND"}, 404);
   } catch (error) {
