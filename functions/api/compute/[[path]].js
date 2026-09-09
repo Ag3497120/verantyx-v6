@@ -111,7 +111,7 @@ export async function onRequest({request, env, params}) {
     }
     if (request.method === "GET" && path === "status") {
       const {stored, authorization} = await registration(env, request);
-      const result = await fetch(stored.endpoint + "/health", {headers: {Authorization: authorization}, redirect: "error", signal: AbortSignal.timeout(10000)});
+      const result = await fetch(stored.endpoint + "/health", {headers: {Authorization: authorization, "User-Agent": "Verantyx-FourCross/0.1 (+https://verantyx.ai)"}, redirect: "error", signal: AbortSignal.timeout(10000)});
       return new Response(result.body, {status: result.status, headers: {"Content-Type": "application/json", "Cache-Control": "no-store"}});
     }
     if (request.method === "POST" && path === "chat") {
@@ -121,7 +121,7 @@ export async function onRequest({request, env, params}) {
       if (!Array.isArray(messages) || !messages.length || messages.length > 16 || messages.some(m => !m || !["user", "assistant"].includes(m.role) || typeof m.content !== "string" || m.content.length > 6000)) fail("INVALID_MESSAGES");
       const job = crypto.randomUUID().replaceAll("-", "");
       const ticket = await lease(env, job, await hash(wire(messages)));
-      const result = await fetch(stored.endpoint + "/v1/chat", {method: "POST", headers: {"Content-Type": "application/json", Authorization: authorization}, body: JSON.stringify({messages, ticket}), redirect: "error", signal: AbortSignal.timeout(180000)});
+      const result = await fetch(stored.endpoint + "/v1/chat", {method: "POST", headers: {"Content-Type": "application/json", Authorization: authorization, "User-Agent": "Verantyx-FourCross/0.1 (+https://verantyx.ai)"}, body: JSON.stringify({messages, ticket}), redirect: "error", signal: AbortSignal.timeout(180000)});
       return new Response(result.body, {status: result.status, headers: {"Content-Type": result.headers.get("Content-Type") || "application/json", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff"}});
     }
     return json({error: "NOT_FOUND"}, 404);
