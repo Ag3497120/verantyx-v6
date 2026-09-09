@@ -2,7 +2,9 @@
   "version": 1,
   "include": [
     "/api/apple-music/*",
-    "/api/vera/*"
+    "/api/vera/*",
+    "/api/compute/*",
+    "/api/compute-relay/*"
   ],
   "exclude": []
 }
