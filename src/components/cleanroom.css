@@ -6,7 +6,7 @@
 
 .cr-top{height:auto;min-height:94px;padding-block:16px;gap:16px;flex-wrap:wrap}.cr-top>div{flex-wrap:wrap;row-gap:12px;justify-content:flex-end}.cr-terminal-card{background:#193c4e}
 html[data-mode="dark"] .cr-site{--cr-ink:#e3eeea;--cr-paper:#142b37;--cr-soft:#203b49;--cr-line:#49636d;--cr-muted:#b0c3ca;background-image:radial-gradient(#e3eeea15 .7px,transparent .7px)}
-html[data-mode="dark"] .cr-wordmark{filter:brightness(0) invert(.92)}
+
 html[data-mode="dark"] .cr-lab{background:#17323e}
 html[data-mode="dark"] .cr-boundary{background:#203b4977}
 html[data-mode="dark"] .cr-divider,html[data-mode="dark"] .cr-divider span{background:#264450;color:#c1dde4}
