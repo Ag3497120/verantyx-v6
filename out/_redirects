@@ -1,11 +1,7 @@
-# Next `output: 'export'` + `trailingSlash: true` writes `/foo/index.html`.
-# Normalize bare paths so links without a trailing slash still resolve on CF Pages.
-
-# —— Force trailing slash on known routes ——
+# Static-export routes retained on verantyx.ai.
 /apps /apps/ 301
-/verantyx-cli /verantyx-cli/ 301
-/jcross-language /jcross-language/ 301
-/apple-music-api /apple-music-api/ 301
+/vera /vera/ 301
+/author /author/ 301
 /privacy /privacy/ 301
 /support /support/ 301
 /terms /terms/ 301
@@ -14,15 +10,5 @@
 /apps/talkiepress /apps/talkiepress/ 301
 /apps/ranking /apps/ranking/ 301
 
-# —— Legacy / abolished engine → CLI product page ——
-/verantyx /verantyx-cli/ 301
-/verantyx/ /verantyx-cli/ 301
-/engine /verantyx-cli/ 301
-/engine/ /verantyx-cli/ 301
-/cli /verantyx-cli/ 301
-/cli/ /verantyx-cli/ 301
-/docs /verantyx-cli-docs.html 301
-/docs/ /verantyx-cli-docs.html 301
-
-# —— Custom 404 body for unknown paths ——
+# Removed pages intentionally return the site's not-found response.
 /* /404.html 404
