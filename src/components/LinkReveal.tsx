@@ -6,7 +6,7 @@ import { useRef } from 'react';
 const links = [
   {
     title: 'View Source Code',
-    url: 'https://github.com/Ag3497120/Verantyx',
+    url: 'https://github.com/Ag3497120/cleanroom',
     icon: 'github',
     color: '#0EA5E9',
     description: 'Explore the full codebase — 304 files, 100K lines',
@@ -19,8 +19,8 @@ const links = [
     description: 'HuggingFace Spaces — live ARC-AGI-2 solver demo',
   },
   {
-    title: 'Follow Ag3497120',
-    url: 'https://github.com/Ag3497120',
+    title: 'Cleanroom on GitHub',
+    url: 'https://github.com/Ag3497120/cleanroom',
     icon: 'x',
     color: '#A855F7',
     description: 'Latest updates and research progress',

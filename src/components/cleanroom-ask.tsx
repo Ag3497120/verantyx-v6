@@ -3,6 +3,9 @@ import {useEffect,useRef,useState} from 'react';
 type Proposal={kind:string;text:string;source:string};
 type Props={onResult:(answer:string,items:Proposal[])=>void;onClose:()=>void;request:string;references:string[];locale:string};
 const kinds=new Set(['REVIEW','OWN','REFERENCE','DELEGATE','ASSUMPTION','UNKNOWN']);
+function asRecord(value:unknown):Record<string,unknown>|undefined{
+  return value!==null&&typeof value==='object'&&!Array.isArray(value)?value as Record<string,unknown>:undefined;
+}
 export default function AskAI({onResult,onClose,request,references,locale}:Props){
   const ja=locale==='ja';
   const [route,setRoute]=useState<'copy'|'api'|'import'>('copy');
@@ -51,7 +54,9 @@ export default function AskAI({onResult,onClose,request,references,locale}:Props
         headers:{'Content-Type':'application/json',...(secret?{Authorization:'Bearer '+secret}:{})},
         body:JSON.stringify({model:model.trim(),stream:false,messages:[{role:'user',content:prompt}],...(ollama?{}:{max_tokens:3000})})});
       if(!response.ok)throw Error('Provider HTTP '+response.status+'. Check model access, CORS and usage limits. No automatic retry.');
-      const data=await response.json(),answer=ollama?data.message?.content:data.choices?.[0]?.message?.content;
+      const data=asRecord(await response.json());
+      const envelope=ollama?data:asRecord(Array.isArray(data?.choices)?data.choices[0]:undefined);
+      const answer=asRecord(envelope?.message)?.content;
       if(typeof answer!=='string')throw Error('No supported text response.');
       receive(answer,'AI proposal · '+model.trim()+' · '+endpoint.origin+' · '+new Date().toISOString());
       setNotice(ja?'回答を受け取りました。提案は未確認で、ファイル操作はしていません。':'Answer received. Suggestions remain unconfirmed; no file operations ran.');
@@ -77,6 +82,6 @@ export default function AskAI({onResult,onClose,request,references,locale}:Props
       {busy&&<button onClick={()=>controller.current?.abort()}>{ja?'キャンセル':'Cancel'}</button>}
     </section>}
     {route==='import'&&<section><label>{ja?'外部AIの回答（JSONまたは文章）':'External AI answer (JSON or text)'}<textarea rows={6} value={raw} maxLength={80000} onChange={e=>setRaw(e.target.value)}/></label><p>{ja?'コードは実行しません。出典は本人の手動取り込みとして残します。':'No code is executed. Provenance records a manual import, not an authenticated model receipt.'}</p><button disabled={!raw.trim()} onClick={()=>{try{receive(raw,'Manual import · unverified · '+new Date().toISOString());setNotice(ja?'未確認の回答として取り込みました。':'Imported as an unverified answer.');setRaw('');}catch{setNotice('No answer to import.');}}}>{ja?'候補として取り込む':'Import as a proposal'}</button></section>}
-    <output role="status">{notice}</output>
+    <output>{notice}</output>
   </dialog>;
 }

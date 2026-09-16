@@ -1,0 +1,9 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+The real Cleanroom CLI, operated with scripted demo data.
+No model calls, test receipts or mastery claims are made.
+
+00:08.000 --> 00:20.000
+Empty Enter changes the active input: Agent, Memo, Search.
+Wheel and Page keys move the active pane. The other view stays in place.

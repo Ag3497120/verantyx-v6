@@ -3,8 +3,8 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/lib/i18n';
 
-const GITHUB = 'https://github.com/Ag3497120/Verantyx';
-const RELEASE = 'https://github.com/Ag3497120/Verantyx';
+const GITHUB = 'https://github.com/Ag3497120/cleanroom';
+const RELEASE = 'https://github.com/Ag3497120/cleanroom';
 
 export default function CliSpotlight() {
   const { lang } = useLanguage();
@@ -152,7 +152,7 @@ export default function CliSpotlight() {
                 {lang === 'ja' ? 'リリースノート' : 'Release notes'}
               </a>
               <a
-                href="/verantyx-cli/"
+                href="/#install"
                 className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-slate-400 hover:opacity-100"
                 style={{ color: 'rgba(var(--accent-rgb), 0.85)' }}
               >
@@ -168,10 +168,12 @@ export default function CliSpotlight() {
                 color: 'var(--ink-2)',
               }}
             >
-{`git clone https://github.com/Ag3497120/Verantyx.git
-cd verantyx-cli
-git checkout stable
-python3 verantyx.py`}
+{`git clone https://github.com/Ag3497120/cleanroom.git cleanroom
+cd cleanroom
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e ./core
+verantyx`}
             </pre>
           </div>
         </motion.div>

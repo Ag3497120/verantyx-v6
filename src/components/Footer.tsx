@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 
-const GITHUB_CLI = 'https://github.com/Ag3497120/Verantyx';
+const GITHUB_CLI = 'https://github.com/Ag3497120/cleanroom';
 
 export default function Footer() {
   return (
@@ -37,7 +37,7 @@ export default function Footer() {
               Verantyx
             </h3>
             <p className="text-gray-500 text-sm tracking-wider uppercase">
-              Local-first CLI · Apps · .jcross
+              Cleanroom · Vera · Apps
             </p>
           </div>
 
@@ -60,14 +60,14 @@ export default function Footer() {
                 />
               </svg>
               <span className="text-gray-300 font-semibold text-sm">
-                Star Verantyx-CLI
+                Cleanroom on GitHub
               </span>
             </a>
 
             <p className="text-gray-600 text-xs">
               Built by{' '}
               <a
-                href="https://github.com/Ag3497120"
+                href="/author/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:opacity-100 transition-colors"
@@ -102,11 +102,9 @@ export default function Footer() {
               Projects
             </h4>
             <div className="flex flex-col gap-3">
-              <FooterLink href="/verantyx-cli/" label="Verantyx-CLI" />
-              <FooterLink href="/vera3d/" label="Vera 3D — 立体十字" />
-              <FooterLink href="/jcross-language/" label=".jcross Language" />
+              <FooterLink href="/" label="Cleanroom / Home" />
+              <FooterLink href="/vera/" label="Vera" />
               <FooterLink href="/apps/" label="Apps" />
-              <FooterLink href="/apple-music-api/" label="Apple Music API" />
             </div>
           </div>
 
@@ -154,7 +152,7 @@ export default function Footer() {
           className="text-center"
         >
           <p className="text-gray-600 text-xs tracking-wide">
-            © 2026 Verantyx. Flagship: Verantyx-CLI on GitHub.
+            © 2026 Verantyx. Flagship: Cleanroom on GitHub.
           </p>
         </motion.div>
       </div>

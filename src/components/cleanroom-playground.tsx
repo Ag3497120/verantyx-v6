@@ -12,14 +12,13 @@ export default function CleanroomPlayground({locale}:{locale:string}){
   const [selected,setSelected]=useState<string[]>([]);
   const root=useRef<HTMLDivElement>(null),agentInput=useRef<HTMLTextAreaElement>(null),ownerInput=useRef<HTMLTextAreaElement>(null);
   const agentBody=useRef<HTMLDivElement>(null),ownerBody=useRef<HTMLDivElement>(null);
-  const modeRef=useRef(mode);modeRef.current=mode;
   const timers=useRef<ReturnType<typeof setTimeout>[]>([]);
   useEffect(()=>()=>timers.current.forEach(clearTimeout),[]);
   useEffect(()=>{
     const node=root.current;if(!node)return;
-    const wheel=(e:WheelEvent)=>{const target=modeRef.current==='agent'?agentBody.current:ownerBody.current;if(!target)return;e.preventDefault();target.scrollBy({top:e.deltaY*(e.deltaMode===1?18:e.deltaMode===2?target.clientHeight:1)});};
+    const wheel=(e:WheelEvent)=>{const target=mode==='agent'?agentBody.current:ownerBody.current;if(!target)return;e.preventDefault();target.scrollBy({top:e.deltaY*(e.deltaMode===1?18:e.deltaMode===2?target.clientHeight:1)});};
     node.addEventListener('wheel',wheel,{passive:false});return()=>node.removeEventListener('wheel',wheel);
-  },[]);
+  },[mode]);
   const activate=(next:typeof mode)=>{setMode(next);if(next==='agent')agentInput.current?.focus();else ownerInput.current?.focus();};
   const cycle=()=>activate(mode==='agent'?'memo':mode==='memo'?'search':'agent');
   const word=draft.match(/[^\s〈〉]{2,}$/)?.[0]??'';
@@ -56,14 +55,14 @@ export default function CleanroomPlayground({locale}:{locale:string}){
   return <section className="cr-lab" aria-label="Agent and Owner interactive preview">
     <header><span>INTERACTIVE NOTEBOOK</span><span className="cr-state">{ja?'タブ内のみ / 未実行':'IN THIS TAB / NO EXECUTION'}</span><button onClick={replay}>{ja?'記録デモを再生':'Play the example'}</button><button onClick={()=>setAsk(true)}>{ja?'AIに頼む':'Ask your AI'} <small>BETA</small></button></header>
     <div ref={root} className={'cr-split active-'+mode}>
-      <section className="cr-agent"><h3>Agent <small>{ja?'作業と回答':'Work & responses'}</small></h3><div ref={agentBody} className="cr-scroll" tabIndex={0} aria-label="Agent records">{messages.map((m,i)=><p key={i}>{m}</p>)}</div>
+      <section className="cr-agent"><h3>Agent <small>{ja?'作業と回答':'Work & responses'}</small></h3><div ref={agentBody} className="cr-scroll" tabIndex={-1} aria-label="Agent records">{messages.map((m,i)=><p key={i}>{m}</p>)}</div>
         <div className="cr-input"><label htmlFor="cr-agent-input">{ja?'一文で仕事を頼む':'What shall we build?'}</label><textarea id="cr-agent-input" ref={agentInput} value={draft} rows={3} maxLength={12000} onFocus={()=>setMode('agent')} onChange={e=>{setDraft(e.target.value);setSuppressed(false);setSelection(0);}} onKeyDown={onKey} placeholder={ja?'依頼、またはOwner項目の先頭2文字…':'A request, or the first letters of an Owner item…'}/>
-          {matches.length>0&&<div className="cr-completions" role="listbox" aria-label="Owner references">{matches.map((x,i)=><button key={x.id} role="option" aria-selected={i===selection} onMouseDown={e=>e.preventDefault()} onClick={()=>pick(x)}>{x.text}</button>)}</div>}
+          {matches.length>0&&<ul className="cr-completions" aria-label="Owner references">{matches.map((x,i)=><li key={x.id}><button data-selected={i===selection} onMouseDown={e=>e.preventDefault()} onClick={()=>pick(x)}>{x.text}</button></li>)}</ul>}
           <div><button onClick={send}>{ja?'入力を送る':'Submit input'}</button><small>Enter · Tab · F2</small></div></div>
       </section>
       <div className="cr-divider" aria-hidden="true"><span key={transfer} className={transfer?'cr-transfer':''}>{transfer?'→':'·'}</span></div>
       <section className="cr-owner"><h3>Owner <small>{ja?'自分の判断と記録':'Your decisions & notes'}</small></h3><div className={'cr-owner-input '+(mode==='search'?'is-search':'is-memo')}><label htmlFor="cr-owner-input">{mode==='search'?'SEARCH / LOCAL':'MEMO / LOCAL'}</label><textarea id="cr-owner-input" ref={ownerInput} rows={2} maxLength={4000} value={mode==='search'?query:memo} onFocus={()=>{if(mode==='agent')setMode('memo');}} onChange={e=>mode==='search'?setQuery(e.target.value):setMemo(e.target.value)} onKeyDown={onKey} placeholder={mode==='search'?(ja?'このノート内を検索':'Search this notebook'):(ja?'自分用に残しておく':'A note just for you')}/><button onClick={cycle}>{ja?'入力先を切替':'Switch input'} ↵</button></div>
-        <div ref={ownerBody} className="cr-scroll" tabIndex={0} aria-label="Owner records">{filtered.map(x=><article key={x.id}><small>{x.kind}</small><p>{x.text}</p><span>{x.source}</span></article>)}{!filtered.length&&<p>{ja?'一致する記録はありません。能力についての判断ではありません。':'No matching records. This is not an ability judgment.'}</p>}</div>
+        <div ref={ownerBody} className="cr-scroll" tabIndex={-1} aria-label="Owner records">{filtered.map(x=><article key={x.id}><small>{x.kind}</small><p>{x.text}</p><span>{x.source}</span></article>)}{!filtered.length&&<p>{ja?'一致する記録はありません。能力についての判断ではありません。':'No matching records. This is not an ability judgment.'}</p>}</div>
       </section>
     </div>
     <footer><span>{ja?'空欄Enter: Agent → メモ → 検索':'Empty Enter: Agent → Memo → Search'}</span><span>{ja?'スクロール: 入力先の側だけ':'Scroll: active input side only'}</span></footer>

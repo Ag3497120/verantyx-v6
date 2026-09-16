@@ -54,7 +54,7 @@ export default function Hero() {
           className="mt-8 text-sm text-gray-500"
         >
           Built by{' '}
-          <a href="https://github.com/Ag3497120" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-cyan-400 transition-colors">Ag3497120</a>
+          <a href="https://github.com/Ag3497120/cleanroom" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-cyan-400 transition-colors">Ag3497120</a>
         </motion.p>
       </div>
     </section>

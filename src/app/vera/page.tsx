@@ -5,8 +5,8 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useLanguage } from '@/lib/i18n';
 
-const ENGINE = 'https://github.com/Ag3497120/Verantyx';
-const IDE = 'https://github.com/Ag3497120/Verantyx';
+const ENGINE = 'https://github.com/Ag3497120/cleanroom';
+const IDE = 'https://github.com/Ag3497120/cleanroom';
 
 type L = { en: string; ja: string };
 
@@ -223,24 +223,6 @@ export default function VeraPage() {
             transition={{ duration: 0.55, delay: 0.28 }}
             className="mt-8 sm:mt-11 flex flex-wrap items-center gap-3"
           >
-            <a
-              href="/vera/demo/"
-              className="btn-accent rounded-xl px-6 py-3 text-sm font-semibold"
-              style={{ textDecoration: 'none' }}
-            >
-              {t({ en: 'Try it in the browser', ja: 'ブラウザで試す' })} →
-            </a>
-            <a
-              href="/vera3d/"
-              className="rounded-xl px-6 py-3 text-sm font-semibold"
-              style={{
-                textDecoration: 'none',
-                color: 'var(--ink-2)',
-                border: '1px solid var(--line-strong, rgba(255,255,255,0.16))',
-              }}
-            >
-              {t({ en: 'Walk the structure in 3D', ja: '構造を3Dで歩く' })}
-            </a>
             <a
               href={ENGINE}
               target="_blank"

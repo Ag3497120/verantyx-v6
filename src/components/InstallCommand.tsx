@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
-const INSTALL_COMMAND = 'git clone https://github.com/Ag3497120/Verantyx && cd verantyx-v6 && pip install -r requirements.txt';
+const INSTALL_COMMAND = 'git clone https://github.com/Ag3497120/cleanroom.git cleanroom && cd cleanroom && python3 -m venv .venv && .venv/bin/python -m pip install -e ./core && .venv/bin/verantyx';
 
 export default function InstallCommand() {
   const [copied, setCopied] = useState(false);

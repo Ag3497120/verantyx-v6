@@ -5,9 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/lib/i18n';
 import { useTheme } from '@/lib/theme';
 import Logo from '@/components/Logo';
-import ThemePicker from '@/components/ThemePicker';
 
-const CLI_GITHUB = 'https://github.com/Ag3497120/Verantyx';
+const CLI_GITHUB = 'https://github.com/Ag3497120/cleanroom';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -81,17 +80,6 @@ export default function Navbar() {
           <NavLink href="/" label="Home" />
           <NavLink href="/apps/" label="Apps" />
           <NavLink href="/vera/" label="Vera" />
-          <NavLink href="/vera/demo/" label="Demo" />
-          <NavLink href="/vera3d/" label="3D" />
-          <NavLink href="/vera/download/" label="Install" />
-          <NavLink href="/catalogue/" label="Catalogue" />
-          <NavLink href="/verantyx-cli/" label="CLI" />
-          <NavLink href="/jcross-language/" label=".jcross" />
-          <NavLink href="/apple-music-api/" label="API" />
-
-          <div style={{ marginLeft: 10, marginRight: 4 }}>
-            <ThemePicker compact />
-          </div>
 
           <ModeToggle mode={mode} onToggle={toggleMode} />
 
@@ -139,7 +127,7 @@ export default function Navbar() {
               textDecoration: 'none',
             }}
           >
-            GitHub · CLI
+            GitHub · Cleanroom
           </a>
         </div>
 
@@ -153,9 +141,6 @@ export default function Navbar() {
           }}
         >
           <ModeToggle mode={mode} onToggle={toggleMode} />
-          <span className="navbar-narrow-hide">
-            <ThemePicker compact />
-          </span>
           <a
             href={CLI_GITHUB}
             target="_blank"
@@ -308,7 +293,7 @@ export default function Navbar() {
                     textAlign: 'center',
                   }}
                 >
-                  GitHub · CLI
+                  GitHub · Cleanroom
                 </a>
               </div>
             </div>

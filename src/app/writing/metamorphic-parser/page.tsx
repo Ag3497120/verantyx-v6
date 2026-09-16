@@ -300,8 +300,8 @@ export default function MetamorphicParserPage() {
           <hr style={{ border: 0, borderTop: '1px solid var(--line, rgba(255,255,255,0.1))', margin: '2.6rem 0 1.4rem' }} />
           <p style={{ ...body, fontSize: '0.9rem', margin: 0 }}>
             {t({ en: 'Code: ', ja: 'コード: ' })}
-            <a href="https://github.com/Ag3497120/Verantyx" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(var(--accent-rgb), 0.95)' }}>
-              github.com/Ag3497120/Verantyx
+            <a href="https://github.com/Ag3497120/cleanroom" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(var(--accent-rgb), 0.95)' }}>
+              github.com/Ag3497120/cleanroom
             </a>
             {' · '}
             <code style={{ fontSize: '0.85rem' }}>pip install verantyx-vera</code>

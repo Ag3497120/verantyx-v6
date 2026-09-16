@@ -54,13 +54,13 @@ const content = {
       {
         icon: '🎣',
         name: 'パクパク釣り / Paku Paku Fishing',
-        issueUrl: 'https://github.com/Ag3497120/paku-paku-fishing/issues',
+        issueUrl: 'https://github.com/Ag3497120/cleanroom',
         issueLabel: { ja: 'Issueを作成', en: 'Open an Issue' },
       },
       {
         icon: '😋',
         name: 'MouthEat',
-        issueUrl: 'https://github.com/Ag3497120/paku-paku-eating/issues',
+        issueUrl: 'https://github.com/Ag3497120/cleanroom',
         issueLabel: { ja: 'Issueを作成', en: 'Open an Issue' },
       },
     ],

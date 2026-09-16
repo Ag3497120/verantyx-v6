@@ -83,21 +83,21 @@ export default function SupportSection() {
           className="text-center"
         >
           <a
-            href="https://github.com/sponsors/Ag3497120"
+            href="https://github.com/Ag3497120/cleanroom"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-10 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105"
             style={{ background: 'linear-gradient(135deg, #7c3aed, #a855f7)', color: '#fff' }}
           >
-            💜 Sponsor on GitHub
+            Explore Cleanroom on GitHub
           </a>
           <a
-            href="https://github.com/Ag3497120/Verantyx"
+            href="https://github.com/Ag3497120/cleanroom"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block ml-4 px-10 py-4 rounded-xl font-semibold text-lg border border-gray-700 text-gray-300 hover:border-gray-500 hover:text-white transition-all hover:scale-105"
           >
-            ⭐ Star on GitHub
+            Star Cleanroom on GitHub
           </a>
         </motion.div>
 
