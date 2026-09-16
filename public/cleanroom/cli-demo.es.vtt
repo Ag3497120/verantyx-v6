@@ -1,9 +1,33 @@
 WEBVTT
 
-00:00.000 --> 00:08.000
-CLI real de Cleanroom con datos de demostración preparados.
-No representa llamadas a modelos, pruebas ni habilidades acreditadas.
+1
+00:00:00.000 --> 00:00:04.000
+Pide trabajo con naturalidad. Peticiones, respuestas y actividad van separadas.
 
-00:08.000 --> 00:20.000
-Enter con la entrada vacía alterna entre Agent, nota y búsqueda.
-La rueda y las teclas Page desplazan el panel activo; el otro conserva su posición.
+2
+00:00:04.000 --> 00:00:08.000
+Una nota opcional con número L aparece antes de terminar.
+
+3
+00:00:08.000 --> 00:00:12.000
+Envía L-000001 para una explicación sin reemplazar la tarea. Respuesta con guion.
+
+4
+00:00:12.000 --> 00:00:17.000
+Enter vacío abre la nota amarilla. No se envía a la IA.
+
+5
+00:00:17.000 --> 00:00:21.000
+La elección aparece en Agent sin quitar el foco a Owner.
+
+6
+00:00:21.000 --> 00:00:26.000
+Verde es búsqueda. Un prefijo y Tab insertan solo la referencia elegida.
+
+7
+00:00:26.000 --> 00:00:30.000
+La siguiente pregunta continúa en la conversación; el cuaderno se conserva.
+
+8
+00:00:30.000 --> 00:00:34.000
+Desplaza solo el panel activo. Son datos con guion, sin llamadas a modelos.

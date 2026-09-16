@@ -1,9 +1,33 @@
 WEBVTT
 
-00:00.000 --> 00:08.000
-The real Cleanroom CLI, operated with scripted demo data.
-No model calls, test receipts or mastery claims are made.
+1
+00:00:00.000 --> 00:00:04.000
+01  Ask normally. Your request has a background. The answer stays separate from system activity.
 
-00:08.000 --> 00:20.000
-Empty Enter changes the active input: Agent, Memo, Search.
-Wheel and Page keys move the active pane. The other view stays in place.
+2
+00:00:04.000 --> 00:00:08.000
+02  Understanding does not wait for the finish. A small optional note arrives during work, with a stable L-number.
+
+3
+00:00:08.000 --> 00:00:12.000
+03  Ask about one insight without replacing the work. Send L-000001. This recorded explanation is scripted; no model is called.
+
+4
+00:00:12.000 --> 00:00:17.000
+04  Keep a private memo. Empty Enter moves to the yellow Owner field. Your note is not sent to AI.
+
+5
+00:00:17.000 --> 00:00:21.000
+05  Review a candidate, without losing your place. A choice appears in Agent. Owner keeps focus until you switch back.
+
+6
+00:00:21.000 --> 00:00:26.000
+06  Find and reuse only what matters. Green searches Owner. A title prefix and Tab insert a chosen reference.
+
+7
+00:00:26.000 --> 00:00:30.000
+07  A conversation, not a screen that resets. The next question joins the same conversation. Your notebook stays beside it.
+
+8
+00:00:30.000 --> 00:00:34.000
+08  Your pace. Your own notebook. Scroll the active side while the other keeps its place. No homework list.
