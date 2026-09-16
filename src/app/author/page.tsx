@@ -1,3 +1,3 @@
 import CleanroomSite from '@/components/cleanroom-site';
 import '@/components/cleanroom.css';
-export default function Home(){return <CleanroomSite marketing/>;}
+export default function Author(){return <CleanroomSite marketing author/>;}

@@ -31,12 +31,13 @@ const notoJP = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
-  title: 'Verantyx — Local AI CLI & Apps',
+  title: 'Cleanroom | Keep being the developer',
   description:
-    'Verantyx-CLI: resident local router, council & eternal memory. Plus mouth-controlled iOS games.',
+    'Cleanroom: build with AI while keeping your decisions, understanding, evidence and experience.',
   keywords: [
     'verantyx-cli',
-    'local AI',
+    'AI collaboration',
+    'Cleanroom',
     'router',
     'iOS game',
     'face tracking',
