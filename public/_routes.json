@@ -4,7 +4,8 @@
     "/api/apple-music/*",
     "/api/vera/*",
     "/api/compute/*",
-    "/api/compute-relay/*"
+    "/api/compute-relay/*",
+    "/api/web/*"
   ],
   "exclude": []
 }
