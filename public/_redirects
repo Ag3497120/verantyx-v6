@@ -1,5 +1,7 @@
 # Static-export routes retained on verantyx.ai.
 /apps /apps/ 301
+/guide /guide/ 301
+/terminal /terminal/ 301
 /vera /vera/ 301
 /author /author/ 301
 /privacy /privacy/ 301

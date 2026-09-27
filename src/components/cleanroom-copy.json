@@ -3,8 +3,8 @@
     "code": "en",
     "flag": "en",
     "name": "English",
-    "tag": "Let AI build. Keep being the developer.",
-    "intro": "Cleanroom is a collaborative development workspace powered by the Vera Kernel. AI can do most of the implementation while your purpose, decisions, understanding, verification methods, and experience stay with you.",
+    "tag": "Let AI do the work. You choose what to be part of, and what to make your own.",
+    "intro": "Cleanroom is a collaborative development workspace where, whatever AI becomes able to do, you choose what you want, where you want to be involved and what you want to understand, and keep that experience as your own. Hand implementation to AI; stay involved where you want to be; carry what you chose to learn into the next piece of work; and stay free to choose differently from your earlier self.",
     "start": "Start locally",
     "ops": "Split CLI: Agent on the left, Owner on the right",
     "read": "Operating guide",
@@ -16,14 +16,14 @@
     "limits": "Source preview, not a certification of MVP completeness. The GIF uses scripted fixtures in the real CLI renderer; it is not a successful model benchmark. The browser playground is an in-memory interaction demo, not a remote shell.",
     "privacy": "Owner notes and search do not call AI. Explicitly inserted references enter the request's send scope. Private project and personal records are not meant for public GitHub commits.",
     "origin": "The name comes from the author's personal image of a cleanroom: an isolated sanctuary for human judgment. It is a metaphor, not an OS sandbox guarantee. This independently developed, non-commercially motivated project grew from a Japanese X post and the author's own unease about losing the experience of making things with AI.",
-    "author": "Profile",
-    "foot": "Personal motivation is not a restriction on use under the repository's actual license.",
+    "foot": "MIT licensed. Built from a personal question about keeping the experience of making things.",
     "known": "What stays with you",
     "items": [
-      "Your decisions and their reasons",
-      "AI assumptions, actual receipts, and remaining unknowns",
-      "Skills you choose to explore, reference, or delegate",
-      "Implementation-time notes, source links, and a journal that can carry into later work"
+      "Purpose and design choices, with their reasons",
+      "Actual checks, AI assumptions, failures and unknowns kept distinct",
+      "Implementation-time explanations, not just a final summary",
+      "Your chosen learning, reference and delegation bookmarks",
+      "A private experience journal and skills map across projects"
     ],
     "keys": [
       "Request work",
@@ -37,14 +37,48 @@
       "Newline",
       "Close"
     ],
-    "guideTitle": "Cleanroom operating guide"
+    "guideTitle": "Cleanroom operating guide",
+    "full": "Cleanroom is a collaborative development workspace where, whatever AI becomes able to do, you choose what you want, where you want to be involved and what you want to understand, and keep that experience as your own. Hand implementation to AI, stay involved where you want to be, carry what you chose to learn into the next piece of work, and stay free to choose differently from your earlier self. What you keep (policies with reasons, checks, failures, how you chose to be involved) can be read without Cleanroom or Vera.",
+    "pillars": [
+      [
+        "Make things together",
+        "Work in Agent. Keep purpose, decisions, assumptions, receipts and unknowns in Owner without writing a second report."
+      ],
+      [
+        "Learn only what you choose",
+        "Start with your own experience and goals. Choose the amount, weight and timing of suggestions. Next time is a bookmark, not overdue homework."
+      ],
+      [
+        "Grow a personal record",
+        "Save explanations while work happens. Keep the full detail, explore it later, and build an experience journal and skills map across projects."
+      ]
+    ],
+    "example": "For a Flask app, you might explore request handling next time, keep API details as reference and delegate repetitive forms. The suggestion follows the recorded work and your goals, not the word Flask.",
+    "distinction": "AI procedures and your skills are separate. An imported or generated procedure starts as a draft; it does not mean you learned it, approve it, or grant it permission. Your optional skills board records only the experiences you choose to describe. No score, streak or requirement to fill every space.",
+    "pace": "A voluntary profile, editable whenever you want. Asking AI to push to GitHub, skipping a lesson or choosing automation is not evidence of inability. A new primary technology can be added later, without an exhaustive first-run questionnaire.",
+    "try": "Try the workspace",
+    "quick": "See it in 30 seconds",
+    "setup": "Install the CLI",
+    "features": "AI does the work. You choose what stays yours.",
+    "docs": "Explore the notebook",
+    "author": "About the author",
+    "license": "MIT licensed. Personal, non-commercial motivation is not a restriction on commercial use.",
+    "next": "Work → one optional insight → your note → a reference for later.",
+    "sections": {
+      "product": "What makes it different",
+      "start": "Start locally",
+      "controls": "Controls you do not need to memorize",
+      "profile": "Your pace, not a curriculum",
+      "details": "Controls, privacy and origins",
+      "limits": "Preview boundaries"
+    }
   },
   {
     "code": "ja",
     "flag": "ja",
     "name": "日本語",
-    "tag": "AIに作らせても、開発者であることまで手放さない。",
-    "intro": "Cleanroomは、Vera Kernelを基盤とする共同開発空間です。AIが実装の大部分を担っても、プロジェクトの目的、設計判断、検証方法、失敗、技術的理解を人間側に残し、一緒に育て続けられるようにします。",
+    "tag": "AIに任せても、何に関わり、何を身につけるかは自分で選ぶ。",
+    "intro": "Cleanroomは、AIが何をできるようになっても、本人が何を望み、何に関わり、何を理解したいかを選び、その経験を自分のものとして続けられるようにする共同開発環境です。実装はAIに任せられます。関わりたいところには関わり、学びたいことは次の制作へつなぎ、以前の自分と違う選択もできるようにします。[設計原則と、成功を測る4つの問い](docs/PRINCIPLES.md)",
     "start": "手元で始める",
     "ops": "左はAgent、右はOwner",
     "read": "操作ガイド",
@@ -56,14 +90,14 @@
     "limits": "ソース版のプレビューであり、MVP全項目の合格宣言ではありません。GIFは実際のCLI描画に台本付きのデモデータを流したものです。実モデルの成功記録ではありません。Webの体験欄はメモリ内だけの操作デモで、リモートシェルではありません。",
     "privacy": "Ownerのメモと検索だけではAIを呼びません。依頼に明示的に挿入した参照は送信範囲に入ります。プロジェクトと個人の私的な記録を公開GitHubへ追加しないでください。",
     "origin": "私は日本語の「クリーンルーム」に、隔離された聖域のような、人間の判断が守られる場所を重ねて、このプロジェクトを始めました。これは私自身の比喩であり、一般的な語義やOSの隔離保証ではありません。ある日本語のX投稿と、AIを使う最近の開発や将来への不安が出発点です。",
-    "author": "プロフィール",
-    "foot": "個人の非商用的な制作動機を示すもので、リポジトリの実際のライセンスを変更・制限する表明ではありません。",
+    "foot": "MITライセンス。作る経験を手放したくないという、個人的な問いから。",
     "known": "仕事の後、手元に残るもの",
     "items": [
-      "自分が決めたことと、その理由",
-      "AIの仮定、実際の検査記録、残っている不明点",
-      "必要な分だけ選ぶ、学習・参照・委譲の候補",
-      "作業途中の説明、出典、次の仕事へ続く日記"
+      "目的・設計判断と、その選択理由",
+      "検査記録・AIの仮定・失敗・不明点を区別した記録",
+      "完成後の要約だけでない、実装途中の詳しい説明",
+      "自分で選ぶ、学習・参照・委譲のしおり",
+      "プロジェクトを越えて続く、自分の経験日記とスキルの地図"
     ],
     "keys": [
       "仕事を依頼",
@@ -77,14 +111,48 @@
       "改行",
       "終了"
     ],
-    "guideTitle": "Cleanroom操作ガイド"
+    "guideTitle": "Cleanroom操作ガイド",
+    "full": "Cleanroomは、AIが何をできるようになっても、本人が何を望み、何に関わり、何を理解したいかを選び、その経験を自分のものとして続けられるようにする共同開発環境です。実装はAIに任せられます。関わりたいところには関わり、学びたいことは次の制作へつなぎ、以前の自分と違う選択もできるようにします。残したもの（方針と理由・検証・失敗・関わり方）は、CleanroomやVeraがなくても取り出せます。",
+    "pillars": [
+      [
+        "一緒に作る",
+        "Agentで仕事を進め、Ownerに目的・判断・仮定・検査記録・不明点を残す。人間が別の報告書を作る必要はありません。"
+      ],
+      [
+        "必要な分だけ学ぶ",
+        "本人の経験と学びたいことを起点に、提案の量・重さ・タイミングを選ぶ。「次回に回す」はしおりであって、未提出の宿題ではありません。"
+      ],
+      [
+        "自分の経験を育てる",
+        "実装中の説明を細かいまま保存し、後から要約や紐解き解説へ。日記とスキルの地図が次のプロジェクトにも続きます。"
+      ]
+    ],
+    "example": "Flaskアプリなら、リクエスト処理は次回少し学ぶ、個別APIは参照に残す、定型フォームは委譲する。技術名だけで決めず、実際の作業と本人の希望に沿って提案します。",
+    "distinction": "AIの手順と本人のスキルは別です。生成・移植された手順は候補であり、習得・承認・実行権限を意味しません。任意のスキル盤面には、本人が残したい経験だけを記録します。点数、連続日数、全てを埋める義務はありません。",
+    "pace": "プロフィールは任意の自己申告で、いつでも更新できます。GitHubへのプッシュを頼むこと、学習のスキップ、自動化を選ぶことから能力不足を推定しません。新しい主要技術は後から追記でき、初回に全てを答える必要はありません。",
+    "try": "この場で操作を試す",
+    "quick": "30秒で見る",
+    "setup": "CLIを導入する",
+    "features": "AIに任せても、選ぶのはあなた。",
+    "docs": "ノートの使い方へ",
+    "author": "作者について",
+    "license": "MITライセンス。個人的な非商用の制作動機は、商用利用を制限するものではありません。",
+    "next": "仕事 → 小さな学習候補 → 自分のメモ → 次回の参照。",
+    "sections": {
+      "product": "何が違うのか",
+      "start": "手元で始める",
+      "controls": "暗記しなくてよい操作",
+      "profile": "カリキュラムではなく、自分のペース",
+      "details": "操作・プライバシー・制作の背景",
+      "limits": "プレビューの範囲"
+    }
   },
   {
     "code": "zh-Hans",
     "flag": "zh-Hans",
     "name": "简体中文",
-    "tag": "让 AI 编写代码，但不放弃开发者的角色。",
-    "intro": "Cleanroom 是以 Vera Kernel 为基础的协作开发空间。即使 AI 承担大部分实现工作，项目目标、设计判断、验证方法、失败经验和技术理解仍留在你手中。",
+    "tag": "把工作交给 AI，参与什么、掌握什么由你决定。",
+    "intro": "Cleanroom 是一个协作开发环境：无论 AI 能做到什么，都由你选择想要什么、参与哪里、理解什么，并把这些经验作为自己的继续下去。实现可以交给 AI；想参与的地方由你参与，想学的内容延续到下一次创作，也可以做出与过去不同的选择。[设计原则与衡量成功的四个问题](docs/PRINCIPLES.md)",
     "start": "在本机开始",
     "ops": "左侧 Agent，右侧 Owner",
     "read": "操作指南",
@@ -96,14 +164,14 @@
     "limits": "这是源码预览，不是 MVP 全部达标的认证。GIF 使用真实 CLI 渲染器和脚本化演示数据，不是实际模型的成功测试。网页体验区仅在内存中模拟交互，不是远程终端。",
     "privacy": "Owner 备忘和搜索本身不会调用 AI。主动插入请求的引用会进入发送范围。不要将项目或个人私密记录提交到公共 GitHub。",
     "origin": "作者把 cleanroom 想象成保护人类判断的隔离空间。这是个人的比喻，不是操作系统沙箱保证。项目源于一篇日语 X 帖子，以及作者对 AI 开发中经验流失和未来的担忧。",
-    "author": "个人简介",
-    "foot": "个人的非商业创作动机不改变仓库实际许可证的使用条件。",
+    "foot": "采用 MIT 许可证，源于保留创造经验的个人思考。",
     "known": "工作完成后，留下什么",
     "items": [
-      "你的选择与理由",
-      "AI 假设、真实验证记录及未知事项",
-      "由本人选择的学习、查阅或委托候选",
-      "实现过程中的说明、来源和可延续的开发日记"
+      "项目目标、设计选择及其理由",
+      "区分真实验证、AI 假设、失败与未知",
+      "实现过程中的详细解释，而非只有最终摘要",
+      "自选的学习、查阅和委托书签",
+      "跨项目的个人经验日记与技能地图"
     ],
     "keys": [
       "提出任务",
@@ -117,14 +185,48 @@
       "换行",
       "退出"
     ],
-    "guideTitle": "Cleanroom 操作指南"
+    "guideTitle": "Cleanroom 操作指南",
+    "full": "Cleanroom 基于 Vera Kernel。当 AI 承担大部分实现时，项目目标、设计判断、验证方法、失败经验和技术理解仍由人保有。它也是一本区分日后想掌握、只需查阅和可以委托的词典，以及连接不同项目的成长日记。",
+    "pillars": [
+      [
+        "一起创造",
+        "在 Agent 中推进工作，在 Owner 中保留目标、判断、假设、验证记录与未知事项，无需另写报告。"
+      ],
+      [
+        "只学自己选择的部分",
+        "以自己的经验和目标为起点，选择建议的数量、深度和时机。“下次再看”是书签，不是逾期作业。"
+      ],
+      [
+        "积累个人经验",
+        "在实现过程中保存细节，之后选择摘要或展开解释。日记和技能地图随项目一起成长。"
+      ]
+    ],
+    "example": "开发 Flask 应用时，可以下次学习请求处理，将具体 API 留作参考，把重复表单委托给 AI。建议来自实际工作和个人目标，而非技术名称。",
+    "distinction": "AI 的操作步骤与人的技能是两回事。导入或生成的步骤先作为草稿保存，不代表本人已掌握、已批准或授予执行权限。技能面板只记录你选择描述的经验，没有分数、连续打卡或填满要求。",
+    "pace": "经验档案是自愿的自述，可随时修改。委托 GitHub 推送、跳过学习或选择自动化不表示能力不足。新的主要技术可之后补充，无需首次回答一切。",
+    "try": "体验工作台",
+    "quick": "30 秒了解",
+    "setup": "安装 CLI",
+    "features": "不只是保护判断，更让经验属于自己。",
+    "docs": "了解笔记功能",
+    "author": "关于作者",
+    "license": "MIT 许可证。个人的非商业创作动机不限制商业使用。",
+    "next": "工作 → 一项可选理解 → 个人笔记 → 下次参考。",
+    "sections": {
+      "product": "不同之处",
+      "start": "在本机开始",
+      "controls": "无需死记的操作",
+      "profile": "自己的节奏，而非固定课程",
+      "details": "操作、隐私与起源",
+      "limits": "预览范围"
+    }
   },
   {
     "code": "ko",
     "flag": "ko",
     "name": "한국어",
-    "tag": "AI에게 구현을 맡겨도, 개발자의 역할까지 놓지 마세요.",
-    "intro": "Cleanroom은 Vera Kernel을 기반으로 하는 공동 개발 공간입니다. AI가 구현 대부분을 맡아도 프로젝트의 목적, 설계 판단, 검증 방법, 실패 경험, 기술적 이해는 사람에게 남습니다.",
+    "tag": "일은 AI에게 맡기고, 무엇에 참여하고 무엇을 익힐지는 스스로 고른다.",
+    "intro": "Cleanroom은 AI가 무엇을 할 수 있게 되더라도, 본인이 무엇을 원하고 어디에 참여하며 무엇을 이해하고 싶은지 선택하고, 그 경험을 자신의 것으로 이어가게 하는 협업 개발 환경입니다. 구현은 AI에게 맡기고, 참여하고 싶은 곳에는 참여하며, 배우기로 한 것은 다음 작업으로 이어지고, 예전과 다른 선택도 할 수 있습니다.",
     "start": "내 컴퓨터에서 시작",
     "ops": "왼쪽 Agent, 오른쪽 Owner",
     "request": "왼쪽 아래 Agent 입력란에 자연스러운 문장으로 요청하세요. 새로운 명령어를 외울 필요가 없습니다.",
@@ -135,15 +237,15 @@
     "limits": "소스 미리보기이며 MVP 전체 통과를 보장하지 않습니다. GIF는 실제 CLI 렌더러에 시나리오 데이터를 넣어 녹화한 것으로, 실제 모델의 성공 기록이 아닙니다. 웹 체험은 메모리 안의 상호작용 데모이며 원격 셸이 아닙니다.",
     "privacy": "Owner 메모와 검색만으로 AI를 호출하지 않습니다. 요청에 직접 넣은 참조는 전송 범위에 포함됩니다. 개인 기록과 프로젝트 비공개 기록을 공개 GitHub에 올리지 마세요.",
     "origin": "작성자는 cleanroom을 인간의 판단이 보호되는 격리된 공간으로 생각했습니다. 개인적인 비유이지 OS 샌드박스 보장이 아닙니다. 일본어 X 게시물과 AI 개발 과정에서 경험을 잃을지 모른다는 걱정에서 시작했습니다.",
-    "author": "프로필",
-    "foot": "개인의 비상업적 제작 동기는 저장소의 실제 라이선스를 바꾸거나 제한하지 않습니다.",
+    "foot": "MIT 라이선스. 만드는 경험을 잃고 싶지 않다는 개인적 질문에서 시작했습니다.",
     "known": "작업 뒤에도 내게 남는 것",
     "read": "사용 안내",
     "items": [
-      "나의 선택과 그 이유",
-      "AI의 가정, 실제 검증 기록, 남은 미확인 사항",
-      "내가 선택하는 학습·참조·위임 후보",
-      "구현 도중의 설명, 출처, 다음 작업으로 이어지는 일지"
+      "목적과 설계 선택, 그 이유",
+      "검증 기록, AI 가정, 실패와 미확인 사항의 구분",
+      "최종 요약뿐 아니라 구현 중의 상세 설명",
+      "직접 선택하는 학습, 참조, 위임 책갈피",
+      "프로젝트를 넘나드는 경험 일지와 스킬 지도"
     ],
     "keys": [
       "작업 요청",
@@ -157,14 +259,48 @@
       "줄바꿈",
       "종료"
     ],
-    "guideTitle": "Cleanroom 사용 안내"
+    "guideTitle": "Cleanroom 사용 안내",
+    "full": "Vera Kernel 기반 Cleanroom은 AI가 구현 대부분을 맡아도 목적, 설계 판단, 검증 방법, 실패 경험, 기술적 이해를 사람에게 남깁니다. 나중에 배우고 싶은 것, 참고만 할 것, 위임할 것을 나누는 사전이자 여러 프로젝트를 연결하는 일지입니다.",
+    "pillars": [
+      [
+        "함께 만들기",
+        "Agent에서 작업하고 Owner에 목적, 판단, 가정, 검증 기록과 미확인 사항을 남깁니다. 별도 보고서는 필요 없습니다."
+      ],
+      [
+        "선택한 만큼 배우기",
+        "본인의 경험과 목표를 바탕으로 제안의 양, 깊이, 시점을 고릅니다. '다음에'는 책갈피이지 밀린 숙제가 아닙니다."
+      ],
+      [
+        "내 경험 쌓기",
+        "구현 중에 세부 설명을 보존하고 나중에 요약하거나 자세히 살펴봅니다. 일지와 스킬 지도가 다음 프로젝트로 이어집니다."
+      ]
+    ],
+    "example": "Flask 앱이라면 요청 처리는 다음에 조금 배우고, 개별 API는 참고로 남기며 반복 폼은 위임할 수 있습니다. 기술명만이 아니라 실제 작업과 본인의 목표에서 제안합니다.",
+    "distinction": "AI의 절차와 본인의 스킬은 별개입니다. 생성하거나 가져온 절차는 초안이며 습득, 승인, 실행 권한을 뜻하지 않습니다. 스킬 보드는 본인이 남기기로 한 경험만 기록합니다. 점수나 연속 기록, 모든 칸을 채울 의무는 없습니다.",
+    "pace": "프로필은 자발적인 자기 설명으로 언제든 바꿀 수 있습니다. GitHub 푸시 요청, 학습 건너뛰기, 자동화 선택으로 능력 부족을 추정하지 않습니다. 새로운 주요 기술은 나중에 추가할 수 있습니다.",
+    "try": "작업대 체험",
+    "quick": "30초로 살펴보기",
+    "setup": "CLI 설치",
+    "features": "판단을 지키는 것을 넘어, 내 경험으로.",
+    "docs": "노트 사용법",
+    "author": "작성자 소개",
+    "license": "MIT 라이선스. 개인의 비상업적 제작 동기는 상업적 이용을 제한하지 않습니다.",
+    "next": "작업 → 선택한 이해 하나 → 내 메모 → 다음의 참조.",
+    "sections": {
+      "product": "무엇이 다른가",
+      "start": "내 컴퓨터에서 시작",
+      "controls": "외울 필요 없는 조작",
+      "profile": "정해진 교육 과정이 아닌 나의 속도",
+      "details": "조작, 개인정보와 시작 이야기",
+      "limits": "미리보기의 범위"
+    }
   },
   {
     "code": "es",
     "flag": "es",
     "name": "Español",
-    "tag": "Deja que la IA construya. Sigue siendo quien desarrolla.",
-    "intro": "Cleanroom es un espacio de desarrollo colaborativo basado en Vera Kernel. Aunque la IA realice gran parte de la implementación, conservas el propósito, las decisiones, los métodos de verificación, los fallos y la comprensión técnica del proyecto.",
+    "tag": "Deja el trabajo a la IA. Tú eliges en qué participar y qué hacer tuyo.",
+    "intro": "Cleanroom es un entorno de desarrollo colaborativo en el que, haga lo que haga la IA, tú eliges qué quieres, dónde participar y qué quieres entender, y conservas esa experiencia como propia. Delega la implementación; participa donde quieras; lleva lo que elegiste aprender a tu siguiente trabajo; y sigue libre de elegir distinto que antes.",
     "start": "Empezar en tu equipo",
     "ops": "Agent a la izquierda, Owner a la derecha",
     "request": "Escribe una petición normal en el campo Agent, abajo a la izquierda. No hace falta aprender un nuevo lenguaje de comandos.",
@@ -175,15 +311,15 @@
     "limits": "Vista previa del código fuente, no certificación de un MVP completo. El GIF usa datos preparados en el renderizador real de la CLI; no es una prueba exitosa de un modelo. La demo web funciona en memoria y no es un shell remoto.",
     "privacy": "Las notas y búsquedas Owner no llaman a la IA. Las referencias que insertas expresamente forman parte del contenido a enviar. No publiques registros privados del proyecto ni personales en GitHub.",
     "origin": "El nombre nace de la imagen personal del autor: un espacio aislado que protege el juicio humano. Es una metáfora, no una garantía de aislamiento del sistema operativo. El proyecto surgió de una publicación japonesa en X y de sus inquietudes sobre desarrollar con IA y perder experiencia.",
-    "author": "Perfil",
-    "foot": "La motivación personal no comercial no modifica ni restringe la licencia real del repositorio.",
+    "foot": "Licencia MIT. Nacido de una pregunta personal sobre conservar la experiencia de crear.",
     "known": "Lo que se queda contigo",
     "read": "Guía de uso",
     "items": [
-      "Tus decisiones y sus razones",
-      "Supuestos de la IA, comprobaciones reales y cuestiones abiertas",
-      "Opciones de aprendizaje, consulta o delegación que tú eliges",
-      "Notas durante la implementación, fuentes y un diario que continúa entre proyectos"
+      "Objetivos y decisiones de diseño, con sus motivos",
+      "Comprobaciones, supuestos de IA, fallos e incógnitas diferenciados",
+      "Explicaciones durante la implementación, no solo un resumen final",
+      "Marcadores de aprendizaje, consulta y delegación elegidos por ti",
+      "Un diario privado de experiencia y un mapa de habilidades entre proyectos"
     ],
     "keys": [
       "Pedir trabajo",
@@ -197,6 +333,40 @@
       "Nueva línea",
       "Cerrar"
     ],
-    "guideTitle": "Guía de uso de Cleanroom"
+    "guideTitle": "Guía de uso de Cleanroom",
+    "full": "Basado en Vera Kernel, Cleanroom conserva el propósito, las decisiones de diseño, los métodos de verificación, los fallos y la comprensión técnica cuando la IA hace gran parte de la implementación. También es un diccionario de lo que quieres aprender después, consultar o delegar, y un diario que conecta tus proyectos.",
+    "pillars": [
+      [
+        "Crear juntos",
+        "Trabaja en Agent. Conserva objetivos, decisiones, supuestos, comprobaciones e incógnitas en Owner, sin redactar otro informe."
+      ],
+      [
+        "Aprender lo que eliges",
+        "Parte de tu experiencia y tus objetivos. Elige cantidad, profundidad y momento de las sugerencias. Más adelante es un marcador, no una tarea atrasada."
+      ],
+      [
+        "Construir tu experiencia",
+        "Guarda las explicaciones mientras se trabaja. Conserva el detalle, explóralo después y crea un diario y un mapa de habilidades entre proyectos."
+      ]
+    ],
+    "example": "En una aplicación Flask, puedes explorar las peticiones la próxima vez, conservar los detalles de API como referencia y delegar formularios repetitivos. Las sugerencias parten del trabajo real y tus objetivos, no del nombre Flask.",
+    "distinction": "Los procedimientos de IA y tus habilidades son cosas distintas. Un procedimiento generado o importado empieza como borrador: no acredita aprendizaje, aprobación ni permiso de ejecución. Tu tablero opcional solo recoge las experiencias que eliges describir. Sin notas, rachas ni obligación de completarlo.",
+    "pace": "El perfil es voluntario y editable. Delegar un push a GitHub, omitir una lección o elegir automatización no implica incapacidad. Puedes añadir una nueva tecnología principal más adelante, sin un cuestionario exhaustivo inicial.",
+    "try": "Probar el espacio",
+    "quick": "Verlo en 30 segundos",
+    "setup": "Instalar la CLI",
+    "features": "Más que proteger decisiones: hacer tuya la experiencia.",
+    "docs": "Explorar el cuaderno",
+    "author": "Sobre el autor",
+    "license": "Licencia MIT. La motivación personal no comercial no limita el uso comercial.",
+    "next": "Trabajo → una idea opcional → tu nota → referencia para después.",
+    "sections": {
+      "product": "Qué lo hace distinto",
+      "start": "Empezar en tu equipo",
+      "controls": "Controles que no necesitas memorizar",
+      "profile": "Tu ritmo, no un plan de estudios",
+      "details": "Controles, privacidad y origen",
+      "limits": "Alcance de la vista previa"
+    }
   }
 ]

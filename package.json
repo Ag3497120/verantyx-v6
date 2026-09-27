@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "rm -rf .next && next build",
+    "build": "rm -rf .next && next build && node scripts/overlay-cleanroom.mjs",
     "cf-build": "npm ci && npm run build",
     "pages:dev": "npm run build && npx --yes wrangler pages dev out --compatibility-date=2026-07-15",
     "start": "next start",
