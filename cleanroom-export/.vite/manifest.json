@@ -6,13 +6,13 @@
       "_rolldown-runtime-Dd_uD5pT.js"
     ]
   },
-  "_image-DpauSvFm.js": {
-    "file": "_next/static/chunks/image-DpauSvFm.js",
+  "_image-EcLcfVHZ.js": {
+    "file": "_next/static/chunks/image-EcLcfVHZ.js",
     "name": "image",
     "imports": [
       "_rolldown-runtime-Dd_uD5pT.js",
       "_framework-BtyfZwou.js",
-      "_vinext-CkfGi_CU.js"
+      "_vinext-WWKsDS-D.js"
     ]
   },
   "_query-DugiHe4Q.js": {
@@ -23,8 +23,8 @@
     "file": "_next/static/chunks/rolldown-runtime-Dd_uD5pT.js",
     "name": "rolldown-runtime"
   },
-  "_vinext-CkfGi_CU.js": {
-    "file": "_next/static/chunks/vinext-CkfGi_CU.js",
+  "_vinext-WWKsDS-D.js": {
+    "file": "_next/static/chunks/vinext-WWKsDS-D.js",
     "name": "vinext",
     "imports": [
       "_rolldown-runtime-Dd_uD5pT.js",
@@ -32,62 +32,63 @@
     ],
     "dynamicImports": [
       "node_modules/vinext/dist/shims/internal/hybrid-client-route-owner.js",
-      "_vinext-CkfGi_CU.js"
+      "_vinext-WWKsDS-D.js"
     ]
   },
   "app/cleanroom-site.tsx": {
-    "file": "_next/static/chunks/cleanroom-site-BJcRvd1P.js",
+    "file": "_next/static/chunks/cleanroom-site-CTzhhePo.js",
     "name": "cleanroom-site",
     "src": "app/cleanroom-site.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-Dd_uD5pT.js",
       "_framework-BtyfZwou.js",
-      "_vinext-CkfGi_CU.js",
-      "_image-DpauSvFm.js",
+      "_vinext-WWKsDS-D.js",
+      "_image-EcLcfVHZ.js",
       "_query-DugiHe4Q.js"
     ],
     "dynamicImports": [
-      "_vinext-CkfGi_CU.js",
+      "_vinext-WWKsDS-D.js",
       "node_modules/@mlc-ai/web-llm/lib/index.js"
     ]
   },
   "app/home-surface.tsx": {
-    "file": "_next/static/chunks/home-surface-Cx5B3val.js",
+    "file": "_next/static/chunks/home-surface-BO0kzsqe.js",
     "name": "home-surface",
     "src": "app/home-surface.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-Dd_uD5pT.js",
       "_framework-BtyfZwou.js",
-      "_vinext-CkfGi_CU.js",
-      "_image-DpauSvFm.js",
+      "_vinext-WWKsDS-D.js",
+      "_image-EcLcfVHZ.js",
       "app/cleanroom-site.tsx"
     ],
     "dynamicImports": [
-      "node_modules/onnxruntime-web/dist/ort.wasm.bundle.min.mjs"
+      "node_modules/onnxruntime-web/dist/ort.wasm.bundle.min.mjs",
+      "node_modules/@mlc-ai/web-llm/lib/index.js"
     ]
   },
   "app/mirror-notice.tsx": {
-    "file": "_next/static/chunks/mirror-notice-CdDNGMwS.js",
+    "file": "_next/static/chunks/mirror-notice-B-gxQnRM.js",
     "name": "mirror-notice",
     "src": "app/mirror-notice.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-Dd_uD5pT.js",
       "_framework-BtyfZwou.js",
-      "_image-DpauSvFm.js"
+      "_image-EcLcfVHZ.js"
     ]
   },
   "app/terminal-view.tsx": {
-    "file": "_next/static/chunks/terminal-view-CgMCKfFA.js",
+    "file": "_next/static/chunks/terminal-view-Dc2T5tl_.js",
     "name": "terminal-view",
     "src": "app/terminal-view.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-Dd_uD5pT.js",
       "_framework-BtyfZwou.js",
-      "_vinext-CkfGi_CU.js"
+      "_vinext-WWKsDS-D.js"
     ],
     "dynamicImports": [
       "lib/terminal-client.ts"
@@ -110,51 +111,51 @@
     "src": "node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm"
   },
   "node_modules/onnxruntime-web/dist/ort.wasm.bundle.min.mjs": {
-    "file": "_next/static/chunks/ort.wasm.bundle.min-DFEY5DIu.js",
+    "file": "_next/static/chunks/ort.wasm.bundle.min-D4FlVnvY.js",
     "name": "ort.wasm.bundle.min",
     "src": "node_modules/onnxruntime-web/dist/ort.wasm.bundle.min.mjs",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-Dd_uD5pT.js",
-      "_vinext-CkfGi_CU.js"
+      "_vinext-WWKsDS-D.js"
     ],
     "assets": [
       "_next/static/media/ort-wasm-simd-threaded.CxTQ5xH-.wasm"
     ]
   },
   "node_modules/vinext/dist/shims/internal/hybrid-client-route-owner.js": {
-    "file": "_next/static/chunks/hybrid-client-route-owner-D_Z-OKf4.js",
+    "file": "_next/static/chunks/hybrid-client-route-owner-Dj26Aa7s.js",
     "name": "hybrid-client-route-owner",
     "src": "node_modules/vinext/dist/shims/internal/hybrid-client-route-owner.js",
     "isDynamicEntry": true,
     "imports": [
-      "_vinext-CkfGi_CU.js",
+      "_vinext-WWKsDS-D.js",
       "_query-DugiHe4Q.js"
     ]
   },
   "node_modules/vinext/dist/shims/layout-segment-context.js": {
-    "file": "_next/static/chunks/layout-segment-context-BUHw9ri8.js",
+    "file": "_next/static/chunks/layout-segment-context-Bs_ALkXG.js",
     "name": "layout-segment-context",
     "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-Dd_uD5pT.js",
       "_framework-BtyfZwou.js",
-      "_vinext-CkfGi_CU.js"
+      "_vinext-WWKsDS-D.js"
     ]
   },
   "virtual:vinext-app-browser-entry": {
-    "file": "_next/static/chunks/index-BVP3G2Lu.js",
+    "file": "_next/static/chunks/index-DoC7zKu0.js",
     "name": "index",
     "src": "virtual:vinext-app-browser-entry",
     "isEntry": true,
     "imports": [
       "_rolldown-runtime-Dd_uD5pT.js",
       "_framework-BtyfZwou.js",
-      "_vinext-CkfGi_CU.js"
+      "_vinext-WWKsDS-D.js"
     ],
     "dynamicImports": [
-      "_vinext-CkfGi_CU.js",
+      "_vinext-WWKsDS-D.js",
       "node_modules/vinext/dist/shims/layout-segment-context.js",
       "app/terminal-view.tsx",
       "app/mirror-notice.tsx",
