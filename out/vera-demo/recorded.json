@@ -1,0 +1,4429 @@
+{
+  "schema": "verantyx.site.recorded/1",
+  "recorded_on": "2026-10-04",
+  "placement": "r8",
+  "placement_manifest_sha256": "e22248cecafe442fd10713ee33a0b1e4003a52a147661078fcf3ba4abdb3eb4e",
+  "dev_commit": "5b845ec8b0a6020b918edaaa70f4fa5e03d725fb",
+  "dev_tracked_changes": false,
+  "python": "python",
+  "env": {
+    "VERA_PLACEMENT": "<placement r8/run2>",
+    "PYTHONPATH": "<dev tree>",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "document": {
+    "name": "document.txt",
+    "text": "先生が生徒に地図を渡した。\n校長が職員室で書類を確認した。\n母が弟に話した人を兄が呼んだ。\n係が荷物を倉庫に運んだ。\n",
+    "sentences": [
+      "先生が生徒に地図を渡した。",
+      "校長が職員室で書類を確認した。",
+      "母が弟に話した人を兄が呼んだ。",
+      "係が荷物を倉庫に運んだ。"
+    ]
+  },
+  "note": "値は記録時の出力そのもの。*_ms のキー（経過時間）は実行ごとに変わる。",
+  "asks": [
+    {
+      "question": "誰が生徒に地図を渡した？",
+      "argv": [
+        "-m",
+        "verantyx.cli",
+        "ask",
+        "--mode",
+        "round5",
+        "--document",
+        "document.txt",
+        "--request-kind",
+        "factual",
+        "--human-present",
+        "--",
+        "誰が生徒に地図を渡した？"
+      ],
+      "rc": 0,
+      "raw": {
+        "kind": "answer",
+        "verdict": "ANSWER",
+        "text": "agent: 先生",
+        "values": [
+          "先生"
+        ],
+        "answer_values": [
+          [
+            "agent",
+            "先生"
+          ]
+        ],
+        "polarity": "+",
+        "evidence": [
+          "先生が生徒に地図を渡した。"
+        ],
+        "sources": [
+          {
+            "family": "document",
+            "sovereign": "document",
+            "source": "document.txt",
+            "clause": "8e60d754cd2516c90c647f2f",
+            "text": "先生が生徒に地図を渡した。",
+            "span": {
+              "source": "document.txt",
+              "start": 0,
+              "end": 13,
+              "text": "先生が生徒に地図を渡した。"
+            }
+          }
+        ],
+        "trace": [
+          {
+            "part": "one.round5_route",
+            "status": "ran",
+            "code_intent": false,
+            "content_intent": false,
+            "decision_input": "raw_request",
+            "fallback": false
+          },
+          {
+            "part": "question.read_semantic",
+            "status": "ran",
+            "plans": 1,
+            "obligations": 8,
+            "unread": []
+          },
+          {
+            "part": "semantic_reader.document_view",
+            "status": "ran",
+            "clauses": 5,
+            "source_unread": [],
+            "source_unread_count": 0,
+            "source_unread_truncated": false,
+            "ingest_ms": 96.81220800848678
+          },
+          {
+            "part": "multigrain_source_binding",
+            "status": "ran",
+            "selected_source_views": 1,
+            "authority": "original-source span location only",
+            "full_original_view_required": true
+          },
+          {
+            "part": "semantic_execute.Producer",
+            "status": "ran",
+            "sovereign": "document",
+            "steps": 59,
+            "proposals": 1,
+            "candidates": 1,
+            "peak_bindings": 1,
+            "plan_depth": 4,
+            "unresolved_alternative_derivations": []
+          },
+          {
+            "part": "semantic_verify.Checker.gate",
+            "status": "ran",
+            "sovereign": "document",
+            "verified_answers": 1,
+            "shared_steps": 240
+          },
+          {
+            "part": "semantic_execute.Producer",
+            "status": "ran",
+            "sovereign": "document",
+            "steps": 299,
+            "proposals": 1,
+            "candidates": 2,
+            "peak_bindings": 1,
+            "plan_depth": 4,
+            "unresolved_alternative_derivations": []
+          },
+          {
+            "part": "semantic_verify.Checker.gate",
+            "status": "ran",
+            "sovereign": "document",
+            "verified_answers": 1,
+            "shared_steps": 480
+          },
+          {
+            "part": "multigrain_adapter.retrieve_multigrain_candidates",
+            "status": "ran",
+            "verdict": "CANDIDATE_SOURCE_LEAF_MATCHED",
+            "selected_candidate": "先生",
+            "source_identity_status": "identity_unverified",
+            "independent_source_count": null,
+            "source_binding_status": "BOUND",
+            "source_binding_reason": "candidate leaf IDs and exact original Clause spans were rederived",
+            "candidate_views_supplied_to_answer_verifier": true,
+            "candidate_document_id_cited_after_full_view_check": true,
+            "candidate_sentence_span_cited_after_full_view_check": null,
+            "candidate_clause_span_cited_after_full_view_check": true,
+            "candidate_clause_span_match_count": 1,
+            "candidate_clause_span_causal_influence_proven": false,
+            "citation_granularity": "source_id_and_exact_candidate_clause_span_match",
+            "bound_source_supplied_to_goal_consumer": false,
+            "licenses_goal_realization": false
+          }
+        ],
+        "semantic": {
+          "version": "round5a",
+          "verified": true,
+          "request": {
+            "text": "誰が生徒に地図を渡した？",
+            "plans": [
+              {
+                "nodes": [
+                  {
+                    "id": "n0",
+                    "op": "Bind",
+                    "inputs": [],
+                    "pattern": {
+                      "predicate": "渡す",
+                      "roles": [
+                        [
+                          "patient",
+                          "地図"
+                        ],
+                        [
+                          "recipient",
+                          "生徒"
+                        ],
+                        [
+                          "agent",
+                          {
+                            "name": "v1",
+                            "sort": "entity"
+                          }
+                        ]
+                      ],
+                      "polarity": "+",
+                      "modality": "assert",
+                      "time": "past",
+                      "event": null
+                    },
+                    "tests": [],
+                    "terms": [],
+                    "target": null,
+                    "relation": "",
+                    "unit": "",
+                    "absolute": false,
+                    "choices": [],
+                    "outputs": [],
+                    "obligations": [
+                      "o0",
+                      "o1",
+                      "o2",
+                      "o3",
+                      "o4",
+                      "o5",
+                      "o6"
+                    ],
+                    "span": {
+                      "source": "question",
+                      "start": 0,
+                      "end": 12,
+                      "text": "誰が生徒に地図を渡した？"
+                    }
+                  },
+                  {
+                    "id": "n1",
+                    "op": "ApplyCondition",
+                    "inputs": [
+                      "n0"
+                    ],
+                    "pattern": null,
+                    "tests": [],
+                    "terms": [],
+                    "target": null,
+                    "relation": "",
+                    "unit": "",
+                    "absolute": false,
+                    "choices": [],
+                    "outputs": [],
+                    "obligations": [],
+                    "span": null
+                  },
+                  {
+                    "id": "n2",
+                    "op": "Except",
+                    "inputs": [
+                      "n1"
+                    ],
+                    "pattern": null,
+                    "tests": [],
+                    "terms": [],
+                    "target": null,
+                    "relation": "",
+                    "unit": "",
+                    "absolute": false,
+                    "choices": [],
+                    "outputs": [],
+                    "obligations": [],
+                    "span": null
+                  },
+                  {
+                    "id": "n3",
+                    "op": "Project",
+                    "inputs": [
+                      "n2"
+                    ],
+                    "pattern": null,
+                    "tests": [],
+                    "terms": [],
+                    "target": null,
+                    "relation": "",
+                    "unit": "",
+                    "absolute": false,
+                    "choices": [],
+                    "outputs": [
+                      {
+                        "label": "agent",
+                        "term": {
+                          "name": "v1",
+                          "sort": "entity"
+                        },
+                        "obligation": "o7",
+                        "unit": "",
+                        "span": {
+                          "source": "question",
+                          "start": 0,
+                          "end": 12,
+                          "text": "誰が生徒に地図を渡した？"
+                        }
+                      }
+                    ],
+                    "obligations": [
+                      "o7"
+                    ],
+                    "span": null
+                  }
+                ],
+                "root": "n3"
+              }
+            ],
+            "obligations": [
+              {
+                "id": "o0",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 12,
+                  "text": "誰が生徒に地図を渡した？"
+                },
+                "kind": "relation",
+                "node": "n0",
+                "detail": "渡す"
+              },
+              {
+                "id": "o1",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 12,
+                  "text": "誰が生徒に地図を渡した？"
+                },
+                "kind": "role",
+                "node": "n0",
+                "detail": "patient"
+              },
+              {
+                "id": "o2",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 12,
+                  "text": "誰が生徒に地図を渡した？"
+                },
+                "kind": "role",
+                "node": "n0",
+                "detail": "recipient"
+              },
+              {
+                "id": "o3",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 12,
+                  "text": "誰が生徒に地図を渡した？"
+                },
+                "kind": "role",
+                "node": "n0",
+                "detail": "agent"
+              },
+              {
+                "id": "o4",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 12,
+                  "text": "誰が生徒に地図を渡した？"
+                },
+                "kind": "polarity",
+                "node": "n0",
+                "detail": "+"
+              },
+              {
+                "id": "o5",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 12,
+                  "text": "誰が生徒に地図を渡した？"
+                },
+                "kind": "modality",
+                "node": "n0",
+                "detail": "assert"
+              },
+              {
+                "id": "o6",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 12,
+                  "text": "誰が生徒に地図を渡した？"
+                },
+                "kind": "time",
+                "node": "n0",
+                "detail": "past"
+              },
+              {
+                "id": "o7",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 12,
+                  "text": "誰が生徒に地図を渡した？"
+                },
+                "kind": "output",
+                "node": "n3",
+                "detail": "agent"
+              }
+            ],
+            "covered": [
+              {
+                "source": "question",
+                "start": 0,
+                "end": 12,
+                "text": "誰が生徒に地図を渡した？"
+              }
+            ],
+            "unread": [],
+            "stages": [],
+            "rules": [
+              "frame/edge/stage candidates",
+              "nominal-path",
+              "role-wh",
+              "relational-plan"
+            ]
+          },
+          "plan": {
+            "nodes": [
+              {
+                "id": "n0",
+                "op": "Bind",
+                "inputs": [],
+                "pattern": {
+                  "predicate": "渡す",
+                  "roles": [
+                    [
+                      "patient",
+                      "地図"
+                    ],
+                    [
+                      "recipient",
+                      "生徒"
+                    ],
+                    [
+                      "agent",
+                      {
+                        "name": "v1",
+                        "sort": "entity"
+                      }
+                    ]
+                  ],
+                  "polarity": "+",
+                  "modality": "assert",
+                  "time": "past",
+                  "event": null
+                },
+                "tests": [],
+                "terms": [],
+                "target": null,
+                "relation": "",
+                "unit": "",
+                "absolute": false,
+                "choices": [],
+                "outputs": [],
+                "obligations": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3",
+                  "o4",
+                  "o5",
+                  "o6"
+                ],
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 12,
+                  "text": "誰が生徒に地図を渡した？"
+                }
+              },
+              {
+                "id": "n1",
+                "op": "ApplyCondition",
+                "inputs": [
+                  "n0"
+                ],
+                "pattern": null,
+                "tests": [],
+                "terms": [],
+                "target": null,
+                "relation": "",
+                "unit": "",
+                "absolute": false,
+                "choices": [],
+                "outputs": [],
+                "obligations": [],
+                "span": null
+              },
+              {
+                "id": "n2",
+                "op": "Except",
+                "inputs": [
+                  "n1"
+                ],
+                "pattern": null,
+                "tests": [],
+                "terms": [],
+                "target": null,
+                "relation": "",
+                "unit": "",
+                "absolute": false,
+                "choices": [],
+                "outputs": [],
+                "obligations": [],
+                "span": null
+              },
+              {
+                "id": "n3",
+                "op": "Project",
+                "inputs": [
+                  "n2"
+                ],
+                "pattern": null,
+                "tests": [],
+                "terms": [],
+                "target": null,
+                "relation": "",
+                "unit": "",
+                "absolute": false,
+                "choices": [],
+                "outputs": [
+                  {
+                    "label": "agent",
+                    "term": {
+                      "name": "v1",
+                      "sort": "entity"
+                    },
+                    "obligation": "o7",
+                    "unit": "",
+                    "span": {
+                      "source": "question",
+                      "start": 0,
+                      "end": 12,
+                      "text": "誰が生徒に地図を渡した？"
+                    }
+                  }
+                ],
+                "obligations": [
+                  "o7"
+                ],
+                "span": null
+              }
+            ],
+            "root": "n3"
+          },
+          "proof": {
+            "nodes": [
+              {
+                "id": "p0",
+                "op": "Source",
+                "plan_node": "",
+                "parents": [],
+                "clause": {
+                  "id": "8e60d754cd2516c90c647f2f",
+                  "event": {
+                    "name": "event_8e60d754cd2516c90c647f2f",
+                    "sort": "event"
+                  },
+                  "predicate": "渡す",
+                  "predicate_span": {
+                    "source": "document.txt",
+                    "start": 9,
+                    "end": 11,
+                    "text": "渡し"
+                  },
+                  "roles": [
+                    {
+                      "name": "agent",
+                      "term": "先生",
+                      "span": {
+                        "source": "document.txt",
+                        "start": 0,
+                        "end": 2,
+                        "text": "先生"
+                      },
+                      "rule": "frame"
+                    },
+                    {
+                      "name": "patient",
+                      "term": "地図",
+                      "span": {
+                        "source": "document.txt",
+                        "start": 6,
+                        "end": 8,
+                        "text": "地図"
+                      },
+                      "rule": "frame"
+                    },
+                    {
+                      "name": "recipient",
+                      "term": "生徒",
+                      "span": {
+                        "source": "document.txt",
+                        "start": 3,
+                        "end": 5,
+                        "text": "生徒"
+                      },
+                      "rule": "frame"
+                    }
+                  ],
+                  "span": {
+                    "source": "document.txt",
+                    "start": 0,
+                    "end": 13,
+                    "text": "先生が生徒に地図を渡した。"
+                  },
+                  "body_span": {
+                    "source": "document.txt",
+                    "start": 0,
+                    "end": 13,
+                    "text": "先生が生徒に地図を渡した。"
+                  },
+                  "polarity": "+",
+                  "modality": "assert",
+                  "time": "past",
+                  "conditions": [],
+                  "condition_spans": [],
+                  "exceptions": [],
+                  "exception_spans": [],
+                  "exception_of": "",
+                  "rule": "frame",
+                  "sovereign": "document",
+                  "family": "document",
+                  "unsupported": []
+                },
+                "bindings": [],
+                "covers": [],
+                "answer": []
+              },
+              {
+                "id": "p1",
+                "op": "Bind",
+                "plan_node": "n0",
+                "parents": [
+                  "p0"
+                ],
+                "clause": null,
+                "bindings": [
+                  [
+                    "v1",
+                    "先生"
+                  ]
+                ],
+                "covers": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3",
+                  "o4",
+                  "o5",
+                  "o6"
+                ],
+                "answer": []
+              },
+              {
+                "id": "p2",
+                "op": "ApplyCondition",
+                "plan_node": "n1",
+                "parents": [
+                  "p1"
+                ],
+                "clause": null,
+                "bindings": [
+                  [
+                    "v1",
+                    "先生"
+                  ]
+                ],
+                "covers": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3",
+                  "o4",
+                  "o5",
+                  "o6"
+                ],
+                "answer": []
+              },
+              {
+                "id": "p3",
+                "op": "Except",
+                "plan_node": "n2",
+                "parents": [
+                  "p2"
+                ],
+                "clause": null,
+                "bindings": [
+                  [
+                    "v1",
+                    "先生"
+                  ]
+                ],
+                "covers": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3",
+                  "o4",
+                  "o5",
+                  "o6"
+                ],
+                "answer": []
+              },
+              {
+                "id": "p4",
+                "op": "Project",
+                "plan_node": "n3",
+                "parents": [
+                  "p3"
+                ],
+                "clause": null,
+                "bindings": [
+                  [
+                    "v1",
+                    "先生"
+                  ]
+                ],
+                "covers": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3",
+                  "o4",
+                  "o5",
+                  "o6",
+                  "o7"
+                ],
+                "answer": [
+                  [
+                    "agent",
+                    "先生"
+                  ]
+                ]
+              }
+            ],
+            "root": "p4",
+            "sovereign": "document"
+          },
+          "attempts": [
+            {
+              "sovereign": "document",
+              "plan": "n3",
+              "answers": 1
+            },
+            {
+              "sovereign": "document",
+              "plan": "n3",
+              "answers": 1
+            }
+          ],
+          "budget": {
+            "limits": {
+              "parse": 32,
+              "depth": 8,
+              "candidates": 256,
+              "bindings": 64,
+              "steps": 4096
+            },
+            "steps": 480,
+            "candidates": 2,
+            "peak_bindings": 1
+          }
+        },
+        "door": "semantic_document",
+        "multigrain_navigation": {
+          "kind": "multigrain_candidates",
+          "verdict": "CANDIDATE_SOURCE_LEAF_MATCHED",
+          "raw_question": "誰が生徒に地図を渡した？",
+          "selector_query": "誰が生徒に地図を渡した？",
+          "candidate_limit": 8,
+          "selector_query_origin": "raw_question",
+          "query_terms": [
+            "生徒",
+            "地図"
+          ],
+          "selected_candidate": "先生",
+          "resolution_verdict": "ANSWER_BY_COARSENING",
+          "resolution_item": "先生",
+          "resolution_as_core": [],
+          "resolution_as_facet_only": [
+            "生徒",
+            "地図"
+          ],
+          "resolution_missing": [],
+          "resolution_agreeing": 1,
+          "resolution_of": 4,
+          "candidates": [
+            {
+              "item": "先生",
+              "resolution_views": [
+                "g1"
+              ],
+              "sources": [
+                {
+                  "leaf": "document.txt",
+                  "domain_path": [],
+                  "path": [
+                    "document.txt"
+                  ],
+                  "source_label": "document.txt",
+                  "canonical_source_id": null,
+                  "identity_status": "identity_unverified",
+                  "identity_note": "CrossStore stores source_labels and source_meta by display label; its provenance records timestamps and sentence snippets, not a canonical source key or content hash.",
+                  "grain_witnesses": [
+                    {
+                      "member": "g1",
+                      "rung": "g1",
+                      "size": 1,
+                      "matched_feature_count": 1
+                    }
+                  ]
+                }
+              ],
+              "source_leaf_match_count": 1,
+              "independent_source_count": null,
+              "source_identity_status": "identity_unverified",
+              "selected_by_existing_constellation": true,
+              "source_reference_count": 1,
+              "source_references_truncated": false,
+              "selection_used_resolution_views": true
+            }
+          ],
+          "grain_trace": [
+            {
+              "member": "whole",
+              "rungs": [
+                [
+                  "whole",
+                  0
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": null,
+              "rung_readings": {
+                "whole": null
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": false,
+              "independent_source_vote": false
+            },
+            {
+              "member": "g3",
+              "rungs": [
+                [
+                  "g3",
+                  3
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": null,
+              "rung_readings": {
+                "g3": null
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": false,
+              "independent_source_vote": false
+            },
+            {
+              "member": "g2",
+              "rungs": [
+                [
+                  "g2",
+                  2
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": null,
+              "rung_readings": {
+                "g2": null
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": false,
+              "independent_source_vote": false
+            },
+            {
+              "member": "g1",
+              "rungs": [
+                [
+                  "g1",
+                  1
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": "先生",
+              "rung_readings": {
+                "g1": "先生"
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": true,
+              "independent_source_vote": false
+            }
+          ],
+          "query_destinations": [
+            {
+              "leaf": "document.txt",
+              "domain_path": [],
+              "path": [
+                "document.txt"
+              ],
+              "source_label": "document.txt",
+              "canonical_source_id": null,
+              "identity_status": "identity_unverified",
+              "identity_note": "CrossStore stores source_labels and source_meta by display label; its provenance records timestamps and sentence snippets, not a canonical source key or content hash."
+            }
+          ],
+          "query_divisions_from_constellation": [
+            "document.txt"
+          ],
+          "query_divisions_are_partial": true,
+          "surface_route": {
+            "verdict": "ROUTED",
+            "leaf": "document.txt",
+            "trail": [
+              "document.txt"
+            ],
+            "selected_leaf": "document.txt",
+            "route_kind": "single_leaf_or_unbuilt",
+            "via_api": [
+              "Base.lower"
+            ],
+            "used_for_candidate_selection": false
+          },
+          "source_identity_status": "identity_unverified",
+          "independent_source_count": null,
+          "identity_note": "CrossStore stores source_labels and source_meta by display label; its provenance records timestamps and sentence snippets, not a canonical source key or content hash.",
+          "trace": {
+            "calls": {
+              "FullConstellation.ask": 1,
+              "resolution.ask_member_reads": 4,
+              "resolution.Ladder.vote_for_selection": 4,
+              "resolution.Ladder.vote_for_grain_trace": 4,
+              "FullConstellation.ask.hierarchy.gather": 1,
+              "source_tree_leaf_walk": 1,
+              "source_tree_nodes_visited": 1,
+              "source_tree_leaves_visited": 1,
+              "Base.lower": 1,
+              "conduct_tree.descend": 0,
+              "surface.route": 0
+            },
+            "candidate_selection": "FullConstellation.ask(raw_question); its existing resolution consensus is the selector",
+            "selector_query": "誰が生徒に地図を渡した？",
+            "source_join": "exact candidate core key plus configured source-leaf grain features",
+            "query_division_note": "FullConstellation.ask exposes at most six leaf names from its gather result",
+            "structural_views_are_source_votes": false,
+            "elapsed_ms": 0.576
+          },
+          "used_for_answer": false,
+          "used_for_goal_realization": false,
+          "authority": "source_location_hypothesis",
+          "truth_claim": false,
+          "source_binding": {
+            "version": "multigrain-source-binding-v1",
+            "status": "BOUND",
+            "reason": "candidate leaf IDs and exact original Clause spans were rederived",
+            "candidate": "先生",
+            "registry_sha256": "d923e8517a7ab117984aca1ccdd8c130fc07dcdb0eae64265f8d780eb62b89c9",
+            "scope": "document identity and original-text location only",
+            "goal_relation_scope": "same-owner local explicit argument spans only",
+            "source_truth_status": "UNCLASSIFIED; no truth or authority claim",
+            "independent_source_count": null,
+            "selections": [
+              {
+                "source_id": "document.txt",
+                "original_sha256": "d73b20f3204453bfc336bef69c868ae2fc0ae6f195b7ca840eb08393c8aa6ed9",
+                "leaf_id": "document.txt",
+                "leaf_path": [
+                  "document.txt"
+                ],
+                "candidate": "先生",
+                "candidate_spans": [
+                  [
+                    0,
+                    2
+                  ]
+                ],
+                "sentence_text": "先生が生徒に地図を渡した。",
+                "sentence_span": {
+                  "source": "document.txt",
+                  "start": 0,
+                  "end": 13
+                },
+                "clause_ids": [
+                  "8e60d754cd2516c90c647f2f"
+                ],
+                "predicates": [
+                  "渡す"
+                ],
+                "request_target_anchor": null,
+                "target_role": null,
+                "target_argument_span": null,
+                "target_case_particle_span": null,
+                "candidate_role": null,
+                "candidate_argument_span": null,
+                "source_frame_id": null,
+                "source_frame_evidence_clause_id": null,
+                "source_assertion_status": null
+              }
+            ]
+          },
+          "candidate_views_supplied_to_answer_verifier": true,
+          "candidate_document_id_cited_after_full_view_check": true,
+          "candidate_sentence_span_cited_after_full_view_check": null,
+          "candidate_clause_span_cited_after_full_view_check": true,
+          "candidate_clause_span_match_count": 1,
+          "candidate_clause_span_causal_influence_proven": false,
+          "citation_granularity": "source_id_and_exact_candidate_clause_span_match",
+          "candidate_goal_status": null
+        },
+        "runtime_mode": "round5",
+        "basis_policy": {
+          "schema": "verantyx.basis_policy/1",
+          "table_version": 1,
+          "applied": true,
+          "request_kind": "factual",
+          "kind_class": "FACTUAL",
+          "basis": "HUMAN",
+          "basis_original": "HUMAN",
+          "human_present": true,
+          "show_reference": false,
+          "outcome": "ANSWER_HUMAN_BASIS",
+          "in_table": true,
+          "counts": {
+            "human": 1,
+            "generated": 0,
+            "non_evidence": 0,
+            "request_text": 0,
+            "unreadable": 0,
+            "non_evidence_by_origin": {},
+            "unknown_origin": 0,
+            "unknown_origin_by_family": {},
+            "unknown_origin_values": {}
+          },
+          "classify_version": 4,
+          "confirm_id_version": 2,
+          "sovereign": {
+            "state": "UNKNOWN_NO_SOVEREIGN",
+            "store_id": null,
+            "records_read": 0,
+            "rejected_by_user": 0,
+            "confirmed_records_used": 0,
+            "confirmed_records_not_used": 0,
+            "ambiguous": false
+          },
+          "form": {
+            "state": "UNKNOWN_NO_INDEX",
+            "reasons": {
+              "CAND_NOT_ONE_CROSS": 0,
+              "CAND_CENTER_DIFFERS": 0,
+              "CAND_ROLES_DIFFER": 0,
+              "CAND_FILLER_SPAN_AMBIGUOUS": 0,
+              "CAND_REREAD_DIFFERS": 0,
+              "CAND_CONTENT_DIFFERS": 0
+            },
+            "families": {
+              "local": "UNKNOWN_NO_INDEX",
+              "pro": "UNKNOWN_NO_INDEX",
+              "code": "UNKNOWN_NO_INDEX",
+              "conversation": "UNKNOWN_NO_INDEX",
+              "general_qa": "UNKNOWN_NO_INDEX",
+              "code_qa": "UNKNOWN_NO_INDEX",
+              "figurative_commonsense": "UNKNOWN_NO_INDEX",
+              "narrative": "UNKNOWN_NO_INDEX",
+              "paraphrase_entail": "UNKNOWN_NO_INDEX"
+            },
+            "searched_rows": 0,
+            "candidates": 0,
+            "distinct_forms": 0
+          }
+        }
+      },
+      "stdout_if_not_json": null,
+      "view": {
+        "verdict": "ANSWER",
+        "answer": "agent: 先生",
+        "values": [
+          "先生"
+        ],
+        "evidence": [
+          "先生が生徒に地図を渡した。"
+        ],
+        "policy": "ANSWER_HUMAN_BASIS",
+        "basis": "HUMAN",
+        "reason": null,
+        "how_to_resolve": null
+      }
+    },
+    {
+      "question": "兄は誰を呼んだ？",
+      "argv": [
+        "-m",
+        "verantyx.cli",
+        "ask",
+        "--mode",
+        "round5",
+        "--document",
+        "document.txt",
+        "--request-kind",
+        "factual",
+        "--human-present",
+        "--",
+        "兄は誰を呼んだ？"
+      ],
+      "rc": 0,
+      "raw": {
+        "kind": "unknown",
+        "verdict": "UNKNOWN_UNREAD",
+        "text": "この要求を裏づける導出を確認できません。",
+        "reason": "mandatory request spans remain unread",
+        "phase": "reader",
+        "values": [],
+        "evidence": [],
+        "sources": [],
+        "trace": [
+          {
+            "part": "one.round5_route",
+            "status": "ran",
+            "code_intent": false,
+            "content_intent": false,
+            "decision_input": "raw_request",
+            "fallback": false
+          },
+          {
+            "part": "question.read_semantic",
+            "status": "ran",
+            "plans": 0,
+            "obligations": 0,
+            "unread": [
+              {
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 8,
+                  "text": "兄は誰を呼んだ？"
+                },
+                "reason": "unsupported request grammar"
+              }
+            ]
+          },
+          {
+            "part": "semantic_reader.document_view",
+            "status": "ran",
+            "clauses": 5,
+            "source_unread": [],
+            "source_unread_count": 0,
+            "source_unread_truncated": false,
+            "ingest_ms": 88.23941700393334
+          },
+          {
+            "leaves": 1,
+            "nodes": 1,
+            "arity": 6,
+            "status": "skipped",
+            "reason": "fewer leaves than one routing node",
+            "part": "semantic_route.LeafTree"
+          },
+          {
+            "part": "remedy.remedy",
+            "status": "ran",
+            "verdict": "UNKNOWN_UNREAD",
+            "how_to_resolve": "質問された事項を示す出典を追加してください。"
+          },
+          {
+            "part": "ask_back.question",
+            "status": "abstained",
+            "reason": "verdict has no human-answerable candidate",
+            "asks": ""
+          },
+          {
+            "part": "coverage.document_needed",
+            "status": "abstained",
+            "reason": "no domain witnesses"
+          },
+          {
+            "part": "gap_graph.refusal_to_gap",
+            "status": "abstained",
+            "reason": "no opt-in gap_path"
+          },
+          {
+            "part": "grow.log_refusal",
+            "status": "abstained",
+            "reason": "no queue opt-in or different verdict"
+          },
+          {
+            "part": "multigrain_adapter.retrieve_multigrain_candidates",
+            "status": "ran",
+            "verdict": "UNKNOWN_NOT_PRESENT",
+            "selected_candidate": null,
+            "source_identity_status": "UNKNOWN_NO_SOURCE_MATCH",
+            "independent_source_count": null,
+            "source_binding_status": "HOLD",
+            "source_binding_reason": "adapter did not find a source-leaf candidate",
+            "candidate_views_supplied_to_answer_verifier": false,
+            "candidate_document_id_cited_after_full_view_check": false,
+            "candidate_sentence_span_cited_after_full_view_check": null,
+            "candidate_clause_span_cited_after_full_view_check": false,
+            "candidate_clause_span_match_count": 0,
+            "candidate_clause_span_causal_influence_proven": false,
+            "citation_granularity": "source_id_and_exact_candidate_clause_span_match",
+            "bound_source_supplied_to_goal_consumer": false,
+            "licenses_goal_realization": false
+          },
+          {
+            "part": "question_cross",
+            "status": "ran",
+            "state": "FILLED",
+            "mapped_to": "ORIGINAL"
+          }
+        ],
+        "semantic": {
+          "version": "round5a",
+          "verified": false,
+          "request": {
+            "text": "兄は誰を呼んだ？",
+            "plans": [],
+            "obligations": [],
+            "covered": [],
+            "unread": [
+              {
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 8,
+                  "text": "兄は誰を呼んだ？"
+                },
+                "reason": "unsupported request grammar"
+              }
+            ],
+            "stages": [],
+            "rules": [
+              "typed unread"
+            ]
+          },
+          "unread": [
+            {
+              "span": {
+                "source": "question",
+                "start": 0,
+                "end": 8,
+                "text": "兄は誰を呼んだ？"
+              },
+              "reason": "unsupported request grammar"
+            }
+          ],
+          "budget": {
+            "limits": {
+              "parse": 32,
+              "depth": 8,
+              "candidates": 256,
+              "bindings": 64,
+              "steps": 4096
+            },
+            "steps": 0,
+            "candidates": 0,
+            "peak_bindings": 0
+          }
+        },
+        "door": "semantic_document",
+        "remedy": {
+          "verdict": "UNKNOWN_UNREAD",
+          "needs_registration": true,
+          "note": "no remedy recorded for this verdict",
+          "register": "質問された事項を示す出典を追加してください。"
+        },
+        "how_to_resolve": "質問された事項を示す出典を追加してください。",
+        "multigrain_navigation": {
+          "kind": "multigrain_candidates",
+          "verdict": "UNKNOWN_NOT_PRESENT",
+          "raw_question": "兄は誰を呼んだ？",
+          "selector_query": "兄は誰を呼んだ？",
+          "candidate_limit": 8,
+          "selector_query_origin": "raw_question",
+          "query_terms": [
+            "兄",
+            "呼"
+          ],
+          "selected_candidate": null,
+          "resolution_verdict": "UNKNOWN_NOT_PRESENT",
+          "resolution_item": null,
+          "resolution_as_core": [],
+          "resolution_as_facet_only": [
+            "兄",
+            "呼"
+          ],
+          "resolution_missing": [],
+          "resolution_agreeing": 0,
+          "resolution_of": 4,
+          "candidates": [],
+          "grain_trace": [
+            {
+              "member": "whole",
+              "rungs": [
+                [
+                  "whole",
+                  0
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": null,
+              "rung_readings": {
+                "whole": null
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": false,
+              "independent_source_vote": false
+            },
+            {
+              "member": "g3",
+              "rungs": [
+                [
+                  "g3",
+                  3
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": null,
+              "rung_readings": {
+                "g3": null
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": false,
+              "independent_source_vote": false
+            },
+            {
+              "member": "g2",
+              "rungs": [
+                [
+                  "g2",
+                  2
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": null,
+              "rung_readings": {
+                "g2": null
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": false,
+              "independent_source_vote": false
+            },
+            {
+              "member": "g1",
+              "rungs": [
+                [
+                  "g1",
+                  1
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": null,
+              "rung_readings": {
+                "g1": null
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": false,
+              "independent_source_vote": false
+            }
+          ],
+          "query_destinations": [
+            {
+              "leaf": "document.txt",
+              "domain_path": [],
+              "path": [
+                "document.txt"
+              ],
+              "source_label": "document.txt",
+              "canonical_source_id": null,
+              "identity_status": "identity_unverified",
+              "identity_note": "CrossStore stores source_labels and source_meta by display label; its provenance records timestamps and sentence snippets, not a canonical source key or content hash."
+            }
+          ],
+          "query_divisions_from_constellation": [
+            "document.txt"
+          ],
+          "query_divisions_are_partial": true,
+          "surface_route": {
+            "verdict": "ROUTED",
+            "leaf": "document.txt",
+            "trail": [
+              "document.txt"
+            ],
+            "selected_leaf": "document.txt",
+            "route_kind": "single_leaf_or_unbuilt",
+            "via_api": [
+              "Base.lower"
+            ],
+            "used_for_candidate_selection": false
+          },
+          "source_identity_status": "UNKNOWN_NO_SOURCE_MATCH",
+          "independent_source_count": null,
+          "identity_note": "CrossStore stores source_labels and source_meta by display label; its provenance records timestamps and sentence snippets, not a canonical source key or content hash.",
+          "trace": {
+            "calls": {
+              "FullConstellation.ask": 1,
+              "resolution.ask_member_reads": 4,
+              "resolution.Ladder.vote_for_selection": 4,
+              "resolution.Ladder.vote_for_grain_trace": 4,
+              "FullConstellation.ask.hierarchy.gather": 1,
+              "source_tree_leaf_walk": 1,
+              "source_tree_nodes_visited": 1,
+              "source_tree_leaves_visited": 1,
+              "Base.lower": 1,
+              "conduct_tree.descend": 0,
+              "surface.route": 0
+            },
+            "candidate_selection": "FullConstellation.ask(raw_question); its existing resolution consensus is the selector",
+            "selector_query": "兄は誰を呼んだ？",
+            "source_join": "exact candidate core key plus configured source-leaf grain features",
+            "query_division_note": "FullConstellation.ask exposes at most six leaf names from its gather result",
+            "structural_views_are_source_votes": false,
+            "elapsed_ms": 0.216
+          },
+          "used_for_answer": false,
+          "used_for_goal_realization": false,
+          "authority": "navigation_only_unverified",
+          "truth_claim": false,
+          "source_binding": {
+            "version": "multigrain-source-binding-v1",
+            "status": "HOLD",
+            "reason": "adapter did not find a source-leaf candidate",
+            "candidate": "",
+            "registry_sha256": "d923e8517a7ab117984aca1ccdd8c130fc07dcdb0eae64265f8d780eb62b89c9",
+            "scope": "document identity and original-text location only",
+            "goal_relation_scope": "same-owner local explicit argument spans only",
+            "source_truth_status": "UNCLASSIFIED; no truth or authority claim",
+            "independent_source_count": null,
+            "selections": []
+          },
+          "candidate_views_supplied_to_answer_verifier": false,
+          "candidate_document_id_cited_after_full_view_check": false,
+          "candidate_sentence_span_cited_after_full_view_check": null,
+          "candidate_clause_span_cited_after_full_view_check": false,
+          "candidate_clause_span_match_count": 0,
+          "candidate_clause_span_causal_influence_proven": false,
+          "citation_granularity": "source_id_and_exact_candidate_clause_span_match",
+          "candidate_goal_status": null
+        },
+        "runtime_mode": "round5",
+        "question_cross": {
+          "state": "FILLED",
+          "reason": "PREDICATE_POSITION_UNKNOWN",
+          "mapped_to": "ORIGINAL",
+          "hole_role": "patient",
+          "hole_type": [
+            "GROUP_ORG",
+            "PERSON"
+          ],
+          "coord": null,
+          "structure": {
+            "sentences": 4,
+            "crossed": 4,
+            "unread": 0,
+            "reasons": []
+          },
+          "documents": {
+            "loaded": 1,
+            "skipped": []
+          }
+        },
+        "basis_policy": {
+          "schema": "verantyx.basis_policy/1",
+          "table_version": 1,
+          "applied": true,
+          "request_kind": "factual",
+          "kind_class": "FACTUAL",
+          "basis": "NONE",
+          "basis_original": "NONE",
+          "human_present": true,
+          "show_reference": false,
+          "outcome": "ABSTAIN",
+          "in_table": true,
+          "counts": {
+            "human": 0,
+            "generated": 0,
+            "non_evidence": 0,
+            "request_text": 0,
+            "unreadable": 0,
+            "non_evidence_by_origin": {},
+            "unknown_origin": 0,
+            "unknown_origin_by_family": {},
+            "unknown_origin_values": {}
+          },
+          "classify_version": 4,
+          "confirm_id_version": 2,
+          "sovereign": {
+            "state": "UNKNOWN_NO_SOVEREIGN",
+            "store_id": null,
+            "records_read": 0,
+            "rejected_by_user": 0,
+            "confirmed_records_used": 0,
+            "confirmed_records_not_used": 0,
+            "ambiguous": false
+          },
+          "form": {
+            "state": "NOT_ATTEMPTED_OUTCOME"
+          }
+        }
+      },
+      "stdout_if_not_json": null,
+      "view": {
+        "verdict": "UNKNOWN_UNREAD",
+        "answer": "この要求を裏づける導出を確認できません。",
+        "values": [],
+        "evidence": [],
+        "policy": "ABSTAIN",
+        "basis": "NONE",
+        "reason": "mandatory request spans remain unread",
+        "how_to_resolve": "質問された事項を示す出典を追加してください。"
+      }
+    },
+    {
+      "question": "係は荷物をどこに運んだ？",
+      "argv": [
+        "-m",
+        "verantyx.cli",
+        "ask",
+        "--mode",
+        "round5",
+        "--document",
+        "document.txt",
+        "--request-kind",
+        "factual",
+        "--human-present",
+        "--",
+        "係は荷物をどこに運んだ？"
+      ],
+      "rc": 0,
+      "raw": {
+        "kind": "unknown",
+        "verdict": "UNKNOWN_UNREAD",
+        "text": "この要求を裏づける導出を確認できません。",
+        "reason": "mandatory request spans remain unread",
+        "phase": "reader",
+        "values": [],
+        "evidence": [],
+        "sources": [],
+        "trace": [
+          {
+            "part": "one.round5_route",
+            "status": "ran",
+            "code_intent": false,
+            "content_intent": false,
+            "decision_input": "raw_request",
+            "fallback": false
+          },
+          {
+            "part": "question.read_semantic",
+            "status": "ran",
+            "plans": 0,
+            "obligations": 0,
+            "unread": [
+              {
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 12,
+                  "text": "係は荷物をどこに運んだ？"
+                },
+                "reason": "unsupported request grammar"
+              }
+            ]
+          },
+          {
+            "part": "semantic_reader.document_view",
+            "status": "ran",
+            "clauses": 5,
+            "source_unread": [],
+            "source_unread_count": 0,
+            "source_unread_truncated": false,
+            "ingest_ms": 84.79774999432266
+          },
+          {
+            "part": "multigrain_source_binding",
+            "status": "abstained",
+            "reason": "candidate-view pass did not return ANSWER",
+            "candidate_verdict": "UNKNOWN_UNREAD",
+            "full_original_view_required": true
+          },
+          {
+            "leaves": 1,
+            "nodes": 1,
+            "arity": 6,
+            "status": "skipped",
+            "reason": "fewer leaves than one routing node",
+            "part": "semantic_route.LeafTree"
+          },
+          {
+            "part": "remedy.remedy",
+            "status": "ran",
+            "verdict": "UNKNOWN_UNREAD",
+            "how_to_resolve": "質問された事項を示す出典を追加してください。"
+          },
+          {
+            "part": "ask_back.question",
+            "status": "abstained",
+            "reason": "verdict has no human-answerable candidate",
+            "asks": ""
+          },
+          {
+            "part": "coverage.document_needed",
+            "status": "abstained",
+            "reason": "no domain witnesses"
+          },
+          {
+            "part": "gap_graph.refusal_to_gap",
+            "status": "abstained",
+            "reason": "no opt-in gap_path"
+          },
+          {
+            "part": "grow.log_refusal",
+            "status": "abstained",
+            "reason": "no queue opt-in or different verdict"
+          },
+          {
+            "part": "multigrain_adapter.retrieve_multigrain_candidates",
+            "status": "ran",
+            "verdict": "CANDIDATE_SOURCE_LEAF_MATCHED",
+            "selected_candidate": "係",
+            "source_identity_status": "identity_unverified",
+            "independent_source_count": null,
+            "source_binding_status": "BOUND",
+            "source_binding_reason": "candidate leaf IDs and exact original Clause spans were rederived",
+            "candidate_views_supplied_to_answer_verifier": true,
+            "candidate_document_id_cited_after_full_view_check": false,
+            "candidate_sentence_span_cited_after_full_view_check": null,
+            "candidate_clause_span_cited_after_full_view_check": false,
+            "candidate_clause_span_match_count": 0,
+            "candidate_clause_span_causal_influence_proven": false,
+            "citation_granularity": "source_id_and_exact_candidate_clause_span_match",
+            "bound_source_supplied_to_goal_consumer": false,
+            "licenses_goal_realization": false
+          },
+          {
+            "part": "question_cross",
+            "status": "ran",
+            "state": "QUESTION_NOT_READ",
+            "mapped_to": "ORIGINAL"
+          }
+        ],
+        "semantic": {
+          "version": "round5a",
+          "verified": false,
+          "request": {
+            "text": "係は荷物をどこに運んだ？",
+            "plans": [],
+            "obligations": [],
+            "covered": [],
+            "unread": [
+              {
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 12,
+                  "text": "係は荷物をどこに運んだ？"
+                },
+                "reason": "unsupported request grammar"
+              }
+            ],
+            "stages": [],
+            "rules": [
+              "typed unread"
+            ]
+          },
+          "unread": [
+            {
+              "span": {
+                "source": "question",
+                "start": 0,
+                "end": 12,
+                "text": "係は荷物をどこに運んだ？"
+              },
+              "reason": "unsupported request grammar"
+            }
+          ],
+          "budget": {
+            "limits": {
+              "parse": 32,
+              "depth": 8,
+              "candidates": 256,
+              "bindings": 64,
+              "steps": 4096
+            },
+            "steps": 0,
+            "candidates": 0,
+            "peak_bindings": 0
+          }
+        },
+        "door": "semantic_document",
+        "remedy": {
+          "verdict": "UNKNOWN_UNREAD",
+          "needs_registration": true,
+          "note": "no remedy recorded for this verdict",
+          "register": "質問された事項を示す出典を追加してください。"
+        },
+        "how_to_resolve": "質問された事項を示す出典を追加してください。",
+        "multigrain_navigation": {
+          "kind": "multigrain_candidates",
+          "verdict": "CANDIDATE_SOURCE_LEAF_MATCHED",
+          "raw_question": "係は荷物をどこに運んだ？",
+          "selector_query": "係は荷物をどこに運んだ？",
+          "candidate_limit": 8,
+          "selector_query_origin": "raw_question",
+          "query_terms": [
+            "係",
+            "荷物",
+            "運"
+          ],
+          "selected_candidate": "係",
+          "resolution_verdict": "ANSWER",
+          "resolution_item": "係",
+          "resolution_as_core": [
+            "係"
+          ],
+          "resolution_as_facet_only": [
+            "荷物",
+            "運"
+          ],
+          "resolution_missing": [],
+          "resolution_agreeing": 4,
+          "resolution_of": 4,
+          "candidates": [
+            {
+              "item": "係",
+              "resolution_views": [
+                "g1",
+                "g2",
+                "g3",
+                "whole"
+              ],
+              "sources": [
+                {
+                  "leaf": "document.txt",
+                  "domain_path": [],
+                  "path": [
+                    "document.txt"
+                  ],
+                  "source_label": "document.txt",
+                  "canonical_source_id": null,
+                  "identity_status": "identity_unverified",
+                  "identity_note": "CrossStore stores source_labels and source_meta by display label; its provenance records timestamps and sentence snippets, not a canonical source key or content hash.",
+                  "grain_witnesses": [
+                    {
+                      "member": "whole",
+                      "rung": "whole",
+                      "size": 0,
+                      "matched_feature_count": 1
+                    },
+                    {
+                      "member": "g3",
+                      "rung": "g3",
+                      "size": 3,
+                      "matched_feature_count": 1
+                    },
+                    {
+                      "member": "g2",
+                      "rung": "g2",
+                      "size": 2,
+                      "matched_feature_count": 1
+                    },
+                    {
+                      "member": "g1",
+                      "rung": "g1",
+                      "size": 1,
+                      "matched_feature_count": 1
+                    }
+                  ]
+                }
+              ],
+              "source_leaf_match_count": 1,
+              "independent_source_count": null,
+              "source_identity_status": "identity_unverified",
+              "selected_by_existing_constellation": true,
+              "source_reference_count": 1,
+              "source_references_truncated": false,
+              "selection_used_resolution_views": true
+            }
+          ],
+          "grain_trace": [
+            {
+              "member": "whole",
+              "rungs": [
+                [
+                  "whole",
+                  0
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": "係",
+              "rung_readings": {
+                "whole": "係"
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": true,
+              "independent_source_vote": false
+            },
+            {
+              "member": "g3",
+              "rungs": [
+                [
+                  "g3",
+                  3
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": "係",
+              "rung_readings": {
+                "g3": "係"
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": true,
+              "independent_source_vote": false
+            },
+            {
+              "member": "g2",
+              "rungs": [
+                [
+                  "g2",
+                  2
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": "係",
+              "rung_readings": {
+                "g2": "係"
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": true,
+              "independent_source_vote": false
+            },
+            {
+              "member": "g1",
+              "rungs": [
+                [
+                  "g1",
+                  1
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": "係",
+              "rung_readings": {
+                "g1": "係"
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": true,
+              "independent_source_vote": false
+            }
+          ],
+          "query_destinations": [
+            {
+              "leaf": "document.txt",
+              "domain_path": [],
+              "path": [
+                "document.txt"
+              ],
+              "source_label": "document.txt",
+              "canonical_source_id": null,
+              "identity_status": "identity_unverified",
+              "identity_note": "CrossStore stores source_labels and source_meta by display label; its provenance records timestamps and sentence snippets, not a canonical source key or content hash."
+            }
+          ],
+          "query_divisions_from_constellation": [
+            "document.txt"
+          ],
+          "query_divisions_are_partial": true,
+          "surface_route": {
+            "verdict": "ROUTED",
+            "leaf": "document.txt",
+            "trail": [
+              "document.txt"
+            ],
+            "selected_leaf": "document.txt",
+            "route_kind": "single_leaf_or_unbuilt",
+            "via_api": [
+              "Base.lower"
+            ],
+            "used_for_candidate_selection": false
+          },
+          "source_identity_status": "identity_unverified",
+          "independent_source_count": null,
+          "identity_note": "CrossStore stores source_labels and source_meta by display label; its provenance records timestamps and sentence snippets, not a canonical source key or content hash.",
+          "trace": {
+            "calls": {
+              "FullConstellation.ask": 1,
+              "resolution.ask_member_reads": 4,
+              "resolution.Ladder.vote_for_selection": 4,
+              "resolution.Ladder.vote_for_grain_trace": 4,
+              "FullConstellation.ask.hierarchy.gather": 1,
+              "source_tree_leaf_walk": 1,
+              "source_tree_nodes_visited": 1,
+              "source_tree_leaves_visited": 1,
+              "Base.lower": 1,
+              "conduct_tree.descend": 0,
+              "surface.route": 0
+            },
+            "candidate_selection": "FullConstellation.ask(raw_question); its existing resolution consensus is the selector",
+            "selector_query": "係は荷物をどこに運んだ？",
+            "source_join": "exact candidate core key plus configured source-leaf grain features",
+            "query_division_note": "FullConstellation.ask exposes at most six leaf names from its gather result",
+            "structural_views_are_source_votes": false,
+            "elapsed_ms": 0.675
+          },
+          "used_for_answer": false,
+          "used_for_goal_realization": false,
+          "authority": "source_location_hypothesis",
+          "truth_claim": false,
+          "source_binding": {
+            "version": "multigrain-source-binding-v1",
+            "status": "BOUND",
+            "reason": "candidate leaf IDs and exact original Clause spans were rederived",
+            "candidate": "係",
+            "registry_sha256": "d923e8517a7ab117984aca1ccdd8c130fc07dcdb0eae64265f8d780eb62b89c9",
+            "scope": "document identity and original-text location only",
+            "goal_relation_scope": "same-owner local explicit argument spans only",
+            "source_truth_status": "UNCLASSIFIED; no truth or authority claim",
+            "independent_source_count": null,
+            "selections": [
+              {
+                "source_id": "document.txt",
+                "original_sha256": "d73b20f3204453bfc336bef69c868ae2fc0ae6f195b7ca840eb08393c8aa6ed9",
+                "leaf_id": "document.txt",
+                "leaf_path": [
+                  "document.txt"
+                ],
+                "candidate": "係",
+                "candidate_spans": [
+                  [
+                    46,
+                    47
+                  ]
+                ],
+                "sentence_text": "係が荷物を倉庫に運んだ。",
+                "sentence_span": {
+                  "source": "document.txt",
+                  "start": 46,
+                  "end": 58
+                },
+                "clause_ids": [
+                  "df336685e9bff9242e5ac101"
+                ],
+                "predicates": [
+                  "運ぶ"
+                ],
+                "request_target_anchor": null,
+                "target_role": null,
+                "target_argument_span": null,
+                "target_case_particle_span": null,
+                "candidate_role": null,
+                "candidate_argument_span": null,
+                "source_frame_id": null,
+                "source_frame_evidence_clause_id": null,
+                "source_assertion_status": null
+              }
+            ]
+          },
+          "candidate_views_supplied_to_answer_verifier": true,
+          "candidate_document_id_cited_after_full_view_check": false,
+          "candidate_sentence_span_cited_after_full_view_check": null,
+          "candidate_clause_span_cited_after_full_view_check": false,
+          "candidate_clause_span_match_count": 0,
+          "candidate_clause_span_causal_influence_proven": false,
+          "citation_granularity": "source_id_and_exact_candidate_clause_span_match",
+          "candidate_goal_status": null
+        },
+        "runtime_mode": "round5",
+        "question_cross": {
+          "state": "QUESTION_NOT_READ",
+          "reason": "READER_ABSTAINED",
+          "mapped_to": "ORIGINAL",
+          "hole_role": null,
+          "hole_type": null,
+          "coord": null,
+          "structure": {
+            "sentences": 4,
+            "crossed": 4,
+            "unread": 0,
+            "reasons": [
+              "READER_ABSTAINED"
+            ]
+          },
+          "documents": {
+            "loaded": 1,
+            "skipped": []
+          }
+        },
+        "basis_policy": {
+          "schema": "verantyx.basis_policy/1",
+          "table_version": 1,
+          "applied": true,
+          "request_kind": "factual",
+          "kind_class": "FACTUAL",
+          "basis": "NONE",
+          "basis_original": "NONE",
+          "human_present": true,
+          "show_reference": false,
+          "outcome": "ABSTAIN",
+          "in_table": true,
+          "counts": {
+            "human": 0,
+            "generated": 0,
+            "non_evidence": 0,
+            "request_text": 0,
+            "unreadable": 0,
+            "non_evidence_by_origin": {},
+            "unknown_origin": 0,
+            "unknown_origin_by_family": {},
+            "unknown_origin_values": {}
+          },
+          "classify_version": 4,
+          "confirm_id_version": 2,
+          "sovereign": {
+            "state": "UNKNOWN_NO_SOVEREIGN",
+            "store_id": null,
+            "records_read": 0,
+            "rejected_by_user": 0,
+            "confirmed_records_used": 0,
+            "confirmed_records_not_used": 0,
+            "ambiguous": false
+          },
+          "form": {
+            "state": "NOT_ATTEMPTED_OUTCOME"
+          }
+        }
+      },
+      "stdout_if_not_json": null,
+      "view": {
+        "verdict": "UNKNOWN_UNREAD",
+        "answer": "この要求を裏づける導出を確認できません。",
+        "values": [],
+        "evidence": [],
+        "policy": "ABSTAIN",
+        "basis": "NONE",
+        "reason": "mandatory request spans remain unread",
+        "how_to_resolve": "質問された事項を示す出典を追加してください。"
+      }
+    },
+    {
+      "question": "校長はどこで書類を確認した？",
+      "argv": [
+        "-m",
+        "verantyx.cli",
+        "ask",
+        "--mode",
+        "round5",
+        "--document",
+        "document.txt",
+        "--request-kind",
+        "factual",
+        "--human-present",
+        "--",
+        "校長はどこで書類を確認した？"
+      ],
+      "rc": 0,
+      "raw": {
+        "kind": "answer",
+        "verdict": "ANSWER",
+        "text": "place: 職員室",
+        "values": [
+          "職員室"
+        ],
+        "answer_values": [
+          [
+            "place",
+            "職員室"
+          ]
+        ],
+        "polarity": "+",
+        "evidence": [
+          "校長が職員室で書類を確認した。"
+        ],
+        "sources": [
+          {
+            "family": "document",
+            "sovereign": "document",
+            "source": "document.txt",
+            "clause": "f8352011a5e5878c782ea08d",
+            "text": "校長が職員室で書類を確認した。",
+            "span": {
+              "source": "document.txt",
+              "start": 14,
+              "end": 29,
+              "text": "校長が職員室で書類を確認した。"
+            }
+          }
+        ],
+        "trace": [
+          {
+            "part": "one.round5_route",
+            "status": "ran",
+            "code_intent": false,
+            "content_intent": false,
+            "decision_input": "raw_request",
+            "fallback": false
+          },
+          {
+            "part": "question.read_semantic",
+            "status": "ran",
+            "plans": 1,
+            "obligations": 8,
+            "unread": []
+          },
+          {
+            "part": "semantic_reader.document_view",
+            "status": "ran",
+            "clauses": 5,
+            "source_unread": [],
+            "source_unread_count": 0,
+            "source_unread_truncated": false,
+            "ingest_ms": 86.46804204909131
+          },
+          {
+            "part": "multigrain_source_binding",
+            "status": "ran",
+            "selected_source_views": 1,
+            "authority": "original-source span location only",
+            "full_original_view_required": true
+          },
+          {
+            "part": "semantic_execute.Producer",
+            "status": "ran",
+            "sovereign": "document",
+            "steps": 59,
+            "proposals": 1,
+            "candidates": 1,
+            "peak_bindings": 1,
+            "plan_depth": 4,
+            "unresolved_alternative_derivations": []
+          },
+          {
+            "part": "semantic_verify.Checker.gate",
+            "status": "ran",
+            "sovereign": "document",
+            "verified_answers": 1,
+            "shared_steps": 240
+          },
+          {
+            "part": "semantic_execute.Producer",
+            "status": "ran",
+            "sovereign": "document",
+            "steps": 299,
+            "proposals": 1,
+            "candidates": 2,
+            "peak_bindings": 1,
+            "plan_depth": 4,
+            "unresolved_alternative_derivations": []
+          },
+          {
+            "part": "semantic_verify.Checker.gate",
+            "status": "ran",
+            "sovereign": "document",
+            "verified_answers": 1,
+            "shared_steps": 480
+          },
+          {
+            "part": "multigrain_adapter.retrieve_multigrain_candidates",
+            "status": "ran",
+            "verdict": "CANDIDATE_SOURCE_LEAF_MATCHED",
+            "selected_candidate": "校長",
+            "source_identity_status": "identity_unverified",
+            "independent_source_count": null,
+            "source_binding_status": "BOUND",
+            "source_binding_reason": "candidate leaf IDs and exact original Clause spans were rederived",
+            "candidate_views_supplied_to_answer_verifier": true,
+            "candidate_document_id_cited_after_full_view_check": true,
+            "candidate_sentence_span_cited_after_full_view_check": null,
+            "candidate_clause_span_cited_after_full_view_check": true,
+            "candidate_clause_span_match_count": 1,
+            "candidate_clause_span_causal_influence_proven": false,
+            "citation_granularity": "source_id_and_exact_candidate_clause_span_match",
+            "bound_source_supplied_to_goal_consumer": false,
+            "licenses_goal_realization": false
+          }
+        ],
+        "semantic": {
+          "version": "round5a",
+          "verified": true,
+          "request": {
+            "text": "校長はどこで書類を確認した？",
+            "plans": [
+              {
+                "nodes": [
+                  {
+                    "id": "n0",
+                    "op": "Bind",
+                    "inputs": [],
+                    "pattern": {
+                      "predicate": "確認する",
+                      "roles": [
+                        [
+                          "agent",
+                          "校長"
+                        ],
+                        [
+                          "patient",
+                          "書類"
+                        ],
+                        [
+                          "place",
+                          {
+                            "name": "v1",
+                            "sort": "entity"
+                          }
+                        ]
+                      ],
+                      "polarity": "+",
+                      "modality": "assert",
+                      "time": "past",
+                      "event": null
+                    },
+                    "tests": [],
+                    "terms": [],
+                    "target": null,
+                    "relation": "",
+                    "unit": "",
+                    "absolute": false,
+                    "choices": [],
+                    "outputs": [],
+                    "obligations": [
+                      "o0",
+                      "o1",
+                      "o2",
+                      "o3",
+                      "o4",
+                      "o5",
+                      "o6"
+                    ],
+                    "span": {
+                      "source": "question",
+                      "start": 0,
+                      "end": 14,
+                      "text": "校長はどこで書類を確認した？"
+                    }
+                  },
+                  {
+                    "id": "n1",
+                    "op": "ApplyCondition",
+                    "inputs": [
+                      "n0"
+                    ],
+                    "pattern": null,
+                    "tests": [],
+                    "terms": [],
+                    "target": null,
+                    "relation": "",
+                    "unit": "",
+                    "absolute": false,
+                    "choices": [],
+                    "outputs": [],
+                    "obligations": [],
+                    "span": null
+                  },
+                  {
+                    "id": "n2",
+                    "op": "Except",
+                    "inputs": [
+                      "n1"
+                    ],
+                    "pattern": null,
+                    "tests": [],
+                    "terms": [],
+                    "target": null,
+                    "relation": "",
+                    "unit": "",
+                    "absolute": false,
+                    "choices": [],
+                    "outputs": [],
+                    "obligations": [],
+                    "span": null
+                  },
+                  {
+                    "id": "n3",
+                    "op": "Project",
+                    "inputs": [
+                      "n2"
+                    ],
+                    "pattern": null,
+                    "tests": [],
+                    "terms": [],
+                    "target": null,
+                    "relation": "",
+                    "unit": "",
+                    "absolute": false,
+                    "choices": [],
+                    "outputs": [
+                      {
+                        "label": "place",
+                        "term": {
+                          "name": "v1",
+                          "sort": "entity"
+                        },
+                        "obligation": "o7",
+                        "unit": "",
+                        "span": {
+                          "source": "question",
+                          "start": 0,
+                          "end": 14,
+                          "text": "校長はどこで書類を確認した？"
+                        }
+                      }
+                    ],
+                    "obligations": [
+                      "o7"
+                    ],
+                    "span": null
+                  }
+                ],
+                "root": "n3"
+              }
+            ],
+            "obligations": [
+              {
+                "id": "o0",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 14,
+                  "text": "校長はどこで書類を確認した？"
+                },
+                "kind": "relation",
+                "node": "n0",
+                "detail": "確認する"
+              },
+              {
+                "id": "o1",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 14,
+                  "text": "校長はどこで書類を確認した？"
+                },
+                "kind": "role",
+                "node": "n0",
+                "detail": "agent"
+              },
+              {
+                "id": "o2",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 14,
+                  "text": "校長はどこで書類を確認した？"
+                },
+                "kind": "role",
+                "node": "n0",
+                "detail": "patient"
+              },
+              {
+                "id": "o3",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 14,
+                  "text": "校長はどこで書類を確認した？"
+                },
+                "kind": "role",
+                "node": "n0",
+                "detail": "place"
+              },
+              {
+                "id": "o4",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 14,
+                  "text": "校長はどこで書類を確認した？"
+                },
+                "kind": "polarity",
+                "node": "n0",
+                "detail": "+"
+              },
+              {
+                "id": "o5",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 14,
+                  "text": "校長はどこで書類を確認した？"
+                },
+                "kind": "modality",
+                "node": "n0",
+                "detail": "assert"
+              },
+              {
+                "id": "o6",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 14,
+                  "text": "校長はどこで書類を確認した？"
+                },
+                "kind": "time",
+                "node": "n0",
+                "detail": "past"
+              },
+              {
+                "id": "o7",
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 14,
+                  "text": "校長はどこで書類を確認した？"
+                },
+                "kind": "output",
+                "node": "n3",
+                "detail": "place"
+              }
+            ],
+            "covered": [
+              {
+                "source": "question",
+                "start": 0,
+                "end": 14,
+                "text": "校長はどこで書類を確認した？"
+              }
+            ],
+            "unread": [],
+            "stages": [],
+            "rules": [
+              "frame/edge/stage candidates",
+              "nominal-path",
+              "role-wh",
+              "relational-plan"
+            ]
+          },
+          "plan": {
+            "nodes": [
+              {
+                "id": "n0",
+                "op": "Bind",
+                "inputs": [],
+                "pattern": {
+                  "predicate": "確認する",
+                  "roles": [
+                    [
+                      "agent",
+                      "校長"
+                    ],
+                    [
+                      "patient",
+                      "書類"
+                    ],
+                    [
+                      "place",
+                      {
+                        "name": "v1",
+                        "sort": "entity"
+                      }
+                    ]
+                  ],
+                  "polarity": "+",
+                  "modality": "assert",
+                  "time": "past",
+                  "event": null
+                },
+                "tests": [],
+                "terms": [],
+                "target": null,
+                "relation": "",
+                "unit": "",
+                "absolute": false,
+                "choices": [],
+                "outputs": [],
+                "obligations": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3",
+                  "o4",
+                  "o5",
+                  "o6"
+                ],
+                "span": {
+                  "source": "question",
+                  "start": 0,
+                  "end": 14,
+                  "text": "校長はどこで書類を確認した？"
+                }
+              },
+              {
+                "id": "n1",
+                "op": "ApplyCondition",
+                "inputs": [
+                  "n0"
+                ],
+                "pattern": null,
+                "tests": [],
+                "terms": [],
+                "target": null,
+                "relation": "",
+                "unit": "",
+                "absolute": false,
+                "choices": [],
+                "outputs": [],
+                "obligations": [],
+                "span": null
+              },
+              {
+                "id": "n2",
+                "op": "Except",
+                "inputs": [
+                  "n1"
+                ],
+                "pattern": null,
+                "tests": [],
+                "terms": [],
+                "target": null,
+                "relation": "",
+                "unit": "",
+                "absolute": false,
+                "choices": [],
+                "outputs": [],
+                "obligations": [],
+                "span": null
+              },
+              {
+                "id": "n3",
+                "op": "Project",
+                "inputs": [
+                  "n2"
+                ],
+                "pattern": null,
+                "tests": [],
+                "terms": [],
+                "target": null,
+                "relation": "",
+                "unit": "",
+                "absolute": false,
+                "choices": [],
+                "outputs": [
+                  {
+                    "label": "place",
+                    "term": {
+                      "name": "v1",
+                      "sort": "entity"
+                    },
+                    "obligation": "o7",
+                    "unit": "",
+                    "span": {
+                      "source": "question",
+                      "start": 0,
+                      "end": 14,
+                      "text": "校長はどこで書類を確認した？"
+                    }
+                  }
+                ],
+                "obligations": [
+                  "o7"
+                ],
+                "span": null
+              }
+            ],
+            "root": "n3"
+          },
+          "proof": {
+            "nodes": [
+              {
+                "id": "p0",
+                "op": "Source",
+                "plan_node": "",
+                "parents": [],
+                "clause": {
+                  "id": "f8352011a5e5878c782ea08d",
+                  "event": {
+                    "name": "event_f8352011a5e5878c782ea08d",
+                    "sort": "event"
+                  },
+                  "predicate": "確認する",
+                  "predicate_span": {
+                    "source": "document.txt",
+                    "start": 26,
+                    "end": 27,
+                    "text": "し"
+                  },
+                  "roles": [
+                    {
+                      "name": "agent",
+                      "term": "校長",
+                      "span": {
+                        "source": "document.txt",
+                        "start": 14,
+                        "end": 16,
+                        "text": "校長"
+                      },
+                      "rule": "frame"
+                    },
+                    {
+                      "name": "patient",
+                      "term": "書類",
+                      "span": {
+                        "source": "document.txt",
+                        "start": 21,
+                        "end": 23,
+                        "text": "書類"
+                      },
+                      "rule": "frame"
+                    },
+                    {
+                      "name": "place",
+                      "term": "職員室",
+                      "span": {
+                        "source": "document.txt",
+                        "start": 17,
+                        "end": 20,
+                        "text": "職員室"
+                      },
+                      "rule": "case"
+                    }
+                  ],
+                  "span": {
+                    "source": "document.txt",
+                    "start": 14,
+                    "end": 29,
+                    "text": "校長が職員室で書類を確認した。"
+                  },
+                  "body_span": {
+                    "source": "document.txt",
+                    "start": 14,
+                    "end": 29,
+                    "text": "校長が職員室で書類を確認した。"
+                  },
+                  "polarity": "+",
+                  "modality": "assert",
+                  "time": "past",
+                  "conditions": [],
+                  "condition_spans": [],
+                  "exceptions": [],
+                  "exception_spans": [],
+                  "exception_of": "",
+                  "rule": "frame",
+                  "sovereign": "document",
+                  "family": "document",
+                  "unsupported": []
+                },
+                "bindings": [],
+                "covers": [],
+                "answer": []
+              },
+              {
+                "id": "p1",
+                "op": "Bind",
+                "plan_node": "n0",
+                "parents": [
+                  "p0"
+                ],
+                "clause": null,
+                "bindings": [
+                  [
+                    "v1",
+                    "職員室"
+                  ]
+                ],
+                "covers": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3",
+                  "o4",
+                  "o5",
+                  "o6"
+                ],
+                "answer": []
+              },
+              {
+                "id": "p2",
+                "op": "ApplyCondition",
+                "plan_node": "n1",
+                "parents": [
+                  "p1"
+                ],
+                "clause": null,
+                "bindings": [
+                  [
+                    "v1",
+                    "職員室"
+                  ]
+                ],
+                "covers": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3",
+                  "o4",
+                  "o5",
+                  "o6"
+                ],
+                "answer": []
+              },
+              {
+                "id": "p3",
+                "op": "Except",
+                "plan_node": "n2",
+                "parents": [
+                  "p2"
+                ],
+                "clause": null,
+                "bindings": [
+                  [
+                    "v1",
+                    "職員室"
+                  ]
+                ],
+                "covers": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3",
+                  "o4",
+                  "o5",
+                  "o6"
+                ],
+                "answer": []
+              },
+              {
+                "id": "p4",
+                "op": "Project",
+                "plan_node": "n3",
+                "parents": [
+                  "p3"
+                ],
+                "clause": null,
+                "bindings": [
+                  [
+                    "v1",
+                    "職員室"
+                  ]
+                ],
+                "covers": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3",
+                  "o4",
+                  "o5",
+                  "o6",
+                  "o7"
+                ],
+                "answer": [
+                  [
+                    "place",
+                    "職員室"
+                  ]
+                ]
+              }
+            ],
+            "root": "p4",
+            "sovereign": "document"
+          },
+          "attempts": [
+            {
+              "sovereign": "document",
+              "plan": "n3",
+              "answers": 1
+            },
+            {
+              "sovereign": "document",
+              "plan": "n3",
+              "answers": 1
+            }
+          ],
+          "budget": {
+            "limits": {
+              "parse": 32,
+              "depth": 8,
+              "candidates": 256,
+              "bindings": 64,
+              "steps": 4096
+            },
+            "steps": 480,
+            "candidates": 2,
+            "peak_bindings": 1
+          }
+        },
+        "door": "semantic_document",
+        "multigrain_navigation": {
+          "kind": "multigrain_candidates",
+          "verdict": "CANDIDATE_SOURCE_LEAF_MATCHED",
+          "raw_question": "校長はどこで書類を確認した？",
+          "selector_query": "校長はどこで書類を確認した？",
+          "candidate_limit": 8,
+          "selector_query_origin": "raw_question",
+          "query_terms": [
+            "校長",
+            "書類",
+            "確認"
+          ],
+          "selected_candidate": "校長",
+          "resolution_verdict": "ANSWER",
+          "resolution_item": "校長",
+          "resolution_as_core": [
+            "校長"
+          ],
+          "resolution_as_facet_only": [
+            "書類",
+            "確認"
+          ],
+          "resolution_missing": [],
+          "resolution_agreeing": 4,
+          "resolution_of": 4,
+          "candidates": [
+            {
+              "item": "校長",
+              "resolution_views": [
+                "g1",
+                "g2",
+                "g3",
+                "whole"
+              ],
+              "sources": [
+                {
+                  "leaf": "document.txt",
+                  "domain_path": [],
+                  "path": [
+                    "document.txt"
+                  ],
+                  "source_label": "document.txt",
+                  "canonical_source_id": null,
+                  "identity_status": "identity_unverified",
+                  "identity_note": "CrossStore stores source_labels and source_meta by display label; its provenance records timestamps and sentence snippets, not a canonical source key or content hash.",
+                  "grain_witnesses": [
+                    {
+                      "member": "whole",
+                      "rung": "whole",
+                      "size": 0,
+                      "matched_feature_count": 1
+                    },
+                    {
+                      "member": "g3",
+                      "rung": "g3",
+                      "size": 3,
+                      "matched_feature_count": 1
+                    },
+                    {
+                      "member": "g2",
+                      "rung": "g2",
+                      "size": 2,
+                      "matched_feature_count": 1
+                    },
+                    {
+                      "member": "g1",
+                      "rung": "g1",
+                      "size": 1,
+                      "matched_feature_count": 2
+                    }
+                  ]
+                }
+              ],
+              "source_leaf_match_count": 1,
+              "independent_source_count": null,
+              "source_identity_status": "identity_unverified",
+              "selected_by_existing_constellation": true,
+              "source_reference_count": 1,
+              "source_references_truncated": false,
+              "selection_used_resolution_views": true
+            }
+          ],
+          "grain_trace": [
+            {
+              "member": "whole",
+              "rungs": [
+                [
+                  "whole",
+                  0
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": "校長",
+              "rung_readings": {
+                "whole": "校長"
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": true,
+              "independent_source_vote": false
+            },
+            {
+              "member": "g3",
+              "rungs": [
+                [
+                  "g3",
+                  3
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": "校長",
+              "rung_readings": {
+                "g3": "校長"
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": true,
+              "independent_source_vote": false
+            },
+            {
+              "member": "g2",
+              "rungs": [
+                [
+                  "g2",
+                  2
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": "校長",
+              "rung_readings": {
+                "g2": "校長"
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": true,
+              "independent_source_vote": false
+            },
+            {
+              "member": "g1",
+              "rungs": [
+                [
+                  "g1",
+                  1
+                ]
+              ],
+              "grammar": "raw",
+              "member_reading": "校長",
+              "rung_readings": {
+                "g1": "校長"
+              },
+              "role": "resolution_view",
+              "used_by_existing_candidate_selection": true,
+              "participated_with_candidate": true,
+              "independent_source_vote": false
+            }
+          ],
+          "query_destinations": [
+            {
+              "leaf": "document.txt",
+              "domain_path": [],
+              "path": [
+                "document.txt"
+              ],
+              "source_label": "document.txt",
+              "canonical_source_id": null,
+              "identity_status": "identity_unverified",
+              "identity_note": "CrossStore stores source_labels and source_meta by display label; its provenance records timestamps and sentence snippets, not a canonical source key or content hash."
+            }
+          ],
+          "query_divisions_from_constellation": [
+            "document.txt"
+          ],
+          "query_divisions_are_partial": true,
+          "surface_route": {
+            "verdict": "ROUTED",
+            "leaf": "document.txt",
+            "trail": [
+              "document.txt"
+            ],
+            "selected_leaf": "document.txt",
+            "route_kind": "single_leaf_or_unbuilt",
+            "via_api": [
+              "Base.lower"
+            ],
+            "used_for_candidate_selection": false
+          },
+          "source_identity_status": "identity_unverified",
+          "independent_source_count": null,
+          "identity_note": "CrossStore stores source_labels and source_meta by display label; its provenance records timestamps and sentence snippets, not a canonical source key or content hash.",
+          "trace": {
+            "calls": {
+              "FullConstellation.ask": 1,
+              "resolution.ask_member_reads": 4,
+              "resolution.Ladder.vote_for_selection": 4,
+              "resolution.Ladder.vote_for_grain_trace": 4,
+              "FullConstellation.ask.hierarchy.gather": 1,
+              "source_tree_leaf_walk": 1,
+              "source_tree_nodes_visited": 1,
+              "source_tree_leaves_visited": 1,
+              "Base.lower": 1,
+              "conduct_tree.descend": 0,
+              "surface.route": 0
+            },
+            "candidate_selection": "FullConstellation.ask(raw_question); its existing resolution consensus is the selector",
+            "selector_query": "校長はどこで書類を確認した？",
+            "source_join": "exact candidate core key plus configured source-leaf grain features",
+            "query_division_note": "FullConstellation.ask exposes at most six leaf names from its gather result",
+            "structural_views_are_source_votes": false,
+            "elapsed_ms": 0.755
+          },
+          "used_for_answer": false,
+          "used_for_goal_realization": false,
+          "authority": "source_location_hypothesis",
+          "truth_claim": false,
+          "source_binding": {
+            "version": "multigrain-source-binding-v1",
+            "status": "BOUND",
+            "reason": "candidate leaf IDs and exact original Clause spans were rederived",
+            "candidate": "校長",
+            "registry_sha256": "d923e8517a7ab117984aca1ccdd8c130fc07dcdb0eae64265f8d780eb62b89c9",
+            "scope": "document identity and original-text location only",
+            "goal_relation_scope": "same-owner local explicit argument spans only",
+            "source_truth_status": "UNCLASSIFIED; no truth or authority claim",
+            "independent_source_count": null,
+            "selections": [
+              {
+                "source_id": "document.txt",
+                "original_sha256": "d73b20f3204453bfc336bef69c868ae2fc0ae6f195b7ca840eb08393c8aa6ed9",
+                "leaf_id": "document.txt",
+                "leaf_path": [
+                  "document.txt"
+                ],
+                "candidate": "校長",
+                "candidate_spans": [
+                  [
+                    14,
+                    16
+                  ]
+                ],
+                "sentence_text": "校長が職員室で書類を確認した。",
+                "sentence_span": {
+                  "source": "document.txt",
+                  "start": 14,
+                  "end": 29
+                },
+                "clause_ids": [
+                  "f8352011a5e5878c782ea08d"
+                ],
+                "predicates": [
+                  "確認する"
+                ],
+                "request_target_anchor": null,
+                "target_role": null,
+                "target_argument_span": null,
+                "target_case_particle_span": null,
+                "candidate_role": null,
+                "candidate_argument_span": null,
+                "source_frame_id": null,
+                "source_frame_evidence_clause_id": null,
+                "source_assertion_status": null
+              }
+            ]
+          },
+          "candidate_views_supplied_to_answer_verifier": true,
+          "candidate_document_id_cited_after_full_view_check": true,
+          "candidate_sentence_span_cited_after_full_view_check": null,
+          "candidate_clause_span_cited_after_full_view_check": true,
+          "candidate_clause_span_match_count": 1,
+          "candidate_clause_span_causal_influence_proven": false,
+          "citation_granularity": "source_id_and_exact_candidate_clause_span_match",
+          "candidate_goal_status": null
+        },
+        "runtime_mode": "round5",
+        "basis_policy": {
+          "schema": "verantyx.basis_policy/1",
+          "table_version": 1,
+          "applied": true,
+          "request_kind": "factual",
+          "kind_class": "FACTUAL",
+          "basis": "HUMAN",
+          "basis_original": "HUMAN",
+          "human_present": true,
+          "show_reference": false,
+          "outcome": "ANSWER_HUMAN_BASIS",
+          "in_table": true,
+          "counts": {
+            "human": 1,
+            "generated": 0,
+            "non_evidence": 0,
+            "request_text": 0,
+            "unreadable": 0,
+            "non_evidence_by_origin": {},
+            "unknown_origin": 0,
+            "unknown_origin_by_family": {},
+            "unknown_origin_values": {}
+          },
+          "classify_version": 4,
+          "confirm_id_version": 2,
+          "sovereign": {
+            "state": "UNKNOWN_NO_SOVEREIGN",
+            "store_id": null,
+            "records_read": 0,
+            "rejected_by_user": 0,
+            "confirmed_records_used": 0,
+            "confirmed_records_not_used": 0,
+            "ambiguous": false
+          },
+          "form": {
+            "state": "UNKNOWN_NO_INDEX",
+            "reasons": {
+              "CAND_NOT_ONE_CROSS": 0,
+              "CAND_CENTER_DIFFERS": 0,
+              "CAND_ROLES_DIFFER": 0,
+              "CAND_FILLER_SPAN_AMBIGUOUS": 0,
+              "CAND_REREAD_DIFFERS": 0,
+              "CAND_CONTENT_DIFFERS": 0
+            },
+            "families": {
+              "local": "UNKNOWN_NO_INDEX",
+              "pro": "UNKNOWN_NO_INDEX",
+              "code": "UNKNOWN_NO_INDEX",
+              "conversation": "UNKNOWN_NO_INDEX",
+              "general_qa": "UNKNOWN_NO_INDEX",
+              "code_qa": "UNKNOWN_NO_INDEX",
+              "figurative_commonsense": "UNKNOWN_NO_INDEX",
+              "narrative": "UNKNOWN_NO_INDEX",
+              "paraphrase_entail": "UNKNOWN_NO_INDEX"
+            },
+            "searched_rows": 0,
+            "candidates": 0,
+            "distinct_forms": 0
+          }
+        }
+      },
+      "stdout_if_not_json": null,
+      "view": {
+        "verdict": "ANSWER",
+        "answer": "place: 職員室",
+        "values": [
+          "職員室"
+        ],
+        "evidence": [
+          "校長が職員室で書類を確認した。"
+        ],
+        "policy": "ANSWER_HUMAN_BASIS",
+        "basis": "HUMAN",
+        "reason": null,
+        "how_to_resolve": null
+      }
+    }
+  ],
+  "reads": [
+    {
+      "text": "先生が生徒に地図を渡した。",
+      "argv": [
+        "-m",
+        "verantyx.semantic_read",
+        "--text=先生が生徒に地図を渡した。",
+        "--events"
+      ],
+      "rc": 0,
+      "raw": {
+        "schema": "verantyx.semantic_read/1",
+        "lang": "ja",
+        "readable": true,
+        "clauses": [
+          {
+            "predicate": "渡す",
+            "roles": {
+              "agent": "先生",
+              "patient": "地図",
+              "recipient": "生徒"
+            },
+            "polarity": "+",
+            "tense": "past",
+            "modality": null,
+            "voice": "active"
+          }
+        ],
+        "relations": [],
+        "abstain": null,
+        "unsupported": [],
+        "clause_meta": [
+          {
+            "rule": "frame",
+            "span": [
+              9,
+              11
+            ]
+          }
+        ],
+        "events": {
+          "schema": "verantyx.event_cross/1",
+          "status": "CROSSED",
+          "crosses": [
+            {
+              "index": 0,
+              "center": {
+                "predicate": "渡す",
+                "polarity": "+",
+                "tense": "past",
+                "modality": null,
+                "voice": "active"
+              },
+              "arms": {
+                "agent": {
+                  "kind": "FILLER",
+                  "fillers": [
+                    {
+                      "surface": "先生",
+                      "head": "先生",
+                      "head_basis": "surface",
+                      "place": {
+                        "state": "DECIDED",
+                        "origin": "direct",
+                        "estimate_basis": null,
+                        "types": [
+                          "PERSON"
+                        ],
+                        "source": "direct",
+                        "provenance": {
+                          "term": "先生",
+                          "namespace": "N",
+                          "constructed": false,
+                          "placement": {
+                            "path": "<placement r8/run2>",
+                            "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                            "reason": null
+                          }
+                        }
+                      },
+                      "flags": {}
+                    }
+                  ],
+                  "agreement": {
+                    "verdict": "AGREE",
+                    "reason": null,
+                    "expected": [
+                      "ANIMAL",
+                      "GROUP_ORG",
+                      "PERSON"
+                    ],
+                    "observed": [
+                      "PERSON"
+                    ]
+                  }
+                },
+                "patient": {
+                  "kind": "FILLER",
+                  "fillers": [
+                    {
+                      "surface": "地図",
+                      "head": "地図",
+                      "head_basis": "surface",
+                      "place": {
+                        "state": "MULTIPLE",
+                        "origin": "direct",
+                        "estimate_basis": null,
+                        "types": [
+                          "INFO_LANGUAGE",
+                          "PLACE"
+                        ],
+                        "source": "direct",
+                        "provenance": {
+                          "term": "地図",
+                          "namespace": "N",
+                          "constructed": false,
+                          "placement": {
+                            "path": "<placement r8/run2>",
+                            "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                            "reason": null
+                          }
+                        }
+                      },
+                      "flags": {}
+                    }
+                  ],
+                  "agreement": {
+                    "verdict": "NOT_CHECKED",
+                    "reason": "ROLE_NOT_IN_TABLE",
+                    "expected": null,
+                    "observed": null
+                  }
+                },
+                "recipient": {
+                  "kind": "FILLER",
+                  "fillers": [
+                    {
+                      "surface": "生徒",
+                      "head": "生徒",
+                      "head_basis": "surface",
+                      "place": {
+                        "state": "DECIDED",
+                        "origin": "direct",
+                        "estimate_basis": null,
+                        "types": [
+                          "PERSON"
+                        ],
+                        "source": "direct",
+                        "provenance": {
+                          "term": "生徒",
+                          "namespace": "N",
+                          "constructed": false,
+                          "placement": {
+                            "path": "<placement r8/run2>",
+                            "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                            "reason": null
+                          }
+                        }
+                      },
+                      "flags": {}
+                    }
+                  ],
+                  "agreement": {
+                    "verdict": "AGREE",
+                    "reason": null,
+                    "expected": [
+                      "GROUP_ORG",
+                      "PERSON"
+                    ],
+                    "observed": [
+                      "PERSON"
+                    ]
+                  }
+                }
+              },
+              "provenance": {
+                "source_schema": "verantyx.semantic_read/1",
+                "clause_index": 0,
+                "rule": "frame",
+                "span": [
+                  9,
+                  11
+                ]
+              }
+            }
+          ],
+          "relations": [],
+          "abstain": null,
+          "lookup": {
+            "id": "coarse-placement:89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5"
+          },
+          "counts": {
+            "crosses": 1,
+            "arms": 3,
+            "arm_ties": 0,
+            "agreement": {
+              "AGREE": 2,
+              "DISAGREE": 0,
+              "NOT_CHECKED": 1
+            },
+            "not_checked_by_reason": {
+              "ARM_TIE": 0,
+              "ROLE_NOT_IN_TABLE": 1,
+              "LOOKUP_RESULT_INVALID": 0,
+              "NO_PLACEMENT": 0,
+              "UNKNOWN": 0,
+              "UNPLACED": 0,
+              "ESTIMATED_NEAR": 0,
+              "ESTIMATED_GENERATED": 0,
+              "MULTIPLE": 0
+            }
+          }
+        }
+      },
+      "stdout_if_not_json": null,
+      "view": {
+        "readable": true,
+        "clauses": [
+          {
+            "predicate": "渡す",
+            "roles": {
+              "agent": "先生",
+              "patient": "地図",
+              "recipient": "生徒"
+            },
+            "polarity": "+",
+            "tense": "past",
+            "modality": null,
+            "voice": "active"
+          }
+        ],
+        "relations": [],
+        "abstain": null,
+        "unsupported": [],
+        "events_status": "CROSSED"
+      }
+    },
+    {
+      "text": "校長が職員室で書類を確認した。",
+      "argv": [
+        "-m",
+        "verantyx.semantic_read",
+        "--text=校長が職員室で書類を確認した。",
+        "--events"
+      ],
+      "rc": 0,
+      "raw": {
+        "schema": "verantyx.semantic_read/1",
+        "lang": "ja",
+        "readable": true,
+        "clauses": [
+          {
+            "predicate": "確認する",
+            "roles": {
+              "agent": "校長",
+              "patient": "書類",
+              "place": "職員室"
+            },
+            "polarity": "+",
+            "tense": "past",
+            "modality": null,
+            "voice": "active"
+          }
+        ],
+        "relations": [],
+        "abstain": null,
+        "unsupported": [],
+        "clause_meta": [
+          {
+            "rule": "frame",
+            "span": [
+              12,
+              13
+            ]
+          }
+        ],
+        "events": {
+          "schema": "verantyx.event_cross/1",
+          "status": "CROSSED",
+          "crosses": [
+            {
+              "index": 0,
+              "center": {
+                "predicate": "確認する",
+                "polarity": "+",
+                "tense": "past",
+                "modality": null,
+                "voice": "active"
+              },
+              "arms": {
+                "agent": {
+                  "kind": "FILLER",
+                  "fillers": [
+                    {
+                      "surface": "校長",
+                      "head": "校長",
+                      "head_basis": "surface",
+                      "place": {
+                        "state": "DECIDED",
+                        "origin": "direct",
+                        "estimate_basis": null,
+                        "types": [
+                          "PERSON"
+                        ],
+                        "source": "direct",
+                        "provenance": {
+                          "term": "校長",
+                          "namespace": "N",
+                          "constructed": false,
+                          "placement": {
+                            "path": "<placement r8/run2>",
+                            "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                            "reason": null
+                          }
+                        }
+                      },
+                      "flags": {}
+                    }
+                  ],
+                  "agreement": {
+                    "verdict": "AGREE",
+                    "reason": null,
+                    "expected": [
+                      "ANIMAL",
+                      "GROUP_ORG",
+                      "PERSON"
+                    ],
+                    "observed": [
+                      "PERSON"
+                    ]
+                  }
+                },
+                "patient": {
+                  "kind": "FILLER",
+                  "fillers": [
+                    {
+                      "surface": "書類",
+                      "head": "書類",
+                      "head_basis": "surface",
+                      "place": {
+                        "state": "DECIDED",
+                        "origin": "direct",
+                        "estimate_basis": null,
+                        "types": [
+                          "INFO_LANGUAGE"
+                        ],
+                        "source": "direct",
+                        "provenance": {
+                          "term": "書類",
+                          "namespace": "N",
+                          "constructed": false,
+                          "placement": {
+                            "path": "<placement r8/run2>",
+                            "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                            "reason": null
+                          }
+                        }
+                      },
+                      "flags": {}
+                    }
+                  ],
+                  "agreement": {
+                    "verdict": "NOT_CHECKED",
+                    "reason": "ROLE_NOT_IN_TABLE",
+                    "expected": null,
+                    "observed": null
+                  }
+                },
+                "place": {
+                  "kind": "FILLER",
+                  "fillers": [
+                    {
+                      "surface": "職員室",
+                      "head": "職員室",
+                      "head_basis": "surface",
+                      "place": {
+                        "state": "MULTIPLE",
+                        "origin": "direct",
+                        "estimate_basis": null,
+                        "types": [
+                          "PLACE",
+                          "WORK"
+                        ],
+                        "source": "direct",
+                        "provenance": {
+                          "term": "職員室",
+                          "namespace": "N",
+                          "constructed": false,
+                          "placement": {
+                            "path": "<placement r8/run2>",
+                            "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                            "reason": null
+                          }
+                        }
+                      },
+                      "flags": {}
+                    }
+                  ],
+                  "agreement": {
+                    "verdict": "NOT_CHECKED",
+                    "reason": "MULTIPLE",
+                    "expected": null,
+                    "observed": null
+                  }
+                }
+              },
+              "provenance": {
+                "source_schema": "verantyx.semantic_read/1",
+                "clause_index": 0,
+                "rule": "frame",
+                "span": [
+                  12,
+                  13
+                ]
+              }
+            }
+          ],
+          "relations": [],
+          "abstain": null,
+          "lookup": {
+            "id": "coarse-placement:89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5"
+          },
+          "counts": {
+            "crosses": 1,
+            "arms": 3,
+            "arm_ties": 0,
+            "agreement": {
+              "AGREE": 1,
+              "DISAGREE": 0,
+              "NOT_CHECKED": 2
+            },
+            "not_checked_by_reason": {
+              "ARM_TIE": 0,
+              "ROLE_NOT_IN_TABLE": 1,
+              "LOOKUP_RESULT_INVALID": 0,
+              "NO_PLACEMENT": 0,
+              "UNKNOWN": 0,
+              "UNPLACED": 0,
+              "ESTIMATED_NEAR": 0,
+              "ESTIMATED_GENERATED": 0,
+              "MULTIPLE": 1
+            }
+          }
+        }
+      },
+      "stdout_if_not_json": null,
+      "view": {
+        "readable": true,
+        "clauses": [
+          {
+            "predicate": "確認する",
+            "roles": {
+              "agent": "校長",
+              "patient": "書類",
+              "place": "職員室"
+            },
+            "polarity": "+",
+            "tense": "past",
+            "modality": null,
+            "voice": "active"
+          }
+        ],
+        "relations": [],
+        "abstain": null,
+        "unsupported": [],
+        "events_status": "CROSSED"
+      }
+    },
+    {
+      "text": "母が弟に話した人を兄が呼んだ。",
+      "argv": [
+        "-m",
+        "verantyx.semantic_read",
+        "--text=母が弟に話した人を兄が呼んだ。",
+        "--events"
+      ],
+      "rc": 0,
+      "raw": {
+        "schema": "verantyx.semantic_read/1",
+        "lang": "ja",
+        "readable": true,
+        "clauses": [
+          {
+            "predicate": "話す",
+            "roles": {
+              "agent": "母",
+              "patient": "人",
+              "recipient": "弟"
+            },
+            "polarity": "+",
+            "tense": "past",
+            "modality": null,
+            "voice": "active",
+            "predicate_basis": "placement_direct:P_COMMUNICATE",
+            "role_basis": {
+              "patient": "placement_direct:PERSON"
+            }
+          },
+          {
+            "predicate": "呼ぶ",
+            "roles": {
+              "agent": "兄",
+              "patient": "人"
+            },
+            "polarity": "+",
+            "tense": "past",
+            "modality": null,
+            "voice": "active"
+          }
+        ],
+        "relations": [
+          {
+            "type": "relative",
+            "from": 0,
+            "to": 1,
+            "head": {
+              "from_role": "patient",
+              "to_role": "patient"
+            }
+          }
+        ],
+        "abstain": null,
+        "unsupported": [
+          {
+            "predicate": "話す",
+            "span": [
+              4,
+              6
+            ],
+            "reasons": [
+              "multiple predicates need explicit clause scope",
+              "unrepresented source content",
+              "ambiguous frame role"
+            ]
+          },
+          {
+            "predicate": "呼ぶ",
+            "span": [
+              11,
+              13
+            ],
+            "reasons": [
+              "multiple predicates need explicit clause scope",
+              "unrepresented source content",
+              "unrepresented source content"
+            ]
+          }
+        ],
+        "clause_meta": [
+          {
+            "rule": "frame",
+            "span": [
+              4,
+              7
+            ]
+          },
+          {
+            "rule": "frame",
+            "span": [
+              11,
+              14
+            ]
+          }
+        ],
+        "events": {
+          "schema": "verantyx.event_cross/1",
+          "status": "CROSSED",
+          "crosses": [
+            {
+              "index": 0,
+              "center": {
+                "predicate": "話す",
+                "polarity": "+",
+                "tense": "past",
+                "modality": null,
+                "voice": "active"
+              },
+              "arms": {
+                "agent": {
+                  "kind": "FILLER",
+                  "fillers": [
+                    {
+                      "surface": "母",
+                      "head": "母",
+                      "head_basis": "surface",
+                      "place": {
+                        "state": "DECIDED",
+                        "origin": "direct",
+                        "estimate_basis": null,
+                        "types": [
+                          "PERSON"
+                        ],
+                        "source": "direct",
+                        "provenance": {
+                          "term": "母",
+                          "namespace": "N",
+                          "constructed": false,
+                          "placement": {
+                            "path": "<placement r8/run2>",
+                            "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                            "reason": null
+                          }
+                        }
+                      },
+                      "flags": {}
+                    }
+                  ],
+                  "agreement": {
+                    "verdict": "AGREE",
+                    "reason": null,
+                    "expected": [
+                      "ANIMAL",
+                      "GROUP_ORG",
+                      "PERSON"
+                    ],
+                    "observed": [
+                      "PERSON"
+                    ]
+                  }
+                },
+                "patient": {
+                  "kind": "FILLER",
+                  "fillers": [
+                    {
+                      "surface": "人",
+                      "head": "人",
+                      "head_basis": "surface",
+                      "place": {
+                        "state": "DECIDED",
+                        "origin": "direct",
+                        "estimate_basis": null,
+                        "types": [
+                          "PERSON"
+                        ],
+                        "source": "direct",
+                        "provenance": {
+                          "term": "人",
+                          "namespace": "N",
+                          "constructed": false,
+                          "placement": {
+                            "path": "<placement r8/run2>",
+                            "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                            "reason": null
+                          }
+                        }
+                      },
+                      "flags": {}
+                    }
+                  ],
+                  "agreement": {
+                    "verdict": "NOT_CHECKED",
+                    "reason": "ROLE_NOT_IN_TABLE",
+                    "expected": null,
+                    "observed": null
+                  }
+                },
+                "recipient": {
+                  "kind": "FILLER",
+                  "fillers": [
+                    {
+                      "surface": "弟",
+                      "head": "弟",
+                      "head_basis": "surface",
+                      "place": {
+                        "state": "DECIDED",
+                        "origin": "direct",
+                        "estimate_basis": null,
+                        "types": [
+                          "PERSON"
+                        ],
+                        "source": "direct",
+                        "provenance": {
+                          "term": "弟",
+                          "namespace": "N",
+                          "constructed": false,
+                          "placement": {
+                            "path": "<placement r8/run2>",
+                            "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                            "reason": null
+                          }
+                        }
+                      },
+                      "flags": {}
+                    }
+                  ],
+                  "agreement": {
+                    "verdict": "AGREE",
+                    "reason": null,
+                    "expected": [
+                      "GROUP_ORG",
+                      "PERSON"
+                    ],
+                    "observed": [
+                      "PERSON"
+                    ]
+                  }
+                }
+              },
+              "provenance": {
+                "source_schema": "verantyx.semantic_read/1",
+                "clause_index": 0,
+                "rule": "frame",
+                "span": [
+                  4,
+                  7
+                ],
+                "predicate_basis": "placement_direct:P_COMMUNICATE",
+                "role_basis": {
+                  "patient": "placement_direct:PERSON"
+                }
+              }
+            },
+            {
+              "index": 1,
+              "center": {
+                "predicate": "呼ぶ",
+                "polarity": "+",
+                "tense": "past",
+                "modality": null,
+                "voice": "active"
+              },
+              "arms": {
+                "agent": {
+                  "kind": "FILLER",
+                  "fillers": [
+                    {
+                      "surface": "兄",
+                      "head": "兄",
+                      "head_basis": "surface",
+                      "place": {
+                        "state": "DECIDED",
+                        "origin": "direct",
+                        "estimate_basis": null,
+                        "types": [
+                          "PERSON"
+                        ],
+                        "source": "direct",
+                        "provenance": {
+                          "term": "兄",
+                          "namespace": "N",
+                          "constructed": false,
+                          "placement": {
+                            "path": "<placement r8/run2>",
+                            "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                            "reason": null
+                          }
+                        }
+                      },
+                      "flags": {}
+                    }
+                  ],
+                  "agreement": {
+                    "verdict": "AGREE",
+                    "reason": null,
+                    "expected": [
+                      "ANIMAL",
+                      "GROUP_ORG",
+                      "PERSON"
+                    ],
+                    "observed": [
+                      "PERSON"
+                    ]
+                  }
+                },
+                "patient": {
+                  "kind": "FILLER",
+                  "fillers": [
+                    {
+                      "surface": "人",
+                      "head": "人",
+                      "head_basis": "surface",
+                      "place": {
+                        "state": "DECIDED",
+                        "origin": "direct",
+                        "estimate_basis": null,
+                        "types": [
+                          "PERSON"
+                        ],
+                        "source": "direct",
+                        "provenance": {
+                          "term": "人",
+                          "namespace": "N",
+                          "constructed": false,
+                          "placement": {
+                            "path": "<placement r8/run2>",
+                            "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                            "reason": null
+                          }
+                        }
+                      },
+                      "flags": {},
+                      "embedded": {
+                        "index": 0,
+                        "center": {
+                          "predicate": "話す",
+                          "polarity": "+",
+                          "tense": "past",
+                          "modality": null,
+                          "voice": "active"
+                        },
+                        "arms": {
+                          "agent": {
+                            "kind": "FILLER",
+                            "fillers": [
+                              {
+                                "surface": "母",
+                                "head": "母",
+                                "head_basis": "surface",
+                                "place": {
+                                  "state": "DECIDED",
+                                  "origin": "direct",
+                                  "estimate_basis": null,
+                                  "types": [
+                                    "PERSON"
+                                  ],
+                                  "source": "direct",
+                                  "provenance": {
+                                    "term": "母",
+                                    "namespace": "N",
+                                    "constructed": false,
+                                    "placement": {
+                                      "path": "<placement r8/run2>",
+                                      "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                                      "reason": null
+                                    }
+                                  }
+                                },
+                                "flags": {}
+                              }
+                            ],
+                            "agreement": {
+                              "verdict": "AGREE",
+                              "reason": null,
+                              "expected": [
+                                "ANIMAL",
+                                "GROUP_ORG",
+                                "PERSON"
+                              ],
+                              "observed": [
+                                "PERSON"
+                              ]
+                            }
+                          },
+                          "patient": {
+                            "kind": "FILLER",
+                            "fillers": [
+                              {
+                                "surface": "人",
+                                "head": "人",
+                                "head_basis": "surface",
+                                "place": {
+                                  "state": "DECIDED",
+                                  "origin": "direct",
+                                  "estimate_basis": null,
+                                  "types": [
+                                    "PERSON"
+                                  ],
+                                  "source": "direct",
+                                  "provenance": {
+                                    "term": "人",
+                                    "namespace": "N",
+                                    "constructed": false,
+                                    "placement": {
+                                      "path": "<placement r8/run2>",
+                                      "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                                      "reason": null
+                                    }
+                                  }
+                                },
+                                "flags": {}
+                              }
+                            ],
+                            "agreement": {
+                              "verdict": "NOT_CHECKED",
+                              "reason": "ROLE_NOT_IN_TABLE",
+                              "expected": null,
+                              "observed": null
+                            }
+                          },
+                          "recipient": {
+                            "kind": "FILLER",
+                            "fillers": [
+                              {
+                                "surface": "弟",
+                                "head": "弟",
+                                "head_basis": "surface",
+                                "place": {
+                                  "state": "DECIDED",
+                                  "origin": "direct",
+                                  "estimate_basis": null,
+                                  "types": [
+                                    "PERSON"
+                                  ],
+                                  "source": "direct",
+                                  "provenance": {
+                                    "term": "弟",
+                                    "namespace": "N",
+                                    "constructed": false,
+                                    "placement": {
+                                      "path": "<placement r8/run2>",
+                                      "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                                      "reason": null
+                                    }
+                                  }
+                                },
+                                "flags": {}
+                              }
+                            ],
+                            "agreement": {
+                              "verdict": "AGREE",
+                              "reason": null,
+                              "expected": [
+                                "GROUP_ORG",
+                                "PERSON"
+                              ],
+                              "observed": [
+                                "PERSON"
+                              ]
+                            }
+                          }
+                        },
+                        "provenance": {
+                          "source_schema": "verantyx.semantic_read/1",
+                          "clause_index": 0,
+                          "rule": "frame",
+                          "span": [
+                            4,
+                            7
+                          ],
+                          "predicate_basis": "placement_direct:P_COMMUNICATE",
+                          "role_basis": {
+                            "patient": "placement_direct:PERSON"
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "agreement": {
+                    "verdict": "NOT_CHECKED",
+                    "reason": "ROLE_NOT_IN_TABLE",
+                    "expected": null,
+                    "observed": null
+                  }
+                }
+              },
+              "provenance": {
+                "source_schema": "verantyx.semantic_read/1",
+                "clause_index": 1,
+                "rule": "frame",
+                "span": [
+                  11,
+                  14
+                ]
+              }
+            }
+          ],
+          "relations": [
+            {
+              "type": "relative",
+              "from": 0,
+              "to": 1,
+              "head": {
+                "from_role": "patient",
+                "to_role": "patient"
+              }
+            }
+          ],
+          "abstain": null,
+          "lookup": {
+            "id": "coarse-placement:89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5"
+          },
+          "counts": {
+            "crosses": 2,
+            "arms": 5,
+            "arm_ties": 0,
+            "agreement": {
+              "AGREE": 3,
+              "DISAGREE": 0,
+              "NOT_CHECKED": 2
+            },
+            "not_checked_by_reason": {
+              "ARM_TIE": 0,
+              "ROLE_NOT_IN_TABLE": 2,
+              "LOOKUP_RESULT_INVALID": 0,
+              "NO_PLACEMENT": 0,
+              "UNKNOWN": 0,
+              "UNPLACED": 0,
+              "ESTIMATED_NEAR": 0,
+              "ESTIMATED_GENERATED": 0,
+              "MULTIPLE": 0
+            }
+          }
+        }
+      },
+      "stdout_if_not_json": null,
+      "view": {
+        "readable": true,
+        "clauses": [
+          {
+            "predicate": "話す",
+            "roles": {
+              "agent": "母",
+              "patient": "人",
+              "recipient": "弟"
+            },
+            "polarity": "+",
+            "tense": "past",
+            "modality": null,
+            "voice": "active",
+            "predicate_basis": "placement_direct:P_COMMUNICATE",
+            "role_basis": {
+              "patient": "placement_direct:PERSON"
+            }
+          },
+          {
+            "predicate": "呼ぶ",
+            "roles": {
+              "agent": "兄",
+              "patient": "人"
+            },
+            "polarity": "+",
+            "tense": "past",
+            "modality": null,
+            "voice": "active"
+          }
+        ],
+        "relations": [
+          {
+            "type": "relative",
+            "from": 0,
+            "to": 1,
+            "head": {
+              "from_role": "patient",
+              "to_role": "patient"
+            }
+          }
+        ],
+        "abstain": null,
+        "unsupported": [
+          {
+            "predicate": "話す",
+            "span": [
+              4,
+              6
+            ],
+            "reasons": [
+              "multiple predicates need explicit clause scope",
+              "unrepresented source content",
+              "ambiguous frame role"
+            ]
+          },
+          {
+            "predicate": "呼ぶ",
+            "span": [
+              11,
+              13
+            ],
+            "reasons": [
+              "multiple predicates need explicit clause scope",
+              "unrepresented source content",
+              "unrepresented source content"
+            ]
+          }
+        ],
+        "events_status": "CROSSED"
+      }
+    },
+    {
+      "text": "係が荷物を倉庫に運んだ。",
+      "argv": [
+        "-m",
+        "verantyx.semantic_read",
+        "--text=係が荷物を倉庫に運んだ。",
+        "--events"
+      ],
+      "rc": 0,
+      "raw": {
+        "schema": "verantyx.semantic_read/1",
+        "lang": "ja",
+        "readable": true,
+        "clauses": [
+          {
+            "predicate": "運ぶ",
+            "roles": {
+              "agent": "係",
+              "patient": "荷物",
+              "goal": "倉庫"
+            },
+            "polarity": "+",
+            "tense": "past",
+            "modality": null,
+            "voice": "active"
+          }
+        ],
+        "relations": [],
+        "abstain": null,
+        "unsupported": [],
+        "clause_meta": [
+          {
+            "rule": "frame",
+            "span": [
+              8,
+              10
+            ]
+          }
+        ],
+        "events": {
+          "schema": "verantyx.event_cross/1",
+          "status": "CROSSED",
+          "crosses": [
+            {
+              "index": 0,
+              "center": {
+                "predicate": "運ぶ",
+                "polarity": "+",
+                "tense": "past",
+                "modality": null,
+                "voice": "active"
+              },
+              "arms": {
+                "agent": {
+                  "kind": "FILLER",
+                  "fillers": [
+                    {
+                      "surface": "係",
+                      "head": "係",
+                      "head_basis": "surface",
+                      "place": {
+                        "state": "DECIDED",
+                        "origin": "direct",
+                        "estimate_basis": null,
+                        "types": [
+                          "PERSON"
+                        ],
+                        "source": "direct",
+                        "provenance": {
+                          "term": "係",
+                          "namespace": "N",
+                          "constructed": false,
+                          "placement": {
+                            "path": "<placement r8/run2>",
+                            "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                            "reason": null
+                          }
+                        }
+                      },
+                      "flags": {}
+                    }
+                  ],
+                  "agreement": {
+                    "verdict": "AGREE",
+                    "reason": null,
+                    "expected": [
+                      "ANIMAL",
+                      "GROUP_ORG",
+                      "PERSON"
+                    ],
+                    "observed": [
+                      "PERSON"
+                    ]
+                  }
+                },
+                "patient": {
+                  "kind": "FILLER",
+                  "fillers": [
+                    {
+                      "surface": "荷物",
+                      "head": "荷物",
+                      "head_basis": "surface",
+                      "place": {
+                        "state": "UNPLACED",
+                        "origin": null,
+                        "estimate_basis": null,
+                        "types": [],
+                        "source": "UNPLACED",
+                        "provenance": {
+                          "term": "荷物",
+                          "namespace": null,
+                          "constructed": false,
+                          "placement": {
+                            "path": "<placement r8/run2>",
+                            "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                            "reason": null
+                          }
+                        }
+                      },
+                      "flags": {}
+                    }
+                  ],
+                  "agreement": {
+                    "verdict": "NOT_CHECKED",
+                    "reason": "ROLE_NOT_IN_TABLE",
+                    "expected": null,
+                    "observed": null
+                  }
+                },
+                "goal": {
+                  "kind": "FILLER",
+                  "fillers": [
+                    {
+                      "surface": "倉庫",
+                      "head": "倉庫",
+                      "head_basis": "surface",
+                      "place": {
+                        "state": "DECIDED",
+                        "origin": "direct",
+                        "estimate_basis": null,
+                        "types": [
+                          "PLACE"
+                        ],
+                        "source": "direct",
+                        "provenance": {
+                          "term": "倉庫",
+                          "namespace": "N",
+                          "constructed": false,
+                          "placement": {
+                            "path": "<placement r8/run2>",
+                            "content_sha256": "89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5",
+                            "reason": null
+                          }
+                        }
+                      },
+                      "flags": {}
+                    }
+                  ],
+                  "agreement": {
+                    "verdict": "NOT_CHECKED",
+                    "reason": "ROLE_NOT_IN_TABLE",
+                    "expected": null,
+                    "observed": null
+                  }
+                }
+              },
+              "provenance": {
+                "source_schema": "verantyx.semantic_read/1",
+                "clause_index": 0,
+                "rule": "frame",
+                "span": [
+                  8,
+                  10
+                ]
+              }
+            }
+          ],
+          "relations": [],
+          "abstain": null,
+          "lookup": {
+            "id": "coarse-placement:89bd07e6c71d883cdeafaa96e906118cbfbc3dc45b1f15f2ce65bbec783382a5"
+          },
+          "counts": {
+            "crosses": 1,
+            "arms": 3,
+            "arm_ties": 0,
+            "agreement": {
+              "AGREE": 1,
+              "DISAGREE": 0,
+              "NOT_CHECKED": 2
+            },
+            "not_checked_by_reason": {
+              "ARM_TIE": 0,
+              "ROLE_NOT_IN_TABLE": 2,
+              "LOOKUP_RESULT_INVALID": 0,
+              "NO_PLACEMENT": 0,
+              "UNKNOWN": 0,
+              "UNPLACED": 0,
+              "ESTIMATED_NEAR": 0,
+              "ESTIMATED_GENERATED": 0,
+              "MULTIPLE": 0
+            }
+          }
+        }
+      },
+      "stdout_if_not_json": null,
+      "view": {
+        "readable": true,
+        "clauses": [
+          {
+            "predicate": "運ぶ",
+            "roles": {
+              "agent": "係",
+              "patient": "荷物",
+              "goal": "倉庫"
+            },
+            "polarity": "+",
+            "tense": "past",
+            "modality": null,
+            "voice": "active"
+          }
+        ],
+        "relations": [],
+        "abstain": null,
+        "unsupported": [],
+        "events_status": "CROSSED"
+      }
+    }
+  ]
+}

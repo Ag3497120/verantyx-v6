@@ -1,0 +1,458 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import Navbar from '@/components/Navbar';
+import TryVera from './TryVera';
+import VeraFooter from './VeraFooter';
+import { Body, Code, H2, Section } from './ui';
+import { useHomeLang, type L } from './useHomeLang';
+
+const REPO = 'https://github.com/Ag3497120/vera';
+
+/* Every number on this page comes from the measured table below and nowhere else.
+ * The values are written as the ticket states them; do not round, convert or add to them. */
+
+const POINTS: { title: L; body: L }[] = [
+  {
+    title: { ja: '重みがない', en: 'No weights' },
+    body: {
+      ja: '学習した重みを持たず、規則と記録で動きます。学習で外れることがありません。',
+      en: 'It holds no trained weights. It runs on rules and records, so training cannot loosen it.',
+    },
+  },
+  {
+    title: { ja: '遅延のない判断', en: 'Decisions without the wait' },
+    body: {
+      ja: 'CPU の上で、ミリ秒の単位で判断します。',
+      en: 'It decides on a CPU, on the scale of milliseconds.',
+    },
+  },
+  {
+    title: { ja: '出所か、型つきの沈黙か', en: 'A source, or a typed silence' },
+    body: {
+      ja: '答えには必ず出所が付きます。分からなければ、何が欠けているかを型で示して黙ります。',
+      en: 'Every answer carries its source. When it does not know, it stays silent and names what is missing, as a type.',
+    },
+  },
+  {
+    title: { ja: '記憶は追記のみ', en: 'Append-only memory' },
+    body: {
+      ja: '記憶は書き足すだけ。単位で削除でき、昇格には人の同意が要ります。',
+      en: 'Memory is only appended to. It can be deleted unit by unit, and promotion needs a person’s consent.',
+    },
+  },
+];
+
+const USES: { tag: string; title: L; body: L }[] = [
+  {
+    tag: 'a',
+    title: { ja: 'LLM の答えの検証器', en: 'A checker for LLM answers' },
+    body: {
+      ja: '答えの根拠を「人の記録にある」「生成だけ」「不明」に分けます。生成だけで事実を答えることはしません。',
+      en: 'It sorts an answer’s basis into “in a human record”, “generated only” and “unknown”, and never answers a fact on generation alone.',
+    },
+  },
+  {
+    tag: 'b',
+    title: { ja: '生成の前段の門', en: 'A gate in front of generation' },
+    body: {
+      ja: '入力を構造に読み、読めないもの・読みが割れるものは通しません。規則と記録で動くので、学習で外せません。',
+      en: 'It reads input into structure and does not pass what it cannot read or what reads more than one way. It runs on rules and records, so training cannot remove it.',
+    },
+  },
+  {
+    tag: 'c',
+    title: { ja: 'エージェントの判断の台帳', en: 'A ledger for agent decisions' },
+    body: {
+      ja: '人の決定を人の記録として持ちます。エージェントの申告は申告のまま残し、記録への昇格には同意が要ります。',
+      en: 'It keeps a person’s decisions as human records. An agent’s claim stays a claim, and promoting it to a record needs consent.',
+    },
+  },
+  {
+    tag: 'd',
+    title: { ja: '構造化された記録への決定的な QA', en: 'Deterministic QA over structured records' },
+    body: {
+      ja: '名簿・作業記録・ログに対して、誰が・何を・いつ・どこへ を決定的に答えます。',
+      en: 'Over rosters, work records and logs, it answers who did what, when and where — deterministically.',
+    },
+  },
+];
+
+const MEASURED: { item: L; value: L }[] = [
+  { item: { ja: '隠しバンク B1 読解', en: 'Hidden bank B1 · reading' }, value: { ja: '正読 11/296・誤読 0', en: 'correct reads 11/296 · misreads 0' } },
+  { item: { ja: '隠しバンク B2 チャット', en: 'Hidden bank B2 · chat' }, value: { ja: '0/286・誤答 0', en: '0/286 · wrong answers 0' } },
+  { item: { ja: '隠しバンク B6 分業', en: 'Hidden bank B6 · division of work' }, value: { ja: '誤ルート 0（132）', en: 'wrong routes 0 (132)' } },
+  {
+    item: { ja: '隠しバンク B7 根拠の方針', en: 'Hidden bank B7 · basis policy' },
+    value: { ja: '誤答 0・生成だけの ANSWER 0（100）', en: 'wrong answers 0 · generation-only ANSWER 0 (100)' },
+  },
+  { item: { ja: '質問の観測', en: 'Observed questions' }, value: { ja: '185 問 正 73・誤 0', en: '185 questions · correct 73 · wrong 0' } },
+  {
+    item: { ja: '攻撃', en: 'Attacks' },
+    value: { ja: '6 波 命中 35（すべて修正か既知の穴）', en: '6 waves · 35 hits (each fixed or a known hole)' },
+  },
+  { item: { ja: '統合', en: 'Integrated' }, value: { ja: '39 チケット', en: '39 tickets' } },
+];
+
+const CANNOT: L[] = [
+  { ja: '自由な会話', en: 'Free conversation' },
+  { ja: '複雑な日本語', en: 'Complex Japanese' },
+  { ja: '英語（配置がありません）', en: 'English (no placement exists)' },
+  { ja: '副詞・名詞句で言う数量', en: 'Quantities given by adverbs or noun phrases' },
+  {
+    ja: '「で・に・へ・から」の役割は、型だけでは決まりません',
+    en: 'The roles of で・に・へ・から are not settled by types alone',
+  },
+];
+
+const NOW: L[] = [
+  {
+    ja: '文書や構造化された記録に対して、出所つきで答えるか、型つきで黙る（下の体験はこの実行の記録です）',
+    en: 'Answering over documents and structured records with a source, or staying silent with a type (the demo below is a recording of this)',
+  },
+  {
+    ja: '答えの根拠を「人の記録」「生成だけ」「不明」に分け、生成だけでは事実を答えない',
+    en: 'Sorting an answer’s basis into human record, generated only, and unknown — and not answering facts on generation alone',
+  },
+  {
+    ja: '短い日本語の文を、述語と役割（誰が・何を・誰に・どこで）に読む',
+    en: 'Reading short Japanese sentences into a predicate and roles (who, what, to whom, where)',
+  },
+  {
+    ja: '記憶は追記のみ・単位で削除・同意つき昇格',
+    en: 'Append-only memory, deletion by unit, promotion with consent',
+  },
+];
+
+const FUTURE: { title: L; body: L }[] = [
+  {
+    title: { ja: '実時間の思考ログ監視', en: 'Real-time watch over reasoning logs' },
+    body: {
+      ja: 'AI の出力や推論を一文ずつ読み、根拠の無い事実の主張や記録との矛盾に、その場で型つきの印を付けることを目指します。',
+      en: 'The aim is to read an AI’s output and reasoning sentence by sentence, and mark — on the spot, with a type — factual claims without a basis and contradictions with the record.',
+    },
+  },
+  {
+    title: { ja: '自動エージェントの中の判断層', en: 'A decision layer inside autonomous agents' },
+    body: {
+      ja: 'エージェントの内側に置き、その判断を人の記録と照らし合わせる層にする予定です。',
+      en: 'It is planned as a layer inside an agent that checks its decisions against human records.',
+    },
+  },
+  {
+    title: { ja: '設計の枠', en: 'A design frame' },
+    body: {
+      ja: '人が最初に書いた設計思想と完成形を枠に入れ、Vera がそれをエージェントに渡し、問いに答え、人の介入なしで回すことを目指します。',
+      en: 'The aim is to put the design philosophy and the finished form a person wrote at the start into a frame, have Vera hand it to agents, answer their questions, and keep the work going without intervention.',
+    },
+  },
+];
+
+export default function VeraHome() {
+  const view = useHomeLang();
+  const t = (o: L) => o[view];
+  const ja = view === 'ja';
+
+  return (
+    <main lang={view} className="relative min-h-screen" style={{ overflowX: 'clip', color: 'var(--ink)' }}>
+      <Navbar />
+
+      {/* ── Hero ───────────────────────────────────────────── */}
+      <section className="relative px-5 sm:px-6 pt-28 sm:pt-36 pb-14 sm:pb-20">
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse at top left, rgba(var(--accent-rgb), 0.12), transparent 60vw)',
+          }}
+        />
+        <div className="mx-auto w-full max-w-4xl relative z-10">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="uppercase mb-5 sm:mb-7"
+            style={{
+              color: 'rgba(var(--accent-rgb), 0.9)',
+              fontSize: 'clamp(0.62rem, 1.6vw, 0.72rem)',
+              letterSpacing: '0.3em',
+            }}
+          >
+            {t({ ja: 'Vera · 初期版', en: 'Vera · early release' })}
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.06 }}
+            className="font-display font-extrabold gradient-brand"
+            style={{
+              fontSize: ja ? 'clamp(1.9rem, 7vw, 4rem)' : 'clamp(2.1rem, 8vw, 4.6rem)',
+              lineHeight: ja ? 1.25 : 1.05,
+              letterSpacing: ja ? '-0.01em' : '-0.03em',
+              marginBottom: '1.1rem',
+            }}
+          >
+            {t({ ja: 'Vera — 嘘をつけない枠をつくる AI', en: 'Vera — an AI that builds a frame it cannot lie in' })}
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.16 }}
+            className="max-w-2xl"
+            style={{
+              color: 'var(--ink-2)',
+              fontSize: 'clamp(1rem, 2.4vw, 1.15rem)',
+              lineHeight: ja ? 1.95 : 1.7,
+              fontWeight: 300,
+            }}
+          >
+            {t({
+              ja: '答えられることには出所を付けて答え、答えられないことには型を付けて黙る。その枠を、言語モデルやエージェントの外側に置くための AI です。',
+              en: 'What it can answer, it answers with a source. What it cannot, it declines with a type. It is an AI for putting that frame around language models and agents.',
+            })}
+          </motion.p>
+
+          <motion.ul
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.24 }}
+            className="mt-8 grid gap-3 sm:grid-cols-2"
+          >
+            {POINTS.map((p) => (
+              <li
+                key={p.title.en}
+                className="rounded-xl border px-4 py-3.5"
+                style={{ borderColor: 'var(--line)', background: 'var(--surface)' }}
+              >
+                <div className="font-semibold" style={{ color: 'var(--ink)', fontSize: '0.95rem' }}>
+                  {t(p.title)}
+                </div>
+                <div className="mt-1" style={{ color: 'var(--ink-3)', fontSize: '0.85rem', lineHeight: ja ? 1.8 : 1.6 }}>
+                  {t(p.body)}
+                </div>
+              </li>
+            ))}
+          </motion.ul>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.32 }}
+            className="mt-8 sm:mt-10 flex flex-wrap items-center gap-3"
+          >
+            <a
+              href="#try"
+              className="btn-accent rounded-xl px-6 py-3 text-sm font-semibold"
+              style={{ textDecoration: 'none' }}
+            >
+              {t({ ja: '体験する', en: 'Try it' })}
+            </a>
+            <a
+              href="#oss"
+              className="rounded-xl px-6 py-3 text-sm font-semibold"
+              style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}
+            >
+              {t({ ja: 'オープンソース', en: 'Open source' })}
+            </a>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── What only Vera does ───────────────────────────── */}
+      <Section id="uses" label={t({ ja: 'できること', en: 'What it is for' })}>
+        <H2 ja={ja}>{t({ ja: 'Vera だからできること', en: 'What Vera makes possible' })}</H2>
+        <div className="grid gap-4 sm:gap-5 md:grid-cols-2">
+          {USES.map((u) => (
+            <div
+              key={u.tag}
+              className="rounded-2xl border p-5 sm:p-6"
+              style={{ borderColor: 'var(--line)', background: 'var(--surface)' }}
+            >
+              <div className="flex items-baseline gap-3 mb-2">
+                <span
+                  className="font-mono uppercase"
+                  style={{ color: 'rgba(var(--accent-rgb), 0.9)', fontSize: '0.72rem', letterSpacing: '0.12em' }}
+                >
+                  ({u.tag})
+                </span>
+                <span className="font-semibold" style={{ color: 'var(--ink)', fontSize: 'clamp(0.98rem, 2.4vw, 1.08rem)' }}>
+                  {t(u.title)}
+                </span>
+              </div>
+              <p style={{ color: 'var(--ink-3)', fontSize: '0.9rem', lineHeight: ja ? 1.9 : 1.65 }}>{t(u.body)}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* ── Measured ──────────────────────────────────────── */}
+      <Section id="measured" label={t({ ja: '実測', en: 'Measured' })}>
+        <H2 ja={ja}>{t({ ja: '実測した値だけを書きます', en: 'Only measured values' })}</H2>
+        <Body ja={ja} className="mb-6">
+          {t({
+            ja: '隠しバンクは、実装の側からは中身を見られない評価用の問題集です。下の値は丸めず、そのまま載せています。',
+            en: 'The hidden banks are evaluation sets the implementation side cannot see. The values below are given as measured, unrounded.',
+          })}
+        </Body>
+        <div className="rounded-2xl border overflow-x-auto" style={{ borderColor: 'var(--line)', background: 'var(--surface)' }}>
+          <table className="w-full text-left" style={{ fontSize: 'clamp(0.84rem, 2.2vw, 0.95rem)' }}>
+            <thead>
+              <tr style={{ color: 'var(--ink-4)', fontSize: '0.74rem', letterSpacing: '0.08em' }}>
+                <th className="px-4 sm:px-5 py-3 font-semibold">{t({ ja: '項目', en: 'Item' })}</th>
+                <th className="px-4 sm:px-5 py-3 font-semibold">{t({ ja: '値', en: 'Value' })}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {MEASURED.map((m) => (
+                <tr key={m.item.en} className="border-t" style={{ borderColor: 'var(--line)' }}>
+                  <td className="px-4 sm:px-5 py-3 align-top" style={{ color: 'var(--ink-3)' }}>
+                    {t(m.item)}
+                  </td>
+                  <td className="px-4 sm:px-5 py-3 align-top font-semibold" style={{ color: 'var(--ink)' }}>
+                    {t(m.value)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div
+          className="mt-6 rounded-2xl border p-5 sm:p-6"
+          style={{ borderColor: 'rgba(var(--warn-rgb) / 0.35)', background: 'rgba(var(--warn-rgb) / 0.05)' }}
+        >
+          <div className="font-semibold mb-3" style={{ color: 'var(--warn)', fontSize: '0.95rem' }}>
+            {t({ ja: 'できないこと', en: 'What it cannot do' })}
+          </div>
+          <ul className="flex flex-col gap-2">
+            {CANNOT.map((c) => (
+              <li key={c.en} className="flex items-start gap-3">
+                <span
+                  aria-hidden
+                  className="mt-2.5 shrink-0 rounded-full"
+                  style={{ width: 5, height: 5, background: 'var(--warn)' }}
+                />
+                <span style={{ color: 'var(--ink-2)', fontSize: '0.9rem', lineHeight: ja ? 1.85 : 1.6 }}>{t(c)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <p className="mt-6" style={{ fontSize: '0.88rem' }}>
+          <a href="/vera/" style={{ color: 'var(--accent)', textDecoration: 'none' }}>
+            {t({ ja: 'Vera の測定（旧ページ）→', en: 'Vera measurements (earlier page) →' })}
+          </a>
+        </p>
+      </Section>
+
+      {/* ── Now / Future ──────────────────────────────────── */}
+      <Section id="now-future" label={t({ ja: '現在と将来', en: 'Now and next' })}>
+        <H2 ja={ja}>{t({ ja: 'いまできることと、これから', en: 'What works now, and what comes next' })}</H2>
+        <div className="grid gap-4 sm:gap-5 md:grid-cols-2">
+          <div
+            className="rounded-2xl border p-5 sm:p-6"
+            style={{ borderColor: 'rgba(var(--accent-rgb), 0.38)', background: 'rgba(var(--accent-rgb), 0.05)' }}
+          >
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <span className="font-semibold" style={{ color: 'var(--accent)', fontSize: '1rem' }}>
+                {t({ ja: '現在の到達', en: 'Where it is now' })}
+              </span>
+              <span
+                className="rounded-full px-2.5 py-0.5"
+                style={{ fontSize: '0.68rem', color: 'var(--accent)', border: '1px solid rgba(var(--accent-rgb), 0.4)' }}
+              >
+                {t({ ja: '動いている', en: 'working' })}
+              </span>
+            </div>
+            <ul className="flex flex-col gap-2.5">
+              {NOW.map((n) => (
+                <li key={n.en} style={{ color: 'var(--ink-2)', fontSize: '0.9rem', lineHeight: ja ? 1.85 : 1.6 }}>
+                  {t(n)}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div
+            className="rounded-2xl border border-dashed p-5 sm:p-6"
+            style={{ borderColor: 'rgba(var(--warn-rgb) / 0.5)', background: 'rgba(var(--warn-rgb) / 0.04)' }}
+          >
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <span className="font-semibold" style={{ color: 'var(--warn)', fontSize: '1rem' }}>
+                {t({ ja: '将来', en: 'Future' })}
+              </span>
+              <span
+                className="rounded-full px-2.5 py-0.5"
+                style={{ fontSize: '0.68rem', color: 'var(--warn)', border: '1px solid rgba(var(--warn-rgb) / 0.5)' }}
+              >
+                {t({ ja: '将来（未実装）', en: 'Future (not built yet)' })}
+              </span>
+            </div>
+            <ul className="flex flex-col gap-3">
+              {FUTURE.map((f) => (
+                <li key={f.title.en}>
+                  <div className="font-semibold" style={{ color: 'var(--ink)', fontSize: '0.92rem' }}>
+                    {t(f.title)}
+                  </div>
+                  <div className="mt-1" style={{ color: 'var(--ink-3)', fontSize: '0.86rem', lineHeight: ja ? 1.85 : 1.6 }}>
+                    {t(f.body)}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Section>
+
+      {/* ── Try ───────────────────────────────────────────── */}
+      <Section id="try" label={t({ ja: '体験', en: 'Try it' })}>
+        <H2 ja={ja}>{t({ ja: '固定の文書に問いを投げる', en: 'Ask questions about a fixed document' })}</H2>
+        <Body ja={ja} className="mb-6">
+          {t({
+            ja: '答えた問いには出所の文が付き、読めない問いには型つきで黙ります。黙った問いも隠さずに出しています。',
+            en: 'Answered questions come with the sentence they rest on; questions it cannot read get a typed silence. The silent ones are shown too.',
+          })}
+        </Body>
+        <TryVera view={view} showFullLink />
+      </Section>
+
+      {/* ── Open source ───────────────────────────────────── */}
+      <Section id="oss" label={t({ ja: 'オープンソース', en: 'Open source' })}>
+        <H2 ja={ja}>{t({ ja: '手元で動かす', en: 'Run it yourself' })}</H2>
+        <Body ja={ja} className="mb-5">
+          {t({
+            ja: 'ソースは GitHub で公開しています。文書を渡して、対話または一問ずつ聞けます。',
+            en: 'The source is on GitHub. Give it a document and ask, either interactively or one question at a time.',
+          })}
+        </Body>
+        <p className="mb-5" style={{ fontSize: '0.92rem' }}>
+          <a href={REPO} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'none' }}>
+            github.com/Ag3497120/vera →
+          </a>
+        </p>
+        <Code>
+          {[
+            t({ ja: '# 対話', en: '# interactive' }),
+            'python -m verantyx.cli chat --mode round5 --document <ファイル>',
+            '',
+            t({ ja: '# 一問だけ', en: '# a single question' }),
+            'python -m verantyx.cli ask --mode round5 --document <ファイル> -- <問い>',
+            '',
+            t({ ja: '# パッケージを導入していれば vera コマンドでも', en: '# or, with the package installed, the vera command' }),
+            'vera chat --mode round5 --document <ファイル>',
+          ].join('\n')}
+        </Code>
+        <Body ja={ja} muted className="mt-4">
+          {t({
+            ja: 'この頁の体験は、配置 r8 を使って開発ツリーで実行した記録です。',
+            en: 'The demo on this page is a recording of runs in the development tree with placement r8.',
+          })}
+        </Body>
+      </Section>
+
+      <VeraFooter view={view} />
+    </main>
+  );
+}

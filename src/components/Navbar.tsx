@@ -79,7 +79,8 @@ export default function Navbar() {
         >
           <NavLink href="/" label="Home" />
           <NavLink href="/apps/" label="Apps" />
-          <NavLink href="/vera/" label="Vera" />
+          <NavLink href="/" label="Vera" />
+          <NavLink href="/cleanroom/" label="Cleanroom" />
 
           <ModeToggle mode={mode} onToggle={toggleMode} />
 
@@ -201,8 +202,18 @@ export default function Navbar() {
               <MobileNavLink href="/" label="Home" onClick={() => setMobileOpen(false)} />
               <MobileNavLink href="/apps/" label="Apps" onClick={() => setMobileOpen(false)} />
               <MobileNavLink
-                href="/vera/"
+                href="/"
                 label="Vera"
+                onClick={() => setMobileOpen(false)}
+              />
+              <MobileNavLink
+                href="/cleanroom/"
+                label="Cleanroom"
+                onClick={() => setMobileOpen(false)}
+              />
+              <MobileNavLink
+                href="/vera/"
+                label={lang === 'ja' ? 'Vera の測定' : 'Measurements'}
                 onClick={() => setMobileOpen(false)}
               />
               <MobileNavLink

@@ -1,4 +1,12 @@
-import CleanroomSite from '@/components/cleanroom-site';
-import CleanroomThemeToggle from '@/components/CleanroomThemeToggle';
-import '@/components/cleanroom.css';
-export default function Home(){return <CleanroomSite marketing themeControl={<CleanroomThemeToggle/>}/>;}
+import type { Metadata } from 'next';
+import VeraHome from '@/components/vera-home/VeraHome';
+
+export const metadata: Metadata = {
+  title: 'Vera — 嘘をつけない枠をつくる AI | Verantyx',
+  description:
+    'Vera: 答えには出所を付け、分からなければ型つきで黙る AI。実測の値、できないこと、記録済みの実行結果での体験。',
+};
+
+export default function Home() {
+  return <VeraHome />;
+}
