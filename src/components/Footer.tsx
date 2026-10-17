@@ -102,7 +102,7 @@ export default function Footer() {
               Projects
             </h4>
             <div className="flex flex-col gap-3">
-              <FooterLink href="/" label="Cleanroom / Home" />
+              <FooterLink href="/" label="Home" />
               <FooterLink href="/vera/" label="Vera" />
               <FooterLink href="/apps/" label="Apps" />
             </div>

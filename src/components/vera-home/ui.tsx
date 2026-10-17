@@ -10,10 +10,12 @@ export function Section({
   id,
   label,
   children,
+  wide,
 }: {
   id?: string;
   label: string;
   children: ReactNode;
+  wide?: boolean;
 }) {
   return (
     <section id={id} className="relative px-5 sm:px-6 py-12 sm:py-16 md:py-20 scroll-mt-16">
@@ -22,7 +24,7 @@ export function Section({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.55 }}
-        className="mx-auto w-full max-w-4xl"
+        className={`mx-auto w-full ${wide ? 'max-w-6xl' : 'max-w-4xl'}`}
       >
         <div className="flex items-center gap-4 mb-6 sm:mb-8">
           <span

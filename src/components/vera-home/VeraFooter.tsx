@@ -2,12 +2,13 @@
 
 import type { HomeLang, L } from './useHomeLang';
 
-/* Own footer for the Vera home and /try/. The shared Footer links "Cleanroom / Home" to /,
+/* Own footer for the home, the Vera page (/vera/about/) and /try/. The shared Footer links "Cleanroom / Home" to /,
  * which is no longer Cleanroom; it cannot be edited in this change, so it is not used here.
  * Plain <a> everywhere: /cleanroom/ is a separately built app and must be a full page load. */
 
 const LINKS: { href: string; label: L; external?: boolean }[] = [
-  { href: '/', label: { ja: 'Vera', en: 'Vera' } },
+  { href: '/', label: { ja: 'Home', en: 'Home' } },
+  { href: '/vera/about/', label: { ja: 'Vera', en: 'Vera' } },
   { href: '/try/', label: { ja: '体験', en: 'Try it' } },
   { href: '/vera/', label: { ja: 'Vera の測定', en: 'Measurements' } },
   { href: '/cleanroom/', label: { ja: 'Cleanroom', en: 'Cleanroom' } },
@@ -19,7 +20,9 @@ const LINKS: { href: string; label: L; external?: boolean }[] = [
   { href: 'https://github.com/Ag3497120/vera', label: { ja: 'GitHub', en: 'GitHub' }, external: true },
 ];
 
-export default function VeraFooter({ view }: { view: HomeLang }) {
+const VERA_LINE: L = { ja: 'Vera — 嘘をつけない枠をつくる AI', en: 'Vera — an AI that builds a frame it cannot lie in' };
+
+export default function VeraFooter({ view, tagline = VERA_LINE }: { view: HomeLang; tagline?: L }) {
   return (
     <footer className="relative px-5 sm:px-6 py-14 sm:py-16">
       <div
@@ -29,7 +32,7 @@ export default function VeraFooter({ view }: { view: HomeLang }) {
         }}
       />
       <div className="mx-auto w-full max-w-4xl flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-        <div>
+        <div className="shrink-0 whitespace-nowrap">
           <div
             className="font-display font-extrabold"
             style={{
@@ -43,7 +46,7 @@ export default function VeraFooter({ view }: { view: HomeLang }) {
             Verantyx
           </div>
           <p className="mt-1" style={{ color: 'var(--ink-4)', fontSize: '0.8rem' }}>
-            {view === 'ja' ? 'Vera — 嘘をつけない枠をつくる AI' : 'Vera — an AI that builds a frame it cannot lie in'}
+            {tagline[view]}
           </p>
         </div>
         <nav className="flex flex-wrap gap-x-4 gap-y-2" aria-label="footer">

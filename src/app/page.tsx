@@ -1,12 +1,17 @@
 import type { Metadata } from 'next';
-import VeraHome from '@/components/vera-home/VeraHome';
+import PortalHome from '@/components/portal/PortalHome';
 
 export const metadata: Metadata = {
-  title: 'Vera — 嘘をつけない枠をつくる AI | Verantyx',
+  title: 'Verantyx — VeRantyx: PC VR from a Mac, on vxrt',
   description:
-    'Vera: 答えには出所を付け、分からなければ型つきで黙る AI。実測の値、できないこと、記録済みの実行結果での体験。',
+    'VeRantyx runs Windows SteamVR games such as Half-Life: Alyx on an Apple silicon Mac and streams them to Apple Vision Pro or ALVR headsets, on vxrt — a Windows runtime written from scratch, no Wine. Also Vera, Cleanroom and the Verantyx apps.',
+  openGraph: {
+    title: 'VeRantyx — PC VR from a Mac',
+    description: 'Half-Life: Alyx at 60 fps on a MacBook Pro, in Apple Vision Pro, on a Windows runtime written from scratch.',
+    images: ['/media/verantyx/vxrt-frame.jpg'],
+  },
 };
 
 export default function Home() {
-  return <VeraHome />;
+  return <PortalHome />;
 }

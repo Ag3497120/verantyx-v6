@@ -78,8 +78,9 @@ export default function Navbar() {
           className="navbar-desktop"
         >
           <NavLink href="/" label="Home" />
+          <NavLink href="/#verantyx" label="VeRantyx" />
           <NavLink href="/apps/" label="Apps" />
-          <NavLink href="/" label="Vera" />
+          <NavLink href="/vera/about/" label="Vera" />
           <NavLink href="/cleanroom/" label="Cleanroom" />
 
           <ModeToggle mode={mode} onToggle={toggleMode} />
@@ -200,9 +201,10 @@ export default function Navbar() {
               }}
             >
               <MobileNavLink href="/" label="Home" onClick={() => setMobileOpen(false)} />
+              <MobileNavLink href="/#verantyx" label="VeRantyx" onClick={() => setMobileOpen(false)} />
               <MobileNavLink href="/apps/" label="Apps" onClick={() => setMobileOpen(false)} />
               <MobileNavLink
-                href="/"
+                href="/vera/about/"
                 label="Vera"
                 onClick={() => setMobileOpen(false)}
               />

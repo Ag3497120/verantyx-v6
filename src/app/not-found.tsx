@@ -8,7 +8,7 @@ export default function NotFound() {
     <h1 style={{fontSize:44,margin:'24px 0'}}>This page is no longer here.</h1>
     <p>このページは削除されたか、見つかりません。Home・Vera・Appsからお探しください。</p>
     <nav aria-label="Available pages" style={{display:'flex',flexWrap:'wrap',gap:24,marginTop:32}}>
-      <Link href="/">Home / Cleanroom</Link><Link href="/vera/">Vera</Link><Link href="/apps/">Apps</Link>
+      <Link href="/">Home</Link><Link href="/vera/about/">Vera</Link><Link href="/cleanroom/">Cleanroom</Link><Link href="/apps/">Apps</Link>
       <a href="https://github.com/Ag3497120/cleanroom">GitHub / Cleanroom</a>
     </nav>
   </main><Footer/></>;

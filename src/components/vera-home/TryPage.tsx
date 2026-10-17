@@ -30,7 +30,7 @@ export default function TryPage() {
           </Body>
           <TryVera view={view} />
           <p className="mt-8" style={{ fontSize: '0.88rem' }}>
-            <a href="/" style={{ color: 'var(--accent)', textDecoration: 'none' }}>
+            <a href="/vera/about/" style={{ color: 'var(--accent)', textDecoration: 'none' }}>
               ← {t({ ja: 'Vera のホームへ', en: 'Back to Vera' })}
             </a>
           </p>
