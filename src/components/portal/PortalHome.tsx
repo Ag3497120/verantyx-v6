@@ -21,6 +21,9 @@ import { useHomeLang, type L } from '@/components/vera-home/useHomeLang';
  * (github.com/Ag3497120/VeRantyx, 2026-10-17); do not round them or add new ones without a run behind them. */
 
 const REPO = 'https://github.com/Ag3497120/VeRantyx';
+// The Mac app, served from this site while the GitHub account is hidden (since 2026-10-24).
+const DMG = '/download/VeRantyx-0.2.1.dmg';
+const DMG_SHA256 = '55a9d1106205a4224db164a671b718cbd6dae8d5a9812406594e95bb8af4e0ae';
 const VIDEO_FULL = 'qF09ETv1TpU'; // vxrt version in a Vision Pro, 4 min unedited, 2026-10-14
 const VIDEO_MACS = 'YwznYiAXqBg'; // MacBook Pro M1 Max and MacBook Air M5 side by side, 2026-10-17
 
@@ -378,8 +381,8 @@ function Hero({ t, ja }: P) {
             transition={{ duration: 0.55, delay: 0.26 }}
             className="mt-8 flex flex-wrap items-center gap-3"
           >
-            <a href={REPO} target="_blank" rel="noopener noreferrer" className="vx-btn rounded-xl px-6 py-3 text-sm font-semibold">
-              {t({ ja: 'GitHub で見る', en: 'View on GitHub' })}
+            <a href={DMG} download className="vx-btn rounded-xl px-6 py-3 text-sm font-semibold">
+              {t({ ja: 'Mac 版をダウンロード（無料・0.2.1）', en: 'Download for Mac (free, 0.2.1)' })}
             </a>
             <a
               href="#watch"
@@ -388,6 +391,25 @@ function Hero({ t, ja }: P) {
             >
               {t({ ja: 'プレイ映像', en: 'Watch it play' })}
             </a>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.32 }}
+            className="mt-5 max-w-xl rounded-xl px-4 py-3"
+            style={{ border: '1px solid var(--line)', background: 'var(--surface)', fontSize: '0.8rem', lineHeight: ja ? 1.85 : 1.6, color: 'var(--ink-3)' }}
+          >
+            <p style={{ color: 'var(--ink-2)', fontWeight: 600 }}>
+              {t({ ja: 'なぜこのサイトからダウンロードするのか', en: 'Why the download is on this site' })}
+            </p>
+            <p className="mt-1">
+              {t({
+                ja: '2026年10月24日から、GitHub のアカウントが自動判定で非表示（フラグ付き）になり、リポジトリとリリースがほかの人から見えなくなっています。理由は知らされていません。Reddit への投稿で数日のうちに訪問者が急に増えたことと、AI コーディングエージェントを使った開発で、1日に数十回という頻度で push や取得をしていたことが、自動の判定に引っかかったのだと考えています。規約に反することをした心当たりはありません。それまでの間、署名・公証済みの同じアプリをここに置いています。ソースは手元で開発を続けていて、公開できるようになったら戻します。',
+                en: 'Since 24 October 2026 my GitHub account has been hidden (flagged) by an automatic check, so the repository and its releases are not visible to others; no reason was given. My guess is the combination of a sudden jump in visitors after Reddit posts and very frequent pushes and fetches, dozens a day, from development with AI coding agents. Nothing against GitHub’s terms was done. Until it is back, the same signed and notarized app is served here; development continues and the source will be public again.',
+              })}
+            </p>
+            <p className="mt-1 break-all" style={{ fontSize: '0.72rem', color: 'var(--ink-4)' }}>SHA-256: {DMG_SHA256}</p>
           </motion.div>
 
           <motion.dl
@@ -932,8 +954,7 @@ function Projects({ t, ja }: P) {
       <H2 ja={ja}>{t({ ja: 'Verantyx のプロジェクト', en: 'Projects at Verantyx' })}</H2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <ProjectCard
-          href={REPO}
-          external
+          href={DMG}
           name="VeRantyx"
           glyph="VR"
           kind={t({ ja: 'Mac で PC VR', en: 'PC VR from a Mac' })}
@@ -941,7 +962,7 @@ function Projects({ t, ja }: P) {
             ja: 'このページの主役。vxrt、ネイティブ ARM 版、Wine 版のすべてのソース。',
             en: 'This page’s subject: the source of vxrt, the native ARM version and the Wine version.',
           })}
-          cta="GitHub"
+          cta={t({ ja: 'ダウンロード', en: 'Download' })}
           highlight
         />
         {PROJECTS.map((p) => (
