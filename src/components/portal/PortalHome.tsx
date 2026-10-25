@@ -26,6 +26,9 @@ const REPO = 'https://github.com/Ag3497120/VeRantyx';
 // SHA256 values come from each release's .sha256 file (filled in by the release step).
 type Release = { ver: string; date: string; sha256: string; notes: L; lgpl?: boolean };
 const RELEASES: Release[] = [
+  { ver: '0.3.0', date: '2026-10-25', sha256: '532479873ab1117f77ad77ad23b92dac745e2dedd3e97ad51f80b79d3050270a', notes: {
+    ja: 'No Man\u2019s Sky（Mac の画面と VR、あなた自身の Windows 版 Steam で起動）、ゲームごとに ALVR アプリか VeRantyx アプリかを選べる、まだ入れていないゲームの「入手してプレイ」。',
+    en: 'No Man\u2019s Sky (on the Mac\u2019s screen and in VR, started by your own Windows Steam), ALVR app or VeRantyx app for each game, "Get and play" for games you have not installed yet.' } },
   { ver: '0.2.2', date: '2026-10-25', sha256: 'a866d56c1959056758602a4a3c6081e98ce780485b6a7d17a6ae35d4f828dd8e', notes: {
     ja: 'Elite Dangerous のランチャーの更新が止まらないように。Quest（ALVR）の「高精細」で描く画素数が本当に増える、ヘッドセット側の fps と遅延の表示、通信に合わせたビットレート、一時停止したヘッドセットの再接続。',
     en: 'Elite Dangerous\u2019s launcher can update the game again. Quest (ALVR): "Sharper" really renders more pixels, the headset\u2019s own fps and latency are shown, the bitrate follows the link, a paused headset reconnects.' } },
