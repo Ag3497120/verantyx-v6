@@ -33,14 +33,14 @@ export const CATALOGUE_CHARS = 96271;
 
 export const CATALOGUE: CatalogueEntry[] = [
   {
-    "name": "MBP-AVP-VR",
-    "url": "https://github.com/Ag3497120/MBP-AVP-VR",
-    "description": "A native stereoscopic VR container for Mac and Apple Vision Pro. Bypasses D3DMetal IPC constraints to stream x86 PCVR engines (Source 2) via low-level C++ openvr_api.dll memory hooking and direct visionOS hardware compositing.",
+    "name": "VeRantyx",
+    "url": "https://verantyx.ai/#download",
+    "description": "VeRantyx: play your own PC VR games from an Apple silicon Mac in Apple Vision Pro (or Quest/Pico through ALVR). vxrt, a Windows runtime written from scratch (no Wine, no Game Porting Toolkit/D3DMetal), runs the games and the real Windows SteamVR; frames are encoded with the Mac's hardware HEVC encoder and streamed to a visionOS app.",
     "language": "C++",
     "stars": 1,
     "updated": "2026-08-01",
     "lang": "en",
-    "summary": "MBP-AVP-VR: The Ultimate Ultra-Low Latency VR Streaming Architecture",
+    "summary": "VeRantyx: PC VR from a Mac, on its own Windows runtime",
     "topics": [
       "mbp",
       "openvr",
