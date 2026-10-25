@@ -1080,6 +1080,21 @@ function Downloads({ t, ja }: P) {
           </li>
         ))}
       </ul>
+
+      <div id="source" className="mt-8 rounded-xl px-4 py-4" style={{ border: '1px solid var(--line)', background: 'var(--surface)' }}>
+        <h3 className="font-display font-bold" style={{ fontSize: '1.05rem', color: 'var(--ink)' }}>{t({ ja: 'ソースコード（MIT）', en: 'Source code (MIT)' })}</h3>
+        <p className="mt-1.5" style={{ fontSize: '0.84rem', color: 'var(--ink-3)', lineHeight: ja ? 1.85 : 1.6 }}>
+          {t({
+            ja: 'GitHub のリポジトリが見えない間、0.3.0 のソースをここに置いています。中身は GitHub の main（d210c15）と同じで、容量のため docs/media の動画だけを外しています。Wine のコードは含まれていません。git の bundle は 1 つのコミットで、git clone VeRantyx-0.3.0-source.bundle -b source-snapshot で取り出せます。',
+            en: 'While the GitHub repository is hidden, the 0.3.0 source is here. It matches GitHub’s main (d210c15) except the videos in docs/media, left out for size. It contains no Wine code. The git bundle is a single commit: git clone VeRantyx-0.3.0-source.bundle -b source-snapshot',
+          })}
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <a href="/source/VeRantyx-0.3.0-source.tar.gz" download className="rounded-lg px-4 py-1.5 text-sm font-semibold" style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}>tar.gz · 4.3 MB</a>
+          <a href="/source/VeRantyx-0.3.0-source.bundle" download className="rounded-lg px-4 py-1.5 text-sm font-semibold" style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}>git bundle · 4.4 MB</a>
+          <a href="/source/SHA256SUMS" className="rounded-lg px-4 py-1.5 text-sm" style={{ textDecoration: 'none', color: 'var(--ink-3)' }}>SHA256SUMS</a>
+        </div>
+      </div>
     </Section>
   );
 }
