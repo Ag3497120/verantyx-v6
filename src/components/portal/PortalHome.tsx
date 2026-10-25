@@ -22,8 +22,25 @@ import { useHomeLang, type L } from '@/components/vera-home/useHomeLang';
 
 const REPO = 'https://github.com/Ag3497120/VeRantyx';
 // The Mac app, served from this site while the GitHub account is hidden (since 2026-10-24).
-const DMG = '/download/VeRantyx-0.2.1.dmg';
-const DMG_SHA256 = '55a9d1106205a4224db164a671b718cbd6dae8d5a9812406594e95bb8af4e0ae';
+// Every released version, newest first; the first one is the stable version the buttons download.
+// SHA256 values come from each release's .sha256 file (filled in by the release step).
+type Release = { ver: string; date: string; sha256: string; notes: L; lgpl?: boolean };
+const RELEASES: Release[] = [
+  { ver: '0.2.2', date: '2026-10-25', sha256: 'a866d56c1959056758602a4a3c6081e98ce780485b6a7d17a6ae35d4f828dd8e', notes: {
+    ja: 'Elite Dangerous のランチャーの更新が止まらないように。Quest（ALVR）の「高精細」で描く画素数が本当に増える、ヘッドセット側の fps と遅延の表示、通信に合わせたビットレート、一時停止したヘッドセットの再接続。',
+    en: 'Elite Dangerous\u2019s launcher can update the game again. Quest (ALVR): "Sharper" really renders more pixels, the headset\u2019s own fps and latency are shown, the bitrate follows the link, a paused headset reconnects.' } },
+  { ver: '0.2.1', date: '2026-10-23', sha256: '55a9d1106205a4224db164a671b718cbd6dae8d5a9812406594e95bb8af4e0ae', notes: {
+    ja: 'Direct3D 11 のゲームの CPU 負荷を大きく削減（Alyx の重い場面 42〜47 → 60 fps）、ALVR の再接続後の「os error 11」を修正、プレイ後のワンクリック報告。',
+    en: 'Much less CPU per Direct3D 11 draw (a busy Alyx scene 42-47 \u2192 60 fps), ALVR no longer stuck at "os error 11" after a reconnect, one-click reports after a play.' } },
+  { ver: '0.2.0', date: '2026-10-22', sha256: '011acca340f34fe629bde517c8e618cebc87b4b87b90daa86fdfca40e7bc6403', lgpl: true, notes: {
+    ja: 'Elite Dangerous（Mac の画面と VR）、The Lab のコントローラー、ALVR の Wi-Fi の遅延の修正。',
+    en: 'Elite Dangerous (on the Mac\u2019s screen and in VR), The Lab\u2019s controllers, ALVR Wi-Fi delay fixes.' } },
+  { ver: '0.1.0', date: '2026-10-18', sha256: 'bd035007e383617b5964f6528e32a729714f1136db507232252a747842bd2079', lgpl: true, notes: {
+    ja: '最初の Mac アプリ。ターミナルなしでセットアップと起動。',
+    en: 'The first Mac app: setup and launch without Terminal.' } },
+];
+const DMG = `/download/VeRantyx-${RELEASES[0].ver}.dmg`;
+const DMG_SHA256 = RELEASES[0].sha256;
 const VIDEO_FULL = 'qF09ETv1TpU'; // vxrt version in a Vision Pro, 4 min unedited, 2026-10-14
 const VIDEO_MACS = 'YwznYiAXqBg'; // MacBook Pro M1 Max and MacBook Air M5 side by side, 2026-10-17
 
@@ -288,6 +305,7 @@ export default function PortalHome() {
       <Headsets t={t} ja={ja} />
       <Journey t={t} ja={ja} />
       <Watch t={t} ja={ja} />
+      <Downloads t={t} ja={ja} />
       <Projects t={t} ja={ja} />
       <VeraFooter view={view} tagline={{ ja: 'Mac の上に、まだないものを。', en: 'Building what the Mac does not have yet.' }} />
     </main>
@@ -382,7 +400,7 @@ function Hero({ t, ja }: P) {
             className="mt-8 flex flex-wrap items-center gap-3"
           >
             <a href={DMG} download className="vx-btn rounded-xl px-6 py-3 text-sm font-semibold">
-              {t({ ja: 'Mac 版をダウンロード（無料・0.2.1）', en: 'Download for Mac (free, 0.2.1)' })}
+              {t({ ja: `Mac 版をダウンロード（無料・${RELEASES[0].ver}）`, en: `Download for Mac (free, ${RELEASES[0].ver})` })}
             </a>
             <a
               href="#watch"
@@ -942,6 +960,52 @@ function Watch({ t, ja }: P) {
           en: 'VeRantyx is a personal project, not affiliated with Valve, Apple or Meta. The games and SteamVR come from your own Steam account.',
         })}
       </p>
+    </Section>
+  );
+}
+
+
+/* ── Downloads: the stable version and the earlier ones ─────── */
+
+function Downloads({ t, ja }: P) {
+  return (
+    <Section id="download" label={t({ ja: 'ダウンロード', en: 'Download' })} wide>
+      <H2 ja={ja}>{t({ ja: 'VeRantyx for Mac のダウンロード', en: 'Download VeRantyx for Mac' })}</H2>
+      <p className="mb-5 max-w-2xl" style={{ color: 'var(--ink-3)', fontSize: '0.9rem', lineHeight: ja ? 1.9 : 1.65 }}>
+        {t({
+          ja: 'どれも無料で、Apple の署名と公証が済んでいます。普段は一番上の安定版を使ってください。新しい版で問題が出たときのために、以前の版も置いています。',
+          en: 'All free, signed and notarized by Apple. Use the stable version at the top; earlier versions stay here in case a new one causes trouble for you.',
+        })}
+      </p>
+      <ul className="grid gap-3">
+        {RELEASES.map((r, i) => (
+          <li key={r.ver} className="rounded-xl px-4 py-3" style={{ border: `1px solid ${i === 0 ? 'var(--vx)' : 'var(--line)'}`, background: 'var(--surface)' }}>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="font-display font-bold" style={{ fontSize: '1.05rem', color: 'var(--ink)' }}>{r.ver}</span>
+              {i === 0 && (
+                <span className="rounded-full px-2.5 py-0.5" style={{ fontSize: '0.72rem', color: 'var(--vx)', border: '1px solid var(--vx)' }}>
+                  {t({ ja: '安定版', en: 'Stable' })}
+                </span>
+              )}
+              <span style={{ fontSize: '0.78rem', color: 'var(--ink-4)' }}>{r.date}</span>
+              <a href={`/download/VeRantyx-${r.ver}.dmg`} download className={i === 0 ? 'vx-btn rounded-lg px-4 py-1.5 text-sm font-semibold' : 'rounded-lg px-4 py-1.5 text-sm font-semibold'}
+                style={i === 0 ? { marginLeft: 'auto' } : { marginLeft: 'auto', textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}>
+                {t({ ja: 'ダウンロード', en: 'Download' })}
+              </a>
+            </div>
+            <p className="mt-1.5" style={{ fontSize: '0.84rem', color: 'var(--ink-3)', lineHeight: ja ? 1.85 : 1.6 }}>{t(r.notes)}</p>
+            {r.lgpl && (
+              <p className="mt-1" style={{ fontSize: '0.75rem', color: 'var(--ink-4)', lineHeight: 1.6 }}>
+                {t({
+                  ja: 'この版の VXRuntime には、Wine に由来する約 120 行（x64 の例外の巻き戻し処理）が含まれます。その部分は LGPL-2.1 以降で、著作権は Wine の作者にあります。0.2.1 で置き換え済みです。',
+                  en: 'This version\u2019s VXRuntime contains about 120 lines derived from Wine (the x64 exception unwinder), under LGPL-2.1-or-later with Wine\u2019s copyright; replaced in 0.2.1.',
+                })}
+              </p>
+            )}
+            <p className="mt-1 break-all" style={{ fontSize: '0.7rem', color: 'var(--ink-4)' }}>SHA-256: {r.sha256}</p>
+          </li>
+        ))}
+      </ul>
     </Section>
   );
 }

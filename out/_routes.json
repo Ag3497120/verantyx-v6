@@ -5,7 +5,9 @@
     "/api/vera/*",
     "/api/compute/*",
     "/api/compute-relay/*",
-    "/api/web/*"
+    "/api/web/*",
+    "/download/*",
+    "/api/downloads/*"
   ],
   "exclude": []
 }
