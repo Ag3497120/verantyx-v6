@@ -453,7 +453,67 @@ function Hero({ t, ja }: P) {
   );
 }
 
-/* The recording, in a frame that leans toward the pointer like a headset's view. */
+/* The latest recordings, one per game, in a frame that leans toward the pointer like a headset's view. */
+const CLIPS = [
+  {
+    key: 'nms',
+    name: "No Man's Sky",
+    src: '/media/verantyx/nms-loop.mp4',
+    poster: '/media/verantyx/nms-frame.jpg',
+    rec: '2026-10-25',
+    chips: [
+      { ja: 'ALVR アプリ', en: 'ALVR app' },
+      { ja: '本物の Windows 版 Steam', en: 'real Windows Steam client' },
+    ],
+    label: {
+      ja: 'No Man\'s Sky を Apple Vision Pro の ALVR アプリで VR プレイした録画（音声なし）。最初に部屋と Mac が映る',
+      en: "A recording of No Man's Sky in VR in Apple Vision Pro through the ALVR app (no sound). The room and the Mac come first",
+    },
+    note: {
+      ja: 'MacBook Pro（M1 Max）。Windows 版 Steam から起動し、Vulkan を Metal へ。ヘッドセットではまだ 25〜40 fps',
+      en: 'MacBook Pro (M1 Max). Launched from the Windows Steam client, Vulkan to Metal. Still 25–40 fps in the headset',
+    },
+  },
+  {
+    key: 'elite',
+    name: 'Elite Dangerous',
+    src: '/media/verantyx/elite-loop.mp4',
+    poster: '/media/verantyx/elite-frame.jpg',
+    rec: '2026-10-24',
+    chips: [
+      { ja: 'VeRantyx アプリ · 3K', en: 'VeRantyx app · 3K' },
+      { ja: '公式ランチャー', en: 'official launcher' },
+    ],
+    label: {
+      ja: 'Elite Dangerous を Apple Vision Pro で VR プレイした録画（音声なし）。最初に部屋と Mac が映る',
+      en: 'A recording of Elite Dangerous in VR in Apple Vision Pro (no sound). The room and the Mac come first',
+    },
+    note: {
+      ja: 'MacBook Pro（M1 Max）・3K 設定。Odyssey、公式ランチャーと本物の SteamVR',
+      en: 'MacBook Pro (M1 Max) · 3K preset. Odyssey, the official launcher and the real SteamVR',
+    },
+  },
+  {
+    key: 'alyx',
+    name: 'Half-Life: Alyx',
+    src: '/media/verantyx/alyx-loop.mp4',
+    poster: '/media/verantyx/alyx-frame.jpg',
+    rec: '2026-10-22',
+    chips: [
+      { ja: 'ALVR アプリ', en: 'ALVR app' },
+      { ja: 'Direct3D 11 → Metal', en: 'Direct3D 11 → Metal' },
+    ],
+    label: {
+      ja: 'Half-Life: Alyx を Apple Vision Pro の ALVR アプリで VR プレイした録画（音声なし）。最初に部屋と Mac が映る',
+      en: 'A recording of Half-Life: Alyx in VR in Apple Vision Pro through the ALVR app (no sound). The room and the Mac come first',
+    },
+    note: {
+      ja: 'MacBook Pro（M1 Max）。vxrt 版、Direct3D 11 を一段で Metal へ',
+      en: 'MacBook Pro (M1 Max). The vxrt version, Direct3D 11 to Metal in one step',
+    },
+  },
+] as const;
+
 function Visor({ t }: { t: (o: L) => string }) {
   const reduce = useReducedMotion();
   const mx = useMotionValue(0);
@@ -461,13 +521,15 @@ function Visor({ t }: { t: (o: L) => string }) {
   const rx = useSpring(useTransform(my, [-0.5, 0.5], [7, -7]), { stiffness: 120, damping: 18 });
   const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-9, 9]), { stiffness: 120, damping: 18 });
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [pick, setPick] = useState(0);
+  const clip = CLIPS[pick];
 
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
     if (reduce) v.pause();
     else v.play().catch(() => {});
-  }, [reduce]);
+  }, [reduce, pick]);
 
   return (
     <motion.div
@@ -486,39 +548,48 @@ function Visor({ t }: { t: (o: L) => string }) {
         my.set(0);
       }}
     >
+      <div className="mb-3 flex flex-wrap justify-center gap-2" role="tablist" aria-label={t({ ja: '録画するゲーム', en: 'Recordings' })}>
+        {CLIPS.map((c, i) => (
+          <button
+            key={c.key}
+            type="button"
+            role="tab"
+            aria-selected={i === pick}
+            onClick={() => setPick(i)}
+            className="vx-chip"
+            style={{ cursor: 'pointer', opacity: i === pick ? 1 : 0.55, outline: i === pick ? '1px solid currentColor' : 'none' }}
+          >
+            {c.name}
+          </button>
+        ))}
+      </div>
       <motion.figure className="vx-visor relative" style={{ rotateX: rx, rotateY: ry, transformStyle: 'preserve-3d' }}>
         <video
+          key={clip.key}
           ref={videoRef}
           className="block w-full h-auto rounded-[22px]"
-          src="/media/verantyx/vxrt-loop.mp4"
-          poster="/media/verantyx/vxrt-frame.jpg"
+          src={clip.src}
+          poster={clip.poster}
           muted
           loop
           playsInline
           autoPlay
           preload="metadata"
-          aria-label={t({
-            ja: 'vxrt 版の Half-Life: Alyx を Apple Vision Pro でプレイした録画（音声なし）',
-            en: 'A recording of Half-Life: Alyx on the vxrt version, played in Apple Vision Pro (no sound)',
-          })}
+          aria-label={t(clip.label)}
         />
         <div className="vx-scan" aria-hidden />
         <div className="absolute left-3 top-3 flex gap-2" style={{ transform: 'translateZ(40px)' }}>
-          <span className="vx-chip">● REC 2026-10-14</span>
+          <span className="vx-chip">● REC {clip.rec}</span>
         </div>
         <div className="absolute right-3 bottom-3 flex flex-col items-end gap-2" style={{ transform: 'translateZ(50px)' }}>
-          <span className="vx-chip">HEVC Main10 · 40 Mbps</span>
-          <span className="vx-chip">{t({ ja: '手: Vision Pro ＋ Joy-Con', en: 'hands: Vision Pro + Joy-Con' })}</span>
+          {clip.chips.map((c) => (
+            <span key={c.en} className="vx-chip">{t(c)}</span>
+          ))}
         </div>
-        <figcaption className="sr-only">
-          {t({ ja: 'MacBook Pro（M1 Max）、3K 設定', en: 'MacBook Pro (M1 Max), 3K preset' })}
-        </figcaption>
+        <figcaption className="sr-only">{t(clip.note)}</figcaption>
       </motion.figure>
       <p className="mt-4 text-center" style={{ color: 'var(--ink-4)', fontSize: '0.76rem' }}>
-        {t({
-          ja: 'MacBook Pro（M1 Max）・vxrt 版・3K 設定。手は Vision Pro のハンドトラッキング、ボタンは Joy-Con',
-          en: 'MacBook Pro (M1 Max) · vxrt version · 3K preset. Hands are Vision Pro hand tracking, buttons are Joy-Con',
-        })}
+        {t(clip.note)}
       </p>
     </motion.div>
   );
