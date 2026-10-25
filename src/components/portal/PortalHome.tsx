@@ -26,6 +26,9 @@ const REPO = 'https://github.com/Ag3497120/VeRantyx';
 // SHA256 values come from each release's .sha256 file (filled in by the release step).
 type Release = { ver: string; date: string; sha256: string; notes: L; lgpl?: boolean };
 const RELEASES: Release[] = [
+  { ver: '0.3.1', date: '2026-10-26', sha256: '7a432988784f652e2a05d884a37bcbae199b9510da24f87f3046bc1d548a8e28', notes: {
+    ja: 'No Man\u2019s Sky が速く（Mac の画面で 32.5 → 45.7 fps、M1 Max）。Pico などで投げた物が飛びすぎる問題、ゲーム中の ALVR の再接続、Half-Life: Alyx の読み込み後の黒い画面（「トリガーを長押しして開始」を表示）を修正。',
+    en: 'No Man\u2019s Sky draws faster (32.5 \u2192 45.7 fps on the Mac\u2019s screen, M1 Max). Fixes for thrown objects flying too far on Pico and similar headsets, reconnecting ALVR mid-game, and Half-Life: Alyx\u2019s black screen after a load (now shows "Hold the trigger to start").' } },
   { ver: '0.3.0', date: '2026-10-25', sha256: '532479873ab1117f77ad77ad23b92dac745e2dedd3e97ad51f80b79d3050270a', notes: {
     ja: 'No Man\u2019s Sky（Mac の画面と VR、あなた自身の Windows 版 Steam で起動）、ゲームごとに ALVR アプリか VeRantyx アプリかを選べる、まだ入れていないゲームの「入手してプレイ」。',
     en: 'No Man\u2019s Sky (on the Mac\u2019s screen and in VR, started by your own Windows Steam), ALVR app or VeRantyx app for each game, "Get and play" for games you have not installed yet.' } },
@@ -1085,13 +1088,13 @@ function Downloads({ t, ja }: P) {
         <h3 className="font-display font-bold" style={{ fontSize: '1.05rem', color: 'var(--ink)' }}>{t({ ja: 'ソースコード（MIT）', en: 'Source code (MIT)' })}</h3>
         <p className="mt-1.5" style={{ fontSize: '0.84rem', color: 'var(--ink-3)', lineHeight: ja ? 1.85 : 1.6 }}>
           {t({
-            ja: 'GitHub のリポジトリが見えない間、0.3.0 のソースをここに置いています。中身は GitHub の main（d210c15）と同じで、容量のため docs/media の動画だけを外しています。Wine のコードは含まれていません。git の bundle は 1 つのコミットで、git clone VeRantyx-0.3.0-source.bundle -b source-snapshot で取り出せます。',
-            en: 'While the GitHub repository is hidden, the 0.3.0 source is here. It matches GitHub’s main (d210c15) except the videos in docs/media, left out for size. It contains no Wine code. The git bundle is a single commit: git clone VeRantyx-0.3.0-source.bundle -b source-snapshot',
+            ja: 'GitHub のリポジトリが見えない間、0.3.1 のソースをここに置いています。中身は GitHub の main（62e0488）と同じで、容量のため docs/media の動画だけを外しています。Wine のコードは含まれていません。git の bundle は版ごとのスナップショットのコミットで、git clone VeRantyx-0.3.1-source.bundle -b source-snapshot で取り出せます（0.3.0 の bundle を持っていれば git pull で更新できます）。',
+            en: 'While the GitHub repository is hidden, the 0.3.1 source is here. It matches GitHub’s main (62e0488) except the videos in docs/media, left out for size. It contains no Wine code. The git bundle holds one snapshot commit per version: git clone VeRantyx-0.3.1-source.bundle -b source-snapshot (or git pull it into a clone of the 0.3.0 bundle)',
           })}
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
-          <a href="/source/VeRantyx-0.3.0-source.tar.gz" download className="rounded-lg px-4 py-1.5 text-sm font-semibold" style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}>tar.gz · 4.3 MB</a>
-          <a href="/source/VeRantyx-0.3.0-source.bundle" download className="rounded-lg px-4 py-1.5 text-sm font-semibold" style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}>git bundle · 4.4 MB</a>
+          <a href="/source/VeRantyx-0.3.1-source.tar.gz" download className="rounded-lg px-4 py-1.5 text-sm font-semibold" style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}>tar.gz · 4.3 MB</a>
+          <a href="/source/VeRantyx-0.3.1-source.bundle" download className="rounded-lg px-4 py-1.5 text-sm font-semibold" style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}>git bundle · 4.4 MB</a>
           <a href="/source/SHA256SUMS" className="rounded-lg px-4 py-1.5 text-sm" style={{ textDecoration: 'none', color: 'var(--ink-3)' }}>SHA256SUMS</a>
         </div>
       </div>
