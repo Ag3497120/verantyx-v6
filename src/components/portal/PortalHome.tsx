@@ -47,7 +47,7 @@ const VIDEO_MACS = 'YwznYiAXqBg'; // MacBook Pro M1 Max and MacBook Air M5 side 
 const HERO_FACTS: { value: L; label: L }[] = [
   { value: { ja: '60 fps', en: '60 fps' }, label: { ja: 'Alyx・3K 設定・M1 Max', en: 'Alyx · 3K preset · M1 Max' } },
   { value: { ja: 'Wine 不要', en: 'No Wine' }, label: { ja: '自前の Windows ランタイム', en: 'its own Windows runtime' } },
-  { value: { ja: 'MIT', en: 'MIT' }, label: { ja: 'すべてのソースを公開', en: 'all of the source, open' } },
+  { value: { ja: '非商用', en: 'Noncommercial' }, label: { ja: 'すべてのソースを公開（PolyForm Noncommercial）', en: 'all of the source, open (PolyForm Noncommercial)' } },
 ];
 
 /* ── How a frame travels ─────────────────────────────────── */
