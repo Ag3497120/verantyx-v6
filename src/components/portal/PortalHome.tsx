@@ -18,7 +18,8 @@ import { useHomeLang, type L } from '@/components/vera-home/useHomeLang';
 
 /* The home of verantyx.ai: VeRantyx (PC VR from a Mac) and vxrt (its Windows runtime) first, then every other
  * project the site already had. Every number here is one the VeRantyx README states with its run or recording
- * (github.com/Ag3497120/VeRantyx, 2026-10-17); do not round them or add new ones without a run behind them. */
+ * (github.com/Ag3497120/VeRantyx, 2026-10-17) or a later recorded run named next to it (Elite 2026-10-20, No Man's Sky
+ * 2026-10-26); do not round them or add new ones without a run behind them. */
 
 const REPO = 'https://github.com/Ag3497120/VeRantyx';
 // The Mac app, served from this site while the GitHub account is hidden (since 2026-10-24).
@@ -122,6 +123,22 @@ const LAYERS: Layer[] = [
     state: 'works',
   },
   {
+    name: { ja: 'Vulkan → Metal', en: 'Vulkan → Metal' },
+    detail: {
+      ja: 'SPIR-V から Metal Shading Language への翻訳器。テッセレーション、Direct3D 11 との共有テクスチャ（SteamVR へ）まで。No Man\u2019s Sky が動く',
+      en: 'A SPIR-V → Metal Shading Language translator, with tessellation and textures shared with Direct3D 11 (for SteamVR). No Man\u2019s Sky runs on it',
+    },
+    state: 'works',
+  },
+  {
+    name: { ja: 'Direct3D 12 → Metal', en: 'Direct3D 12 → Metal' },
+    detail: {
+      ja: 'LLVM を使わない DXIL の読み取りと Metal への翻訳。テストは通るが、動くゲームはまだない',
+      en: 'DXIL read without LLVM and translated to Metal; its tests pass, but no game runs on it yet',
+    },
+    state: 'growing',
+  },
+  {
     name: { ja: 'PE ローダー', en: 'PE loader' },
     detail: { ja: 'Windows の実行ファイルと DLL を読み込み、つなぐ', en: 'Loads and links Windows executables and DLLs' },
     state: 'works',
@@ -143,7 +160,7 @@ const LAYERS: Layer[] = [
   },
   {
     name: { ja: 'ソケット・COM', en: 'Sockets · COM' },
-    detail: { ja: 'ゲームが Mac の Steam クライアントにつながる', en: 'The game reaches the Steam client already running on the Mac' },
+    detail: { ja: 'ゲームは Mac の Steam クライアントにつながる。DRM で包まれたゲーム（No Man\u2019s Sky）は、本物の Windows 版 Steam を vxrt で動かして起動する', en: 'Games reach the Steam client already running on the Mac; DRM-wrapped games (No Man\u2019s Sky) start from the real Windows Steam client, run on vxrt' },
     state: 'works',
   },
   {
@@ -171,6 +188,8 @@ const RUNS: { game: string; fps: number; note: L }[] = [
   },
   { game: 'Google Earth VR', fps: 57.4, note: { ja: '起動から', en: 'from start' } },
   { game: 'The Lab', fps: 54.8, note: { ja: 'タイトル画面', en: 'title scene' } },
+  { game: 'No Man\u2019s Sky', fps: 45.7, note: { ja: 'Mac の画面・1512×982・Medium', en: 'Mac screen · 1512×982 · Medium' } },
+  { game: 'Elite Dangerous', fps: 33, note: { ja: 'VR・3K 設定（片目 1700×1372）', en: 'VR · 3K preset (1700×1372 per eye)' } },
 ];
 
 /* ── Headsets ────────────────────────────────────────────── */
@@ -188,7 +207,7 @@ const HEADSETS: { title: L; tag: L; points: L[]; checked: boolean }[] = [
   },
   {
     title: { ja: 'ALVR のアプリ・Quest / Pico / Vision Pro', en: 'ALVR apps · Quest / Pico / Vision Pro' },
-    tag: { ja: 'Quest・Pico は報告待ち', en: 'Quest and Pico: reports wanted' },
+    tag: { ja: 'Quest・Pico はプレイヤーが確認', en: 'Quest and Pico: checked by players' },
     checked: false,
     points: [
       { ja: 'ALVR の配信部分（v20.14.1）を変更なしで組み込み', en: 'ALVR’s streaming core (v20.14.1), built in unchanged' },
@@ -230,6 +249,21 @@ const JOURNEY: { date: string; title: L; body: L }[] = [
     date: '10.17',
     title: { ja: '音・IPD・振動・USB', en: 'Audio, IPD, vibration, USB' },
     body: { ja: '光る描画の不具合も修正。自前の翻訳器で The Lab が動く', en: 'The flashing-surface bug fixed; The Lab runs on our own translator' },
+  },
+  {
+    date: '10.20',
+    title: { ja: 'Elite Dangerous', en: 'Elite Dangerous' },
+    body: { ja: '公式ランチャー（.NET）からヘッドセットまで、Wine なしで', en: 'From its official launcher (.NET) to the headset, no Wine' },
+  },
+  {
+    date: '10.25',
+    title: { ja: 'No Man\u2019s Sky', en: 'No Man\u2019s Sky' },
+    body: { ja: '本物の Windows 版 Steam を vxrt で動かして起動。Vulkan とテッセレーションを Metal へ', en: 'Started from the real Windows Steam client on vxrt; Vulkan and tessellation to Metal' },
+  },
+  {
+    date: '10.26',
+    title: { ja: 'Direct3D 12 へ', en: 'On to Direct3D 12' },
+    body: { ja: 'No Man\u2019s Sky を 32.5 → 45.7 fps に。次の目標は Cyberpunk 2077', en: 'No Man\u2019s Sky from 32.5 to 45.7 fps; next target, Cyberpunk 2077' },
   },
 ];
 
@@ -394,8 +428,8 @@ function Hero({ t, ja }: P) {
             style={{ color: 'var(--ink-3)', fontSize: 'clamp(1rem, 2.3vw, 1.12rem)', lineHeight: ja ? 1.95 : 1.7 }}
           >
             {t({
-              ja: 'VeRantyx は、Half-Life: Alyx などの Windows 版 SteamVR ゲームを Apple silicon の Mac で動かし、Apple Vision Pro や ALVR のヘッドセットに送ります。その土台の vxrt は、Wine を使わずにゼロから書いた Windows ランタイムです。',
-              en: 'VeRantyx runs Windows SteamVR games such as Half-Life: Alyx on an Apple silicon Mac and streams them to an Apple Vision Pro or an ALVR headset. Underneath is vxrt, a Windows runtime written from scratch — no Wine.',
+              ja: 'VeRantyx は、Half-Life: Alyx、Elite Dangerous、No Man\u2019s Sky などの Windows 版 SteamVR ゲームを Apple silicon の Mac で動かし、Apple Vision Pro（VeRantyx アプリか ALVR アプリ）や Quest・Pico（ALVR）に送ります。その土台の vxrt は、Wine を使わずにゼロから書いた Windows ランタイムです。',
+              en: 'VeRantyx runs Windows SteamVR games such as Half-Life: Alyx, Elite Dangerous and No Man\u2019s Sky on an Apple silicon Mac and streams them to an Apple Vision Pro (the VeRantyx app or the ALVR app) or to Quest and Pico (ALVR). Underneath is vxrt, a Windows runtime written from scratch — no Wine.',
             })}
           </motion.p>
 
@@ -703,8 +737,8 @@ function Runtime({ t, ja }: P) {
           </Body>
           <p className="mt-5" style={{ fontSize: '0.8rem', color: 'var(--ink-4)', lineHeight: 1.7 }}>
             {t({
-              ja: 'まだないもの: Direct3D 12、Vulkan、テッセレーション。アンチチートの回避は行いません。',
-              en: 'Not there yet: Direct3D 12, Vulkan, tessellation. Anti-cheat is never worked around.',
+              ja: 'まだないもの: Direct3D 12（実装中。まだ動くゲームはありません）。アンチチートの回避は行いません。',
+              en: 'Not there yet: Direct3D 12 (in progress; no game runs on it yet). Anti-cheat is never worked around.',
             })}
           </p>
         </div>
@@ -847,8 +881,8 @@ function Numbers({ t, ja }: P) {
           </ul>
           <p className="mt-5" style={{ fontSize: '0.78rem', color: 'var(--ink-4)', lineHeight: 1.7 }}>
             {t({
-              ja: 'Earth VR と The Lab は 2026-10-15、Wine を一度も使わない設定での実行（fps の中央値）。',
-              en: 'Earth VR and The Lab: runs of 2026-10-15 with Wine never used (median fps).',
+              ja: 'Earth VR と The Lab は 2026-10-15、Wine を一度も使わない設定での実行（fps の中央値）。No Man\u2019s Sky は 2026-10-26（M1 Max、惑星の上）、Elite Dangerous は 2026-10-20 の約 33 fps。No Man\u2019s Sky のヘッドセットでの fps はまだ測っていません。',
+              en: 'Earth VR and The Lab: runs of 2026-10-15 with Wine never used (median fps). No Man\u2019s Sky: 2026-10-26 (M1 Max, on a planet); Elite Dangerous: about 33 fps, 2026-10-20. No Man\u2019s Sky in a headset is not measured yet.',
             })}
           </p>
         </div>
