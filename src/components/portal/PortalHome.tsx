@@ -22,7 +22,7 @@ import { useHomeLang, type L } from '@/components/vera-home/useHomeLang';
  * 2026-10-26); do not round them or add new ones without a run behind them. */
 
 const REPO = 'https://github.com/Ag3497120/VeRantyx';
-// The Mac app, served from this site while the GitHub account is hidden (since 2026-10-24).
+// The Mac app, served from this site (it was the only place while GitHub hid the account, 2026-10-24 to 10-27).
 // Every released version, newest first; the first one is the stable version the buttons download.
 // SHA256 values come from each release's .sha256 file (filled in by the release step).
 type Release = { ver: string; date: string; sha256: string; notes: L; lgpl?: boolean };
@@ -459,12 +459,12 @@ function Hero({ t, ja }: P) {
             style={{ border: '1px solid var(--line)', background: 'var(--surface)', fontSize: '0.8rem', lineHeight: ja ? 1.85 : 1.6, color: 'var(--ink-3)' }}
           >
             <p style={{ color: 'var(--ink-2)', fontWeight: 600 }}>
-              {t({ ja: 'なぜこのサイトからダウンロードするのか', en: 'Why the download is on this site' })}
+              {t({ ja: 'ダウンロードとソースの場所', en: 'Where the download and source are' })}
             </p>
             <p className="mt-1">
               {t({
-                ja: '2026年10月24日から、GitHub のアカウントが自動判定で非表示（フラグ付き）になり、リポジトリとリリースがほかの人から見えなくなっています。理由は知らされていません。Reddit への投稿で数日のうちに訪問者が急に増えたことと、AI コーディングエージェントを使った開発で、1日に数十回という頻度で push や取得をしていたことが、自動の判定に引っかかったのだと考えています。規約に反することをした心当たりはありません。それまでの間、署名・公証済みの同じアプリをここに置いています。ソースは手元で開発を続けていて、公開できるようになったら戻します。',
-                en: 'Since 24 October 2026 my GitHub account has been hidden (flagged) by an automatic check, so the repository and its releases are not visible to others; no reason was given. My guess is the combination of a sudden jump in visitors after Reddit posts and very frequent pushes and fetches, dozens a day, from development with AI coding agents. Nothing against GitHub’s terms was done. Until it is back, the same signed and notarized app is served here; development continues and the source will be public again.',
+                ja: 'アプリは、このサイトと GitHub のリリースの両方から入手できます（同じ署名・公証済みのアプリです）。ソースは GitHub のリポジトリにあります。2026年10月24日から27日まで GitHub のアカウントが自動判定で非表示になっていた間は、このサイトだけで配っていました。',
+                en: 'The app is available here and from the GitHub releases (the same signed and notarized app); the source is in the GitHub repository. From 24 to 27 October 2026, while GitHub hid the account after an automatic check, this site was the only place to get it.',
               })}
             </p>
             <p className="mt-1 break-all" style={{ fontSize: '0.72rem', color: 'var(--ink-4)' }}>SHA-256: {DMG_SHA256}</p>
@@ -1122,8 +1122,8 @@ function Downloads({ t, ja }: P) {
         <h3 className="font-display font-bold" style={{ fontSize: '1.05rem', color: 'var(--ink)' }}>{t({ ja: 'ソースコード（MIT）', en: 'Source code (MIT)' })}</h3>
         <p className="mt-1.5" style={{ fontSize: '0.84rem', color: 'var(--ink-3)', lineHeight: ja ? 1.85 : 1.6 }}>
           {t({
-            ja: 'GitHub のリポジトリが見えない間、0.3.1 のソースをここに置いています。中身は GitHub の main（62e0488）と同じで、容量のため docs/media の動画だけを外しています。Wine のコードは含まれていません。git の bundle は版ごとのスナップショットのコミットで、git clone VeRantyx-0.3.1-source.bundle -b source-snapshot で取り出せます（0.3.0 の bundle を持っていれば git pull で更新できます）。',
-            en: 'While the GitHub repository is hidden, the 0.3.1 source is here. It matches GitHub’s main (62e0488) except the videos in docs/media, left out for size. It contains no Wine code. The git bundle holds one snapshot commit per version: git clone VeRantyx-0.3.1-source.bundle -b source-snapshot (or git pull it into a clone of the 0.3.0 bundle)',
+            ja: 'ソースは GitHub のリポジトリ（github.com/Ag3497120/VeRantyx）にあります。ここには 0.3.1 のソースも置いています。中身は GitHub の main（62e0488）と同じで、容量のため docs/media の動画だけを外しています。Wine のコードは含まれていません。git の bundle は版ごとのスナップショットのコミットで、git clone VeRantyx-0.3.1-source.bundle -b source-snapshot で取り出せます（0.3.0 の bundle を持っていれば git pull で更新できます）。',
+            en: 'The source is in the GitHub repository (github.com/Ag3497120/VeRantyx); the 0.3.1 source is also here. It matches GitHub’s main (62e0488) except the videos in docs/media, left out for size. It contains no Wine code. The git bundle holds one snapshot commit per version: git clone VeRantyx-0.3.1-source.bundle -b source-snapshot (or git pull it into a clone of the 0.3.0 bundle)',
           })}
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
