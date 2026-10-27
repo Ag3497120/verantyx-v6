@@ -22,6 +22,7 @@ import { useHomeLang, type L } from '@/components/vera-home/useHomeLang';
  * 2026-10-26); do not round them or add new ones without a run behind them. */
 
 const REPO = 'https://github.com/Ag3497120/VeRantyx';
+const DISCORD = 'https://discord.gg/h2znwYJt3';
 // The Mac app, served from this site (it was the only place while GitHub hid the account, 2026-10-24 to 10-27).
 // Every released version, newest first; the first one is the stable version the buttons download.
 // SHA256 values come from each release's .sha256 file (filled in by the release step).
@@ -448,6 +449,15 @@ function Hero({ t, ja }: P) {
               style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}
             >
               {t({ ja: 'プレイ映像', en: 'Watch it play' })}
+            </a>
+            <a
+              href={DISCORD}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-xl px-6 py-3 text-sm font-semibold"
+              style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}
+            >
+              Discord
             </a>
           </motion.div>
 
@@ -939,6 +949,11 @@ function Headsets({ t, ja }: P) {
         >
           {t({ ja: '報告フォーム', en: 'report form' })}
         </a>
+        {t({ ja: '。質問や報告は ', en: '. Questions and reports are also welcome on ' })}
+        <a href={DISCORD} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--vx)', textDecoration: 'none' }}>
+          Discord
+        </a>
+        {t({ ja: ' でも受け付けています。', en: '.' })}
       </p>
     </Section>
   );
