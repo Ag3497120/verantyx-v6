@@ -28,6 +28,9 @@ const DISCORD = 'https://discord.gg/h2znwYJt3';
 // SHA256 values come from each release's .sha256 file (filled in by the release step).
 type Release = { ver: string; date: string; sha256: string; notes: L; lgpl?: boolean };
 const RELEASES: Release[] = [
+  { ver: '0.4.0', date: '2026-11-02', sha256: '97115471a4232a40739f937405a384b28872cfd4c3fb3d01c67976928ba9c9c9', notes: {
+    ja: 'Half-Life: Alyx の初回起動でシェーダーの準備を何分も待たなくなった（描くときに必要な分だけ作る）。Windows 経由の作業（Direct3D 12、NPU によるフレーム補間など）を本体に統合（既定はオフ）。Vision Pro アプリで Mac と直接 Wi-Fi でつなげる（felfoldy さんの PR #14）。',
+    en: 'Half-Life: Alyx\u2019s first start no longer waits minutes for its shaders (they compile when first drawn with). The Windows-route work (Direct3D 12, NPU frame interpolation and more) joins the main code, off by default. The Vision Pro app can use a direct Wi-Fi link to the Mac (PR #14 by felfoldy).' } },
   { ver: '0.3.2', date: '2026-11-02', sha256: '11df0a357216939fcea72dc64e40a5f78cc94af501139796379486bbf9b50dc7', notes: {
     ja: 'Quest と Pico でヘッドセットの表示レートを選べる（60 / 72 / 90 / 120 Hz）、Wi-Fi で UDP 配信を選べる。Elite Dangerous は Steam のサインインを待ってから起動、ゲーム開始後に視野が変わったら警告、ログでディスクが埋まらないように。Half-Life: Alyx のネイティブ ARM64 版とシェーダーキャッシュ（medved91 さんの PR #9）。',
     en: 'A refresh rate choice for Quest and Pico (60 / 72 / 90 / 120 Hz) and an optional UDP stream on Wi-Fi. Elite Dangerous waits for Steam\u2019s sign-in, a warning when the field of view changes after the game started, logs no longer fill the disk. Native ARM64 Half-Life: Alyx and a shader cache (PR #9 by medved91).' } },
@@ -1140,13 +1143,13 @@ function Downloads({ t, ja }: P) {
         <h3 className="font-display font-bold" style={{ fontSize: '1.05rem', color: 'var(--ink)' }}>{t({ ja: 'ソースコード（MIT）', en: 'Source code (MIT)' })}</h3>
         <p className="mt-1.5" style={{ fontSize: '0.84rem', color: 'var(--ink-3)', lineHeight: ja ? 1.85 : 1.6 }}>
           {t({
-            ja: 'ソースは GitHub のリポジトリ（github.com/Ag3497120/VeRantyx）にあります。ここには 0.3.2 のソースも置いています。中身は GitHub の main（1abcb76）と同じで、容量のため docs/media の動画だけを外しています。Wine のコードは含まれていません。git の bundle は版ごとのスナップショットのコミットで、git clone VeRantyx-0.3.2-source.bundle -b source-snapshot で取り出せます（0.3.1 以前の bundle を持っていれば git pull で更新できます）。',
-            en: 'The source is in the GitHub repository (github.com/Ag3497120/VeRantyx); the 0.3.2 source is also here. It matches GitHub’s main (1abcb76) except the videos in docs/media, left out for size. It contains no Wine code. The git bundle holds one snapshot commit per version: git clone VeRantyx-0.3.2-source.bundle -b source-snapshot (or git pull it into a clone of an earlier bundle)',
+            ja: 'ソースは GitHub のリポジトリ（github.com/Ag3497120/VeRantyx）にあります。ここには 0.4.0 のソースも置いています。中身は GitHub の main（422f52e）と同じで、容量のため docs/media の動画だけを外しています。Wine のコードは含まれていません。git の bundle は版ごとのスナップショットのコミットで、git clone VeRantyx-0.4.0-source.bundle -b source-snapshot で取り出せます（0.3.2 以前の bundle を持っていれば git pull で更新できます）。',
+            en: 'The source is in the GitHub repository (github.com/Ag3497120/VeRantyx); the 0.4.0 source is also here. It matches GitHub’s main (422f52e) except the videos in docs/media, left out for size. It contains no Wine code. The git bundle holds one snapshot commit per version: git clone VeRantyx-0.4.0-source.bundle -b source-snapshot (or git pull it into a clone of an earlier bundle)',
           })}
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
-          <a href="/source/VeRantyx-0.3.2-source.tar.gz" download className="rounded-lg px-4 py-1.5 text-sm font-semibold" style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}>tar.gz · 4.5 MB</a>
-          <a href="/source/VeRantyx-0.3.2-source.bundle" download className="rounded-lg px-4 py-1.5 text-sm font-semibold" style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}>git bundle · 4.7 MB</a>
+          <a href="/source/VeRantyx-0.4.0-source.tar.gz" download className="rounded-lg px-4 py-1.5 text-sm font-semibold" style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}>tar.gz · 4.8 MB</a>
+          <a href="/source/VeRantyx-0.4.0-source.bundle" download className="rounded-lg px-4 py-1.5 text-sm font-semibold" style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}>git bundle · 5.0 MB</a>
           <a href="/source/SHA256SUMS" className="rounded-lg px-4 py-1.5 text-sm" style={{ textDecoration: 'none', color: 'var(--ink-3)' }}>SHA256SUMS</a>
         </div>
       </div>
