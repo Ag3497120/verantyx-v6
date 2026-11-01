@@ -28,6 +28,9 @@ const DISCORD = 'https://discord.gg/h2znwYJt3';
 // SHA256 values come from each release's .sha256 file (filled in by the release step).
 type Release = { ver: string; date: string; sha256: string; notes: L; lgpl?: boolean };
 const RELEASES: Release[] = [
+  { ver: '0.3.2', date: '2026-11-02', sha256: '11df0a357216939fcea72dc64e40a5f78cc94af501139796379486bbf9b50dc7', notes: {
+    ja: 'Quest と Pico でヘッドセットの表示レートを選べる（60 / 72 / 90 / 120 Hz）、Wi-Fi で UDP 配信を選べる。Elite Dangerous は Steam のサインインを待ってから起動、ゲーム開始後に視野が変わったら警告、ログでディスクが埋まらないように。Half-Life: Alyx のネイティブ ARM64 版とシェーダーキャッシュ（medved91 さんの PR #9）。',
+    en: 'A refresh rate choice for Quest and Pico (60 / 72 / 90 / 120 Hz) and an optional UDP stream on Wi-Fi. Elite Dangerous waits for Steam\u2019s sign-in, a warning when the field of view changes after the game started, logs no longer fill the disk. Native ARM64 Half-Life: Alyx and a shader cache (PR #9 by medved91).' } },
   { ver: '0.3.1', date: '2026-10-26', sha256: '7a432988784f652e2a05d884a37bcbae199b9510da24f87f3046bc1d548a8e28', notes: {
     ja: 'No Man\u2019s Sky が速く（Mac の画面で 32.5 → 45.7 fps、M1 Max）。Pico などで投げた物が飛びすぎる問題、ゲーム中の ALVR の再接続、Half-Life: Alyx の読み込み後の黒い画面（「トリガーを長押しして開始」を表示）を修正。',
     en: 'No Man\u2019s Sky draws faster (32.5 \u2192 45.7 fps on the Mac\u2019s screen, M1 Max). Fixes for thrown objects flying too far on Pico and similar headsets, reconnecting ALVR mid-game, and Half-Life: Alyx\u2019s black screen after a load (now shows "Hold the trigger to start").' } },
@@ -1137,13 +1140,13 @@ function Downloads({ t, ja }: P) {
         <h3 className="font-display font-bold" style={{ fontSize: '1.05rem', color: 'var(--ink)' }}>{t({ ja: 'ソースコード（MIT）', en: 'Source code (MIT)' })}</h3>
         <p className="mt-1.5" style={{ fontSize: '0.84rem', color: 'var(--ink-3)', lineHeight: ja ? 1.85 : 1.6 }}>
           {t({
-            ja: 'ソースは GitHub のリポジトリ（github.com/Ag3497120/VeRantyx）にあります。ここには 0.3.1 のソースも置いています。中身は GitHub の main（62e0488）と同じで、容量のため docs/media の動画だけを外しています。Wine のコードは含まれていません。git の bundle は版ごとのスナップショットのコミットで、git clone VeRantyx-0.3.1-source.bundle -b source-snapshot で取り出せます（0.3.0 の bundle を持っていれば git pull で更新できます）。',
-            en: 'The source is in the GitHub repository (github.com/Ag3497120/VeRantyx); the 0.3.1 source is also here. It matches GitHub’s main (62e0488) except the videos in docs/media, left out for size. It contains no Wine code. The git bundle holds one snapshot commit per version: git clone VeRantyx-0.3.1-source.bundle -b source-snapshot (or git pull it into a clone of the 0.3.0 bundle)',
+            ja: 'ソースは GitHub のリポジトリ（github.com/Ag3497120/VeRantyx）にあります。ここには 0.3.2 のソースも置いています。中身は GitHub の main（1abcb76）と同じで、容量のため docs/media の動画だけを外しています。Wine のコードは含まれていません。git の bundle は版ごとのスナップショットのコミットで、git clone VeRantyx-0.3.2-source.bundle -b source-snapshot で取り出せます（0.3.1 以前の bundle を持っていれば git pull で更新できます）。',
+            en: 'The source is in the GitHub repository (github.com/Ag3497120/VeRantyx); the 0.3.2 source is also here. It matches GitHub’s main (1abcb76) except the videos in docs/media, left out for size. It contains no Wine code. The git bundle holds one snapshot commit per version: git clone VeRantyx-0.3.2-source.bundle -b source-snapshot (or git pull it into a clone of an earlier bundle)',
           })}
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
-          <a href="/source/VeRantyx-0.3.1-source.tar.gz" download className="rounded-lg px-4 py-1.5 text-sm font-semibold" style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}>tar.gz · 4.3 MB</a>
-          <a href="/source/VeRantyx-0.3.1-source.bundle" download className="rounded-lg px-4 py-1.5 text-sm font-semibold" style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}>git bundle · 4.4 MB</a>
+          <a href="/source/VeRantyx-0.3.2-source.tar.gz" download className="rounded-lg px-4 py-1.5 text-sm font-semibold" style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}>tar.gz · 4.5 MB</a>
+          <a href="/source/VeRantyx-0.3.2-source.bundle" download className="rounded-lg px-4 py-1.5 text-sm font-semibold" style={{ textDecoration: 'none', color: 'var(--ink-2)', border: '1px solid var(--line-strong)' }}>git bundle · 4.7 MB</a>
           <a href="/source/SHA256SUMS" className="rounded-lg px-4 py-1.5 text-sm" style={{ textDecoration: 'none', color: 'var(--ink-3)' }}>SHA256SUMS</a>
         </div>
       </div>
