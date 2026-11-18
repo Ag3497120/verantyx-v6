@@ -406,10 +406,19 @@ function Hero({ t, ja }: P) {
               })}
             </p>
             <p style={{ color: 'var(--ink-2)' }}>
-              {t({
-                ja: '作業の大半は変更のたびにヘッドセットでゲームごとに試すことで、使える条件が揃う人もごく少数だったため、続けるのが難しくなりました。早い時期に NotProton の開発者から「車輪の再発明だ」と言われました。振り返ると、そのとおりでした。NotProton のように Wine を土台にしたプロジェクトの方が、ずっと速く、ずっと多くのゲームを動かしました。この分野には今、良いプロジェクトが揃っています。コードとリリースは MIT のまま GitHub に残ります（今後は更新しません）。試してくれた皆さん、ありがとうございました。',
-                en: 'Most of the work was testing every change on a headset, game by game, and only a small number of people have the right mix of Mac, headset and games to use it. Early on, the NotProton developer told me this was reinventing the wheel. Looking back, they were right: projects built on Wine, such as NotProton, reached far more games, much faster. The field now has good projects for each part of what VeRantyx set out to do. The code and releases stay on GitHub under MIT and are no longer updated. Thank you to everyone who tried it.',
-              })}
+              {ja ? (
+                <>
+                  作業の大半は変更のたびにヘッドセットでゲームごとに試すことで、使える条件が揃う人もごく少数だったため、続けるのが難しくなりました。早い時期に NotProton の開発者（
+                  <a href="https://github.com/NotProtonNot" style={{ color: 'var(--vx)', textDecoration: 'underline' }}>@NotProtonNot</a>
+                  ）から「車輪の再発明だ」と言われました。振り返ると、そのとおりでした。NotProton のように Wine を土台にしたプロジェクトの方が、ずっと速く、ずっと多くのゲームを動かしました。この分野には今、良いプロジェクトが揃っています。コードとリリースは MIT のまま GitHub に残ります（今後は更新しません）。試してくれた皆さん、ありがとうございました。
+                </>
+              ) : (
+                <>
+                  Most of the work was testing every change on a headset, game by game, and only a small number of people have the right mix of Mac, headset and games to use it. Early on,{' '}
+                  <a href="https://github.com/NotProtonNot" style={{ color: 'var(--vx)', textDecoration: 'underline' }}>@NotProtonNot</a>
+                  , the NotProton developer, told me this was reinventing the wheel. Looking back, they were right: projects built on Wine, such as NotProton, reached far more games, much faster. The field now has good projects for each part of what VeRantyx set out to do. The code and releases stay on GitHub under MIT and are no longer updated. Thank you to everyone who tried it.
+                </>
+              )}
             </p>
             <p style={{ marginTop: '0.5rem' }}>
               <a href="https://github.com/Ag3497120/VeRantyx" style={{ color: 'var(--vx)', textDecoration: 'underline' }}>
