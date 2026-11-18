@@ -389,11 +389,38 @@ function Hero({ t, ja }: P) {
             className="inline-flex items-center gap-2 rounded-full px-3 py-1 mb-6"
             style={{ border: '1px solid rgba(var(--vx-rgb), 0.35)', background: 'rgba(var(--vx-rgb), 0.07)' }}
           >
-            <span className="vx-pulse" aria-hidden />
             <span style={{ fontSize: '0.72rem', letterSpacing: '0.14em', color: 'var(--vx)' }} className="uppercase font-semibold">
-              {t({ ja: 'VeRantyx · 毎日開発中', en: 'VeRantyx · developed every day' })}
+              {t({ ja: 'VeRantyx · アーカイブ済み', en: 'VeRantyx · archived' })}
             </span>
           </motion.div>
+
+          <div
+            role="note"
+            className="mb-8 rounded-2xl px-5 py-4"
+            style={{ border: '1px solid rgba(var(--vx-rgb), 0.35)', background: 'rgba(var(--vx-rgb), 0.06)', lineHeight: 1.7, fontSize: '0.92rem' }}
+          >
+            <p className="font-semibold" style={{ marginBottom: '0.4rem' }}>
+              {t({
+                ja: '2026 年 11 月 18 日に VeRantyx の開発を終了し、GitHub のリポジトリをアーカイブしました。',
+                en: 'VeRantyx was archived on November 18, 2026 and is no longer developed.',
+              })}
+            </p>
+            <p style={{ color: 'var(--ink-2)' }}>
+              {t({
+                ja: '作業の大半は変更のたびにヘッドセットでゲームごとに試すことで、使える条件が揃う人もごく少数だったため、続けるのが難しくなりました。早い時期に NotProton の開発者から「車輪の再発明だ」と言われました。振り返ると、そのとおりでした。NotProton のように Wine を土台にしたプロジェクトの方が、ずっと速く、ずっと多くのゲームを動かしました。この分野には今、良いプロジェクトが揃っています。コードとリリースは MIT のまま GitHub に残ります（今後は更新しません）。試してくれた皆さん、ありがとうございました。',
+                en: 'Most of the work was testing every change on a headset, game by game, and only a small number of people have the right mix of Mac, headset and games to use it. Early on, the NotProton developer told me this was reinventing the wheel. Looking back, they were right: projects built on Wine, such as NotProton, reached far more games, much faster. The field now has good projects for each part of what VeRantyx set out to do. The code and releases stay on GitHub under MIT and are no longer updated. Thank you to everyone who tried it.',
+              })}
+            </p>
+            <p style={{ marginTop: '0.5rem' }}>
+              <a href="https://github.com/Ag3497120/VeRantyx" style={{ color: 'var(--vx)', textDecoration: 'underline' }}>
+                {t({ ja: 'GitHub の告知と代わりのプロジェクト', en: 'Notice and alternatives on GitHub' })}
+              </a>
+              {' · '}
+              <a href="https://github.com/Ag3497120/VXpro" style={{ color: 'var(--vx)', textDecoration: 'underline' }}>
+                {t({ ja: 'VXpro（Vision Pro 単体の Cyberpunk 2077、継続中）', en: 'VXpro (Cyberpunk 2077 standalone on Vision Pro, still open)' })}
+              </a>
+            </p>
+          </div>
 
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
