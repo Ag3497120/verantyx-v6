@@ -32,3 +32,13 @@ pages_build_output_dir = "out"
 [[kv_namespaces]]
 binding = "VERA_DEMAND"
 id = "71d37aa6a0db45a78938f39bc980f28c"
+
+# Team board — verantyx.ai/team（チームの意見の場、functions/team と team-board/）。
+# D1 を作ったら、下の 4 行の先頭の # を外し、database_id を入れる（作る前に外すと公開が失敗する）:
+#   npx wrangler@4 d1 create team-board
+# [[d1_databases]]
+# binding = "TEAM_DB"
+# database_name = "team-board"
+# database_id = "<d1 create で出た ID>"
+# 「Claude と整える」の API キーは秘密の値として登録する:
+#   npx wrangler@4 pages secret put ANTHROPIC_API_KEY --project-name verantyx-site
