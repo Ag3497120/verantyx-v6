@@ -33,7 +33,7 @@
 
    `tokens.txt` と `members.sql` はリポジトリのルートにできる。**コミットしない**（`.gitignore` 済み）。合言葉は各メンバーに個別に渡し、渡し終えたら `tokens.txt` を消す。
 
-2. `wrangler.toml` の Team board の `[[d1_databases]]` の 4 行の `#` を外し、`database_id` を入れる。
+2. `wrangler.toml` の Team board の `[[d1_databases]]` に `database_id` を入れる（済み: 2026-11-19）。
 3. API キー（チームプランと連携した Claude Console の組織で作った、このサイト専用のキー）を登録する
 
    ```bash
